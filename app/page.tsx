@@ -1,8 +1,7 @@
-import { ContentCategories } from "@/components/content-categories";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
-import { JournalEntries } from "@/components/journal-entries";
+import { BlogEntries } from "@/components/blog-entries";
 
 export default function Home() {
   return (
@@ -10,8 +9,7 @@ export default function Home() {
       <Header />
       <main className="container mx-auto px-4 py-8">
         <HeroSection />
-        <ContentCategories />
-        <JournalEntries />
+        <BlogEntries />
       </main>
       <Footer />
     </div>

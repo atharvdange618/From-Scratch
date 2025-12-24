@@ -1,2 +1,3 @@
-# What Did I Solve Today
-Join me on my daily journey of tackling technical challenges, debugging complex issues, and learning new skills. Every day brings a new problem to solve!
+# From Scratch
+
+Building frameworks, apps, and ideas from the ground up. Follow my journey as I create tools, ship projects, and share everything I learn along the way.

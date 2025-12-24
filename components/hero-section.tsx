@@ -1,51 +1,39 @@
 "use client";
 
-import { CalendarIcon, Code2 } from "lucide-react";
-import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import { BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 
 export function HeroSection() {
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [date, setDate] = useState<Date | undefined>(new Date());
   const router = useRouter();
 
   return (
     <section className="mb-16 mt-8">
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-12 md:grid-cols-2 items-center">
         <div className="flex flex-col justify-center items-start">
           <div className="mb-4 inline-block rounded-lg border-4 border-black bg-[#FFECDB] px-3 py-1 text-sm font-bold">
-            {date?.toLocaleDateString("en-US", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            BUILD IN PUBLIC
           </div>
           <h1 className="mb-4 font-sans text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
-            Today I solved a{" "}
-            <span className="text-[#FF9149]">React performance</span> puzzle
+            Building tools and apps,{" "}
+            <span className="text-[#FF9149]">one commit at a time</span>
           </h1>
           <p className="mb-6 font-serif text-lg">
-            Join me on my daily journey of tackling technical challenges,
-            debugging complex issues, and learning new skills. Every day brings
-            a new problem to solve!
+            Creating frameworks, apps, and ideas from the ground up. Follow my
+            journey as I ship projects, share learnings, and build everything
+            from scratch.
           </p>
           <div className="flex flex-wrap gap-4">
             <Button
               className="rounded-none border-4 border-black bg-[#60B5FF] px-6 py-3 text-lg font-bold shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+              onClick={() => {
+                document
+                  .getElementById("recent-posts")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
             >
-              <CalendarIcon className="mr-2 h-5 w-5" />
-              Browse Journal
+              <BookOpen className="mr-2 h-5 w-5" />
+              Read the Blog
             </Button>
             <Button
               onClick={() => router.push("/about")}
@@ -54,86 +42,191 @@ export function HeroSection() {
               About Me
             </Button>
           </div>
-
-          {isCalendarOpen && (
-            <div className="relative mt-4">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="rounded-none border-4 border-black bg-white p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
-              />
-            </div>
-          )}
         </div>
 
-        <Card className="overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <CardHeader className="border-b-4 border-black bg-[#60B5FF] p-4">
-            <CardTitle className="flex items-center justify-between text-2xl font-bold">
-              <span>Today's Solve</span>
-              <div className="flex gap-2">
-                <span className="inline-block rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
-                  React
-                </span>
-                <span className="inline-block rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
-                  Performance
-                </span>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="mb-4 flex items-center gap-2">
-              <div className="h-10 w-10 rounded-full border-2 border-black bg-[#AFDDFF] p-2">
-                <Code2 className="h-full w-full" />
-              </div>
-              <div>
-                <h3 className="font-bold">Optimizing React Renders</h3>
-                <p className="text-sm text-gray-600">
-                  Difficulty: Intermediate
-                </p>
-              </div>
-            </div>
+        {/* SVG Illustration */}
+        <div className="relative order-first md:order-last">
+          <svg
+            viewBox="0 0 500 500"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-auto"
+          >
+            {/* Background circle */}
+            <circle
+              cx="250"
+              cy="250"
+              r="200"
+              fill="#AFDDFF"
+              stroke="#000"
+              strokeWidth="6"
+            />
 
-            <p className="mb-4 font-serif">
-              Today I tackled a performance issue in a React application where
-              unnecessary re-renders were causing sluggish UI. I discovered that
-              a large list component was re-rendering entirely when only a
-              single item changed.
-            </p>
+            {/* Code editor window */}
+            <rect
+              x="120"
+              y="140"
+              width="260"
+              height="220"
+              fill="#fff"
+              stroke="#000"
+              strokeWidth="6"
+            />
 
-            <div className="mb-4 rounded-lg border-2 border-black bg-[#f6f8fa] p-4 font-mono text-sm">
-              <pre>
-                <code>{`// Before
-const ItemsList = ({ items }) => {
-  return (
-    <div>
-      {items.map(item => (
-        <Item key={item.id} {...item} />
-      ))}
-    </div>
-  )
-}`}</code>
-              </pre>
-            </div>
+            {/* Window header */}
+            <rect
+              x="120"
+              y="140"
+              width="260"
+              height="40"
+              fill="#60B5FF"
+              stroke="#000"
+              strokeWidth="6"
+            />
+            <circle
+              cx="145"
+              cy="160"
+              r="6"
+              fill="#FF9149"
+              stroke="#000"
+              strokeWidth="2"
+            />
+            <circle
+              cx="170"
+              cy="160"
+              r="6"
+              fill="#FFECDB"
+              stroke="#000"
+              strokeWidth="2"
+            />
+            <circle
+              cx="195"
+              cy="160"
+              r="6"
+              fill="#E0FFF1"
+              stroke="#000"
+              strokeWidth="2"
+            />
 
-            <div className="flex flex-wrap gap-2">
-              <span className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold">
-                React.memo
-              </span>
-              <span className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold">
-                useMemo
-              </span>
-              <span className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold">
-                useCallback
-              </span>
-            </div>
-          </CardContent>
-          <CardFooter className="border-t-4 border-black bg-[#FFECDB] p-4">
-            <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
-              Read Full Solution
-            </Button>
-          </CardFooter>
-        </Card>
+            {/* Code lines */}
+            <rect x="140" y="200" width="120" height="8" fill="#000" />
+            <rect x="140" y="220" width="180" height="8" fill="#000" />
+            <rect x="160" y="240" width="140" height="8" fill="#FF9149" />
+            <rect x="160" y="260" width="100" height="8" fill="#60B5FF" />
+            <rect x="140" y="280" width="160" height="8" fill="#000" />
+            <rect x="160" y="300" width="120" height="8" fill="#E0FFF1" />
+            <rect x="140" y="320" width="80" height="8" fill="#000" />
+
+            {/* Cursor */}
+            <rect x="240" y="318" width="3" height="12" fill="#FF9149">
+              <animate
+                attributeName="opacity"
+                values="1;0;1"
+                dur="1.5s"
+                repeatCount="indefinite"
+              />
+            </rect>
+
+            {/* Floating elements */}
+            <g>
+              {/* Brackets */}
+              <text
+                x="80"
+                y="120"
+                fontSize="60"
+                fontWeight="bold"
+                fill="#FF9149"
+                stroke="#000"
+                strokeWidth="2"
+              >
+                {"</>"}
+              </text>
+
+              {/* Git icon */}
+              <circle
+                cx="400"
+                cy="180"
+                r="30"
+                fill="#FFECDB"
+                stroke="#000"
+                strokeWidth="4"
+              />
+              <path
+                d="M 385 180 L 395 190 L 415 170"
+                stroke="#000"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+
+              {/* Terminal symbol */}
+              <rect
+                x="70"
+                y="320"
+                width="60"
+                height="60"
+                fill="#E0FFF1"
+                stroke="#000"
+                strokeWidth="4"
+              />
+              <path
+                d="M 85 340 L 95 350 L 85 360"
+                stroke="#000"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+              <rect x="105" y="355" width="15" height="4" fill="#000" />
+
+              {/* Rocket */}
+              <g>
+                <rect
+                  x="390"
+                  y="300"
+                  width="40"
+                  height="60"
+                  fill="#60B5FF"
+                  stroke="#000"
+                  strokeWidth="4"
+                />
+                <polygon
+                  points="390,300 410,270 430,300"
+                  fill="#FF9149"
+                  stroke="#000"
+                  strokeWidth="4"
+                />
+                <circle
+                  cx="410"
+                  cy="320"
+                  r="8"
+                  fill="#fff"
+                  stroke="#000"
+                  strokeWidth="2"
+                />
+                <rect
+                  x="385"
+                  y="360"
+                  width="15"
+                  height="25"
+                  fill="#FFECDB"
+                  stroke="#000"
+                  strokeWidth="3"
+                />
+                <rect
+                  x="420"
+                  y="360"
+                  width="15"
+                  height="25"
+                  fill="#FFECDB"
+                  stroke="#000"
+                  strokeWidth="3"
+                />
+              </g>
+            </g>
+          </svg>
+        </div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { UserButton } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,10 +18,10 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2">
           <div className="relative h-10 w-10 rounded-full border-4 border-black bg-[#60B5FF]">
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-xl font-bold">
-              ?!
+              FS
             </div>
           </div>
-          <span className="text-xl font-bold">What Did I Solve Today</span>
+          <span className="text-xl font-bold">From Scratch</span>
         </Link>
 
         <div className="hidden items-center gap-6 md:flex">
@@ -32,14 +33,6 @@ export function Header() {
                   className="font-bold hover:text-[#FF9149] hover:underline hover:decoration-4 hover:underline-offset-4"
                 >
                   About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/archive"
-                  className="font-bold hover:text-[#FF9149] hover:underline hover:decoration-4 hover:underline-offset-4"
-                >
-                  Archive
                 </Link>
               </li>
               <li>
@@ -88,6 +81,8 @@ export function Header() {
               )}
               <span className="sr-only">Toggle theme</span>
             </Button>
+
+            <UserButton afterSignOutUrl="/" />
           </div>
         </div>
 

@@ -49,24 +49,6 @@
   --ring: 0 0% 83.1%;
 }
 
-* {
-  cursor:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' style='fill:black;font-size:16px;'><text y='16'>✎</text></svg>")
-      0 16,
-    auto;
-}
-
-a,
-button,
-input,
-select,
-textarea {
-  cursor:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' style='fill:black;font-size:16px;'><text y='16'>👆</text></svg>")
-      0 16,
-    pointer;
-}
-
 @layer base {
   * {
     @apply border-border;

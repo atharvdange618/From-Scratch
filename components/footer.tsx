@@ -8,10 +8,10 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <h3 className="mb-4 text-xl font-bold">What Did I Solve Today</h3>
+            <h3 className="mb-4 text-xl font-bold">From Scratch</h3>
             <p className="mb-4 font-serif">
-              A daily journal documenting my technical problem-solving journey
-              and the lessons learned along the way.
+              Building frameworks, apps, and ideas from the ground up. Sharing
+              the journey of creating tools and shipping projects.
             </p>
             <div className="flex gap-4">
               <a
@@ -60,14 +60,6 @@ export function Footer() {
                   className="hover:text-[#FF9149] hover:underline hover:decoration-4 hover:underline-offset-4"
                 >
                   About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/archive"
-                  className="hover:text-[#FF9149] hover:underline hover:decoration-4 hover:underline-offset-4"
-                >
-                  Archive
                 </Link>
               </li>
               <li>
@@ -122,8 +114,7 @@ export function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-center font-serif text-sm md:text-left">
-            © {new Date().getFullYear()} What Did I Solve Today. All rights
-            reserved.
+            © {new Date().getFullYear()} From Scratch. All rights reserved.
           </p>
         </div>
       </div>
