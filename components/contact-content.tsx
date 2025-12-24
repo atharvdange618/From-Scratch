@@ -88,7 +88,7 @@ export function ContactContent() {
               </div>
               <div>
                 <h3 className="font-bold">Phone</h3>
-                <p className="font-serif">+91 8149011956</p>
+                <p className="font-serif">+91 7875273298</p>
               </div>
             </div>
 
@@ -154,28 +154,6 @@ export function ContactContent() {
                 <span className="sr-only">Email</span>
               </a>
             </Button>
-          </div>
-
-          <div className="mt-8">
-            <Card className="overflow-hidden rounded-none border-4 border-black bg-[#FFECDB] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-              <CardContent className="p-6">
-                <h3 className="mb-4 text-xl font-bold">Office Hours</h3>
-                <div className="space-y-2 font-serif">
-                  <p className="flex justify-between">
-                    <span>Monday - Friday:</span>
-                    <span>9:00 AM - 6:00 PM PST</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span>Saturday - Sunday:</span>
-                    <span>Free to chat</span>
-                  </p>
-                </div>
-                <p className="mt-4 font-serif text-sm">
-                  I typically respond to messages within 24-48 hours during
-                  business days.
-                </p>
-              </CardContent>
-            </Card>
           </div>
         </div>
 

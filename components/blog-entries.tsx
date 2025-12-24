@@ -1,6 +1,8 @@
 "use client";
 
-import { Code, Rocket, BookOpen, Lightbulb } from "lucide-react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Code, Rocket, BookOpen, Lightbulb, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,83 +12,90 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-// Sample data for blog posts
-const blogPosts = [
-  {
-    id: 1,
-    title: "Building Reiatsu: A Zero-Dependency TypeScript Framework",
-    date: "December 20, 2024",
-    preview:
-      "Creating a web framework from scratch taught me invaluable lessons about HTTP, routing, and the fundamentals of web development...",
-    tags: ["Reiatsu", "TypeScript", "Frameworks"],
-    category: "Active Projects",
-    icon: <Code className="h-full w-full" />,
-    iconBg: "#AFDDFF",
-    slug: "building-reiatsu-framework",
-  },
-  {
-    id: 2,
-    title: "Telemetry: Privacy-First Analytics Platform",
-    date: "December 15, 2024",
-    preview:
-      "Why I decided to build my own analytics solution and how I'm approaching privacy-first data collection...",
-    tags: ["Telemetry", "Analytics", "Privacy"],
-    category: "Active Projects",
-    icon: <Rocket className="h-full w-full" />,
-    iconBg: "#FFECDB",
-    slug: "telemetry-privacy-analytics",
-  },
-  {
-    id: 3,
-    title: "Minty: Smart Expense Tracking for Modern Life",
-    date: "December 10, 2024",
-    preview:
-      "Building a mobile-first expense tracker with React Native and learning about financial data management...",
-    tags: ["Minty", "React Native", "Mobile"],
-    category: "Active Projects",
-    icon: <Lightbulb className="h-full w-full" />,
-    iconBg: "#E0FFF1",
-    slug: "minty-expense-tracker",
-  },
-  {
-    id: 4,
-    title: "Learning TypeScript Type System Deep Dive",
-    date: "December 5, 2024",
-    preview:
-      "Exploring advanced TypeScript features: conditional types, mapped types, and how they power Reiatsu's type safety...",
-    tags: ["TypeScript", "Learning"],
-    category: "Learning Notes",
-    icon: <BookOpen className="h-full w-full" />,
-    iconBg: "#AFDDFF",
-    slug: "typescript-deep-dive",
-  },
-  {
-    id: 5,
-    title: "Recon Update: QA Intelligence System Progress",
-    date: "November 28, 2024",
-    preview:
-      "Major milestone reached! Recon now tracks bug patterns and provides actionable insights for QA teams...",
-    tags: ["Recon", "Updates", "Backend"],
-    category: "Updates",
-    icon: <Rocket className="h-full w-full" />,
-    iconBg: "#FFECDB",
-    slug: "recon-qa-progress-update",
-  },
-  {
-    id: 6,
-    title: "From Junior to Professional: My Coding Journey",
-    date: "November 20, 2024",
-    preview:
-      "Reflecting on my journey from starting to code in January 2021 to becoming a professional developer in March 2024...",
-    tags: ["Career", "Journey"],
-    category: "Learning Notes",
-    icon: <Lightbulb className="h-full w-full" />,
-    iconBg: "#AFDDFF",
-    slug: "coding-journey-reflection",
-  },
-];
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  content: string;
+  tags: string[];
+  category: string;
+  isPublished: boolean;
+  publishedDate: string;
+  linkedProject?: {
+    _id: string;
+    name: string;
+    slug: string;
+  };
+}
+
+// Icon mapping based on category or tags
+const getPostIcon = (tags: string[], category: string) => {
+  const tagStr = tags.join(" ").toLowerCase();
+  const catStr = category.toLowerCase();
+
+  if (tagStr.includes("reiatsu") || tagStr.includes("framework")) {
+    return { icon: <Code className="h-full w-full" />, bg: "#AFDDFF" };
+  }
+  if (tagStr.includes("telemetry") || tagStr.includes("analytics")) {
+    return { icon: <Rocket className="h-full w-full" />, bg: "#FFECDB" };
+  }
+  if (tagStr.includes("archive") || tagStr.includes("mobile")) {
+    return { icon: <Lightbulb className="h-full w-full" />, bg: "#E0FFF1" };
+  }
+  if (tagStr.includes("journey") || catStr.includes("update")) {
+    return { icon: <BookOpen className="h-full w-full" />, bg: "#AFDDFF" };
+  }
+
+  return { icon: <Code className="h-full w-full" />, bg: "#AFDDFF" };
+};
 
 export function BlogEntries() {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const response = await fetch("/api/posts?isPublished=true&limit=4");
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts");
+        }
+        const data = await response.json();
+        setBlogPosts(data.posts || []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load posts");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="mb-16" id="recent-posts">
+        <h2 className="mb-8 font-sans text-3xl font-bold">Recent Posts</h2>
+        <div className="flex items-center justify-center rounded-none border-4 border-black bg-[#AFDDFF] p-16">
+          <Loader2 className="h-12 w-12 animate-spin" />
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="mb-16" id="recent-posts">
+        <h2 className="mb-8 font-sans text-3xl font-bold">Recent Posts</h2>
+        <div className="flex flex-col items-center justify-center rounded-none border-4 border-black bg-[#FFECDB] p-16">
+          <p className="text-xl font-bold">Error loading posts: {error}</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="mb-16" id="recent-posts">
       <div className="mb-8 flex items-center justify-between">
@@ -97,54 +106,65 @@ export function BlogEntries() {
       </div>
 
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {blogPosts.map((post) => (
-          <Card
-            key={post.id}
-            className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-          >
-            <CardHeader className="border-b-4 border-black bg-white p-4">
-              <div className="mb-2 flex items-center gap-2">
-                <div
-                  className="h-10 w-10 rounded-full border-2 border-black p-2"
-                  style={{ backgroundColor: post.iconBg }}
-                >
-                  {post.icon}
-                </div>
-                <div className="flex-1">
-                  <span className="text-sm font-bold">{post.date}</span>
-                  <div className="mt-1">
-                    <span className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-0.5 text-xs font-bold">
-                      {post.category}
-                    </span>
+        {blogPosts.map((post) => {
+          const { icon, bg } = getPostIcon(post.tags, post.category);
+          const formattedDate = new Date(post.publishedDate).toLocaleDateString(
+            "en-US",
+            {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }
+          );
+
+          return (
+            <Link key={post._id} href={`/posts/${post.slug}`}>
+              <Card className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <CardHeader className="border-b-4 border-black bg-white p-4">
+                  <div className="mb-2 flex items-center gap-2">
+                    <div
+                      className="h-10 w-10 rounded-full border-2 border-black p-2"
+                      style={{ backgroundColor: bg }}
+                    >
+                      {icon}
+                    </div>
+                    <div className="flex-1">
+                      <span className="text-sm font-bold">{formattedDate}</span>
+                      <div className="mt-1">
+                        <span className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-0.5 text-xs font-bold">
+                          {post.category}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <CardTitle className="text-xl font-bold leading-tight">
-                {post.title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 px-4 pt-4 pb-0">
-              <p className="mb-3 font-serif text-sm leading-relaxed">
-                {post.preview}
-              </p>
-              <div className="flex flex-wrap gap-2 pb-4">
-                {post.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </CardContent>
-            <CardFooter className="mt-auto border-t-4 border-black bg-[#AFDDFF] p-4">
-              <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
-                Read More
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+                  <CardTitle className="text-xl font-bold leading-tight">
+                    {post.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex-1 px-4 pt-4 pb-0">
+                  <p className="mb-3 font-serif text-sm leading-relaxed">
+                    {post.summary}
+                  </p>
+                  <div className="flex flex-wrap gap-2 pb-4">
+                    {post.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </CardContent>
+                <CardFooter className="mt-auto border-t-4 border-black bg-[#AFDDFF] p-4">
+                  <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
+                    Read More
+                  </Button>
+                </CardFooter>
+              </Card>
+            </Link>
+          );
+        })}
       </div>
 
       {/* Empty state SVG illustration when no posts */}

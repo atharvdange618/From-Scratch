@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
+import Project from "@/lib/models/Project";
 
 // GET /api/posts - Get all posts (with optional filters)
 export async function GET(request: NextRequest) {
@@ -30,12 +31,12 @@ export async function GET(request: NextRequest) {
     }
 
     const posts = await Post.find(query)
-      .populate("linkedProject")
+      .populate({ path: "linkedProject", model: Project })
       .sort({ publishedDate: -1, createdAt: -1 })
       .limit(limit)
       .lean();
 
-    return NextResponse.json({ success: true, data: posts });
+    return NextResponse.json({ success: true, posts });
   } catch (error: any) {
     console.error("Error fetching posts:", error);
     return NextResponse.json(
