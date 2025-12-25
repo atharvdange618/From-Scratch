@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
+import { checkAdminAccess } from "@/lib/auth";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -10,13 +10,10 @@ cloudinary.config({
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     const formData = await request.formData();

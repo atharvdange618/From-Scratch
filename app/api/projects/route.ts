@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Project from "@/lib/models/Project";
+import { checkAdminAccess } from "@/lib/auth";
 
 // GET /api/projects - Get all projects (with optional filters)
 export async function GET(request: NextRequest) {
@@ -34,16 +34,13 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/projects - Create a new project (protected)
+// POST /api/projects - Create a new project (admin only)
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     await connectDB();

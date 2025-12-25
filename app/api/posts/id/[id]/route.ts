@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
+import { checkAdminAccess } from "@/lib/auth";
 
 type Params = Promise<{ id: string }>;
 
@@ -33,19 +33,16 @@ export async function GET(
   }
 }
 
-// PUT /api/posts/id/[id] - Update a post by ID (protected)
+// PUT /api/posts/id/[id] - Update a post by ID (admin only)
 export async function PUT(
   request: NextRequest,
   segmentData: { params: Params }
 ) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     await connectDB();
@@ -75,19 +72,16 @@ export async function PUT(
   }
 }
 
-// DELETE /api/posts/id/[id] - Delete a post (protected)
+// DELETE /api/posts/id/[id] - Delete a post (admin only)
 export async function DELETE(
   request: NextRequest,
   segmentData: { params: Params }
 ) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     await connectDB();

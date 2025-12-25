@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Project from "@/lib/models/Project";
+import { checkAdminAccess } from "@/lib/auth";
 
 type Params = Promise<{ id: string }>;
 
@@ -33,19 +33,16 @@ export async function GET(
   }
 }
 
-// PUT /api/projects/id/[id] - Update a project by ID (protected)
+// PUT /api/projects/id/[id] - Update a project by ID (admin only)
 export async function PUT(
   request: NextRequest,
   segmentData: { params: Params }
 ) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     await connectDB();
@@ -75,19 +72,16 @@ export async function PUT(
   }
 }
 
-// DELETE /api/projects/id/[id] - Delete a project (protected)
+// DELETE /api/projects/id/[id] - Delete a project (admin only)
 export async function DELETE(
   request: NextRequest,
   segmentData: { params: Params }
 ) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     await connectDB();
