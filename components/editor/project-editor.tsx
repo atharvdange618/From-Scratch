@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -46,7 +47,11 @@ export default function ProjectEditor() {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [techTags, setTechTags] = useState<string[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [selectedProjectId, setSelectedProjectId] = useState<string>("");
+  const [isEditMode, setIsEditMode] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
@@ -65,10 +70,55 @@ export default function ProjectEditor() {
 
   const { watch, setValue } = form;
 
+  // Fetch existing projects on mount
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch("/api/projects");
+        if (response.ok) {
+          const data = await response.json();
+          setProjects(data.projects || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      }
+    };
+    fetchProjects();
+  }, []);
+
+  // Load selected project into form
+  const loadProject = (projectId: string) => {
+    const project = projects.find((p) => p._id === projectId);
+    if (!project) return;
+
+    form.reset({
+      name: project.name,
+      slug: project.slug,
+      description: project.description,
+      status: project.status,
+      techStack: "",
+      githubUrl: project.githubUrl || "",
+      liveUrl: project.liveUrl || "",
+      bannerImage: project.bannerImage || "",
+      featured: project.featured,
+    });
+    setTechTags(project.techStack || []);
+    setSelectedProjectId(projectId);
+    setIsEditMode(true);
+  };
+
+  // Reset to create mode
+  const resetForm = () => {
+    form.reset();
+    setTechTags([]);
+    setSelectedProjectId("");
+    setIsEditMode(false);
+  };
+
   // Auto-generate slug from name
   const name = watch("name");
   useEffect(() => {
-    if (name) {
+    if (name && !isEditMode) {
       const slug = name
         .toLowerCase()
         .trim()
@@ -76,7 +126,7 @@ export default function ProjectEditor() {
         .replace(/\s+/g, "-");
       setValue("slug", slug);
     }
-  }, [name, setValue]);
+  }, [name, setValue, isEditMode]);
 
   const handleTechStackAdd = () => {
     const techStack = form.watch("techStack");
@@ -140,23 +190,42 @@ export default function ProjectEditor() {
         techStack: techTags,
       };
 
-      const response = await fetch("/api/projects", {
-        method: "POST",
+      const url = isEditMode
+        ? `/api/projects/id/${selectedProjectId}`
+        : "/api/projects";
+      const method = isEditMode ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      if (response.status === 201) {
+      if (response.ok) {
         toast({
-          title: "Success",
-          description: "Project saved successfully",
+          title: "✅ Success",
+          description: isEditMode
+            ? "Project updated successfully"
+            : "Project created successfully",
         });
-        form.reset();
-        setTechTags([]);
+
+        if (!isEditMode) {
+          resetForm();
+          router.push('/projects');
+        } else {
+          // Refresh the projects list
+          const projectsResponse = await fetch("/api/projects");
+          if (projectsResponse.ok) {
+            const data = await projectsResponse.json();
+            setProjects(data.projects || []);
+          }
+        }
+      } else {
+        throw new Error("Failed to save project");
       }
     } catch (error) {
       toast({
-        title: "Error",
+        title: "❌ Error",
         description: "Failed to save project",
         variant: "destructive",
       });
@@ -168,6 +237,37 @@ export default function ProjectEditor() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Load Existing Project */}
+        <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="mb-4 text-xl font-bold">
+            {isEditMode ? "Editing Project" : "Load Existing Project"}
+          </h2>
+          <div className="flex gap-3">
+            <Select value={selectedProjectId} onValueChange={loadProject}>
+              <SelectTrigger className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <SelectValue placeholder="Select a project to edit..." />
+              </SelectTrigger>
+              <SelectContent>
+                {projects.map((project) => (
+                  <SelectItem key={project._id} value={project._id}>
+                    {project.name} ({project.status})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {isEditMode && (
+              <Button
+                type="button"
+                onClick={resetForm}
+                variant="outline"
+                className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Create New
+              </Button>
+            )}
+          </div>
+        </Card>
+
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Left Column */}
           <div className="space-y-6">
@@ -460,7 +560,7 @@ export default function ProjectEditor() {
               ) : (
                 <Save className="mr-2 h-4 w-4" />
               )}
-              Save Project
+              {isEditMode ? "Update Project" : "Save Project"}
             </Button>
           </div>
         </Card>

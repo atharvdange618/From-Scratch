@@ -100,9 +100,11 @@ export function BlogEntries() {
     <section className="mb-16" id="recent-posts">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="font-sans text-3xl font-bold">Recent Posts</h2>
-        <Button className="rounded-none border-4 border-black bg-white px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-          View All Posts
-        </Button>
+        <Link href="/blogs">
+          <Button className="rounded-none border-4 border-black bg-white px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            View All Posts
+          </Button>
+        </Link>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -51,9 +52,13 @@ type PostFormValues = z.infer<typeof postSchema>;
 export default function PostEditor() {
   const [showPreview, setShowPreview] = useState(false);
   const [projects, setProjects] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [selectedPostId, setSelectedPostId] = useState<string>("");
+  const [isEditMode, setIsEditMode] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
@@ -77,9 +82,64 @@ export default function PostEditor() {
   const title = watch("title");
   const content = watch("content");
 
+  // Fetch projects and posts on mount
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [projectsRes, postsRes] = await Promise.all([
+          fetch("/api/projects"),
+          fetch("/api/posts"),
+        ]);
+
+        if (projectsRes.ok) {
+          const projectData = await projectsRes.json();
+          setProjects(projectData.projects || []);
+        }
+
+        if (postsRes.ok) {
+          const postData = await postsRes.json();
+          setPosts(postData.posts || []);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  // Load selected post into form
+  const loadPost = (postId: string) => {
+    const post = posts.find((p) => p._id === postId);
+    if (!post) return;
+
+    form.reset({
+      title: post.title,
+      slug: post.slug,
+      summary: post.summary,
+      content: post.content,
+      category: post.category,
+      tags: post.tags.join(", "),
+      linkedProject: post.linkedProject?._id || "",
+      bannerImage: post.bannerImage || "",
+      isPublished: post.isPublished,
+      seoTitle: post.seoTitle || "",
+      seoDescription: post.seoDescription || "",
+      seoKeywords: post.seoKeywords?.join(", ") || "",
+    });
+    setSelectedPostId(postId);
+    setIsEditMode(true);
+  };
+
+  // Reset to create mode
+  const resetForm = () => {
+    form.reset();
+    setSelectedPostId("");
+    setIsEditMode(false);
+  };
+
   // Auto-generate slug from title
   useEffect(() => {
-    if (title) {
+    if (title && !isEditMode) {
       const slug = title
         .toLowerCase()
         .trim()
@@ -87,23 +147,7 @@ export default function PostEditor() {
         .replace(/\s+/g, "-");
       setValue("slug", slug);
     }
-  }, [title, setValue]);
-
-  // Fetch projects for linking
-  useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const response = await fetch("/api/projects");
-        if (response.ok) {
-          const data = await response.json();
-          setProjects(data.projects || []);
-        }
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
-    }
-    fetchProjects();
-  }, []);
+  }, [title, setValue, isEditMode]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -166,26 +210,41 @@ export default function PostEditor() {
         publishedDate: new Date().toISOString(),
       };
 
-      const response = await fetch("/api/posts", {
-        method: "POST",
+      const url = isEditMode ? `/api/posts/id/${selectedPostId}` : "/api/posts";
+      const method = isEditMode ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         toast({
-          title: "Success",
-          description: `Post ${
-            data.isPublished ? "published" : "saved as draft"
-          }`,
+          title: "✅ Success",
+          description: isEditMode
+            ? "Post updated successfully"
+            : `Post ${data.isPublished ? "published" : "saved as draft"}`,
         });
-        form.reset();
+
+        if (!isEditMode) {
+          resetForm();
+          router.push("/blogs");
+        } else {
+          // Refresh posts list
+          const postsResponse = await fetch("/api/posts");
+          if (postsResponse.ok) {
+            const data = await postsResponse.json();
+            setPosts(data.posts || []);
+          }
+          router.push("/blogs");
+        }
       } else {
         throw new Error("Failed to save post");
       }
     } catch (error) {
       toast({
-        title: "Error",
+        title: "❌ Error",
         description: "Failed to save post",
         variant: "destructive",
       });
@@ -197,6 +256,37 @@ export default function PostEditor() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Load Existing Post */}
+        <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="mb-4 text-xl font-bold">
+            {isEditMode ? "Editing Post" : "Load Existing Post"}
+          </h2>
+          <div className="flex gap-3">
+            <Select value={selectedPostId} onValueChange={loadPost}>
+              <SelectTrigger className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <SelectValue placeholder="Select a post to edit..." />
+              </SelectTrigger>
+              <SelectContent>
+                {posts.map((post) => (
+                  <SelectItem key={post._id} value={post._id}>
+                    {post.title} ({post.isPublished ? "Published" : "Draft"})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {isEditMode && (
+              <Button
+                type="button"
+                onClick={resetForm}
+                variant="outline"
+                className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Create New
+              </Button>
+            )}
+          </div>
+        </Card>
+
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Left Column - Editor */}
           <div className="space-y-6">
@@ -558,7 +648,11 @@ export default function PostEditor() {
                 ) : (
                   <Save className="mr-2 h-4 w-4" />
                 )}
-                {form.watch("isPublished") ? "Publish Post" : "Save Draft"}
+                {isEditMode
+                  ? "Update Post"
+                  : form.watch("isPublished")
+                  ? "Publish Post"
+                  : "Save Draft"}
               </Button>
             </div>
           </div>
