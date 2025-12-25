@@ -37,6 +37,14 @@ export function Header() {
               </li>
               <li>
                 <Link
+                  href="/projects"
+                  className="font-bold hover:text-[#FF9149] hover:underline hover:decoration-4 hover:underline-offset-4"
+                >
+                  Projects
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/contact"
                   className="font-bold hover:text-[#FF9149] hover:underline hover:decoration-4 hover:underline-offset-4"
                 >

@@ -23,7 +23,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ success: true, data: project });
+    return NextResponse.json({ success: true, project });
   } catch (error: any) {
     console.error("Error fetching project:", error);
     return NextResponse.json(

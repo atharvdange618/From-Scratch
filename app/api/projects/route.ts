@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
     const projects = await Project.find(query).sort({ createdAt: -1 }).lean();
 
-    return NextResponse.json({ success: true, data: projects });
+    return NextResponse.json({ success: true, projects });
   } catch (error: any) {
     console.error("Error fetching projects:", error);
     return NextResponse.json(
