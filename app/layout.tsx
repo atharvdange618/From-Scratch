@@ -3,6 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "From Scratch | Atharv Dange",
@@ -25,6 +26,7 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

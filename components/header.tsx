@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { Moon, Search, Sun } from "@deemlol/next-icons";
 export function Header() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { isSignedIn } = useUser();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b-4 border-black bg-white py-4">
@@ -54,7 +55,7 @@ export function Header() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {isSearchOpen ? (
               <div className="relative">
                 <Input
@@ -70,7 +71,7 @@ export function Header() {
               <Button
                 size="icon"
                 onClick={() => setIsSearchOpen(true)}
-                className="rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
+                className="h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 <Search className="h-5 w-5" />
                 <span className="sr-only">Search</span>
@@ -80,7 +81,7 @@ export function Header() {
             <Button
               size="icon"
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
+              className="h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               {isDarkMode ? (
                 <Sun className="h-5 w-5" />
@@ -90,7 +91,24 @@ export function Header() {
               <span className="sr-only">Toggle theme</span>
             </Button>
 
-            <UserButton afterSignOutUrl="/" />
+            {isSignedIn ? (
+              <div className="flex h-10 w-10 items-center justify-center rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <UserButton
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      avatarBox: "w-6 h-6",
+                    },
+                  }}
+                />
+              </div>
+            ) : (
+              <SignInButton mode="modal">
+                <Button className="rounded-none border-4 border-black bg-[#60B5FF] px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  Sign In
+                </Button>
+              </SignInButton>
+            )}
           </div>
         </div>
 

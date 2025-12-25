@@ -18,7 +18,7 @@ export interface IPost extends Document {
   tags: string[];
   linkedProject?: mongoose.Types.ObjectId;
   codeSnippets?: ICodeSnippet[];
-  coverImage?: string;
+  bannerImage?: string;
   publishedDate?: Date;
   isPublished: boolean;
   previewToken?: string;
@@ -77,7 +77,7 @@ const PostSchema: Schema<IPost> = new Schema(
         code: { type: String },
       },
     ],
-    coverImage: {
+    bannerImage: {
       type: String,
       trim: true,
     },

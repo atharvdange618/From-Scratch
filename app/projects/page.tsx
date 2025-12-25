@@ -22,7 +22,7 @@ interface Project {
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string;
-  image?: string;
+  bannerImage?: string;
   featured: boolean;
 }
 

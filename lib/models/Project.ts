@@ -8,7 +8,7 @@ export interface IProject extends Document {
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string;
-  image?: string;
+  bannerImage?: string;
   featured: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -49,7 +49,7 @@ const ProjectSchema: Schema<IProject> = new Schema(
       type: String,
       trim: true,
     },
-    image: {
+    bannerImage: {
       type: String,
       trim: true,
     },

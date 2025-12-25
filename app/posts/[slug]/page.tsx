@@ -28,7 +28,7 @@ interface Post {
     slug: string;
     githubUrl?: string;
   };
-  coverImage?: string;
+  bannerImage?: string;
   publishedDate: string;
   author: string;
   seoTitle?: string;
@@ -185,6 +185,17 @@ export default async function PostPage({
           </Card>
         )}
       </header>
+
+      {/* Banner Image */}
+      {post.bannerImage && (
+        <div className="mb-12 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <img
+            src={post.bannerImage}
+            alt={post.title}
+            className="h-auto w-full object-cover"
+          />
+        </div>
+      )}
 
       <Separator className="my-12 border-2 border-black" />
 

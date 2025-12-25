@@ -19,7 +19,7 @@ interface Project {
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string;
-  image?: string;
+  bannerImage?: string;
   featured: boolean;
   createdAt: string;
   updatedAt: string;
@@ -186,6 +186,17 @@ export default async function ProjectPage({
             </div>
           </div>
         </div>
+
+        {/* Banner Image */}
+        {project.bannerImage && (
+          <div className="mb-8 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <img
+              src={project.bannerImage}
+              alt={project.name}
+              className="h-auto w-full object-cover"
+            />
+          </div>
+        )}
 
         {/* Related Blog Posts */}
         {relatedPosts.length > 0 && (
