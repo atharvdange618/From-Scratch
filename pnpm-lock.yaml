@@ -14,6 +14,9 @@ importers:
       '@deemlol/next-icons':
         specifier: ^0.1.9
         version: 0.1.9(react@19.2.3)
+      '@emailjs/browser':
+        specifier: ^4.4.1
+        version: 4.4.1
       '@hookform/resolvers':
         specifier: ^3.9.1
         version: 3.10.0(react-hook-form@7.56.1(react@19.2.3))
@@ -290,6 +293,10 @@ packages:
     resolution: {integrity: sha512-TgKjPAyNTmmpmYSvRX6T0ZkqdV96vo7iEkiCEhQ8ZpBXrKvBokRn3wmuoFv44st6hI0vw2SVsF3TXrKe+s3MUQ==}
     peerDependencies:
       react: ^19.0.0
+
+  '@emailjs/browser@4.4.1':
+    resolution: {integrity: sha512-DGSlP9sPvyFba3to2A50kDtZ+pXVp/0rhmqs2LmbMS3I5J8FSOgLwzY2Xb4qfKlOVHh29EAutLYwe5yuEZmEFg==}
+    engines: {node: '>=14.0.0'}
 
   '@emnapi/runtime@1.7.1':
     resolution: {integrity: sha512-PVtJr5CmLwYAU9PZDMITZoR5iAOShYREoR45EyyLrbntV50mdePTgUn4AmOw90Ifcj+x2kRjdzr1HP3RrNiHGA==}
@@ -2879,6 +2886,8 @@ snapshots:
   '@deemlol/next-icons@0.1.9(react@19.2.3)':
     dependencies:
       react: 19.2.3
+
+  '@emailjs/browser@4.4.1': {}
 
   '@emnapi/runtime@1.7.1':
     dependencies:

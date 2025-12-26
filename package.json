@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.36.5",
     "@deemlol/next-icons": "^0.1.9",
+    "@emailjs/browser": "^4.4.1",
     "@hookform/resolvers": "^3.9.1",
     "@lexical/react": "^0.39.0",
     "@lexical/rich-text": "^0.39.0",
