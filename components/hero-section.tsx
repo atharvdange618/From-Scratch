@@ -8,36 +8,36 @@ export function HeroSection() {
   const router = useRouter();
 
   return (
-    <section className="mb-16 mt-8">
-      <div className="grid gap-12 md:grid-cols-2 items-center">
+    <section className="mb-12 mt-4 md:mb-16 md:mt-8">
+      <div className="grid gap-8 md:gap-12 md:grid-cols-2 items-center">
         <div className="flex flex-col justify-center items-start">
-          <div className="mb-4 inline-block rounded-lg border-4 border-black bg-[#FFECDB] px-3 py-1 text-sm font-bold">
+          <div className="mb-3 md:mb-4 inline-block rounded-lg border-4 border-black bg-[#FFECDB] px-3 py-1 text-sm font-bold">
             BUILD IN PUBLIC
           </div>
-          <h1 className="mb-4 font-sans text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
+          <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
             Building tools and apps,{" "}
             <span className="text-[#FF9149]">one commit at a time</span>
           </h1>
-          <p className="mb-6 font-serif text-lg">
+          <p className="mb-5 md:mb-6 font-serif text-base md:text-lg">
             Creating frameworks, apps, and ideas from the ground up. Follow my
             journey as I ship projects, share learnings, and build everything
             from scratch.
           </p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-3 md:gap-4">
             <Button
-              className="rounded-none border-4 border-black bg-[#60B5FF] px-6 py-3 text-lg font-bold shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               onClick={() => {
                 document
                   .getElementById("recent-posts")
                   ?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              <BookOpen className="mr-2 h-5 w-5" />
+              <BookOpen className="mr-2 h-4 w-4 md:h-5 md:w-5" />
               Read the Blog
             </Button>
             <Button
               onClick={() => router.push("/about")}
-              className="rounded-none border-4 border-black bg-white px-6 py-3 text-lg font-bold shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black bg-white px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
               About Me
             </Button>

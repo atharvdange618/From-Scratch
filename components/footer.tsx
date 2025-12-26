@@ -4,21 +4,23 @@ import { Separator } from "@/components/ui/separator";
 
 export function Footer() {
   return (
-    <footer className="border-t-4 border-black bg-[#AFDDFF] py-12">
+    <footer className="border-t-4 border-black bg-[#AFDDFF] py-8 md:py-12">
       <div className="container mx-auto px-4">
-        <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
+        <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:gap-12">
           <div>
-            <h3 className="mb-4 font-sans text-2xl font-bold">From Scratch</h3>
-            <p className="mb-6 font-serif text-base leading-relaxed">
+            <h3 className="mb-3 md:mb-4 font-sans text-xl md:text-2xl font-bold">
+              From Scratch
+            </h3>
+            <p className="mb-5 md:mb-6 font-serif text-sm md:text-base leading-relaxed">
               Building frameworks, apps, and ideas from the ground up. Sharing
               the journey of creating tools and shipping projects-one line of
               code at a time.
             </p>
-            <div className="mb-6">
-              <h4 className="mb-3 font-sans text-sm font-bold uppercase tracking-wide">
+            <div className="mb-5 md:mb-6">
+              <h4 className="mb-2 md:mb-3 font-sans text-xs md:text-sm font-bold uppercase tracking-wide">
                 Connect With Me
               </h4>
-              <div className="flex gap-3">
+              <div className="flex gap-2 md:gap-3">
                 <a
                   href="https://www.instagram.com/atharvdange._"
                   target="_blank"

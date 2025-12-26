@@ -89,24 +89,26 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-20">
+    <div className="min-h-screen bg-white py-12 md:py-20">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 font-sans text-5xl font-bold">My Projects</h1>
-          <p className="mx-auto max-w-2xl font-serif text-xl text-gray-700">
+        <div className="mb-8 md:mb-12 text-center">
+          <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">
+            My Projects
+          </h1>
+          <p className="mx-auto max-w-2xl font-serif text-base md:text-lg lg:text-xl text-gray-700">
             A collection of projects I&apos;ve built from scratch, exploring
             different technologies and solving real-world problems.
           </p>
         </div>
 
         {/* Status Filter */}
-        <div className="mb-8 flex flex-wrap items-center justify-center gap-3">
+        <div className="mb-6 md:mb-8 flex flex-wrap items-center justify-center gap-2 md:gap-3">
           {["All", "Active", "Completed", "Archived"].map((status) => (
             <Button
               key={status}
               onClick={() => setSelectedStatus(status)}
-              className={`rounded-none border-4 border-black px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+              className={`rounded-none border-4 border-black px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
                 selectedStatus === status
                   ? "bg-black text-white"
                   : "bg-white text-black hover:bg-[#AFDDFF]"
@@ -118,14 +120,14 @@ export default function ProjectsPage() {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 md:gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
             <Card
               key={project._id}
-              className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
               <CardHeader
-                className="border-b-4 border-black p-6"
+                className="border-b-4 border-black p-4 md:p-6"
                 style={{ backgroundColor: statusColors[project.status] }}
               >
                 <div className="mb-3 flex items-start justify-between">

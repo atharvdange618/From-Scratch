@@ -80,23 +80,19 @@ export function AboutContent() {
   ];
 
   return (
-    <section className="mb-16">
-      <div className="mb-12 text-center">
-        <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl lg:text-6xl">
+    <section className="mb-12 md:mb-16">
+      <div className="mb-8 md:mb-12 text-center">
+        <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
           About Me
         </h1>
-        <p className="mx-auto max-w-2xl font-serif text-lg">
-          The creator behind "From Scratch" - building frameworks, apps, and
-          ideas from the ground up.
-        </p>
       </div>
 
-      <div className="mb-16 gap-8 flex flex-col md:flex-row">
+      <div className="mb-12 md:mb-16 gap-6 md:gap-8 flex flex-col md:flex-row">
         <div className="order-2 md:order-1 flex-1">
-          <h2 className="mb-6 font-sans text-3xl font-bold">
+          <h2 className="mb-4 md:mb-6 font-sans text-2xl md:text-3xl font-bold">
             Hello, I'm Atharv
           </h2>
-          <div className="space-y-5 font-serif text-base md:text-lg leading-relaxed">
+          <div className="space-y-4 md:space-y-5 font-serif text-sm md:text-base lg:text-lg leading-relaxed">
             <p className="text-gray-800">
               I'm a{" "}
               <strong className="font-bold text-black">
@@ -140,13 +136,13 @@ export function AboutContent() {
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Button className="rounded-none border-4 border-black bg-[#60B5FF] px-6 py-3 text-lg font-bold shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="mt-6 md:mt-8 flex flex-wrap gap-3 md:gap-4">
+            <Button className="rounded-none border-4 border-black bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <Link href={"/contact"}>Get in Touch</Link>
             </Button>
             <Button
               asChild
-              className="rounded-none border-4 border-black bg-white px-6 py-3 text-lg font-bold shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black bg-white px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
               <a
                 href="https://atharvdange.vercel.app"
@@ -161,8 +157,8 @@ export function AboutContent() {
 
         <div className="order-1 md:order-2 md:w-80 lg:w-96 mx-auto md:mx-0">
           <div className="relative w-full">
-            <div className="absolute -left-4 -top-4 h-full w-full rounded-none border-4 border-black bg-[#FF9149]"></div>
-            <div className="relative aspect-square overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <div className="absolute -left-3 -top-3 md:-left-4 md:-top-4 h-full w-full rounded-none border-4 border-black bg-[#FF9149]"></div>
+            <div className="relative aspect-square overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               <img
                 src="/about-pic.jpg?height=400&width=400"
                 alt="Atharv Dange - Full Stack Engineer"
@@ -173,16 +169,18 @@ export function AboutContent() {
         </div>
       </div>
 
-      <div className="mb-16">
-        <h2 className="mb-8 font-sans text-3xl font-bold">Featured Projects</h2>
-        <div className="grid gap-6 md:grid-cols-2">
+      <div className="mb-12 md:mb-16">
+        <h2 className="mb-6 md:mb-8 font-sans text-2xl md:text-3xl font-bold">
+          Featured Projects
+        </h2>
+        <div className="grid gap-5 md:gap-6 md:grid-cols-2">
           {projects.map((project, index) => (
             <Card
               key={index}
-              className="flex flex-col rounded-none border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+              className="flex flex-col rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
             >
               <CardHeader>
-                <CardTitle className="font-sans text-2xl font-bold">
+                <CardTitle className="font-sans text-xl md:text-2xl font-bold">
                   <a
                     href={project.url}
                     target="_blank"
@@ -215,18 +213,18 @@ export function AboutContent() {
         </div>
       </div>
 
-      <Separator className="my-16 border-2 border-black" />
+      <Separator className="my-12 md:my-16 border-2 border-black" />
 
-      <div className="mb-16">
-        <h2 className="mb-8 text-center font-sans text-3xl font-bold">
+      <div className="mb-12 md:mb-16">
+        <h2 className="mb-6 md:mb-8 text-center font-sans text-2xl md:text-3xl font-bold">
           My Skills & Expertise
         </h2>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-5 md:gap-6 md:grid-cols-3">
           {skills.map((skill) => (
             <Card
               key={skill.category}
-              className="overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
               <div className="border-b-4 border-black bg-white p-4">
                 <div className="flex items-center gap-3">
@@ -254,98 +252,116 @@ export function AboutContent() {
         </div>
       </div>
 
-      <Separator className="my-16 border-2 border-black" />
+      <Separator className="my-12 md:my-16 border-2 border-black" />
 
-      <div className="mb-16">
-        <h2 className="mb-8 text-center font-sans text-3xl font-bold">
+      <div className="mb-12 md:mb-16">
+        <h2 className="mb-6 md:mb-8 text-center font-sans text-2xl md:text-3xl font-bold">
           My Journey
         </h2>
 
-        <div className="relative ml-6 border-l-4 border-black pl-8 space-y-12">
+        <div className="relative ml-4 md:ml-6 border-l-4 border-black pl-6 md:pl-8 space-y-8 md:space-y-12">
           <div className="relative">
-            <div className="absolute -left-12 top-0 h-8 w-8 rounded-full border-4 border-black bg-[#60B5FF]"></div>
-            <h3 className="mb-2 text-xl font-bold">
+            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#60B5FF]"></div>
+            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
               Built Minty Expense Tracker
             </h3>
-            <p className="mb-2 font-serif text-sm text-gray-600">Nov 2025</p>
-            <p className="font-serif">
+            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600">
+              Nov 2025
+            </p>
+            <p className="font-serif text-sm md:text-base">
               Smart SMS-based expense tracking for Android
             </p>
           </div>
 
           <div className="relative">
-            <div className="absolute -left-12 top-0 h-8 w-8 rounded-full border-4 border-black bg-[#FFECDB]"></div>
-            <h3 className="mb-2 text-xl font-bold">
+            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#FFECDB]"></div>
+            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
               Built Telemetry Analytics Platform
             </h3>
-            <p className="mb-2 font-serif text-sm text-gray-600">Jul 2025</p>
-            <p className="font-serif">
+            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600">
+              Jul 2025
+            </p>
+            <p className="font-serif text-sm md:text-base">
               Privacy-first, cookieless analytics with real-time dashboards
             </p>
           </div>
 
           <div className="relative">
-            <div className="absolute -left-12 top-0 h-8 w-8 rounded-full border-4 border-black bg-[#E0FFF1]"></div>
-            <h3 className="mb-2 text-xl font-bold">
+            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#E0FFF1]"></div>
+            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
               Launched ArcHive Mobile App
             </h3>
-            <p className="mb-2 font-serif text-sm text-gray-600">Jun 2025</p>
-            <p className="font-serif">
+            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600">
+              Jun 2025
+            </p>
+            <p className="font-serif text-sm md:text-base">
               Cross-platform digital sanctuary for Android
             </p>
           </div>
 
           <div className="relative">
-            <div className="absolute -left-12 top-0 h-8 w-8 rounded-full border-4 border-black bg-[#AFDDFF]"></div>
-            <h3 className="mb-2 text-xl font-bold">
+            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#AFDDFF]"></div>
+            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
               Released Reiatsu Framework v1.0
             </h3>
-            <p className="mb-2 font-serif text-sm text-gray-600">May 2025</p>
-            <p className="font-serif">
+            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600">
+              May 2025
+            </p>
+            <p className="font-serif text-sm md:text-base">
               Zero-dependency TypeScript web framework built from Node.js
               internals
             </p>
           </div>
 
           <div className="relative">
-            <div className="absolute -left-12 top-0 h-8 w-8 rounded-full border-4 border-black bg-[#FFECDB]"></div>
-            <h3 className="mb-2 text-xl font-bold">Software Engineer</h3>
-            <p className="mb-2 font-serif text-sm text-gray-600">
+            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#FFECDB]"></div>
+            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
+              Software Engineer
+            </h3>
+            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600">
               SmartScripts Pvt. Ltd. • March 2024 - Present
             </p>
-            <p className="font-serif">
+            <p className="font-serif text-sm md:text-base">
               Full-stack development with MERN/PERN stack, React Native/Expo
               mobile apps, production deployment, and client interactions
             </p>
           </div>
 
           <div className="relative">
-            <div className="absolute -left-12 top-0 h-8 w-8 rounded-full border-4 border-black bg-[#E0FFF1]"></div>
-            <h3 className="mb-2 text-xl font-bold">Campus Placement</h3>
-            <p className="mb-2 font-serif text-sm text-gray-600">
+            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#E0FFF1]"></div>
+            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
+              Campus Placement
+            </h3>
+            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600">
               SmartScripts Pvt. Ltd. • Mar 2024
             </p>
-            <p className="font-serif">
+            <p className="font-serif text-sm md:text-base">
               Secured first job through campus recruitment
             </p>
           </div>
 
           <div className="relative">
-            <div className="absolute -left-12 top-0 h-8 w-8 rounded-full border-4 border-black bg-[#AFDDFF]"></div>
-            <h3 className="mb-2 text-xl font-bold">
+            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#AFDDFF]"></div>
+            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
               Electronics & Telecommunication Engineering
             </h3>
-            <p className="mb-2 font-serif text-sm text-gray-600">
+            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600">
               Savitribai Phule Pune University (SPPU) • 2020 - 2024
             </p>
-            <p className="font-serif">Bachelor's Degree in Engineering</p>
+            <p className="font-serif text-sm md:text-base">
+              Bachelor's Degree in Engineering
+            </p>
           </div>
 
           <div className="relative">
-            <div className="absolute -left-12 top-0 h-8 w-8 rounded-full border-4 border-black bg-[#FFECDB]"></div>
-            <h3 className="mb-2 text-xl font-bold">Started Coding Journey</h3>
-            <p className="mb-2 font-serif text-sm text-gray-600">Jan 2021</p>
-            <p className="font-serif">
+            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#FFECDB]"></div>
+            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
+              Started Coding Journey
+            </h3>
+            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600">
+              Jan 2021
+            </p>
+            <p className="font-serif text-sm md:text-base">
               Hello, World! Learned from YouTube, documentation, and programming
               books
             </p>
@@ -353,16 +369,16 @@ export function AboutContent() {
         </div>
       </div>
 
-      <div className="rounded-none border-4 border-black bg-[#AFDDFF] p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <h2 className="mb-4 text-center font-sans text-3xl font-bold">
+      <div className="rounded-none border-4 border-black bg-[#AFDDFF] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <h2 className="mb-3 md:mb-4 text-center font-sans text-2xl md:text-3xl font-bold">
           Let's Connect!
         </h2>
-        <p className="mb-6 text-center font-serif">
+        <p className="mb-5 md:mb-6 text-center font-serif text-sm md:text-base">
           I'm always open to interesting conversations, collaboration
           opportunities, or just saying hello.
         </p>
         <div className="flex justify-center">
-          <Button className="rounded-none border-4 border-black bg-[#FF9149] px-6 py-3 text-lg font-bold shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <Button className="rounded-none border-4 border-black bg-[#FF9149] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <Link href={"/contact"}>Contact Me</Link>
           </Button>
         </div>

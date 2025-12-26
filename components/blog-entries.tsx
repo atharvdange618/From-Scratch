@@ -97,17 +97,19 @@ export function BlogEntries() {
   }
 
   return (
-    <section className="mb-16" id="recent-posts">
-      <div className="mb-8 flex items-center justify-between">
-        <h2 className="font-sans text-3xl font-bold">Recent Posts</h2>
+    <section className="mb-12 md:mb-16" id="recent-posts">
+      <div className="mb-6 md:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <h2 className="font-sans text-2xl md:text-3xl font-bold">
+          Recent Posts
+        </h2>
         <Link href="/blogs">
-          <Button className="rounded-none border-4 border-black bg-white px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <Button className="rounded-none border-4 border-black bg-white px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             View All Posts
           </Button>
         </Link>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {blogPosts.map((post) => {
           const { icon, bg } = getPostIcon(post.tags, post.category);
           const formattedDate = new Date(post.publishedDate).toLocaleDateString(
@@ -121,8 +123,8 @@ export function BlogEntries() {
 
           return (
             <Link key={post._id} href={`/posts/${post.slug}`}>
-              <Card className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <CardHeader className="border-b-4 border-black bg-white p-4">
+              <Card className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <CardHeader className="border-b-4 border-black bg-white p-3 md:p-4">
                   <div className="mb-2 flex items-center gap-2">
                     <div
                       className="h-10 w-10 rounded-full border-2 border-black p-2"
