@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { GlobalSearch } from "@/components/global-search";
 import {
   Sheet,
   SheetContent,
@@ -14,10 +14,9 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { Moon, Search, Sun, Menu, X } from "@deemlol/next-icons";
+import { Search, Menu, X } from "@deemlol/next-icons";
 
 export function Header() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isSignedIn } = useUser();
@@ -34,6 +33,18 @@ export function Header() {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b-4 border-black bg-white py-4">
@@ -68,27 +79,14 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
-            {isSearchOpen ? (
-              <div className="relative">
-                <Input
-                  type="search"
-                  placeholder="Search..."
-                  className="w-40 rounded-none border-4 border-black bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 md:w-60"
-                  autoFocus
-                  onBlur={() => setIsSearchOpen(false)}
-                />
-                <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform" />
-              </div>
-            ) : (
-              <Button
-                size="icon"
-                onClick={() => setIsSearchOpen(true)}
-                className="h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <Search className="h-5 w-5" />
-                <span className="sr-only">Search</span>
-              </Button>
-            )}
+            <Button
+              size="icon"
+              onClick={() => setIsSearchOpen(true)}
+              className="h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            >
+              <Search className="h-5 w-5" />
+              <span className="sr-only">Search (Cmd+K)</span>
+            </Button>
 
             {isSignedIn ? (
               <div className="flex h-10 w-10 items-center justify-center rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -114,7 +112,7 @@ export function Header() {
         <div className="flex items-center gap-2 md:hidden">
           <Button
             size="icon"
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            onClick={() => setIsSearchOpen(true)}
             className="h-10 w-10 rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
           >
             <Search className="h-5 w-5" />
@@ -175,59 +173,14 @@ export function Header() {
                     ))}
                   </ul>
                 </nav>
-
-                {/* Footer with Auth */}
-                <div className="border-t-4 border-black p-6">
-                  <div className="flex items-center justify-between">
-                    <Button
-                      size="icon"
-                      onClick={() => setIsDarkMode(!isDarkMode)}
-                      className="h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                    >
-                      {isDarkMode ? (
-                        <Sun className="h-5 w-5" />
-                      ) : (
-                        <Moon className="h-5 w-5" />
-                      )}
-                      <span className="sr-only">Toggle theme</span>
-                    </Button>
-
-                    {isSignedIn ? (
-                      <div className="flex h-10 w-10 items-center justify-center rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                        <UserButton
-                          afterSignOutUrl="/"
-                          appearance={{
-                            elements: {
-                              avatarBox: "w-6 h-6",
-                            },
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <SignInButton mode="modal">
-                        <Button className="rounded-none border-4 border-black bg-[#60B5FF] px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                          Sign In
-                        </Button>
-                      </SignInButton>
-                    )}
-                  </div>
-                </div>
               </div>
             </SheetContent>
           </Sheet>
         </div>
       </div>
 
-      {isSearchOpen && (
-        <div className="container mx-auto px-4 py-2 md:hidden">
-          <Input
-            type="search"
-            placeholder="Search..."
-            className="w-full rounded-none border-4 border-black bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-            autoFocus
-          />
-        </div>
-      )}
+      {/* Global Search Dialog */}
+      <GlobalSearch open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </header>
   );
 }
