@@ -82,7 +82,6 @@ export default function PostEditor() {
   const title = watch("title");
   const content = watch("content");
 
-  // Fetch projects and posts on mount
   useEffect(() => {
     async function fetchData() {
       try {
@@ -107,7 +106,6 @@ export default function PostEditor() {
     fetchData();
   }, []);
 
-  // Load selected post into form
   const loadPost = (postId: string) => {
     const post = posts.find((p) => p._id === postId);
     if (!post) return;
@@ -130,14 +128,12 @@ export default function PostEditor() {
     setIsEditMode(true);
   };
 
-  // Reset to create mode
   const resetForm = () => {
     form.reset();
     setSelectedPostId("");
     setIsEditMode(false);
   };
 
-  // Auto-generate slug from title
   useEffect(() => {
     if (title && !isEditMode) {
       const slug = title
@@ -189,7 +185,6 @@ export default function PostEditor() {
       });
     } finally {
       setUploading(false);
-      // Reset file input
       e.target.value = "";
     }
   };
@@ -231,7 +226,6 @@ export default function PostEditor() {
           resetForm();
           router.push("/blogs");
         } else {
-          // Refresh posts list
           const postsResponse = await fetch("/api/posts");
           if (postsResponse.ok) {
             const data = await postsResponse.json();
@@ -256,7 +250,6 @@ export default function PostEditor() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* Load Existing Post */}
         <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="mb-4 text-xl font-bold">
             {isEditMode ? "Editing Post" : "Load Existing Post"}
@@ -288,7 +281,6 @@ export default function PostEditor() {
         </Card>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* Left Column - Editor */}
           <div className="space-y-6">
             <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               <h2 className="mb-4 text-2xl font-bold">Post Details</h2>
@@ -493,7 +485,6 @@ export default function PostEditor() {
               />
             </Card>
 
-            {/* SEO Section */}
             <Card className="rounded-none border-4 border-black bg-[#FFECDB] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               <h2 className="mb-4 text-2xl font-bold">SEO Settings</h2>
 
@@ -551,7 +542,6 @@ export default function PostEditor() {
             </Card>
           </div>
 
-          {/* Right Column - Content Editor & Preview */}
           <div className="space-y-6">
             <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               <div className="mb-4 flex items-center justify-between">
@@ -607,7 +597,6 @@ export default function PostEditor() {
           </div>
         </div>
 
-        {/* Actions */}
         <Card className="rounded-none border-4 border-black bg-[#E0FFF1] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <FormField

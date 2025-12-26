@@ -70,7 +70,6 @@ export default function ProjectEditor() {
 
   const { watch, setValue } = form;
 
-  // Fetch existing projects on mount
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -86,7 +85,6 @@ export default function ProjectEditor() {
     fetchProjects();
   }, []);
 
-  // Load selected project into form
   const loadProject = (projectId: string) => {
     const project = projects.find((p) => p._id === projectId);
     if (!project) return;
@@ -107,7 +105,6 @@ export default function ProjectEditor() {
     setIsEditMode(true);
   };
 
-  // Reset to create mode
   const resetForm = () => {
     form.reset();
     setTechTags([]);
@@ -115,7 +112,6 @@ export default function ProjectEditor() {
     setIsEditMode(false);
   };
 
-  // Auto-generate slug from name
   const name = watch("name");
   useEffect(() => {
     if (name && !isEditMode) {
@@ -166,7 +162,6 @@ export default function ProjectEditor() {
           title: "✅ Success",
           description: "Project image uploaded successfully",
         });
-        // Reset file input
         e.target.value = "";
       }
     } catch (error) {
@@ -211,9 +206,8 @@ export default function ProjectEditor() {
 
         if (!isEditMode) {
           resetForm();
-          router.push('/projects');
+          router.push("/projects");
         } else {
-          // Refresh the projects list
           const projectsResponse = await fetch("/api/projects");
           if (projectsResponse.ok) {
             const data = await projectsResponse.json();
@@ -237,7 +231,6 @@ export default function ProjectEditor() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* Load Existing Project */}
         <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="mb-4 text-xl font-bold">
             {isEditMode ? "Editing Project" : "Load Existing Project"}
@@ -269,7 +262,6 @@ export default function ProjectEditor() {
         </Card>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* Left Column */}
           <div className="space-y-6">
             <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               <h2 className="mb-4 text-2xl font-bold">Project Details</h2>
@@ -401,7 +393,6 @@ export default function ProjectEditor() {
             </Card>
           </div>
 
-          {/* Right Column */}
           <div className="space-y-6">
             <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               <h2 className="mb-4 text-2xl font-bold">Links & Media</h2>
@@ -536,7 +527,6 @@ export default function ProjectEditor() {
           </div>
         </div>
 
-        {/* Actions */}
         <Card className="rounded-none border-4 border-black bg-[#FFECDB] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <div className="flex justify-end gap-3">
             <Button

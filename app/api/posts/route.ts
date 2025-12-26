@@ -17,7 +17,6 @@ export async function GET(request: NextRequest) {
 
     const query: any = {};
 
-    // Only show published posts for public access
     if (isPublished === "true") {
       query.isPublished = true;
     }

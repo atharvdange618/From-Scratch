@@ -9,15 +9,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     await connectDB();
 
-    // Fetch all published posts
     const posts = await Post.find({ isPublished: true })
       .select("slug updatedAt")
       .lean();
 
-    // Fetch all projects
     const projects = await Project.find().select("slug updatedAt").lean();
 
-    // Static pages
     const staticPages: MetadataRoute.Sitemap = [
       {
         url: baseUrl,
@@ -51,7 +48,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     ];
 
-    // Dynamic blog post pages
     const postPages: MetadataRoute.Sitemap = posts.map((post) => ({
       url: `${baseUrl}/posts/${post.slug}`,
       lastModified: new Date(post.updatedAt),
@@ -59,7 +55,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-    // Dynamic project pages
     const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
       url: `${baseUrl}/projects/${project.slug}`,
       lastModified: new Date(project.updatedAt),
@@ -71,7 +66,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   } catch (error) {
     console.error("Error generating sitemap:", error);
 
-    // Return static pages only if database fails
     return [
       {
         url: baseUrl,

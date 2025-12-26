@@ -6,10 +6,7 @@ import { checkAdminAccess } from "@/lib/auth";
 type Params = Promise<{ id: string }>;
 
 // GET /api/projects/id/[id] - Get a single project by ID
-export async function GET(
-  request: NextRequest,
-  segmentData: { params: Params }
-) {
+export async function GET(segmentData: { params: Params }) {
   try {
     await connectDB();
 
@@ -73,10 +70,7 @@ export async function PUT(
 }
 
 // DELETE /api/projects/id/[id] - Delete a project (admin only)
-export async function DELETE(
-  request: NextRequest,
-  segmentData: { params: Params }
-) {
+export async function DELETE(segmentData: { params: Params }) {
   try {
     const adminCheck = await checkAdminAccess();
 

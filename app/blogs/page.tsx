@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { formatDate } from "@/lib/dateandnumbers";
 
 interface Post {
   _id: string;
@@ -74,7 +75,6 @@ export default function BlogsPage() {
         const data = await response.json();
         setPosts(data.posts || []);
 
-        // Extract all unique tags
         const tags = new Set<string>();
         (data.posts || []).forEach((post: Post) => {
           post.tags?.forEach((tag) => tags.add(tag));
@@ -136,7 +136,7 @@ export default function BlogsPage() {
     });
 
     setFilteredPosts(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   };
 
   const handleReset = () => {
@@ -151,14 +151,6 @@ export default function BlogsPage() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
@@ -377,7 +369,6 @@ export default function BlogsPage() {
 
                 {[...Array(totalPages)].map((_, index) => {
                   const pageNum = index + 1;
-                  // Show first page, last page, current page, and pages around current
                   if (
                     pageNum === 1 ||
                     pageNum === totalPages ||

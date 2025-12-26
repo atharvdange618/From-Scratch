@@ -21,7 +21,6 @@ export default function EditorPage() {
     }
   }, [isLoaded, isSignedIn, router]);
 
-  // Check if user is admin
   useEffect(() => {
     async function checkAdmin() {
       if (!isSignedIn) {
@@ -34,7 +33,6 @@ export default function EditorPage() {
         const data = await response.json();
         setIsAdmin(data.isAdmin);
 
-        // Redirect non-admin users to home page
         if (!data.isAdmin) {
           setTimeout(() => {
             router.push("/");
@@ -68,7 +66,6 @@ export default function EditorPage() {
     return null;
   }
 
-  // Show forbidden message if not an admin
   if (isAdmin === false) {
     return (
       <div className="flex min-h-screen items-center justify-center">

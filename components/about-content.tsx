@@ -48,23 +48,23 @@ export function AboutContent() {
     {
       name: "Reiatsu",
       description:
-        "A zero-dependency TypeScript web framework built from Node.js internals",
+        "A minimal, type-safe HTTP server framework for Node.js, built from first principles using only Node.js core modules. Reiatsu is designed for simplicity, performance, and modern web development no dependencies, fully typed, and production-ready.",
       url: "https://github.com/atharvdange618/Reiatsu",
-      tags: ["TypeScript", "Framework", "Backend"],
+      tags: ["TypeScript", "Framework", "Backend", "Node.js"],
       color: "#AFDDFF",
     },
     {
       name: "Telemetry",
       description:
-        "Privacy-first, cookieless analytics platform with real-time dashboards",
+        "Privacy-first, self-hosted web analytics. No cookies, no tracking, just meaningful insights. Built with Fastify, React & TypeScript.",
       url: "https://github.com/atharvdange618/Telemetry",
-      tags: ["Analytics", "Privacy", "React"],
+      tags: ["Analytics", "Privacy", "React", "Fastify", "TypeScript"],
       color: "#FFECDB",
     },
     {
       name: "ArcHive",
       description:
-        "Cross-platform digital sanctuary for Android with local-first architecture",
+        "A multi-platform digital capture tool designed to be your personal 'second brain.'",
       url: "https://github.com/atharvdange618/ArcHive",
       tags: ["React Native", "Mobile", "Bun", "Hono"],
       color: "#E0FFF1",
@@ -72,9 +72,9 @@ export function AboutContent() {
     {
       name: "Recon",
       description:
-        "Bug tracking intelligence system for QA testers with actionable insights",
+        "Recon is a mobile app designed to empower software testers by providing a personal, undeniable log for every bug. It tracks defects, conversations, and decisions to eliminate the 'he said, she said' and ensure accountability.",
       url: "https://github.com/atharvdange618/Recon",
-      tags: ["QA", "Backend", "Intelligence"],
+      tags: ["React Native", "Mobile", "TypeScript", "SQLite"],
       color: "#AFDDFF",
     },
   ];

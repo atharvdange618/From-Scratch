@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatDate } from "@/lib/dateandnumbers";
 
 interface BlogPost {
   _id: string;
@@ -29,7 +30,6 @@ interface BlogPost {
   };
 }
 
-// Icon mapping based on category or tags
 const getPostIcon = (tags: string[], category: string) => {
   const tagStr = tags.join(" ").toLowerCase();
   const catStr = category.toLowerCase();
@@ -112,14 +112,6 @@ export function BlogEntries() {
       <div className="grid gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {blogPosts.map((post) => {
           const { icon, bg } = getPostIcon(post.tags, post.category);
-          const formattedDate = new Date(post.publishedDate).toLocaleDateString(
-            "en-US",
-            {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            }
-          );
 
           return (
             <Link key={post._id} href={`/posts/${post.slug}`}>
@@ -133,7 +125,9 @@ export function BlogEntries() {
                       {icon}
                     </div>
                     <div className="flex-1">
-                      <span className="text-sm font-bold">{formattedDate}</span>
+                      <span className="text-sm font-bold">
+                        {formatDate(post.publishedDate)}
+                      </span>
                       <div className="mt-1">
                         <span className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-0.5 text-xs font-bold">
                           {post.category}

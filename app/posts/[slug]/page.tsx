@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { GiscusComments } from "@/components/giscus-comments";
+import { formatDate } from "@/lib/dateandnumbers";
 
-// Import highlight.js theme
 import "highlight.js/styles/atom-one-dark.css";
 
 interface Post {
@@ -123,18 +123,8 @@ export default async function PostPage({
     notFound();
   }
 
-  const publishedDate = new Date(post.publishedDate).toLocaleDateString(
-    "en-US",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  );
-
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-  // JSON-LD structured data for SEO
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -165,14 +155,12 @@ export default async function PostPage({
 
   return (
     <>
-      {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       <article className="container mx-auto px-4 py-8">
-        {/* Back button */}
         <Button
           asChild
           variant="outline"
@@ -184,7 +172,6 @@ export default async function PostPage({
           </Link>
         </Button>
 
-        {/* Post Header */}
         <header className="mb-12">
           <div className="mb-4 flex flex-wrap items-center gap-3">
             <Badge
@@ -204,7 +191,7 @@ export default async function PostPage({
             </Badge>
             <div className="flex items-center gap-2 font-serif text-sm text-gray-600">
               <Calendar className="h-4 w-4" />
-              {publishedDate}
+              {formatDate(post.publishedDate)}
             </div>
           </div>
 
@@ -229,7 +216,6 @@ export default async function PostPage({
             ))}
           </div>
 
-          {/* Linked Project Card */}
           {post.linkedProject && (
             <Card className="mt-8 rounded-none border-4 border-black bg-[#FFECDB] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
               <CardContent className="flex items-center justify-between p-6">
@@ -261,7 +247,6 @@ export default async function PostPage({
           )}
         </header>
 
-        {/* Banner Image */}
         {post.bannerImage && (
           <div className="mb-12 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <img
@@ -274,7 +259,6 @@ export default async function PostPage({
 
         <Separator className="my-12 border-2 border-black" />
 
-        {/* Post Content */}
         <div className="prose prose-lg mx-auto max-w-4xl">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -352,7 +336,6 @@ export default async function PostPage({
 
         <Separator className="my-12 border-2 border-black" />
 
-        {/* Giscus Comments */}
         <div className="mx-auto max-w-4xl">
           <h2 className="mb-6 font-sans text-3xl font-bold">Comments</h2>
           <Card className="rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">

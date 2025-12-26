@@ -10,9 +10,8 @@ export async function GET(request: NextRequest) {
     const description =
       searchParams.get("description") ||
       "Building tools and apps, one commit at a time";
-    const type = searchParams.get("type") || "blog"; // blog, project, or page
+    const type = searchParams.get("type") || "blog";
 
-    // Color scheme based on type
     const colors = {
       blog: { bg: "#60B5FF", accent: "#FF9149" },
       project: { bg: "#AFDDFF", accent: "#60B5FF" },
@@ -36,7 +35,6 @@ export async function GET(request: NextRequest) {
             fontFamily: "Inter, sans-serif",
           }}
         >
-          {/* Background Pattern */}
           <div
             style={{
               position: "absolute",
@@ -51,7 +49,6 @@ export async function GET(request: NextRequest) {
             }}
           />
 
-          {/* Content */}
           <div
             style={{
               display: "flex",
@@ -60,7 +57,6 @@ export async function GET(request: NextRequest) {
               zIndex: 10,
             }}
           >
-            {/* Logo/Brand */}
             <div
               style={{
                 display: "flex",
@@ -94,7 +90,6 @@ export async function GET(request: NextRequest) {
               </div>
             </div>
 
-            {/* Title */}
             <div
               style={{
                 fontSize: "64px",
@@ -107,7 +102,6 @@ export async function GET(request: NextRequest) {
               {title}
             </div>
 
-            {/* Description */}
             <div
               style={{
                 fontSize: "32px",
@@ -120,7 +114,6 @@ export async function GET(request: NextRequest) {
             </div>
           </div>
 
-          {/* Footer Badge */}
           <div
             style={{
               display: "flex",

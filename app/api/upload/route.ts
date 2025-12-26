@@ -26,11 +26,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Upload to Cloudinary
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(

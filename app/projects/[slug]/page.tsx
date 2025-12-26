@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatDate } from "@/lib/dateandnumbers";
 
 interface Project {
   _id: string;
@@ -212,14 +213,7 @@ export default async function ProjectPage({
                       <div className="mb-2 flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
                         <span className="text-sm font-bold">
-                          {new Date(post.publishedDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )}
+                          {formatDate(post.publishedDate)}
                         </span>
                       </div>
                       <CardTitle className="text-xl font-bold leading-tight">
@@ -261,23 +255,11 @@ export default async function ProjectPage({
           <div className="flex flex-col gap-4 font-serif">
             <div className="flex items-center gap-4">
               <span className="font-bold">Created:</span>
-              <span>
-                {new Date(project.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
+              <span>{formatDate(project.createdAt)}</span>
             </div>
             <div className="flex items-center gap-4">
               <span className="font-bold">Last Updated:</span>
-              <span>
-                {new Date(project.updatedAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
+              <span>{formatDate(project.updatedAt)}</span>
             </div>
           </div>
         </div>
