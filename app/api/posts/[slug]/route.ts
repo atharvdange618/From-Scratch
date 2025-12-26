@@ -6,7 +6,10 @@ import Post from "@/lib/models/Post";
 type Params = Promise<{ slug: string }>;
 
 // GET /api/posts/[slug] - Get a single post by slug
-export async function GET(segmentData: { params: Params }) {
+export async function GET(
+  request: NextRequest,
+  segmentData: { params: Params }
+) {
   try {
     await connectDB();
 
@@ -81,7 +84,10 @@ export async function PUT(
 }
 
 // DELETE /api/posts/[slug] - Delete a post (protected)
-export async function DELETE(segmentData: { params: Params }) {
+export async function DELETE(
+  request: NextRequest,
+  segmentData: { params: Params }
+) {
   try {
     const { userId } = await auth();
 

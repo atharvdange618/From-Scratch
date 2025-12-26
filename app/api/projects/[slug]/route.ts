@@ -6,7 +6,10 @@ import Project from "@/lib/models/Project";
 type Params = Promise<{ slug: string }>;
 
 // GET /api/projects/[slug] - Get a single project by slug
-export async function GET(segmentData: { params: Params }) {
+export async function GET(
+  request: NextRequest,
+  segmentData: { params: Params }
+) {
   try {
     await connectDB();
 
@@ -73,7 +76,10 @@ export async function PUT(
 }
 
 // DELETE /api/projects/[slug] - Delete a project (protected)
-export async function DELETE(segmentData: { params: Params }) {
+export async function DELETE(
+  request: NextRequest,
+  segmentData: { params: Params }
+) {
   try {
     const { userId } = await auth();
 

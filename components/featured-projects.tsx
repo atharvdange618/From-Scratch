@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ExternalLink, Github, Star, Code2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 import {
   Card,
   CardContent,
@@ -184,9 +185,11 @@ export function FeaturedProjects() {
               </CardHeader>
 
               <CardContent className="flex-1 p-4 md:p-6">
-                <p className="mb-4 font-serif text-sm md:text-base leading-relaxed text-gray-700">
-                  {project.description}
-                </p>
+                <MarkdownRenderer
+                  content={project.description}
+                  className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                  truncate={150}
+                />
 
                 {/* Tech Stack */}
                 <div className="mb-4">

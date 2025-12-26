@@ -206,7 +206,6 @@ export default function ProjectEditor() {
 
         if (!isEditMode) {
           resetForm();
-          router.push("/projects");
         } else {
           const projectsResponse = await fetch("/api/projects");
           if (projectsResponse.ok) {
@@ -214,6 +213,8 @@ export default function ProjectEditor() {
             setProjects(data.projects || []);
           }
         }
+
+        router.push("/projects");
       } else {
         throw new Error("Failed to save project");
       }

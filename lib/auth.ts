@@ -21,18 +21,8 @@ export async function checkAdminAccess() {
   const adminUserId = process.env.ADMIN_USER_ID;
   const adminEmail = process.env.ADMIN_EMAIL;
 
-  // Check if user ID matches admin user ID
   if (adminUserId && userId === adminUserId) {
     return { authorized: true, userId };
-  }
-
-  // If admin email is set, we need to get the user's session to check email
-  if (adminEmail) {
-    // For email check, we'd need to use clerkClient to get user details
-    // For now, we'll focus on userId check which is more efficient
-    console.warn(
-      "Admin email check not implemented - use ADMIN_USER_ID instead"
-    );
   }
 
   return {

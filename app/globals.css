@@ -57,3 +57,93 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom prose styles for markdown content */
+.prose {
+  @apply text-gray-800;
+}
+
+.prose h1 {
+  @apply text-4xl font-bold font-sans mb-4 mt-8;
+}
+
+.prose h2 {
+  @apply text-3xl font-bold font-sans mb-3 mt-6;
+}
+
+.prose h3 {
+  @apply text-2xl font-bold font-sans mb-3 mt-5;
+}
+
+.prose h4 {
+  @apply text-xl font-bold font-sans mb-2 mt-4;
+}
+
+.prose p {
+  @apply mb-4 leading-relaxed;
+}
+
+.prose ul,
+.prose ol {
+  @apply mb-4 ml-6;
+}
+
+.prose ul {
+  @apply list-disc;
+}
+
+.prose ol {
+  @apply list-decimal;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+.prose strong {
+  @apply font-bold;
+}
+
+.prose em {
+  @apply italic;
+}
+
+.prose code {
+  @apply bg-[#FFECDB] border-2 border-black px-2 py-1 rounded-lg font-mono text-sm;
+}
+
+.prose pre {
+  @apply bg-black text-white border-4 border-black p-4 rounded-none overflow-x-auto mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)];
+}
+
+.prose pre code {
+  @apply bg-transparent border-0 p-0 text-white;
+}
+
+.prose a {
+  @apply text-black font-bold underline decoration-4 decoration-[#60B5FF] hover:decoration-[#FF9149] transition-colors;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-black pl-4 italic bg-[#AFDDFF] p-4 mb-4 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)];
+}
+
+.prose hr {
+  @apply border-t-4 border-black my-8;
+}
+
+.prose img {
+  @apply border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-none;
+}
+
+.prose table {
+  @apply border-4 border-black mb-4;
+}
+
+.prose th {
+  @apply border-2 border-black bg-[#60B5FF] p-2 font-bold;
+}
+
+.prose td {
+  @apply border-2 border-black p-2;
+}

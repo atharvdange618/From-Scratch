@@ -63,7 +63,6 @@ const ProjectSchema: Schema<IProject> = new Schema(
   }
 );
 
-// Add index for faster queries
 ProjectSchema.index({ featured: 1, status: 1 });
 
 const Project: Model<IProject> =

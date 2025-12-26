@@ -114,7 +114,6 @@ const PostSchema: Schema<IPost> = new Schema(
   }
 );
 
-// Add indexes for faster queries
 PostSchema.index({ isPublished: 1, publishedDate: -1 });
 PostSchema.index({ category: 1, isPublished: 1 });
 PostSchema.index({ linkedProject: 1, isPublished: 1 });

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Github, ExternalLink, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 import {
   Card,
   CardContent,
@@ -169,11 +170,12 @@ export default async function ProjectPage({
             </div>
           </div>
 
-          <p className="mb-6 font-serif text-xl leading-relaxed">
-            {project.description}
-          </p>
+          <MarkdownRenderer
+            content={project.description}
+            className="prose-lg max-w-none font-serif"
+          />
 
-          <div>
+          <div className="mt-6">
             <h3 className="mb-3 text-sm font-bold uppercase">Tech Stack</h3>
             <div className="flex flex-wrap gap-2">
               {project.techStack.map((tech) => (
