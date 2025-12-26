@@ -90,19 +90,6 @@ export function Header() {
               </Button>
             )}
 
-            <Button
-              size="icon"
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-            >
-              {isDarkMode ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-              <span className="sr-only">Toggle theme</span>
-            </Button>
-
             {isSignedIn ? (
               <div className="flex h-10 w-10 items-center justify-center rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <UserButton

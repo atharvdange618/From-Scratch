@@ -122,15 +122,15 @@ export default async function ProjectPage({
 
         {/* Project Header */}
         <div
-          className="mb-8 rounded-none border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          className="mb-8 rounded-none border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           style={{ backgroundColor: statusColors[project.status] }}
         >
-          <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
+          <div className="mb-4 flex flex-col gap-4">
             <div>
-              <h1 className="mb-2 font-sans text-5xl font-bold">
+              <h1 className="mb-2 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">
                 {project.name}
               </h1>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-block rounded-lg border-2 border-black bg-white px-3 py-1 text-sm font-bold">
                   {project.status}
                 </span>
@@ -142,15 +142,16 @@ export default async function ProjectPage({
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               {project.githubUrl && (
                 <a
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="w-full sm:w-auto"
                 >
-                  <Button className="rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
-                    <Github className="mr-2 h-5 w-5" />
+                  <Button className="w-full rounded-none border-4 border-black bg-black px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
+                    <Github className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                     View on GitHub
                   </Button>
                 </a>
@@ -160,9 +161,10 @@ export default async function ProjectPage({
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="w-full sm:w-auto"
                 >
-                  <Button className="rounded-none border-4 border-black bg-white px-6 py-3 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                    <ExternalLink className="mr-2 h-5 w-5" />
+                  <Button className="w-full rounded-none border-4 border-black bg-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                     Live Demo
                   </Button>
                 </a>

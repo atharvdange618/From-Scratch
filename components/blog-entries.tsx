@@ -165,7 +165,6 @@ export function BlogEntries() {
         })}
       </div>
 
-      {/* Empty state SVG illustration when no posts */}
       {blogPosts.length === 0 && (
         <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black bg-[#AFDDFF] p-16">
           <svg
@@ -203,9 +202,6 @@ export function BlogEntries() {
             />
           </svg>
           <h3 className="mb-2 text-2xl font-bold">No Posts Yet</h3>
-          <p className="font-serif text-lg">
-            Start building in public and share your journey!
-          </p>
         </div>
       )}
     </section>
