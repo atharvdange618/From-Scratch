@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
+// import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ import { GlobalSearch } from "./global-search";
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isSignedIn } = useUser();
+  // const { isSignedIn } = useUser();
   const pathname = usePathname();
 
   const navLinks = [
@@ -88,7 +88,7 @@ export function Header() {
               <span className="sr-only">Search (Cmd+K)</span>
             </Button>
 
-            {isSignedIn ? (
+            {/* {isSignedIn ? (
               <div className="flex h-10 w-10 items-center justify-center rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <UserButton
                   afterSignOutUrl="/"
@@ -105,7 +105,7 @@ export function Header() {
                   Sign In
                 </Button>
               </SignInButton>
-            )}
+            )} */}
           </div>
         </div>
 
