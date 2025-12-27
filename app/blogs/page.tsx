@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar, Tag, Search, Filter } from "lucide-react";
+import { Calendar, Tag, Search, Filter, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,12 +21,14 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/dateandnumbers";
+import { calculateReadingTime } from "@/lib/reading-time";
 
 interface Post {
   _id: string;
   title: string;
   slug: string;
   summary: string;
+  content: string;
   category: string;
   tags: string[];
   publishedDate: string;
@@ -304,6 +306,14 @@ export default function BlogsPage() {
                 </CardHeader>
                 <CardContent className="p-4">
                   <p className="mb-4 line-clamp-3 font-serif">{post.summary}</p>
+
+                  {/* Reading Time */}
+                  <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">
+                    <Clock className="h-4 w-4" />
+                    <span className="font-medium">
+                      {calculateReadingTime(post.content)}
+                    </span>
+                  </div>
 
                   {/* Category Badge */}
                   <div className="mb-3">

@@ -198,6 +198,7 @@ export default function PostEditor() {
           .split(",")
           .map((tag) => tag.trim())
           .filter(Boolean),
+        linkedProject: data.linkedProject?.trim() || undefined,
         seoKeywords: data.seoKeywords
           ?.split(",")
           .map((kw) => kw.trim())

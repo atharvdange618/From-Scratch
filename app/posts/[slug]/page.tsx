@@ -5,15 +5,24 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { ArrowLeft, Calendar, Tag, ExternalLink } from "@deemlol/next-icons";
+import {
+  ArrowLeft,
+  Calendar,
+  Tag,
+  ExternalLink,
+  Clock,
+} from "@deemlol/next-icons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { GiscusComments } from "@/components/giscus-comments";
+import { RelatedPosts } from "@/components/related-posts";
 import { formatDate } from "@/lib/dateandnumbers";
+import { calculateReadingTime } from "@/lib/reading-time";
 
 import "highlight.js/styles/atom-one-dark.css";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 interface Post {
   _id: string;
@@ -189,10 +198,20 @@ export default async function PostPage({
             >
               {post.category}
             </Badge>
-            <div className="flex items-center gap-2 font-serif text-sm text-gray-600">
+            <Badge
+              variant="outline"
+              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black bg-white px-3 py-1 font-serif text-sm"
+            >
               <Calendar className="h-4 w-4" />
               {formatDate(post.publishedDate)}
-            </div>
+            </Badge>
+            <Badge
+              variant="outline"
+              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black bg-white px-3 py-1 font-serif text-sm"
+            >
+              <Clock className="h-4 w-4" />
+              {calculateReadingTime(post.content)}
+            </Badge>
           </div>
 
           <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl lg:text-6xl">
@@ -259,80 +278,20 @@ export default async function PostPage({
 
         <Separator className="my-12 border-2 border-black" />
 
-        <div className="prose prose-lg mx-auto max-w-4xl">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeHighlight, rehypeRaw]}
-            components={{
-              h1: ({ children }) => (
-                <h1 className="mb-6 mt-8 font-sans text-4xl font-bold">
-                  {children}
-                </h1>
-              ),
-              h2: ({ children }) => (
-                <h2 className="mb-4 mt-8 font-sans text-3xl font-bold">
-                  {children}
-                </h2>
-              ),
-              h3: ({ children }) => (
-                <h3 className="mb-3 mt-6 font-sans text-2xl font-bold">
-                  {children}
-                </h3>
-              ),
-              p: ({ children }) => (
-                <p className="mb-4 font-serif text-lg leading-relaxed text-gray-800">
-                  {children}
-                </p>
-              ),
-              a: ({ children, href }) => (
-                <a
-                  href={href}
-                  className="font-bold text-[#60B5FF] underline decoration-4 underline-offset-4 transition-colors hover:text-[#FF9149]"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {children}
-                </a>
-              ),
-              ul: ({ children }) => (
-                <ul className="mb-4 ml-6 list-disc font-serif text-lg">
-                  {children}
-                </ul>
-              ),
-              ol: ({ children }) => (
-                <ol className="mb-4 ml-6 list-decimal font-serif text-lg">
-                  {children}
-                </ol>
-              ),
-              li: ({ children }) => (
-                <li className="mb-2 text-gray-800">{children}</li>
-              ),
-              blockquote: ({ children }) => (
-                <blockquote className="my-6 border-l-4 border-[#FF9149] bg-[#FFECDB] p-6 font-serif italic">
-                  {children}
-                </blockquote>
-              ),
-              code: ({ className, children }) => {
-                const isInline = !className;
-                if (isInline) {
-                  return (
-                    <code className="rounded-none border-2 border-black bg-[#E0FFF1] px-2 py-1 font-mono text-sm">
-                      {children}
-                    </code>
-                  );
-                }
-                return <code className={className}>{children}</code>;
-              },
-              pre: ({ children }) => (
-                <pre className="my-6 overflow-x-auto rounded-none border-4 border-black bg-[#282c34] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                  {children}
-                </pre>
-              ),
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
+        <div className="mb-8 rounded-none bg-white p-6 sm:p-8">
+          <MarkdownRenderer
+            content={post.content}
+            className="prose-lg max-w-none font-serif"
+          />
         </div>
+
+        {/* Related Posts */}
+        <RelatedPosts
+          currentPostId={post._id}
+          currentCategory={post.category}
+          currentTags={post.tags}
+          linkedProjectId={post.linkedProject?._id}
+        />
 
         <Separator className="my-12 border-2 border-black" />
 

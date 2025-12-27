@@ -6,7 +6,6 @@ import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { GlobalSearch } from "@/components/global-search";
 import {
   Sheet,
   SheetContent,
@@ -15,6 +14,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Search, Menu, X } from "@deemlol/next-icons";
+import { GlobalSearch } from "./global-search";
 
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);

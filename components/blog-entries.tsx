@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Code, Rocket, BookOpen, Lightbulb, Loader2 } from "lucide-react";
+import { Code, Rocket, BookOpen, Lightbulb, Loader2, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/dateandnumbers";
+import { calculateReadingTime } from "@/lib/reading-time";
 
 interface BlogPost {
   _id: string;
@@ -143,6 +144,12 @@ export function BlogEntries() {
                   <p className="mb-3 font-serif text-sm leading-relaxed">
                     {post.summary}
                   </p>
+                  <div className="mb-3">
+                    <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
+                      <Clock className="h-3 w-3" />
+                      {calculateReadingTime(post.content)}
+                    </span>
+                  </div>
                   <div className="flex flex-wrap gap-2 pb-4">
                     {post.tags.map((tag) => (
                       <span

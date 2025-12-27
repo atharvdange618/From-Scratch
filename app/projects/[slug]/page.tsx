@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Github, ExternalLink, Calendar } from "lucide-react";
+import { ArrowLeft, Github, ExternalLink, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import {
@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/dateandnumbers";
+import { calculateReadingTime } from "@/lib/reading-time";
 
 interface Project {
   _id: string;
@@ -139,6 +140,10 @@ export default async function ProjectPage({
                     ⭐ Featured
                   </span>
                 )}
+                <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black bg-white px-3 py-1 text-sm font-bold">
+                  <Clock className="h-4 w-4" />
+                  {calculateReadingTime(project.description)}
+                </span>
               </div>
             </div>
 
@@ -172,11 +177,6 @@ export default async function ProjectPage({
             </div>
           </div>
 
-          <MarkdownRenderer
-            content={project.description}
-            className="prose-lg max-w-none font-serif"
-          />
-
           <div className="mt-6">
             <h3 className="mb-3 text-sm font-bold uppercase">Tech Stack</h3>
             <div className="flex flex-wrap gap-2">
@@ -190,6 +190,14 @@ export default async function ProjectPage({
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Project Description */}
+        <div className="mb-8 rounded-none border-4 border-black bg-white p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <MarkdownRenderer
+            content={project.description}
+            className="prose-lg max-w-none font-serif"
+          />
         </div>
 
         {/* Banner Image */}
