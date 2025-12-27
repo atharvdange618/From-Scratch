@@ -20,6 +20,11 @@ export function MarkdownRenderer({
   className = "",
   truncate,
 }: MarkdownRendererProps) {
+  // Handle undefined or null content
+  if (!content) {
+    return null;
+  }
+
   let displayContent = content;
 
   if (truncate && content.length > truncate) {
