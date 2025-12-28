@@ -271,12 +271,12 @@ export default async function PostPage({
             <img
               src={post.bannerImage}
               alt={post.title}
-              className="h-auto w-full object-cover"
+              className="h-auto w-full object-cover max-h-[400px]"
             />
           </div>
         )}
 
-        <Separator className="my-12 border-2 border-black" />
+        <Separator className="my-4 border-2 border-black" />
 
         <div className="mb-8 rounded-none bg-white p-6 sm:p-8">
           <MarkdownRenderer

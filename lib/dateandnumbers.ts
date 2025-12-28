@@ -1,3 +1,15 @@
+export const formatExpiryDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = date.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0) return "Expired";
+  if (diffDays === 0) return "Expires today";
+  if (diffDays === 1) return "Expires in 1 day";
+  return `Expires in ${diffDays} days`;
+};
+
 export const formatDateTimeIST = (date: string | number | Date): string => {
   if (!date) return "-";
 

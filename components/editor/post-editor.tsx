@@ -29,8 +29,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
-import { Upload, Save, Eye, EyeOff, Loader2 } from "lucide-react";
+import {
+  Upload,
+  Save,
+  Eye,
+  EyeOff,
+  Loader2,
+  Link as LinkIcon,
+  Copy,
+  Trash2,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { formatExpiryDate } from "@/lib/dateandnumbers";
 
 const postSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -57,6 +67,8 @@ export default function PostEditor() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [previewTokens, setPreviewTokens] = useState<any[]>([]);
+  const [generatingPreview, setGeneratingPreview] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -126,12 +138,14 @@ export default function PostEditor() {
     });
     setSelectedPostId(postId);
     setIsEditMode(true);
+    setPreviewTokens(post.previewTokens || []);
   };
 
   const resetForm = () => {
     form.reset();
     setSelectedPostId("");
     setIsEditMode(false);
+    setPreviewTokens([]);
   };
 
   useEffect(() => {
@@ -245,6 +259,89 @@ export default function PostEditor() {
       });
     } finally {
       setSaving(false);
+    }
+  };
+
+  const generatePreviewLink = async () => {
+    if (!selectedPostId || !isEditMode) {
+      toast({
+        title: "⚠️ Warning",
+        description:
+          "Please save the post first before generating a preview link",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const currentPost = posts.find((p) => p._id === selectedPostId);
+    if (currentPost?.isPublished) {
+      toast({
+        title: "⚠️ Warning",
+        description: "Preview links are only available for unpublished drafts",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setGeneratingPreview(true);
+    try {
+      const response = await fetch("/api/preview/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postId: selectedPostId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setPreviewTokens([...previewTokens, data.data]);
+        toast({
+          title: "✅ Preview Link Generated",
+          description: "Preview link has been created successfully",
+        });
+      } else {
+        throw new Error(data.message || "Failed to generate preview link");
+      }
+    } catch (error: any) {
+      toast({
+        title: "❌ Error",
+        description: error.message || "Failed to generate preview link",
+        variant: "destructive",
+      });
+    } finally {
+      setGeneratingPreview(false);
+    }
+  };
+
+  const copyPreviewLink = (url: string) => {
+    navigator.clipboard.writeText(url);
+    toast({
+      title: "📋 Copied",
+      description: "Preview link copied to clipboard",
+    });
+  };
+
+  const revokePreviewToken = async (token: string) => {
+    try {
+      const response = await fetch(`/api/preview/revoke/${token}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setPreviewTokens(previewTokens.filter((t) => t.token !== token));
+        toast({
+          title: "✅ Token Revoked",
+          description: "Preview link has been revoked",
+        });
+      } else {
+        throw new Error("Failed to revoke token");
+      }
+    } catch (error) {
+      toast({
+        title: "❌ Error",
+        description: "Failed to revoke preview link",
+        variant: "destructive",
+      });
     }
   };
 
@@ -597,6 +694,78 @@ export default function PostEditor() {
             </Card>
           </div>
         </div>
+
+        {/* Preview Links Section */}
+        {isEditMode && !form.watch("isPublished") && (
+          <Card className="rounded-none border-4 border-black bg-[#AFDDFF] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold">Preview Links</h2>
+                <p className="text-sm text-gray-700">
+                  Share draft previews without publishing
+                </p>
+              </div>
+              <Button
+                type="button"
+                onClick={generatePreviewLink}
+                disabled={generatingPreview}
+                className="rounded-none border-4 border-black bg-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              >
+                {generatingPreview ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <LinkIcon className="mr-2 h-4 w-4" />
+                )}
+                Generate Link
+              </Button>
+            </div>
+
+            {previewTokens.length > 0 ? (
+              <div className="space-y-3">
+                {previewTokens.map((tokenData) => (
+                  <Card
+                    key={tokenData.token}
+                    className="rounded-none border-2 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="truncate font-mono text-sm">
+                          {tokenData.previewUrl}
+                        </p>
+                        <p className="mt-1 text-xs text-gray-600">
+                          {formatExpiryDate(tokenData.expiresAt)}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={() => copyPreviewLink(tokenData.previewUrl)}
+                          className="rounded-none border-2 border-black bg-[#E0FFF1] font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={() => revokePreviewToken(tokenData.token)}
+                          variant="destructive"
+                          className="rounded-none border-2 border-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-sm text-gray-600">
+                No preview links generated yet
+              </p>
+            )}
+          </Card>
+        )}
 
         <Card className="rounded-none border-4 border-black bg-[#E0FFF1] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <div className="flex flex-wrap items-center justify-between gap-4">

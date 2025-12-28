@@ -5,6 +5,12 @@ export interface ICodeSnippet {
   code?: string;
 }
 
+export interface IPreviewToken {
+  token: string;
+  createdAt: Date;
+  expiresAt: Date;
+}
+
 export interface IPost extends Document {
   title: string;
   slug: string;
@@ -21,7 +27,7 @@ export interface IPost extends Document {
   bannerImage?: string;
   publishedDate?: Date;
   isPublished: boolean;
-  previewToken?: string;
+  previewTokens: IPreviewToken[];
   author: string;
   seoTitle?: string;
   seoDescription?: string;
@@ -88,10 +94,22 @@ const PostSchema: Schema<IPost> = new Schema(
       type: Boolean,
       default: false,
     },
-    previewToken: {
-      type: String,
-      index: { unique: true, sparse: true },
-    },
+    previewTokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+        createdAt: {
+          type: Date,
+          required: true,
+        },
+        expiresAt: {
+          type: Date,
+          required: true,
+        },
+      },
+    ],
     author: {
       type: String,
       default: "Atharv Dange",
