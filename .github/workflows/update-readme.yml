@@ -27,7 +27,7 @@ jobs:
       - name: Fetch latest blog posts
         id: fetch-posts
         run: |
-          response=$(curl -s https://from-scratch.vercel.app/api/posts/latest)
+          response=$(curl -s https://built-from-scratch.vercel.app/api/posts/latest)
           echo "$response" > posts.json
           posts=$(echo "$response" | jq -r '.data')
 
@@ -58,7 +58,7 @@ jobs:
             markdown="${markdown}- ${emoji} [**${title}**](${url}) - ${formattedDate} • ${readingTime}\n"
           done
 
-          markdown="${markdown}\n➡️ [**View all posts**](https://from-scratch.vercel.app/blogs)"
+          markdown="${markdown}\n➡️ [**View all posts**](https://built-from-scratch.vercel.app/blogs)"
           echo -e "$markdown" > latest-posts.md
 
       - name: Update README
