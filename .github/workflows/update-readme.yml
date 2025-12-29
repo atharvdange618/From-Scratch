@@ -29,24 +29,31 @@ jobs:
         run: |
           response=$(curl -s https://built-from-scratch.vercel.app/api/posts/latest)
           echo "$response" > posts.json
-          posts=$(echo "$response" | jq -r '.data')
 
-          if [ "$posts" == "null" ] || [ -z "$posts" ]; then
+          success=$(echo "$response" | jq -r '.success')
+          count=$(echo "$response" | jq -r '.count')
+
+          if [ "$success" != "true" ] || [ "$count" == "0" ]; then
             echo "No posts found"
             exit 0
           fi
 
-          markdown="### 📝 Latest Blog Posts\n\n"
+          # Start building markdown
+          echo "### 📝 Latest Blog Posts" > latest-posts.md
+          echo "" >> latest-posts.md
 
-          echo "$posts" | jq -c '.[]' | while read -r post; do
+          # Process each post
+          echo "$response" | jq -c '.data[]' | while read -r post; do
             title=$(echo "$post" | jq -r '.title')
             url=$(echo "$post" | jq -r '.url')
             category=$(echo "$post" | jq -r '.category')
             publishedDate=$(echo "$post" | jq -r '.publishedDate')
             readingTime=$(echo "$post" | jq -r '.readingTime')
             
-            formattedDate=$(date -d "$publishedDate" "+%b %d, %Y" 2>/dev/null || echo "Recent")
+            # Format date
+            formattedDate=$(date -d "$publishedDate" "+%b %d, %Y" 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "${publishedDate%.*}" "+%b %d, %Y" 2>/dev/null || echo "Recent")
             
+            # Get emoji based on category
             case "$category" in
               "Active Projects") emoji="🚀" ;;
               "Completed Projects") emoji="✅" ;;
@@ -55,11 +62,13 @@ jobs:
               *) emoji="📝" ;;
             esac
             
-            markdown="${markdown}- ${emoji} [**${title}**](${url}) - ${formattedDate} • ${readingTime}\n"
+            # Append to file instead of variable
+            echo "- ${emoji} [**${title}**](${url}) - ${formattedDate} • ${readingTime}" >> latest-posts.md
           done
 
-          markdown="${markdown}\n➡️ [**View all posts**](https://built-from-scratch.vercel.app/blogs)"
-          echo -e "$markdown" > latest-posts.md
+          # Add footer
+          echo "" >> latest-posts.md
+          echo "➡️ [**View all posts**](https://built-from-scratch.vercel.app/blogs)" >> latest-posts.md
 
       - name: Update README
         run: |
