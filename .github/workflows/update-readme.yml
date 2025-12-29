@@ -1,0 +1,101 @@
+name: Update GitHub Profile README
+
+on:
+  schedule:
+    # Runs daily at 00:00 UTC
+    - cron: "0 0 * * *"
+  push:
+    branches:
+      - main
+    paths:
+      - "app/api/posts/**"
+      - "lib/models/Post.ts"
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout profile repository
+        uses: actions/checkout@v4
+        with:
+          repository: atharvdange618/atharvdange618
+          token: ${{ secrets.GH_PAT }}
+          path: profile-repo
+
+      - name: Fetch latest blog posts
+        id: fetch-posts
+        run: |
+          response=$(curl -s https://from-scratch.vercel.app/api/posts/latest)
+          echo "$response" > posts.json
+          posts=$(echo "$response" | jq -r '.data')
+
+          if [ "$posts" == "null" ] || [ -z "$posts" ]; then
+            echo "No posts found"
+            exit 0
+          fi
+
+          markdown="### 📝 Latest Blog Posts\n\n"
+
+          echo "$posts" | jq -c '.[]' | while read -r post; do
+            title=$(echo "$post" | jq -r '.title')
+            url=$(echo "$post" | jq -r '.url')
+            category=$(echo "$post" | jq -r '.category')
+            publishedDate=$(echo "$post" | jq -r '.publishedDate')
+            readingTime=$(echo "$post" | jq -r '.readingTime')
+            
+            formattedDate=$(date -d "$publishedDate" "+%b %d, %Y" 2>/dev/null || echo "Recent")
+            
+            case "$category" in
+              "Active Projects") emoji="🚀" ;;
+              "Completed Projects") emoji="✅" ;;
+              "Learning Notes") emoji="📚" ;;
+              "Updates") emoji="📢" ;;
+              *) emoji="📝" ;;
+            esac
+            
+            markdown="${markdown}- ${emoji} [**${title}**](${url}) - ${formattedDate} • ${readingTime}\n"
+          done
+
+          markdown="${markdown}\n➡️ [**View all posts**](https://from-scratch.vercel.app/blogs)"
+          echo -e "$markdown" > latest-posts.md
+
+      - name: Update README
+        run: |
+          cd profile-repo
+
+          # Read the latest posts markdown
+          latest_posts=$(cat ../latest-posts.md)
+
+          # Update the README file
+          awk -v posts="$latest_posts" '
+            /<!-- BLOG-POST-LIST:START -->/ {
+              print
+              print posts
+              skip=1
+              next
+            }
+            /<!-- BLOG-POST-LIST:END -->/ {
+              skip=0
+            }
+            !skip
+          ' README.md > README-new.md
+
+          mv README-new.md README.md
+
+      - name: Commit and push changes
+        run: |
+          cd profile-repo
+
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add README.md
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore: update latest blog posts in README [skip ci]"
+          git push
