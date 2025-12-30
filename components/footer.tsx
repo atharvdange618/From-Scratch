@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Github, Instagram, Linkedin, Mail } from "@deemlol/next-icons";
 import { Separator } from "@/components/ui/separator";
+import { SocialLinks } from "@/components/analytics/social-links";
 
 export function Footer() {
   return (
@@ -20,42 +20,7 @@ export function Footer() {
               <h4 className="mb-2 md:mb-3 font-sans text-xs md:text-sm font-bold uppercase tracking-wide">
                 Connect With Me
               </h4>
-              <div className="flex gap-2 md:gap-3">
-                <a
-                  href="https://www.instagram.com/atharvdange._"
-                  target="_blank"
-                  referrerPolicy="no-referrer"
-                  className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-black bg-white transition-all hover:translate-y-1 hover:bg-[#FF9149]"
-                >
-                  <Instagram className="h-5 w-5" />
-                  <span className="sr-only">Instagram</span>
-                </a>
-                <a
-                  href="https://github.com/atharvdange618"
-                  target="_blank"
-                  referrerPolicy="no-referrer"
-                  className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-black bg-white transition-all hover:translate-y-1 hover:bg-[#FF9149]"
-                >
-                  <Github className="h-5 w-5" />
-                  <span className="sr-only">GitHub</span>
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/atharvdange"
-                  target="_blank"
-                  referrerPolicy="no-referrer"
-                  className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-black bg-white transition-all hover:translate-y-1 hover:bg-[#FF9149]"
-                >
-                  <Linkedin className="h-5 w-5" />
-                  <span className="sr-only">LinkedIn</span>
-                </a>
-                <a
-                  href="mailto:atharvdange.dev@gmail.com"
-                  className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-black bg-white transition-all hover:translate-y-1 hover:bg-[#FF9149]"
-                >
-                  <Mail className="h-5 w-5" />
-                  <span className="sr-only">Email</span>
-                </a>
-              </div>
+              <SocialLinks location="footer" />
             </div>
           </div>
 

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar, Tag, Search, Filter, Clock } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -52,6 +53,7 @@ export default function BlogsPage() {
   const [sortBy, setSortBy] = useState("date-desc");
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const categories = [
     "all",
@@ -69,6 +71,27 @@ export default function BlogsPage() {
   useEffect(() => {
     filterAndSortPosts();
   }, [posts, searchQuery, selectedCategory, selectedTag, sortBy]);
+
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    if (searchQuery.length >= 3) {
+      searchTimeoutRef.current = setTimeout(() => {
+        trackEvent("blog_search", {
+          query: searchQuery,
+          resultsCount: filteredPosts.length,
+        });
+      }, 500);
+    }
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [searchQuery, filteredPosts.length]);
 
   const fetchPosts = async () => {
     try {
@@ -208,7 +231,16 @@ export default function BlogsPage() {
           </div>
 
           {/* Category Filter */}
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+          <Select
+            value={selectedCategory}
+            onValueChange={(value) => {
+              setSelectedCategory(value);
+              trackEvent("blog_category_filter", {
+                category: value,
+                resultsCount: filteredPosts.length,
+              });
+            }}
+          >
             <SelectTrigger className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
@@ -222,7 +254,16 @@ export default function BlogsPage() {
           </Select>
 
           {/* Tag Filter */}
-          <Select value={selectedTag} onValueChange={setSelectedTag}>
+          <Select
+            value={selectedTag}
+            onValueChange={(value) => {
+              setSelectedTag(value);
+              trackEvent("blog_tag_filter", {
+                tag: value,
+                resultsCount: filteredPosts.length,
+              });
+            }}
+          >
             <SelectTrigger className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <SelectValue placeholder="Tag" />
             </SelectTrigger>
@@ -236,7 +277,15 @@ export default function BlogsPage() {
           </Select>
 
           {/* Sort */}
-          <Select value={sortBy} onValueChange={setSortBy}>
+          <Select
+            value={sortBy}
+            onValueChange={(value) => {
+              setSortBy(value);
+              trackEvent("blog_sort_change", {
+                sortBy: value,
+              });
+            }}
+          >
             <SelectTrigger className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>

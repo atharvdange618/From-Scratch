@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -85,6 +86,7 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer />
           <Analytics />
+          <SpeedInsights />
           <Toaster />
         </body>
       </html>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Github, ExternalLink, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
+import TrackableLink from "@/components/analytics/trackable-link";
 import {
   Card,
   CardContent,
@@ -149,30 +150,50 @@ export default async function ProjectPage({
 
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               {project.githubUrl && (
-                <a
+                <TrackableLink
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto"
+                  trackingData={{
+                    eventType: "external_link_click",
+                    eventData: {
+                      linkType: "github",
+                      projectName: project.name,
+                      projectSlug: project.slug,
+                      source: "project",
+                      status: project.status,
+                    },
+                  }}
                 >
                   <Button className="w-full rounded-none border-4 border-black bg-black px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
                     <Github className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                     View on GitHub
                   </Button>
-                </a>
+                </TrackableLink>
               )}
               {project.liveUrl && (
-                <a
+                <TrackableLink
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto"
+                  trackingData={{
+                    eventType: "external_link_click",
+                    eventData: {
+                      linkType: "live",
+                      projectName: project.name,
+                      projectSlug: project.slug,
+                      source: "project",
+                      status: project.status,
+                    },
+                  }}
                 >
                   <Button className="w-full rounded-none border-4 border-black bg-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                     <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                     Live Demo
                   </Button>
-                </a>
+                </TrackableLink>
               )}
             </div>
           </div>

@@ -1,10 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import rehypeRaw from "rehype-raw";
-import remarkGfm from "remark-gfm";
 import {
   ArrowLeft,
   Calendar,
@@ -20,6 +16,8 @@ import { GiscusComments } from "@/components/giscus-comments";
 import { RelatedPosts } from "@/components/related-posts";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
+import TrackableLink from "@/components/analytics/trackable-link";
+import ScrollTracker from "@/components/analytics/scroll-tracker";
 
 import "highlight.js/styles/atom-one-dark.css";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
@@ -251,14 +249,24 @@ export default async function PostPage({
                     asChild
                     className="rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                   >
-                    <a
+                    <TrackableLink
                       href={post.linkedProject.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      trackingData={{
+                        eventType: "external_link_click",
+                        eventData: {
+                          linkType: "github",
+                          projectName: post.linkedProject.name,
+                          projectSlug: post.linkedProject.slug,
+                          source: "post",
+                          postTitle: post.title,
+                        },
+                      }}
                     >
                       <ExternalLink className="mr-2 h-4 w-4" />
                       View Project
-                    </a>
+                    </TrackableLink>
                   </Button>
                 )}
               </CardContent>
@@ -278,12 +286,18 @@ export default async function PostPage({
 
         <Separator className="my-4 border-2 border-black" />
 
-        <div className="mb-8 rounded-none bg-white p-6 sm:p-8">
-          <MarkdownRenderer
-            content={post.content}
-            className="prose-lg max-w-none font-serif"
-          />
-        </div>
+        <ScrollTracker
+          postTitle={post.title}
+          category={post.category}
+          readingTime={calculateReadingTime(post.content)}
+        >
+          <div className="mb-8 rounded-none bg-white p-6 sm:p-8">
+            <MarkdownRenderer
+              content={post.content}
+              className="prose-lg max-w-none font-serif"
+            />
+          </div>
+        </ScrollTracker>
 
         {/* Related Posts */}
         <RelatedPosts

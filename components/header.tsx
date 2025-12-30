@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-// import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
+import { trackEvent } from "@/lib/analytics";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,14 +20,38 @@ import { GlobalSearch } from "./global-search";
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // const { isSignedIn } = useUser();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { isLoaded, isSignedIn } = useUser();
   const pathname = usePathname();
+
+  useEffect(() => {
+    async function checkAdmin() {
+      if (isLoaded && isSignedIn) {
+        try {
+          const response = await fetch("/api/auth/check-admin");
+          const data = await response.json();
+          setIsAdmin(data.isAdmin || false);
+        } catch (error) {
+          console.error("Error checking admin status:", error);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsAdmin(false);
+      }
+    }
+    checkAdmin();
+  }, [isLoaded, isSignedIn]);
 
   const navLinks = [
     { href: "/about", label: "About" },
     { href: "/blogs", label: "Blog" },
     { href: "/projects", label: "Projects" },
     { href: "/contact", label: "Contact" },
+  ];
+
+  const adminLinks = [
+    { href: "/editor", label: "Editor" },
+    { href: "/dashboard", label: "Dashboard" },
   ];
 
   const isActiveLink = (href: string) => {
@@ -75,13 +100,31 @@ export function Header() {
                   </Link>
                 </li>
               ))}
+              {isAdmin &&
+                adminLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className={`font-bold hover:text-[#60B5FF] hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors ${
+                        isActiveLink(link.href)
+                          ? "text-[#60B5FF] underline decoration-4 underline-offset-4"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </nav>
 
           <div className="flex items-center gap-3">
             <Button
               size="icon"
-              onClick={() => setIsSearchOpen(true)}
+              onClick={() => {
+                setIsSearchOpen(true);
+                trackEvent("search_opened", {});
+              }}
               className="h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               <Search className="h-5 w-5" />
@@ -112,7 +155,10 @@ export function Header() {
         <div className="flex items-center gap-2 md:hidden">
           <Button
             size="icon"
-            onClick={() => setIsSearchOpen(true)}
+            onClick={() => {
+              setIsSearchOpen(true);
+              trackEvent("search_opened", {});
+            }}
             className="h-10 w-10 rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
           >
             <Search className="h-5 w-5" />
@@ -171,6 +217,22 @@ export function Header() {
                         </Link>
                       </li>
                     ))}
+                    {isAdmin &&
+                      adminLinks.map((link) => (
+                        <li key={link.href}>
+                          <Link
+                            href={link.href}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={`block rounded-none border-4 border-black px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+                              isActiveLink(link.href)
+                                ? "bg-[#60B5FF] text-white"
+                                : "bg-gray-100 hover:bg-[#60B5FF] hover:text-white"
+                            }`}
+                          >
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
                   </ul>
                 </nav>
               </div>

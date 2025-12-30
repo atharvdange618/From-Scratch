@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { formatTimeIST } from "@/lib/dateandnumbers";
+import { trackEvent } from "@/lib/analytics";
 
 export function ContactContent() {
   const [formState, setFormState] = useState({
@@ -60,6 +61,14 @@ export function ContactContent() {
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
       );
 
+      await trackEvent("contact_form_submit", {
+        hasName: !!formState.name,
+        hasEmail: !!formState.email,
+        hasSubject: !!formState.subject,
+        messageLength: formState.message.length,
+        success: true,
+      });
+
       setIsSubmitted(true);
       setFormState({
         name: "",
@@ -74,6 +83,11 @@ export function ContactContent() {
       });
     } catch (error) {
       console.error("EmailJS Error:", error);
+
+      await trackEvent("contact_form_error", {
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
+
       toast({
         title: "Failed to send message",
         description: "Please try again or contact me directly via email.",

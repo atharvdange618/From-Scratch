@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
+import { trackEvent } from "@/lib/analytics";
 import {
   Dialog,
   DialogContent,
@@ -53,6 +54,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
@@ -131,6 +133,19 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
 
     setResults(combined);
     setSelectedIndex(0);
+
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    if (query.trim().length >= 2) {
+      searchTimeoutRef.current = setTimeout(() => {
+        trackEvent("search_query", {
+          query: query.trim(),
+          resultsCount: combined.length,
+        });
+      }, 300);
+    }
   }, [query, posts, projects]);
 
   const saveRecentSearch = useCallback((searchQuery: string) => {
@@ -148,6 +163,17 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   const handleSelect = useCallback(
     (result: SearchResult) => {
       saveRecentSearch(query);
+
+      trackEvent("search_result_click", {
+        query: query.trim(),
+        resultType: result.type,
+        resultTitle:
+          result.type === "post"
+            ? (result.item as Post).title
+            : (result.item as Project).name,
+        resultSlug: result.item.slug,
+      });
+
       onOpenChange(false);
       setQuery("");
 
