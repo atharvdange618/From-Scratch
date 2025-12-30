@@ -1,11 +1,27 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { SignInButton, SignOutButton } from "@clerk/nextjs";
 
 export default async function GetUserIdPage() {
   const { userId } = await auth();
 
   if (!userId) {
-    redirect("/sign-in");
+    return (
+      <div className="container mx-auto px-4 py-16">
+        <div className="mx-auto max-w-2xl rounded-none border-4 border-black bg-white p-8 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h1 className="mb-6 font-sans text-3xl font-bold">
+            Authentication Required
+          </h1>
+          <p className="mb-6 text-lg">
+            Please sign in to view your Clerk user ID.
+          </p>
+          <SignInButton mode="modal">
+            <button className="rounded-none border-4 border-black bg-blue-500 px-8 py-3 font-bold text-white transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none active:translate-x-2 active:translate-y-2 [box-shadow:4px_4px_0px_0px_rgba(0,0,0,1)]">
+              Sign In
+            </button>
+          </SignInButton>
+        </div>
+      </div>
+    );
   }
 
   const user = await currentUser();
@@ -13,9 +29,16 @@ export default async function GetUserIdPage() {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="mx-auto max-w-2xl rounded-none border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <h1 className="mb-6 font-sans text-3xl font-bold">
-          Your Clerk User Information
-        </h1>
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="font-sans text-3xl font-bold">
+            Your Clerk User Information
+          </h1>
+          <SignOutButton>
+            <button className="rounded-none border-2 border-black bg-red-500 px-4 py-2 font-bold text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none active:translate-x-1 active:translate-y-1 [box-shadow:2px_2px_0px_0px_rgba(0,0,0,1)]">
+              Sign Out
+            </button>
+          </SignOutButton>
+        </div>
 
         <div className="space-y-4">
           <div className="rounded-none border-4 border-black bg-[#AFDDFF] p-4">
