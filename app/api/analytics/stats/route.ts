@@ -175,16 +175,7 @@ export async function GET(request: NextRequest) {
         .lean(),
     ]);
 
-    const calculatePercentages = (data: any[]) => {
-      const total = data.reduce((sum, item) => sum + item.count, 0);
-      return data.map((item) => ({
-        name: item._id,
-        count: item.count,
-        percentage: total > 0 ? ((item.count / total) * 100).toFixed(2) : "0",
-      }));
-    };
-
-    let daysUntilDeletion = null;
+    let daysUntilDeletion = 90;
     let oldestEventDate = null;
     if (oldestEvent) {
       oldestEventDate = oldestEvent.timestamp;
@@ -201,29 +192,23 @@ export async function GET(request: NextRequest) {
         totalEvents,
         uniqueSessions,
         uniqueVisitors,
-        eventTypeDistribution: eventTypeDistribution.map((item) => ({
-          type: item._id,
-          count: item.count,
-        })),
-        topPages: topPages.map((item) => ({
-          page: item._id || "Unknown",
-          count: item.count,
-        })),
-        topCountries: topCountries.map((item) => ({
-          country: item._id,
-          count: item.count,
-        })),
-        deviceBreakdown: calculatePercentages(deviceBreakdown),
-        browserBreakdown: calculatePercentages(browserBreakdown),
-        osBreakdown: calculatePercentages(osBreakdown),
-        dailyEvents: dailyEvents.map((item) => ({
-          date: item._id,
-          count: item.count,
-        })),
-        retention: {
-          oldestEventDate,
-          daysUntilDeletion,
-          retentionDays: 90,
+        eventTypeDistribution,
+        topPages,
+        topCountries,
+        deviceBreakdown,
+        browserBreakdown,
+        osBreakdown,
+        dailyEvents,
+        retentionData: {
+          oldestEvent: oldestEventDate,
+          newestEvent: new Date().toISOString(),
+          totalDays: oldestEventDate
+            ? Math.floor(
+                (Date.now() - new Date(oldestEventDate).getTime()) /
+                  (1000 * 60 * 60 * 24)
+              )
+            : 0,
+          daysUntilDeletion: daysUntilDeletion || 90,
         },
       },
     });
