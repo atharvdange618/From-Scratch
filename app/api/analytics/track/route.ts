@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import AnalyticsEvent from "@/lib/models/AnalyticsEvent";
 import RateLimit from "@/lib/models/RateLimit";
-import { parseUserAgent } from "@/lib/analytics";
+import { parseUserAgent } from "@/lib/analytics-server";
 
 const RATE_LIMIT_MAX = 100;
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000;
