@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Code, Rocket, BookOpen, Lightbulb, Loader2, Clock } from "lucide-react";
+import {
+  Code,
+  Rocket,
+  BookOpen,
+  Lightbulb,
+  Loader2,
+  Clock,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,6 +20,7 @@ import {
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
+import { MarkdownRenderer } from "./markdown-renderer";
 
 interface BlogPost {
   _id: string;
@@ -142,7 +150,11 @@ export function BlogEntries() {
                 </CardHeader>
                 <CardContent className="flex-1 px-4 pt-4 pb-0">
                   <p className="mb-3 font-serif text-sm leading-relaxed">
-                    {post.summary}
+                    <MarkdownRenderer
+                      content={post.summary}
+                      className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                      truncate={150}
+                    />
                   </p>
                   <div className="mb-3">
                     <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
