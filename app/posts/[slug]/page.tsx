@@ -279,7 +279,7 @@ export default async function PostPage({
             <img
               src={post.bannerImage}
               alt={post.title}
-              className="h-auto w-full object-cover max-h-[400px]"
+              className="h-auto w-full object-cover max-h-[600px]"
             />
           </div>
         )}
