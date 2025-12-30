@@ -88,7 +88,7 @@ export default function DashboardPage() {
 
       if (statsRes.ok) {
         const statsData = await statsRes.json();
-        setStats(statsData);
+        setStats(statsData.stats);
       }
 
       if (eventsRes.ok) {
