@@ -19,6 +19,8 @@ export async function GET(request: NextRequest) {
 
     if (isPublished === "true") {
       query.isPublished = true;
+    } else if (isPublished === "false") {
+      query.isPublished = false;
     }
 
     if (category && category !== "All Posts") {

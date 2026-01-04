@@ -51,6 +51,7 @@ export function Header() {
 
   const adminLinks = [
     { href: "/editor", label: "Editor" },
+    { href: "/drafts", label: "Drafts" },
     { href: "/dashboard", label: "Dashboard" },
   ];
 

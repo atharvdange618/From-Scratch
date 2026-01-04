@@ -72,13 +72,48 @@ export async function GET(request: NextRequest) {
             ...dateFilter,
             $or: [
               { eventType: "page_view" },
-              { "eventData.path": { $exists: true } },
+              { "eventData.path": { $exists: true, $nin: [null, ""] } },
+              { "eventData.page": { $exists: true, $nin: [null, ""] } },
+              { "eventData.pathname": { $exists: true, $nin: [null, ""] } },
+              { "eventData.url": { $exists: true, $nin: [null, ""] } },
             ],
           },
         },
         {
+          $addFields: {
+            pagePath: {
+              $cond: {
+                if: { $ne: ["$eventData.path", null] },
+                then: "$eventData.path",
+                else: {
+                  $cond: {
+                    if: { $ne: ["$eventData.page", null] },
+                    then: "$eventData.page",
+                    else: {
+                      $cond: {
+                        if: { $ne: ["$eventData.pathname", null] },
+                        then: "$eventData.pathname",
+                        else: "$eventData.url",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            pagePath: {
+              $exists: true,
+              $ne: null,
+              $nin: ["", null],
+            },
+          },
+        },
+        {
           $group: {
-            _id: "$eventData.path",
+            _id: "$pagePath",
             count: { $sum: 1 },
           },
         },

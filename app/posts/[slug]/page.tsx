@@ -18,9 +18,9 @@ import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import TrackableLink from "@/components/analytics/trackable-link";
 import ScrollTracker from "@/components/analytics/scroll-tracker";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 import "highlight.js/styles/atom-one-dark.css";
-import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 interface Post {
   _id: string;
@@ -279,7 +279,7 @@ export default async function PostPage({
             <img
               src={post.bannerImage}
               alt={post.title}
-              className="h-auto w-full object-cover max-h-[600px]"
+              className="h-auto w-full object-cover"
             />
           </div>
         )}

@@ -5,10 +5,6 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import rehypeRaw from "rehype-raw";
-import remarkGfm from "remark-gfm";
 import {
   Form,
   FormControl,
@@ -41,6 +37,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { formatExpiryDate } from "@/lib/dateandnumbers";
+import { MarkdownRenderer } from "../markdown-renderer";
 
 const postSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -682,12 +679,10 @@ export default function PostEditor() {
                 <div className="mt-4 rounded-none border-4 border-black bg-white p-6">
                   <h3 className="mb-4 text-xl font-bold">Preview</h3>
                   <div className="prose max-w-none">
-                    <ReactMarkdown
-                      rehypePlugins={[rehypeHighlight, rehypeRaw]}
-                      remarkPlugins={[remarkGfm]}
-                    >
-                      {content}
-                    </ReactMarkdown>
+                    <MarkdownRenderer
+                      content={content}
+                      className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                    />
                   </div>
                 </div>
               )}

@@ -137,9 +137,15 @@ export async function trackEvent(
   try {
     const sessionId = getOrCreateSession();
 
+    const enrichedEventData = {
+      ...eventData,
+      path: eventData.path || window.location.pathname,
+      url: eventData.url || window.location.href,
+    };
+
     const payload = {
       eventType,
-      eventData,
+      eventData: enrichedEventData,
       sessionId,
       timestamp: new Date().toISOString(),
     };

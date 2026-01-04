@@ -254,9 +254,11 @@ export default async function ProjectPage({
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-4">
-                      <p className="mb-3 font-serif text-sm leading-relaxed">
-                        {post.summary}
-                      </p>
+                      <MarkdownRenderer
+                        content={post.summary}
+                        className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                        truncate={150}
+                      />
                       <div className="flex flex-wrap gap-2">
                         {post.tags.slice(0, 3).map((tag) => (
                           <span

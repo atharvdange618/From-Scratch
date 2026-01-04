@@ -213,7 +213,7 @@ export default async function PreviewPage({
             <img
               src={post.bannerImage}
               alt={post.title}
-              className="h-auto w-full max-h-[400px] object-cover"
+              className="h-auto w-full object-cover"
             />
           </div>
         )}
