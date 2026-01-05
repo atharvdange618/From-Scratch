@@ -173,7 +173,6 @@ export function RelatedPosts({
                   {post.summary}
                 </p>
 
-                {/* Meta info */}
                 <div className="mb-3 flex flex-wrap gap-2">
                   <span className="inline-flex items-center gap-1 rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
                     <Calendar className="h-3 w-3" />
@@ -185,7 +184,6 @@ export function RelatedPosts({
                   </span>
                 </div>
 
-                {/* Tags */}
                 <div className="mt-3 flex flex-wrap gap-2">
                   {post.tags.slice(0, 2).map((tag) => (
                     <span

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Github, ExternalLink, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
+import { BreadcrumbNav } from "@/components/breadcrumb-nav";
 import TrackableLink from "@/components/analytics/trackable-link";
 import {
   Card,
@@ -114,7 +115,6 @@ export default async function ProjectPage({
   return (
     <div className="min-h-screen bg-white py-20">
       <div className="container mx-auto px-4">
-        {/* Back Button */}
         <Link href="/projects">
           <Button className="mb-8 rounded-none border-4 border-black bg-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -122,7 +122,13 @@ export default async function ProjectPage({
           </Button>
         </Link>
 
-        {/* Project Header */}
+        <BreadcrumbNav
+          items={[
+            { label: "Projects", href: "/projects" },
+            { label: project.name },
+          ]}
+        />
+
         <div
           className="mb-8 rounded-none border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           style={{ backgroundColor: statusColors[project.status] }}
@@ -213,7 +219,6 @@ export default async function ProjectPage({
           </div>
         </div>
 
-        {/* Project Description */}
         <div className="mb-8 rounded-none border-4 border-black bg-white p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <MarkdownRenderer
             content={project.description}
@@ -221,7 +226,6 @@ export default async function ProjectPage({
           />
         </div>
 
-        {/* Banner Image */}
         {project.bannerImage && (
           <div className="mb-8 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <img
@@ -232,7 +236,6 @@ export default async function ProjectPage({
           </div>
         )}
 
-        {/* Related Blog Posts */}
         {relatedPosts.length > 0 && (
           <div className="mb-8">
             <h2 className="mb-6 font-sans text-3xl font-bold">
@@ -282,7 +285,6 @@ export default async function ProjectPage({
           </div>
         )}
 
-        {/* Project Timeline */}
         <div className="rounded-none border-4 border-black bg-[#FFECDB] p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="mb-4 font-sans text-2xl font-bold">
             Project Timeline

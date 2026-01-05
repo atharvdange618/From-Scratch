@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ProjectCardSkeleton } from "@/components/skeletons";
 
 interface Project {
   _id: string;
@@ -69,8 +70,13 @@ export default function ProjectsPage() {
     return (
       <div className="min-h-screen bg-white py-20">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center rounded-none border-4 border-black bg-[#AFDDFF] p-16">
-            <Loader2 className="h-12 w-12 animate-spin" />
+          <h1 className="mb-8 font-sans text-4xl font-bold md:text-5xl">
+            My Projects
+          </h1>
+          <div className="grid gap-6 md:grid-cols-2">
+            {[...Array(4)].map((_, i) => (
+              <ProjectCardSkeleton key={i} />
+            ))}
           </div>
         </div>
       </div>
@@ -92,7 +98,6 @@ export default function ProjectsPage() {
   return (
     <div className="min-h-screen bg-white py-12 md:py-20">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <div className="mb-8 md:mb-12 text-center">
           <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">
             My Projects
@@ -103,7 +108,6 @@ export default function ProjectsPage() {
           </p>
         </div>
 
-        {/* Status Filter */}
         <div className="mb-6 md:mb-8 flex flex-wrap items-center justify-center gap-2 md:gap-3">
           {["All", "Active", "Completed", "Archived"].map((status) => (
             <Button
@@ -120,7 +124,6 @@ export default function ProjectsPage() {
           ))}
         </div>
 
-        {/* Projects Grid */}
         <div className="grid gap-5 md:gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
             <Card
@@ -206,7 +209,6 @@ export default function ProjectsPage() {
           ))}
         </div>
 
-        {/* Empty State */}
         {filteredProjects.length === 0 && (
           <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black bg-[#AFDDFF] p-16">
             <h3 className="mb-2 text-2xl font-bold">

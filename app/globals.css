@@ -56,9 +56,20 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  *:focus-visible {
+    @apply outline-4 outline-offset-2 outline-[#60B5FF];
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-4 outline-offset-2 outline-[#60B5FF];
+  }
 }
 
-/* Custom prose styles for markdown content */
 .prose {
   @apply text-gray-800;
 }

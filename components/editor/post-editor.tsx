@@ -690,7 +690,6 @@ export default function PostEditor() {
           </div>
         </div>
 
-        {/* Preview Links Section */}
         {isEditMode && !form.watch("isPublished") && (
           <Card className="rounded-none border-4 border-black bg-[#AFDDFF] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="mb-4 flex items-center justify-between">

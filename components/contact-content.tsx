@@ -11,6 +11,7 @@ import {
   Phone,
 } from "@deemlol/next-icons";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import emailjs from "@emailjs/browser";
 
 import { Button } from "@/components/ui/button";
@@ -22,29 +23,35 @@ import { useToast } from "@/hooks/use-toast";
 import { formatTimeIST } from "@/lib/dateandnumbers";
 import { trackEvent } from "@/lib/analytics";
 
+interface ContactFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
 export function ContactContent() {
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    watch,
+  } = useForm<ContactFormData>({
+    mode: "onBlur",
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
+  const messageLength = watch("message")?.length || 0;
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormState((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
+  const onSubmit = async (data: ContactFormData) => {
     try {
       const now = new Date();
 
@@ -52,30 +59,25 @@ export function ContactContent() {
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
         {
-          name: formState.name,
-          email: formState.email,
-          subject: formState.subject,
-          message: formState.message,
+          name: data.name,
+          email: data.email,
+          subject: data.subject,
+          message: data.message,
           time: formatTimeIST(now),
         },
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
       );
 
       await trackEvent("contact_form_submit", {
-        hasName: !!formState.name,
-        hasEmail: !!formState.email,
-        hasSubject: !!formState.subject,
-        messageLength: formState.message.length,
+        hasName: !!data.name,
+        hasEmail: !!data.email,
+        hasSubject: !!data.subject,
+        messageLength: data.message.length,
         success: true,
       });
 
       setIsSubmitted(true);
-      setFormState({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-      });
+      reset();
 
       toast({
         title: "Message sent successfully!",
@@ -93,8 +95,6 @@ export function ContactContent() {
         description: "Please try again or contact me directly via email.",
         variant: "destructive",
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -117,39 +117,52 @@ export function ContactContent() {
           </h2>
 
           <div className="mb-6 md:mb-8 space-y-3 md:space-y-4">
-            <div className="flex items-start gap-3 md:gap-4">
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black bg-[#60B5FF]">
+            <a
+              href="mailto:atharvdange.dev@gmail.com"
+              className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
+            >
+              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black bg-[#60B5FF] transition-colors group-hover:bg-[#4A9FE8]">
                 <Mail className="h-4 w-4 md:h-5 md:w-5" />
               </div>
               <div>
                 <h3 className="font-bold text-sm md:text-base">Email</h3>
-                <p className="font-serif text-sm md:text-base">
+                <p className="font-serif text-sm md:text-base underline decoration-2 underline-offset-2 group-hover:decoration-[#60B5FF]">
                   atharvdange.dev@gmail.com
                 </p>
               </div>
-            </div>
+            </a>
 
-            <div className="flex items-start gap-3 md:gap-4">
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black bg-[#FF9149]">
+            <a
+              href="tel:+917875273298"
+              className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
+            >
+              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black bg-[#FF9149] transition-colors group-hover:bg-[#E87C35]">
                 <Phone className="h-4 w-4 md:h-5 md:w-5" />
               </div>
               <div>
                 <h3 className="font-bold text-sm md:text-base">Phone</h3>
-                <p className="font-serif text-sm md:text-base">
+                <p className="font-serif text-sm md:text-base underline decoration-2 underline-offset-2 group-hover:decoration-[#FF9149]">
                   +91 7875273298
                 </p>
               </div>
-            </div>
+            </a>
 
-            <div className="flex items-start gap-3 md:gap-4">
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black bg-[#AFDDFF]">
+            <a
+              href="https://maps.google.com/?q=Pune,India"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
+            >
+              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black bg-[#AFDDFF] transition-colors group-hover:bg-[#98CCEE]">
                 <MapPin className="h-4 w-4 md:h-5 md:w-5" />
               </div>
               <div>
                 <h3 className="font-bold text-sm md:text-base">Location</h3>
-                <p className="font-serif text-sm md:text-base">Pune, India</p>
+                <p className="font-serif text-sm md:text-base underline decoration-2 underline-offset-2 group-hover:decoration-[#AFDDFF]">
+                  Pune, India
+                </p>
               </div>
-            </div>
+            </a>
           </div>
 
           <h3 className="mb-3 md:mb-4 font-bold text-sm md:text-base">
@@ -249,68 +262,138 @@ export function ContactContent() {
               </CardContent>
             </Card>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-5 md:space-y-6"
+            >
               <div className="grid gap-5 md:gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="font-bold">
-                    Name
+                    Name <span className="text-red-600">*</span>
                   </Label>
                   <Input
                     id="name"
-                    name="name"
-                    placeholder="Name"
-                    value={formState.name}
-                    onChange={handleChange}
-                    required
-                    className="rounded-none border-4 border-black bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    placeholder="Your name"
+                    {...register("name", {
+                      required: "Name is required",
+                      minLength: {
+                        value: 2,
+                        message: "Name must be at least 2 characters",
+                      },
+                    })}
+                    className={`rounded-none border-4 bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                      errors.name ? "border-red-600" : "border-black"
+                    }`}
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? "name-error" : undefined}
                   />
+                  {errors.name && (
+                    <p
+                      id="name-error"
+                      className="text-sm font-bold text-red-600"
+                    >
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="font-bold">
-                    Email
+                    Email <span className="text-red-600">*</span>
                   </Label>
                   <Input
                     id="email"
-                    name="email"
-                    placeholder="Email"
+                    placeholder="your@email.com"
                     type="email"
-                    value={formState.email}
-                    onChange={handleChange}
-                    required
-                    className="rounded-none border-4 border-black bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Please enter a valid email address",
+                      },
+                    })}
+                    className={`rounded-none border-4 bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                      errors.email ? "border-red-600" : "border-black"
+                    }`}
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? "email-error" : undefined}
                   />
+                  {errors.email && (
+                    <p
+                      id="email-error"
+                      className="text-sm font-bold text-red-600"
+                    >
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="subject" className="font-bold">
-                  Subject
+                  Subject <span className="text-red-600">*</span>
                 </Label>
                 <Input
                   id="subject"
-                  name="subject"
-                  placeholder="Subject"
-                  value={formState.subject}
-                  onChange={handleChange}
-                  required
-                  className="rounded-none border-4 border-black bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder="What's this about?"
+                  {...register("subject", {
+                    required: "Subject is required",
+                    minLength: {
+                      value: 3,
+                      message: "Subject must be at least 3 characters",
+                    },
+                  })}
+                  className={`rounded-none border-4 bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                    errors.subject ? "border-red-600" : "border-black"
+                  }`}
+                  aria-invalid={!!errors.subject}
+                  aria-describedby={
+                    errors.subject ? "subject-error" : undefined
+                  }
                 />
+                {errors.subject && (
+                  <p
+                    id="subject-error"
+                    className="text-sm font-bold text-red-600"
+                  >
+                    {errors.subject.message}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="message" className="font-bold">
-                  Message
+                  Message <span className="text-red-600">*</span>
                 </Label>
                 <Textarea
                   id="message"
-                  name="message"
-                  value={formState.message}
-                  onChange={handleChange}
-                  required
-                  placeholder="Message"
+                  placeholder="Your message here..."
                   rows={6}
-                  className="rounded-none border-4 border-black bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...register("message", {
+                    required: "Message is required",
+                    minLength: {
+                      value: 10,
+                      message: "Message must be at least 10 characters",
+                    },
+                  })}
+                  className={`rounded-none border-4 bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                    errors.message ? "border-red-600" : "border-black"
+                  }`}
+                  aria-invalid={!!errors.message}
+                  aria-describedby={
+                    errors.message ? "message-error" : undefined
+                  }
                 />
+                {errors.message && (
+                  <p
+                    id="message-error"
+                    className="text-sm font-bold text-red-600"
+                  >
+                    {errors.message.message}
+                  </p>
+                )}
+                <p className="text-xs text-gray-600">
+                  {messageLength} / 10 minimum characters
+                </p>
               </div>
 
               <Button

@@ -44,7 +44,6 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* SVG Illustration */}
         <div className="relative order-first md:order-last">
           <svg
             viewBox="0 0 500 500"
@@ -52,7 +51,6 @@ export function HeroSection() {
             xmlns="http://www.w3.org/2000/svg"
             className="w-full h-auto"
           >
-            {/* Background circle */}
             <circle
               cx="250"
               cy="250"
@@ -62,7 +60,6 @@ export function HeroSection() {
               strokeWidth="6"
             />
 
-            {/* Code editor window */}
             <rect
               x="120"
               y="140"
@@ -73,7 +70,6 @@ export function HeroSection() {
               strokeWidth="6"
             />
 
-            {/* Window header */}
             <rect
               x="120"
               y="140"
@@ -108,7 +104,6 @@ export function HeroSection() {
               strokeWidth="2"
             />
 
-            {/* Code lines */}
             <rect x="140" y="200" width="120" height="8" fill="#000" />
             <rect x="140" y="220" width="180" height="8" fill="#000" />
             <rect x="160" y="240" width="140" height="8" fill="#FF9149" />
@@ -117,7 +112,6 @@ export function HeroSection() {
             <rect x="160" y="300" width="120" height="8" fill="#E0FFF1" />
             <rect x="140" y="320" width="80" height="8" fill="#000" />
 
-            {/* Cursor */}
             <rect x="240" y="318" width="3" height="12" fill="#FF9149">
               <animate
                 attributeName="opacity"
@@ -127,9 +121,7 @@ export function HeroSection() {
               />
             </rect>
 
-            {/* Floating elements */}
             <g>
-              {/* Brackets */}
               <text
                 x="80"
                 y="120"
@@ -142,7 +134,6 @@ export function HeroSection() {
                 {"</>"}
               </text>
 
-              {/* Git icon */}
               <circle
                 cx="400"
                 cy="180"
@@ -160,7 +151,6 @@ export function HeroSection() {
                 fill="none"
               />
 
-              {/* Terminal symbol */}
               <rect
                 x="70"
                 y="320"
@@ -180,7 +170,6 @@ export function HeroSection() {
               />
               <rect x="105" y="355" width="15" height="4" fill="#000" />
 
-              {/* Rocket */}
               <g>
                 <rect
                   x="390"

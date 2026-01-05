@@ -57,7 +57,6 @@ export function FeaturedProjects() {
         const featuredProjects = (data.projects || []).slice(0, 3);
         setProjects(featuredProjects);
 
-        // Fetch GitHub stats for projects with GitHub URLs
         const statsPromises = featuredProjects
           .filter((p: Project) => p.githubUrl)
           .map(async (p: Project) => {
@@ -191,7 +190,6 @@ export function FeaturedProjects() {
                   truncate={150}
                 />
 
-                {/* Tech Stack */}
                 <div className="mb-4">
                   <div className="mb-2 flex items-center gap-2">
                     <Code2 className="h-4 w-4" />
@@ -216,7 +214,6 @@ export function FeaturedProjects() {
                   </div>
                 </div>
 
-                {/* GitHub Stats */}
                 {stats && (
                   <div className="rounded-none border-2 border-black bg-[#E0FFF1] p-3">
                     <div className="grid grid-cols-3 gap-2 text-center">

@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import "./globals.css";
+import { BackToTop } from "@/components/back-to-top";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | From Scratch",
   },
   description:
-    "Building frameworks, apps, and ideas from the ground up. Follow Atharv's journey as he creates tools, ships projects, and shares everything learned along the way.",
+    "Building frameworks, apps, and ideas from the ground up. Follow my journey as I create tools, ship projects, and share everything learned along the way.",
   keywords: [
     "web development",
     "full stack",
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     url: "/",
     title: "From Scratch | Atharv Dange",
     description:
-      "Building frameworks, apps, and ideas from the ground up. Follow Atharv's journey as he creates tools, ships projects, and shares everything learned along the way.",
+      "Building frameworks, apps, and ideas from the ground up. Follow my journey as I create tools, ship projects, and share everything learned along the way.",
     siteName: "From Scratch",
     images: [
       {
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "From Scratch | Atharv Dange",
     description:
-      "Building frameworks, apps, and ideas from the ground up. Follow Atharv's journey as he creates tools, ships projects, and shares everything learned along the way.",
+      "Building frameworks, apps, and ideas from the ground up. Follow my journey as I create tools, ship projects, and share everything learned along the way.",
     creator: "@atharvdangedev",
     images: [
       "/api/og?title=From%20Scratch&description=Building%20tools%20and%20apps,%20one%20commit%20at%20a%20time&type=page",
@@ -80,11 +81,12 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body>
           <Header />
           <main>{children}</main>
           <Footer />
+          <BackToTop />
           <Analytics />
           <SpeedInsights />
           <Toaster />

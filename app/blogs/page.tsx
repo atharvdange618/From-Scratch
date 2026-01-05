@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Calendar, Tag, Search, Filter, Clock } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
+import { BlogCardSkeleton } from "@/components/skeletons";
+import { EmptyState } from "@/components/empty-state";
+import { RecentlyViewed } from "@/components/recently-viewed";
 
 interface Post {
   _id: string;
@@ -44,6 +47,7 @@ interface Post {
 
 export default function BlogsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [posts, setPosts] = useState<Post[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,12 +61,19 @@ export default function BlogsPage() {
 
   const categories = [
     "all",
-    "Technical",
-    "Tutorial",
-    "Project Update",
-    "Reflection",
+    "Active Projects",
+    "Completed Projects",
+    "Learning Notes",
+    "Updates",
   ];
   const [allTags, setAllTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    const tagFromUrl = searchParams.get("tag");
+    if (tagFromUrl) {
+      setSelectedTag(tagFromUrl);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     fetchPosts();
@@ -179,19 +190,33 @@ export default function BlogsPage() {
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
-      Technical: "#AFDDFF",
-      Tutorial: "#FFECDB",
-      "Project Update": "#E0FFF1",
-      Reflection: "#FFECDB",
+      "Active Projects": "#60B5FF",
+      "Completed Projects": "#E0FFF1",
+      "Learning Notes": "#AFDDFF",
+      Updates: "#FFECDB",
     };
     return colors[category] || "#AFDDFF";
   };
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex items-center justify-center">
-          <div className="text-xl font-bold">Loading posts...</div>
+      <div className="container mx-auto px-4 py-12">
+        {/* Header */}
+        <div className="mb-12">
+          <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl">
+            All Blog Posts
+          </h1>
+          <p className="font-serif text-lg text-gray-700">
+            Deep dives into projects, technical tutorials, and reflections on
+            the journey of building from scratch.
+          </p>
+        </div>
+
+        {/* Skeleton Grid */}
+        <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {[...Array(9)].map((_, i) => (
+            <BlogCardSkeleton key={i} />
+          ))}
         </div>
       </div>
     );
@@ -209,6 +234,9 @@ export default function BlogsPage() {
           journey of building from scratch.
         </p>
       </div>
+
+      {/* Recently Viewed */}
+      <RecentlyViewed />
 
       {/* Filters Section */}
       <div className="mb-8 rounded-none border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
@@ -315,19 +343,24 @@ export default function BlogsPage() {
 
       {/* Posts Grid */}
       {currentPosts.length === 0 ? (
-        <div className="py-16 text-center">
-          <p className="text-xl font-bold">
-            No posts found matching your filters.
-          </p>
-          <Button
-            onClick={handleReset}
-            className="mt-4 rounded-none border-4 border-black bg-[#60B5FF] font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-          >
-            Clear Filters
-          </Button>
-        </div>
+        <EmptyState
+          title="No posts found"
+          description="Try adjusting your filters or search query to find what you're looking for."
+          type="search"
+          actionLabel="Reset Filters"
+          onAction={handleReset}
+        />
       ) : (
         <>
+          {/* Result Count */}
+          {filteredPosts.length > 0 && (
+            <div className="mb-4 text-center text-sm font-medium text-gray-600">
+              Showing {indexOfFirstPost + 1}-
+              {Math.min(indexOfLastPost, filteredPosts.length)} of{" "}
+              {filteredPosts.length} posts
+            </div>
+          )}
+
           <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {currentPosts.map((post) => (
               <Card
@@ -379,13 +412,19 @@ export default function BlogsPage() {
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2">
                     {post.tags?.slice(0, 3).map((tag) => (
-                      <span
+                      <button
                         key={tag}
-                        className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedTag(tag);
+                          trackEvent("blog_tag_click", { tag });
+                        }}
+                        className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                        aria-label={`Filter by ${tag}`}
                       >
                         <Tag className="mr-1 inline h-3 w-3" />
                         {tag}
-                      </span>
+                      </button>
                     ))}
                     {post.tags && post.tags.length > 3 && (
                       <span className="inline-block rounded-lg border-2 border-black bg-gray-200 px-2 py-1 text-xs font-bold">

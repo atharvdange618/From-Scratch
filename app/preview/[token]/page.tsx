@@ -106,7 +106,6 @@ export default async function PreviewPage({
 
   return (
     <>
-      {/* Sticky Preview Banner */}
       <div className="sticky top-0 z-50 border-b-4 border-black bg-[#FF9149] shadow-[0px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
@@ -227,7 +226,6 @@ export default async function PreviewPage({
           />
         </div>
 
-        {/* Preview Notice - No Comments */}
         <Card className="rounded-none border-4 border-black bg-[#AFDDFF] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <CardContent className="p-8 text-center">
             <AlertTriangle className="mx-auto mb-3 h-12 w-12" />

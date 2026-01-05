@@ -68,6 +68,8 @@ export default function DraftsPage() {
   const [checkingAdmin, setCheckingAdmin] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [publishingId, setPublishingId] = useState<string | null>(null);
+  const [deletedDraft, setDeletedDraft] = useState<Post | null>(null);
+  const [undoTimeout, setUndoTimeout] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -128,6 +130,12 @@ export default function DraftsPage() {
 
   const handlePublish = async (postId: string) => {
     setPublishingId(postId);
+
+    const draftToPublish = drafts.find((d) => d._id === postId);
+    if (!draftToPublish) return;
+
+    setDrafts((prev) => prev.filter((d) => d._id !== postId));
+
     try {
       const response = await fetch(`/api/posts/id/${postId}`, {
         method: "PUT",
@@ -140,11 +148,12 @@ export default function DraftsPage() {
           title: "✅ Published",
           description: "Post has been published successfully",
         });
-        fetchDrafts(); // Refresh the list
       } else {
         throw new Error("Failed to publish");
       }
     } catch (error) {
+      // Rollback on error
+      setDrafts((prev) => [...prev, draftToPublish]);
       toast({
         title: "❌ Error",
         description: "Failed to publish post",
@@ -156,22 +165,71 @@ export default function DraftsPage() {
   };
 
   const handleDelete = async (postId: string) => {
+    const draftToDelete = drafts.find((d) => d._id === postId);
+    if (!draftToDelete) return;
+
+    if (undoTimeout) {
+      clearTimeout(undoTimeout);
+    }
+
+    setDrafts((prev) => prev.filter((d) => d._id !== postId));
+    setDeletedDraft(draftToDelete);
+
+    const { dismiss } = toast({
+      title: "Draft deleted",
+      description: "The draft has been removed.",
+      action: (
+        <Button
+          size="sm"
+          onClick={() => {
+            handleUndo();
+            dismiss();
+          }}
+          className="rounded-none border-2 border-black bg-[#60B5FF] px-3 py-1 text-xs font-bold"
+        >
+          Undo
+        </Button>
+      ),
+    });
+
+    const timeout = setTimeout(() => {
+      performDelete(postId);
+    }, 5000);
+
+    setUndoTimeout(timeout);
+  };
+
+  const handleUndo = () => {
+    if (deletedDraft && undoTimeout) {
+      clearTimeout(undoTimeout);
+      setDrafts((prev) => [...prev, deletedDraft]);
+      setDeletedDraft(null);
+      setUndoTimeout(null);
+      toast({
+        title: "Undo successful",
+        description: "Draft has been restored.",
+      });
+    }
+  };
+
+  const performDelete = async (postId: string) => {
     setDeletingId(postId);
     try {
       const response = await fetch(`/api/posts/id/${postId}`, {
         method: "DELETE",
       });
 
-      if (response.ok) {
-        toast({
-          title: "✅ Deleted",
-          description: "Draft has been deleted",
-        });
-        fetchDrafts(); // Refresh the list
-      } else {
+      if (!response.ok) {
         throw new Error("Failed to delete");
       }
+
+      setDeletedDraft(null);
+      setUndoTimeout(null);
     } catch (error) {
+      if (deletedDraft) {
+        setDrafts((prev) => [...prev, deletedDraft]);
+        setDeletedDraft(null);
+      }
       toast({
         title: "❌ Error",
         description: "Failed to delete draft",
@@ -229,9 +287,7 @@ export default function DraftsPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      {/* Header Section */}
       <div className="mb-12 space-y-6">
-        {/* Title and Icon */}
         <div className="flex items-center gap-4">
           <div className="rounded-none border-4 border-black bg-[#FFE5B4] p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <FileText className="h-10 w-10" />
@@ -244,7 +300,6 @@ export default function DraftsPage() {
           </div>
         </div>
 
-        {/* Actions Bar */}
         <div className="flex flex-wrap items-center gap-3">
           <Badge className="rounded-none border-4 border-black bg-[#AFDDFF]  px-6 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
             {drafts.length} {drafts.length === 1 ? "Draft" : "Drafts"}

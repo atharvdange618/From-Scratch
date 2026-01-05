@@ -19,6 +19,11 @@ import { calculateReadingTime } from "@/lib/reading-time";
 import TrackableLink from "@/components/analytics/trackable-link";
 import ScrollTracker from "@/components/analytics/scroll-tracker";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
+import { BreadcrumbNav } from "@/components/breadcrumb-nav";
+import { ReadProgress } from "@/components/read-progress";
+import { ClickableTags } from "@/components/clickable-tags";
+import { SocialShare } from "@/components/social-share";
+import { PostTracker } from "@/components/post-tracker";
 
 import "highlight.js/styles/atom-one-dark.css";
 
@@ -48,9 +53,7 @@ interface Post {
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/posts/${slug}`, {
-      cache: "no-store",
-    });
+    const res = await fetch(`${baseUrl}/api/posts/${slug}`);
 
     if (!res.ok) {
       return null;
@@ -162,6 +165,17 @@ export default async function PostPage({
 
   return (
     <>
+      <ReadProgress />
+      <PostTracker
+        post={{
+          _id: post._id,
+          title: post.title,
+          slug: post.slug,
+          summary: post.summary,
+          category: post.category,
+          publishedDate: post.publishedDate,
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -178,6 +192,10 @@ export default async function PostPage({
             Back to Home
           </Link>
         </Button>
+
+        <BreadcrumbNav
+          items={[{ label: "Blog", href: "/blogs" }, { label: post.title }]}
+        />
 
         <header className="mb-12">
           <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -220,18 +238,7 @@ export default async function PostPage({
             {post.summary}
           </p>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <Tag className="h-4 w-4 text-gray-600" />
-            {post.tags.map((tag, index) => (
-              <Badge
-                key={index}
-                variant="outline"
-                className="rounded-none border-2 border-black bg-white px-3 py-1 font-serif"
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
+          <ClickableTags tags={post.tags} postTitle={post.title} />
 
           {post.linkedProject && (
             <Card className="mt-8 rounded-none border-4 border-black bg-[#FFECDB] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
@@ -299,7 +306,14 @@ export default async function PostPage({
           </div>
         </ScrollTracker>
 
-        {/* Related Posts */}
+        <div className="mb-12">
+          <SocialShare
+            title={post.title}
+            url={`${baseUrl}/posts/${post.slug}`}
+            description={post.summary}
+          />
+        </div>
+
         <RelatedPosts
           currentPostId={post._id}
           currentCategory={post.category}

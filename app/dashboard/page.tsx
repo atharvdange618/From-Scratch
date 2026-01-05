@@ -143,7 +143,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 min-h-svh">
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
@@ -166,17 +166,14 @@ export default function DashboardPage() {
 
       {stats && (
         <>
-          {/* Retention Indicator */}
           <RetentionIndicator retentionData={stats.retentionData} />
 
-          {/* Stats Cards */}
           <StatsCards
             totalEvents={stats.totalEvents}
             uniqueSessions={stats.uniqueSessions}
             uniqueVisitors={stats.uniqueVisitors}
           />
 
-          {/* Charts Grid */}
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
             <EventsOverTimeChart dailyEvents={stats.dailyEvents} />
             <EventTypeChart
@@ -187,7 +184,6 @@ export default function DashboardPage() {
             <TopCountriesChart topCountries={stats.topCountries} />
           </div>
 
-          {/* Recent Events Table */}
           <div className="mt-8">
             <RecentEventsTable events={recentEvents} />
           </div>

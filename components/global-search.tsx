@@ -231,14 +231,24 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
         <DialogHeader className="border-b-4 border-black p-4">
           <DialogTitle className="sr-only">Search</DialogTitle>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2" />
+            <Search
+              className={`absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transition-colors ${
+                loading ? "animate-pulse text-gray-400" : ""
+              }`}
+            />
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search posts and projects..."
               className="h-12 rounded-none border-none bg-transparent pl-12 pr-4 text-lg font-medium focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
               autoFocus
+              aria-label="Search posts and projects"
             />
+            {loading && query.trim() && (
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">
+                Searching...
+              </span>
+            )}
           </div>
         </DialogHeader>
 
@@ -289,10 +299,21 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                 })}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center p-8 text-gray-500">
-                <Search className="mb-2 h-12 w-12" />
-                <p className="font-medium">No results found</p>
-                <p className="text-sm">Try a different search term</p>
+              <div className="flex flex-col items-center justify-center p-12 text-gray-500">
+                <div className="mb-4 rounded-full border-4 border-black bg-[#AFDDFF] p-4">
+                  <Search className="h-12 w-12" />
+                </div>
+                <p className="mb-1 text-lg font-bold text-black">
+                  No results found
+                </p>
+                <p className="text-sm">
+                  Try a different search term or check your spelling
+                </p>
+                {query.length < 2 && (
+                  <p className="mt-2 text-xs font-medium text-gray-600">
+                    Tip: Type at least 2 characters to search
+                  </p>
+                )}
               </div>
             )
           ) : (
@@ -324,12 +345,26 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-8 text-gray-500">
-                  <Search className="mb-2 h-12 w-12" />
-                  <p className="font-medium">Start typing to search</p>
+                <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                  <div className="mb-4 rounded-full border-4 border-black bg-[#E0FFF1] p-4">
+                    <Search className="h-12 w-12" />
+                  </div>
+                  <p className="mb-1 text-lg font-bold text-black">
+                    Start typing to search
+                  </p>
                   <p className="text-sm">
                     Search across all posts and projects
                   </p>
+                  <div className="mt-4 flex gap-2 text-xs">
+                    <kbd className="rounded border-2 border-black bg-white px-2 py-1 font-bold">
+                      Ctrl
+                    </kbd>
+                    <span className="font-bold">+</span>
+                    <kbd className="rounded border-2 border-black bg-white px-2 py-1 font-bold">
+                      K
+                    </kbd>
+                    <span className="text-gray-600">to open anytime</span>
+                  </div>
                 </div>
               )}
             </div>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
@@ -126,10 +126,17 @@ export function Header() {
                 setIsSearchOpen(true);
                 trackEvent("search_opened", {});
               }}
-              className="h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="group relative h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              aria-label="Search (Cmd+K)"
             >
               <Search className="h-5 w-5" />
-              <span className="sr-only">Search (Cmd+K)</span>
+              <span className="sr-only">Search (Ctrl+K)</span>
+              <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black bg-black px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100">
+                Search{" "}
+                <kbd className="ml-1 rounded border border-white/20 bg-white/10 px-1">
+                  Ctrl + K
+                </kbd>
+              </span>
             </Button>
 
             {/* {isSignedIn ? (
@@ -161,6 +168,7 @@ export function Header() {
               trackEvent("search_opened", {});
             }}
             className="h-10 w-10 rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
+            aria-label="Search"
           >
             <Search className="h-5 w-5" />
             <span className="sr-only">Search</span>
@@ -171,6 +179,7 @@ export function Header() {
               <Button
                 size="icon"
                 className="h-10 w-10 rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
+                aria-label="Open menu"
               >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Menu</span>
@@ -186,7 +195,6 @@ export function Header() {
               </SheetDescription>
 
               <div className="flex h-full flex-col">
-                {/* Header */}
                 <div className="flex items-center justify-between border-b-4 border-black p-6">
                   <span className="text-xl font-bold" aria-hidden="true">
                     Menu
@@ -194,13 +202,13 @@ export function Header() {
                   <Button
                     size="icon"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="h-8 w-8 rounded-none border-2 border-black bg-white p-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF]"
+                    className="h-10 w-10 rounded-none border-4 border-black bg-[#FF9149] p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149]/80 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                    aria-label="Close menu"
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-5 w-5 text-white" />
                   </Button>
                 </div>
 
-                {/* Navigation Links */}
                 <nav className="flex-1 p-6">
                   <ul className="space-y-4">
                     {navLinks.map((link) => (
@@ -242,7 +250,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Global Search Dialog */}
       <GlobalSearch open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </header>
   );
