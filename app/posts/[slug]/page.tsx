@@ -1,13 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Metadata } from "next";
-import {
-  ArrowLeft,
-  Calendar,
-  Tag,
-  ExternalLink,
-  Clock,
-} from "@deemlol/next-icons";
+import { ArrowLeft, Calendar, ExternalLink, Clock } from "@deemlol/next-icons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -283,10 +278,13 @@ export default async function PostPage({
 
         {post.bannerImage && (
           <div className="mb-12 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <img
+            <Image
               src={post.bannerImage}
               alt={post.title}
+              width={1200}
+              height={630}
               className="h-auto w-full object-cover"
+              priority
             />
           </div>
         )}

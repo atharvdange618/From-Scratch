@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,6 +11,7 @@ import {
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { formatDate, formatTimeIST } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
+import Image from "next/image";
 
 interface PreviewData {
   post: {
@@ -209,10 +209,13 @@ export default async function PreviewPage({
 
         {post.bannerImage && (
           <div className="mb-12 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <img
+            <Image
               src={post.bannerImage}
               alt={post.title}
+              width={1200}
+              height={630}
               className="h-auto w-full object-cover"
+              priority
             />
           </div>
         )}

@@ -37,6 +37,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
+import Image from "next/image";
 
 interface Post {
   _id: string;
@@ -152,7 +153,6 @@ export default function DraftsPage() {
         throw new Error("Failed to publish");
       }
     } catch (error) {
-      // Rollback on error
       setDrafts((prev) => [...prev, draftToPublish]);
       toast({
         title: "❌ Error",
@@ -255,7 +255,6 @@ export default function DraftsPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Copy preview URL to clipboard
         await navigator.clipboard.writeText(data.data.previewUrl);
         toast({
           title: "✅ Preview Link Generated",
@@ -352,9 +351,11 @@ export default function DraftsPage() {
               <CardHeader>
                 {draft.bannerImage && (
                   <div className="mb-4 -mt-6 -mx-6">
-                    <img
+                    <Image
                       src={draft.bannerImage}
                       alt={draft.title}
+                      width={400}
+                      height={192}
                       className="h-48 w-full border-b-4 border-black object-cover"
                     />
                   </div>

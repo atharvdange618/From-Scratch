@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
+import Image from "next/image";
 
 interface Project {
   _id: string;
@@ -228,10 +229,13 @@ export default async function ProjectPage({
 
         {project.bannerImage && (
           <div className="mb-8 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <img
+            <Image
               src={project.bannerImage}
               alt={project.name}
+              width={1200}
+              height={630}
               className="h-auto w-full object-cover"
+              priority
             />
           </div>
         )}
