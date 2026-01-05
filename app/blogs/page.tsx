@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Calendar, Tag, Search, Filter, Clock } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
@@ -45,7 +45,7 @@ interface Post {
   bannerImage?: string;
 }
 
-export default function BlogsPage() {
+function BlogsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [posts, setPosts] = useState<Post[]>([]);
@@ -513,5 +513,22 @@ export default function BlogsPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function BlogsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="text-center">
+            <div className="mb-4 inline-block h-12 w-12 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
+            <p className="font-bold">Loading blogs...</p>
+          </div>
+        </div>
+      }
+    >
+      <BlogsContent />
+    </Suspense>
   );
 }
