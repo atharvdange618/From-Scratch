@@ -1,10 +1,5 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface ICodeSnippet {
-  description?: string;
-  code?: string;
-}
-
 export interface IPreviewToken {
   token: string;
   createdAt: Date;
@@ -25,7 +20,6 @@ export interface IPost extends Document {
     | "Project Logs";
   tags: string[];
   linkedProject?: mongoose.Types.ObjectId;
-  codeSnippets?: ICodeSnippet[];
   bannerImage?: string;
   publishedDate?: Date;
   isPublished: boolean;
@@ -81,12 +75,6 @@ const PostSchema: Schema<IPost> = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Project",
     },
-    codeSnippets: [
-      {
-        description: { type: String },
-        code: { type: String },
-      },
-    ],
     bannerImage: {
       type: String,
       trim: true,
