@@ -133,13 +133,17 @@ export default async function PreviewPage({
               className="rounded-none border-2 border-black px-3 py-1 font-serif text-sm"
               style={{
                 backgroundColor:
-                  post.category === "Active Projects"
+                  post.category === "JavaScript & Web APIs"
                     ? "#60B5FF"
-                    : post.category === "Completed Projects"
+                    : post.category === "Git & Version Control"
                     ? "#FF9149"
-                    : post.category === "Learning Notes"
+                    : post.category === "Web Development"
                     ? "#AFDDFF"
-                    : "#E0FFF1",
+                    : post.category === "Frameworks & Tools"
+                    ? "#E0FFF1"
+                    : post.category === "Software Engineering"
+                    ? "#FFECDB"
+                    : "#60B5FF",
               }}
             >
               {post.category}

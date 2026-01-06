@@ -448,16 +448,24 @@ export default function PostEditor() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Active Projects">
-                          Active Projects
+                        <SelectItem value="JavaScript & Web APIs">
+                          JavaScript & Web APIs
                         </SelectItem>
-                        <SelectItem value="Completed Projects">
-                          Completed Projects
+                        <SelectItem value="Git & Version Control">
+                          Git & Version Control
                         </SelectItem>
-                        <SelectItem value="Learning Notes">
-                          Learning Notes
+                        <SelectItem value="Web Development">
+                          Web Development
                         </SelectItem>
-                        <SelectItem value="Updates">Updates</SelectItem>
+                        <SelectItem value="Frameworks & Tools">
+                          Frameworks & Tools
+                        </SelectItem>
+                        <SelectItem value="Software Engineering">
+                          Software Engineering
+                        </SelectItem>
+                        <SelectItem value="Project Logs">
+                          Project Logs
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

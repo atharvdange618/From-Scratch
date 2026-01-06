@@ -50,7 +50,9 @@ export async function PUT(
     const { id } = await segmentData.params;
     const body = await request.json();
 
-    const post = await Post.findByIdAndUpdate(id, body, {
+    const { publishedDate, createdAt, updatedAt, ...updateData } = body;
+
+    const post = await Post.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
     }).populate("linkedProject");

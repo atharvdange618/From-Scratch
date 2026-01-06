@@ -17,10 +17,12 @@ export interface IPost extends Document {
   summary: string;
   content: string;
   category:
-    | "Active Projects"
-    | "Completed Projects"
-    | "Learning Notes"
-    | "Updates";
+    | "JavaScript & Web APIs"
+    | "Git & Version Control"
+    | "Web Development"
+    | "Frameworks & Tools"
+    | "Software Engineering"
+    | "Project Logs";
   tags: string[];
   linkedProject?: mongoose.Types.ObjectId;
   codeSnippets?: ICodeSnippet[];
@@ -62,10 +64,12 @@ const PostSchema: Schema<IPost> = new Schema(
     category: {
       type: String,
       enum: [
-        "Active Projects",
-        "Completed Projects",
-        "Learning Notes",
-        "Updates",
+        "JavaScript & Web APIs",
+        "Git & Version Control",
+        "Web Development",
+        "Frameworks & Tools",
+        "Software Engineering",
+        "Project Logs",
       ],
       required: [true, "Category is required"],
     },

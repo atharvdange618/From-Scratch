@@ -46,14 +46,18 @@ export function getRecentlyViewed(): RecentPost[] {
 
 function getCategoryColor(category: string): string {
   switch (category) {
-    case "Active Projects":
+    case "JavaScript & Web APIs":
       return "#60B5FF";
-    case "Completed Projects":
+    case "Git & Version Control":
       return "#FF9149";
-    case "Learning Notes":
+    case "Web Development":
       return "#AFDDFF";
-    case "Updates":
+    case "Frameworks & Tools":
       return "#E0FFF1";
+    case "Software Engineering":
+      return "#FFECDB";
+    case "Project Logs":
+      return "#60B5FF";
     default:
       return "#FFECDB";
   }

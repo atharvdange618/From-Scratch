@@ -61,10 +61,12 @@ function BlogsContent() {
 
   const categories = [
     "all",
-    "Active Projects",
-    "Completed Projects",
-    "Learning Notes",
-    "Updates",
+    "JavaScript & Web APIs",
+    "Git & Version Control",
+    "Web Development",
+    "Frameworks & Tools",
+    "Software Engineering",
+    "Project Logs",
   ];
   const [allTags, setAllTags] = useState<string[]>([]);
 
