@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
+import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,27 +21,9 @@ import { GlobalSearch } from "./global-search";
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const { isLoaded, isSignedIn } = useUser();
   const pathname = usePathname();
-
-  useEffect(() => {
-    async function checkAdmin() {
-      if (isLoaded && isSignedIn) {
-        try {
-          const response = await fetch("/api/auth/check-admin");
-          const data = await response.json();
-          setIsAdmin(data.isAdmin || false);
-        } catch (error) {
-          console.error("Error checking admin status:", error);
-          setIsAdmin(false);
-        }
-      } else {
-        setIsAdmin(false);
-      }
-    }
-    checkAdmin();
-  }, [isLoaded, isSignedIn]);
+  const { data: isAdmin } = useAdminCheckQuery();
 
   const navLinks = [
     { href: "/about", label: "About" },

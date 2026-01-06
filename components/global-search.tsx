@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
 import { trackEvent } from "@/lib/analytics";
+import { usePostsQuery } from "@/lib/hooks/use-posts";
+import { useProjectsQuery } from "@/lib/hooks/use-projects";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +20,7 @@ interface Post {
   _id: string;
   title: string;
   slug: string;
-  description: string;
+  summary: string;
   tags: string[];
   category: string;
 }
@@ -47,14 +49,16 @@ const MAX_RECENT_SEARCHES = 5;
 
 export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   const [query, setQuery] = useState("");
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const router = useRouter();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { data: posts = [], isLoading: isLoadingPosts } = usePostsQuery();
+  const { data: projects = [], isLoading: isLoadingProjects } =
+    useProjectsQuery();
+
+  const loading = isLoadingPosts || isLoadingProjects;
 
   useEffect(() => {
     const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
@@ -67,37 +71,15 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
     }
   }, []);
 
-  useEffect(() => {
-    if (open && posts.length === 0 && projects.length === 0) {
-      setLoading(true);
-      Promise.all([
-        fetch("/api/posts").then((r) => r.json()),
-        fetch("/api/projects").then((r) => r.json()),
-      ])
-        .then(([postsData, projectsData]) => {
-          setPosts(postsData.posts || []);
-          setProjects(projectsData.projects || []);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch data:", error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [open, posts.length, projects.length]);
-
-  useEffect(() => {
+  const results = useMemo(() => {
     if (!query.trim()) {
-      setResults([]);
-      setSelectedIndex(0);
-      return;
+      return [];
     }
 
     const postsFuse = new Fuse(posts, {
       keys: [
         { name: "title", weight: 2 },
-        { name: "description", weight: 1 },
+        { name: "summary", weight: 1 },
         { name: "tags", weight: 1.5 },
         { name: "category", weight: 1 },
       ],
@@ -127,11 +109,17 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
       score: result.score,
     }));
 
-    const combined = [...postResults, ...projectResults]
+    return [...postResults, ...projectResults]
       .sort((a, b) => (a.score || 0) - (b.score || 0))
       .slice(0, 10);
+  }, [query, posts, projects]);
 
-    setResults(combined);
+  useEffect(() => {
+    if (!query.trim()) {
+      setSelectedIndex(0);
+      return;
+    }
+
     setSelectedIndex(0);
 
     if (searchTimeoutRef.current) {
@@ -142,11 +130,11 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
       searchTimeoutRef.current = setTimeout(() => {
         trackEvent("search_query", {
           query: query.trim(),
-          resultsCount: combined.length,
+          resultsCount: results.length,
         });
       }, 300);
     }
-  }, [query, posts, projects]);
+  }, [query, results.length]);
 
   const saveRecentSearch = useCallback((searchQuery: string) => {
     const trimmed = searchQuery.trim();
@@ -220,7 +208,6 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   useEffect(() => {
     if (!open) {
       setQuery("");
-      setResults([]);
       setSelectedIndex(0);
     }
   }, [open]);
@@ -262,8 +249,13 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
               <div className="p-2">
                 {results.map((result, index) => {
                   const isPost = result.type === "post";
-                  const item = result.item as Post & Project;
-                  const title = isPost ? item.title : item.name;
+                  const item = result.item;
+                  const title = isPost
+                    ? (item as Post).title
+                    : (item as Project).name;
+                  const description = isPost
+                    ? (item as Post).summary
+                    : (item as Project).description;
 
                   return (
                     <button
@@ -279,7 +271,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                         <div className="min-w-0 flex-1">
                           <h3 className="truncate font-bold">{title}</h3>
                           <MarkdownRenderer
-                            content={item.description}
+                            content={description}
                             className="mb-4 font-serif text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
                             truncate={100}
                           />

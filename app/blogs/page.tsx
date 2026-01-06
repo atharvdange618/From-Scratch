@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useState, useRef, Suspense } from "react";
+import { useEffect, useState, useRef, Suspense, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Calendar, Tag, Search, Filter, Clock } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import { usePostsQuery, postKeys } from "@/lib/hooks/use-posts";
+import { useQueryClient } from "@tanstack/react-query";
+import { getCategoriesWithAll, getCategoryColor } from "@/lib/categories";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -26,6 +29,7 @@ import { calculateReadingTime } from "@/lib/reading-time";
 import { BlogCardSkeleton } from "@/components/skeletons";
 import { EmptyState } from "@/components/empty-state";
 import { RecentlyViewed } from "@/components/recently-viewed";
+import { handlePostHover } from "@/lib/prefetch";
 
 interface Post {
   _id: string;
@@ -35,22 +39,23 @@ interface Post {
   content: string;
   category: string;
   tags: string[];
-  publishedDate: string;
+  publishedDate?: string;
   isPublished: boolean;
+  bannerImage?: string;
+  createdAt?: string;
+  updatedAt?: string;
   linkedProject?: {
     _id: string;
     name: string;
     slug: string;
   };
-  bannerImage?: string;
 }
 
 function BlogsContent() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: posts = [], isLoading, isError } = usePostsQuery();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedTag, setSelectedTag] = useState("all");
@@ -58,17 +63,7 @@ function BlogsContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const categories = [
-    "all",
-    "JavaScript & Web APIs",
-    "Git & Version Control",
-    "Web Development",
-    "Frameworks & Tools",
-    "Software Engineering",
-    "Project Logs",
-  ];
-  const [allTags, setAllTags] = useState<string[]>([]);
+  const categories = getCategoriesWithAll();
 
   useEffect(() => {
     const tagFromUrl = searchParams.get("tag");
@@ -77,56 +72,14 @@ function BlogsContent() {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const allTags = useMemo(() => {
+    return [
+      "all",
+      ...Array.from(new Set(posts.flatMap((post) => post.tags || []))),
+    ];
+  }, [posts]);
 
-  useEffect(() => {
-    filterAndSortPosts();
-  }, [posts, searchQuery, selectedCategory, selectedTag, sortBy]);
-
-  useEffect(() => {
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-
-    if (searchQuery.length >= 3) {
-      searchTimeoutRef.current = setTimeout(() => {
-        trackEvent("blog_search", {
-          query: searchQuery,
-          resultsCount: filteredPosts.length,
-        });
-      }, 500);
-    }
-
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, [searchQuery, filteredPosts.length]);
-
-  const fetchPosts = async () => {
-    try {
-      const response = await fetch("/api/posts?isPublished=true");
-      if (response.ok) {
-        const data = await response.json();
-        setPosts(data.posts || []);
-
-        const tags = new Set<string>();
-        (data.posts || []).forEach((post: Post) => {
-          post.tags?.forEach((tag) => tags.add(tag));
-        });
-        setAllTags(["all", ...Array.from(tags)]);
-      }
-    } catch (error) {
-      console.error("Failed to fetch posts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterAndSortPosts = () => {
+  const filteredPosts = useMemo(() => {
     let filtered = [...posts];
 
     // Search filter
@@ -156,13 +109,13 @@ function BlogsContent() {
       switch (sortBy) {
         case "date-desc":
           return (
-            new Date(b.publishedDate).getTime() -
-            new Date(a.publishedDate).getTime()
+            new Date(b.publishedDate || b.createdAt || 0).getTime() -
+            new Date(a.publishedDate || a.createdAt || 0).getTime()
           );
         case "date-asc":
           return (
-            new Date(a.publishedDate).getTime() -
-            new Date(b.publishedDate).getTime()
+            new Date(a.publishedDate || a.createdAt || 0).getTime() -
+            new Date(b.publishedDate || b.createdAt || 0).getTime()
           );
         case "title-asc":
           return a.title.localeCompare(b.title);
@@ -173,9 +126,33 @@ function BlogsContent() {
       }
     });
 
-    setFilteredPosts(filtered);
+    return filtered;
+  }, [posts, searchQuery, selectedCategory, selectedTag, sortBy]);
+
+  useEffect(() => {
     setCurrentPage(1);
-  };
+  }, [searchQuery, selectedCategory, selectedTag, sortBy]);
+
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    if (searchQuery.length >= 3) {
+      searchTimeoutRef.current = setTimeout(() => {
+        trackEvent("blog_search", {
+          query: searchQuery,
+          resultsCount: filteredPosts.length,
+        });
+      }, 500);
+    }
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [searchQuery, filteredPosts.length]);
 
   const handleReset = () => {
     setSearchQuery("");
@@ -190,17 +167,7 @@ function BlogsContent() {
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
-  const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
-      "Active Projects": "#60B5FF",
-      "Completed Projects": "#E0FFF1",
-      "Learning Notes": "#AFDDFF",
-      Updates: "#FFECDB",
-    };
-    return colors[category] || "#AFDDFF";
-  };
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
@@ -220,6 +187,18 @@ function BlogsContent() {
             <BlogCardSkeleton key={i} />
           ))}
         </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <EmptyState
+          title="Failed to load posts"
+          description="There was an error loading blog posts. Please try again later."
+          type="default"
+        />
       </div>
     );
   }
@@ -369,6 +348,7 @@ function BlogsContent() {
                 key={post._id}
                 className="group cursor-pointer overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                 onClick={() => router.push(`/posts/${post.slug}`)}
+                onMouseEnter={() => handlePostHover(queryClient, post.slug)}
               >
                 <CardHeader className="border-b-4 border-black bg-white p-4">
                   <div className="mb-2 flex items-center gap-2">
@@ -381,7 +361,11 @@ function BlogsContent() {
                       <Calendar className="h-full w-full" />
                     </div>
                     <span className="text-sm font-bold">
-                      {formatDate(post.publishedDate)}
+                      {formatDate(
+                        post.publishedDate ||
+                          post.createdAt ||
+                          new Date().toISOString()
+                      )}
                     </span>
                   </div>
                   <CardTitle className="text-xl font-bold leading-tight">
@@ -434,15 +418,6 @@ function BlogsContent() {
                       </span>
                     )}
                   </div>
-
-                  {/* Linked Project */}
-                  {post.linkedProject && (
-                    <div className="mt-3">
-                      <span className="text-xs font-bold text-gray-600">
-                        Project: {post.linkedProject.name}
-                      </span>
-                    </div>
-                  )}
                 </CardContent>
                 <CardFooter className="border-t-4 border-black bg-white p-4">
                   <Button className="w-full rounded-none border-4 border-black bg-[#FF9149] px-4 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">

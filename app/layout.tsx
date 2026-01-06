@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer";
 import { BackToTop } from "@/components/back-to-top";
 import { SkipToContent } from "@/components/skip-to-content";
 import { Toaster } from "@/components/ui/toaster";
+import { QueryProvider } from "@/components/providers/query-provider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -84,14 +85,16 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body>
-          <SkipToContent />
-          <Header />
-          <main id="main-content">{children}</main>
-          <Footer />
-          <BackToTop />
-          <Analytics />
-          <SpeedInsights />
-          <Toaster />
+          <QueryProvider>
+            <SkipToContent />
+            <Header />
+            <main id="main-content">{children}</main>
+            <Footer />
+            <BackToTop />
+            <Analytics />
+            <SpeedInsights />
+            <Toaster />
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>

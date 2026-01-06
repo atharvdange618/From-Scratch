@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { POST_CATEGORIES } from "@/lib/categories";
 import {
   Form,
   FormControl,
@@ -448,24 +449,11 @@ export default function PostEditor() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="JavaScript & Web APIs">
-                          JavaScript & Web APIs
-                        </SelectItem>
-                        <SelectItem value="Git & Version Control">
-                          Git & Version Control
-                        </SelectItem>
-                        <SelectItem value="Web Development">
-                          Web Development
-                        </SelectItem>
-                        <SelectItem value="Frameworks & Tools">
-                          Frameworks & Tools
-                        </SelectItem>
-                        <SelectItem value="Software Engineering">
-                          Software Engineering
-                        </SelectItem>
-                        <SelectItem value="Project Logs">
-                          Project Logs
-                        </SelectItem>
+                        {POST_CATEGORIES.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
-import { ExternalLink, Github, Star, Loader2 } from "lucide-react";
+import { useProjectsQuery } from "@/lib/hooks/use-projects";
+import { ExternalLink, Github, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import {
@@ -14,19 +15,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ProjectCardSkeleton } from "@/components/skeletons";
-
-interface Project {
-  _id: string;
-  name: string;
-  slug: string;
-  description: string;
-  status: "Active" | "Completed" | "Archived";
-  techStack: string[];
-  githubUrl?: string;
-  liveUrl?: string;
-  bannerImage?: string;
-  featured: boolean;
-}
+import { handleProjectHover } from "@/lib/prefetch";
+import { useQueryClient } from "@tanstack/react-query";
 
 const statusColors = {
   Active: "#60B5FF",
@@ -35,38 +25,18 @@ const statusColors = {
 };
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: projects = [], isLoading, isError, error } = useProjectsQuery();
   const [selectedStatus, setSelectedStatus] = useState<string>("All");
 
-  useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const response = await fetch("/api/projects");
-        if (!response.ok) {
-          throw new Error("Failed to fetch projects");
-        }
-        const data = await response.json();
-        setProjects(data.projects || []);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to load projects"
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
+  const queryClient = useQueryClient();
 
-    fetchProjects();
-  }, []);
-
-  const filteredProjects =
-    selectedStatus === "All"
+  const filteredProjects = useMemo(() => {
+    return selectedStatus === "All"
       ? projects
       : projects.filter((p) => p.status === selectedStatus);
+  }, [projects, selectedStatus]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-white py-20">
         <div className="container mx-auto px-4">
@@ -83,12 +53,15 @@ export default function ProjectsPage() {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <div className="min-h-screen bg-white py-20">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center rounded-none border-4 border-black bg-[#FFECDB] p-16">
-            <p className="text-xl font-bold">Error loading projects: {error}</p>
+            <p className="text-xl font-bold">
+              Error loading projects:{" "}
+              {error?.message || "Failed to load projects"}
+            </p>
           </div>
         </div>
       </div>
@@ -170,7 +143,13 @@ export default function ProjectsPage() {
               </CardContent>
 
               <CardFooter className="flex flex-col gap-3 border-t-4 border-black bg-[#FFECDB] p-6">
-                <Link href={`/projects/${project.slug}`} className="w-full">
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="w-full"
+                  onMouseEnter={() =>
+                    handleProjectHover(queryClient, project.slug)
+                  }
+                >
                   <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
                     View Details
                   </Button>

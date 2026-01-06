@@ -18,6 +18,7 @@ import { BreadcrumbNav } from "@/components/breadcrumb-nav";
 import { ReadProgress } from "@/components/read-progress";
 import { ClickableTags } from "@/components/clickable-tags";
 import { SocialShare } from "@/components/social-share";
+import { getCategoryColor } from "@/lib/categories";
 import { PostTracker } from "@/components/post-tracker";
 
 import "highlight.js/styles/atom-one-dark.css";
@@ -197,18 +198,7 @@ export default async function PostPage({
             <Badge
               className="rounded-none border-2 border-black px-3 py-1 font-serif text-sm"
               style={{
-                backgroundColor:
-                  post.category === "JavaScript & Web APIs"
-                    ? "#60B5FF"
-                    : post.category === "Git & Version Control"
-                    ? "#FF9149"
-                    : post.category === "Web Development"
-                    ? "#AFDDFF"
-                    : post.category === "Frameworks & Tools"
-                    ? "#E0FFF1"
-                    : post.category === "Software Engineering"
-                    ? "#FFECDB"
-                    : "#60B5FF",
+                backgroundColor: getCategoryColor(post.category),
               }}
             >
               {post.category}

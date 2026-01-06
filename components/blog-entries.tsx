@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePostsQuery } from "@/lib/hooks/use-posts";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Code,
   Rocket,
@@ -21,23 +22,7 @@ import {
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { MarkdownRenderer } from "./markdown-renderer";
-
-interface BlogPost {
-  _id: string;
-  title: string;
-  slug: string;
-  summary: string;
-  content: string;
-  tags: string[];
-  category: string;
-  isPublished: boolean;
-  publishedDate: string;
-  linkedProject?: {
-    _id: string;
-    name: string;
-    slug: string;
-  };
-}
+import { handlePostHover } from "@/lib/prefetch";
 
 const getPostIcon = (tags: string[], category: string) => {
   const tagStr = tags.join(" ").toLowerCase();
@@ -60,30 +45,12 @@ const getPostIcon = (tags: string[], category: string) => {
 };
 
 export function BlogEntries() {
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const { data: posts = [], isLoading, isError, error } = usePostsQuery();
 
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const response = await fetch("/api/posts?isPublished=true&limit=4");
-        if (!response.ok) {
-          throw new Error("Failed to fetch posts");
-        }
-        const data = await response.json();
-        setBlogPosts(data.posts || []);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load posts");
-      } finally {
-        setLoading(false);
-      }
-    }
+  const blogPosts = posts.slice(0, 4);
 
-    fetchPosts();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <section className="mb-16" id="recent-posts">
         <h2 className="mb-8 font-sans text-3xl font-bold">Recent Posts</h2>
@@ -94,12 +61,14 @@ export function BlogEntries() {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <section className="mb-16" id="recent-posts">
         <h2 className="mb-8 font-sans text-3xl font-bold">Recent Posts</h2>
         <div className="flex flex-col items-center justify-center rounded-none border-4 border-black bg-[#FFECDB] p-16">
-          <p className="text-xl font-bold">Error loading posts: {error}</p>
+          <p className="text-xl font-bold">
+            Error loading posts: {error?.message || "Failed to load posts"}
+          </p>
         </div>
       </section>
     );
@@ -123,7 +92,11 @@ export function BlogEntries() {
           const { icon, bg } = getPostIcon(post.tags, post.category);
 
           return (
-            <Link key={post._id} href={`/posts/${post.slug}`}>
+            <Link
+              key={post._id}
+              href={`/posts/${post.slug}`}
+              onMouseEnter={() => handlePostHover(queryClient, post.slug)}
+            >
               <Card className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <CardHeader className="border-b-4 border-black bg-white p-3 md:p-4">
                   <div className="mb-2 flex items-center gap-2">
@@ -135,7 +108,7 @@ export function BlogEntries() {
                     </div>
                     <div className="flex-1">
                       <span className="text-sm font-bold">
-                        {formatDate(post.publishedDate)}
+                        {formatDate(post.publishedDate || post.createdAt || "")}
                       </span>
                       <div className="mt-1">
                         <span className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-0.5 text-xs font-bold">

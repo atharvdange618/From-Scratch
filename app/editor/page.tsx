@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, AlertCircle } from "lucide-react";
 import PostEditor from "@/components/editor/post-editor";
@@ -12,8 +13,8 @@ export default function EditorPage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("posts");
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-  const [checkingAdmin, setCheckingAdmin] = useState(true);
+
+  const { data: isAdmin, isLoading: checkingAdmin } = useAdminCheckQuery();
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -22,34 +23,13 @@ export default function EditorPage() {
   }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
-    async function checkAdmin() {
-      if (!isSignedIn) {
-        setCheckingAdmin(false);
-        return;
-      }
-
-      try {
-        const response = await fetch("/api/auth/check-admin");
-        const data = await response.json();
-        setIsAdmin(data.isAdmin);
-
-        if (!data.isAdmin) {
-          setTimeout(() => {
-            router.push("/");
-          }, 2000);
-        }
-      } catch (error) {
-        console.error("Error checking admin status:", error);
-        setIsAdmin(false);
-      } finally {
-        setCheckingAdmin(false);
-      }
+    if (isLoaded && isSignedIn && !checkingAdmin && isAdmin === false) {
+      const timeout = setTimeout(() => {
+        router.push("/");
+      }, 2000);
+      return () => clearTimeout(timeout);
     }
-
-    if (isLoaded && isSignedIn) {
-      checkAdmin();
-    }
-  }, [isLoaded, isSignedIn, router]);
+  }, [isLoaded, isSignedIn, checkingAdmin, isAdmin, router]);
 
   if (!isLoaded || checkingAdmin) {
     return (

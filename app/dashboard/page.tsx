@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
+import {
+  useAnalyticsStatsQuery,
+  useAnalyticsEventsQuery,
+} from "@/lib/hooks/use-analytics";
 import StatsCards from "./components/StatsCards";
 import EventsOverTimeChart from "./components/EventsOverTimeChart";
 import EventTypeChart from "./components/EventTypeChart";
@@ -13,102 +18,32 @@ import TopCountriesChart from "./components/TopCountriesChart";
 import RetentionIndicator from "./components/RetentionIndicator";
 import RecentEventsTable from "./components/RecentEventsTable";
 
-interface AnalyticsStats {
-  totalEvents: number;
-  uniqueSessions: number;
-  uniqueVisitors: number;
-  eventTypeDistribution: Array<{ _id: string; count: number }>;
-  topPages: Array<{ _id: string; count: number }>;
-  topCountries: Array<{ _id: string; count: number }>;
-  deviceBreakdown: Array<{ _id: string; count: number }>;
-  browserBreakdown: Array<{ _id: string; count: number }>;
-  osBreakdown: Array<{ _id: string; count: number }>;
-  dailyEvents: Array<{ _id: string; count: number }>;
-  retentionData: {
-    oldestEvent: string | null;
-    newestEvent: string | null;
-    totalDays: number;
-    daysUntilDeletion: number;
-  };
-}
-
-interface AnalyticsEvent {
-  _id: string;
-  eventType: string;
-  eventData: Record<string, any>;
-  sessionId: string;
-  timestamp: string;
-  ipAddress: string;
-  country: string;
-  city: string;
-  device: string;
-  browser: string;
-  os: string;
-}
-
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [stats, setStats] = useState<AnalyticsStats | null>(null);
-  const [recentEvents, setRecentEvents] = useState<AnalyticsEvent[]>([]);
+
+  const { data: isAdmin, isLoading: isCheckingAdmin } = useAdminCheckQuery();
+
+  const {
+    data: stats,
+    isLoading: isLoadingStats,
+    refetch: refetchStats,
+  } = useAnalyticsStatsQuery();
+
+  const {
+    data: recentEvents,
+    isLoading: isLoadingEvents,
+    refetch: refetchEvents,
+  } = useAnalyticsEventsQuery(10);
+
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const checkAdmin = async () => {
-      if (!isLoaded) return;
-
-      if (!user) {
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch("/api/auth/check-admin");
-        const data = await response.json();
-        setIsAdmin(data.isAdmin);
-      } catch (error) {
-        console.error("Error checking admin status:", error);
-        setIsAdmin(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAdmin();
-  }, [user, isLoaded]);
-
-  const fetchAnalytics = async () => {
-    try {
-      setRefreshing(true);
-      const [statsRes, eventsRes] = await Promise.all([
-        fetch("/api/analytics/stats"),
-        fetch("/api/analytics/events?limit=10"),
-      ]);
-
-      if (statsRes.ok) {
-        const statsData = await statsRes.json();
-        setStats(statsData.stats);
-      }
-
-      if (eventsRes.ok) {
-        const eventsData = await eventsRes.json();
-        setRecentEvents(eventsData.events);
-      }
-    } catch (error) {
-      console.error("Error fetching analytics:", error);
-    } finally {
-      setRefreshing(false);
-    }
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await Promise.all([refetchStats(), refetchEvents()]);
+    setRefreshing(false);
   };
 
-  useEffect(() => {
-    if (isAdmin) {
-      fetchAnalytics();
-    }
-  }, [isAdmin]);
-
-  if (!isLoaded || isLoading) {
+  if (!isLoaded || isCheckingAdmin) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
@@ -152,8 +87,8 @@ export default function DashboardPage() {
           </p>
         </div>
         <Button
-          onClick={fetchAnalytics}
-          disabled={refreshing}
+          onClick={handleRefresh}
+          disabled={refreshing || isLoadingStats || isLoadingEvents}
           variant="outline"
           className="gap-2"
         >
@@ -185,7 +120,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="mt-8">
-            <RecentEventsTable events={recentEvents} />
+            <RecentEventsTable events={recentEvents || []} />
           </div>
         </>
       )}

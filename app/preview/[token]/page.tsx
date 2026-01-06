@@ -11,6 +11,7 @@ import {
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { formatDate, formatTimeIST } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
+import { getCategoryColor } from "@/lib/categories";
 import Image from "next/image";
 
 interface PreviewData {
@@ -132,18 +133,7 @@ export default async function PreviewPage({
             <Badge
               className="rounded-none border-2 border-black px-3 py-1 font-serif text-sm"
               style={{
-                backgroundColor:
-                  post.category === "JavaScript & Web APIs"
-                    ? "#60B5FF"
-                    : post.category === "Git & Version Control"
-                    ? "#FF9149"
-                    : post.category === "Web Development"
-                    ? "#AFDDFF"
-                    : post.category === "Frameworks & Tools"
-                    ? "#E0FFF1"
-                    : post.category === "Software Engineering"
-                    ? "#FFECDB"
-                    : "#60B5FF",
+                backgroundColor: getCategoryColor(post.category),
               }}
             >
               {post.category}

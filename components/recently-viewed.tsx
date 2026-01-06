@@ -6,6 +6,7 @@ import { Clock, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/dateandnumbers";
+import { getCategoryColor } from "@/lib/categories";
 
 interface RecentPost {
   _id: string;
@@ -41,25 +42,6 @@ export function getRecentlyViewed(): RecentPost[] {
     return stored ? JSON.parse(stored) : [];
   } catch {
     return [];
-  }
-}
-
-function getCategoryColor(category: string): string {
-  switch (category) {
-    case "JavaScript & Web APIs":
-      return "#60B5FF";
-    case "Git & Version Control":
-      return "#FF9149";
-    case "Web Development":
-      return "#AFDDFF";
-    case "Frameworks & Tools":
-      return "#E0FFF1";
-    case "Software Engineering":
-      return "#FFECDB";
-    case "Project Logs":
-      return "#60B5FF";
-    default:
-      return "#FFECDB";
   }
 }
 

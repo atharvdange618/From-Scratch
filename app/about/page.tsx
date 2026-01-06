@@ -4,11 +4,11 @@ import { AboutContent } from "@/components/about-content";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Atharv Dange, a Full Stack Engineer from Pune, India, specializing in MERN/PERN stack and React Native. Discover his journey, projects, and skills.",
+    "I'm Atharv Dange, a Full Stack Engineer from Pune, India, specializing in MERN/PERN stack and React Native. Explore my journey, projects, and skills.",
   openGraph: {
-    title: "About Atharv Dange",
+    title: "About Me - Atharv Dange",
     description:
-      "Full Stack Engineer specializing in MERN/PERN stack and React Native. Building frameworks, apps, and ideas from scratch.",
+      "I'm a Full Stack Engineer specializing in MERN/PERN stack and React Native. I build frameworks, apps, and ideas from scratch.",
     type: "profile",
   },
 };

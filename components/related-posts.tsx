@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
+import { getCategoryColor } from "@/lib/categories";
 
 interface Post {
   _id: string;
@@ -59,30 +60,24 @@ export function RelatedPosts({
         const data = await response.json();
         const allPosts: Post[] = data.posts || [];
 
-        // Filter out current post
         const otherPosts = allPosts.filter((p) => p._id !== currentPostId);
 
-        // Calculate similarity scores
         const scoredPosts: ScoredPost[] = otherPosts.map((post) => {
           let score = 0;
 
-          // Same category: +3 points
           if (post.category === currentCategory) {
             score += 3;
           }
 
-          // Each shared tag: +2 points
           const sharedTags = post.tags.filter((tag) =>
             currentTags.includes(tag)
           );
           score += sharedTags.length * 2;
 
-          // Same linked project: +2 points
           if (linkedProjectId && post.linkedProject?._id === linkedProjectId) {
             score += 2;
           }
 
-          // Published within 60 days: +1 point (recency bonus)
           const daysDiff =
             (new Date().getTime() - new Date(post.publishedDate).getTime()) /
             (1000 * 60 * 60 * 24);
@@ -93,13 +88,11 @@ export function RelatedPosts({
           return { ...post, score };
         });
 
-        // Sort by score (highest first) and take top 3-4
         const topPosts = scoredPosts
           .sort((a, b) => b.score - a.score)
-          .filter((p) => p.score >= 2) // Minimum score threshold
+          .filter((p) => p.score >= 2)
           .slice(0, 4);
 
-        // If no related posts with good scores, show 3 random recent posts
         if (topPosts.length === 0) {
           const recentPosts = otherPosts
             .sort(
@@ -125,25 +118,6 @@ export function RelatedPosts({
   if (loading || relatedPosts.length === 0) {
     return null;
   }
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "JavaScript & Web APIs":
-        return "#60B5FF";
-      case "Git & Version Control":
-        return "#FF9149";
-      case "Web Development":
-        return "#AFDDFF";
-      case "Frameworks & Tools":
-        return "#E0FFF1";
-      case "Software Engineering":
-        return "#FFECDB";
-      case "Project Logs":
-        return "#60B5FF";
-      default:
-        return "#E0FFF1";
-    }
-  };
 
   return (
     <section className="my-16">

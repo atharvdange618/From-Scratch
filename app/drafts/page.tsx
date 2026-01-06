@@ -3,6 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
+import {
+  useDraftsQuery,
+  usePublishPostMutation,
+  useDeletePostMutation,
+} from "@/lib/hooks/use-posts";
 import {
   Calendar,
   Tag,
@@ -47,13 +53,9 @@ interface Post {
   content: string;
   category: string;
   tags: string[];
-  publishedDate: string;
+  publishedDate?: string;
   isPublished: boolean;
-  linkedProject?: {
-    _id: string;
-    name: string;
-    slug: string;
-  };
+  linkedProject?: string;
   bannerImage?: string;
   createdAt: string;
   updatedAt: string;
@@ -63,12 +65,12 @@ export default function DraftsPage() {
   const router = useRouter();
   const { isLoaded, isSignedIn } = useUser();
   const { toast } = useToast();
-  const [drafts, setDrafts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [checkingAdmin, setCheckingAdmin] = useState(true);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [publishingId, setPublishingId] = useState<string | null>(null);
+
+  const { data: isAdmin, isLoading: checkingAdmin } = useAdminCheckQuery();
+  const { data: drafts = [], isLoading: loading, refetch } = useDraftsQuery();
+  const publishMutation = usePublishPostMutation();
+  const deleteMutation = useDeletePostMutation();
+
   const [deletedDraft, setDeletedDraft] = useState<Post | null>(null);
   const [undoTimeout, setUndoTimeout] = useState<NodeJS.Timeout | null>(null);
 
@@ -79,88 +81,24 @@ export default function DraftsPage() {
   }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
-    async function checkAdmin() {
-      if (!isSignedIn) {
-        setCheckingAdmin(false);
-        return;
-      }
-
-      try {
-        const response = await fetch("/api/auth/check-admin");
-        const data = await response.json();
-        setIsAdmin(data.isAdmin);
-
-        if (!data.isAdmin) {
-          router.push("/");
-        } else {
-          fetchDrafts();
-        }
-      } catch (error) {
-        console.error("Error checking admin status:", error);
-        setIsAdmin(false);
-        router.push("/");
-      } finally {
-        setCheckingAdmin(false);
-      }
+    if (isLoaded && isSignedIn && !checkingAdmin && isAdmin === false) {
+      router.push("/");
     }
-
-    if (isLoaded && isSignedIn) {
-      checkAdmin();
-    }
-  }, [isLoaded, isSignedIn, router]);
-
-  const fetchDrafts = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("/api/posts?isPublished=false");
-      if (response.ok) {
-        const data = await response.json();
-        setDrafts(data.posts || []);
-      }
-    } catch (error) {
-      console.error("Failed to fetch drafts:", error);
-      toast({
-        title: "❌ Error",
-        description: "Failed to load drafts",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [isLoaded, isSignedIn, checkingAdmin, isAdmin, router]);
 
   const handlePublish = async (postId: string) => {
-    setPublishingId(postId);
-
-    const draftToPublish = drafts.find((d) => d._id === postId);
-    if (!draftToPublish) return;
-
-    setDrafts((prev) => prev.filter((d) => d._id !== postId));
-
     try {
-      const response = await fetch(`/api/posts/id/${postId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isPublished: true }),
+      await publishMutation.mutateAsync(postId);
+      toast({
+        title: "✅ Published",
+        description: "Post has been published successfully",
       });
-
-      if (response.ok) {
-        toast({
-          title: "✅ Published",
-          description: "Post has been published successfully",
-        });
-      } else {
-        throw new Error("Failed to publish");
-      }
     } catch (error) {
-      setDrafts((prev) => [...prev, draftToPublish]);
       toast({
         title: "❌ Error",
         description: "Failed to publish post",
         variant: "destructive",
       });
-    } finally {
-      setPublishingId(null);
     }
   };
 
@@ -172,7 +110,6 @@ export default function DraftsPage() {
       clearTimeout(undoTimeout);
     }
 
-    setDrafts((prev) => prev.filter((d) => d._id !== postId));
     setDeletedDraft(draftToDelete);
 
     const { dismiss } = toast({
@@ -202,7 +139,6 @@ export default function DraftsPage() {
   const handleUndo = () => {
     if (deletedDraft && undoTimeout) {
       clearTimeout(undoTimeout);
-      setDrafts((prev) => [...prev, deletedDraft]);
       setDeletedDraft(null);
       setUndoTimeout(null);
       toast({
@@ -213,30 +149,17 @@ export default function DraftsPage() {
   };
 
   const performDelete = async (postId: string) => {
-    setDeletingId(postId);
     try {
-      const response = await fetch(`/api/posts/id/${postId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete");
-      }
-
+      await deleteMutation.mutateAsync(postId);
       setDeletedDraft(null);
       setUndoTimeout(null);
     } catch (error) {
-      if (deletedDraft) {
-        setDrafts((prev) => [...prev, deletedDraft]);
-        setDeletedDraft(null);
-      }
       toast({
         title: "❌ Error",
         description: "Failed to delete draft",
         variant: "destructive",
       });
-    } finally {
-      setDeletingId(null);
+      setDeletedDraft(null);
     }
   };
 
@@ -304,7 +227,7 @@ export default function DraftsPage() {
             {drafts.length} {drafts.length === 1 ? "Draft" : "Drafts"}
           </Badge>
           <Button
-            onClick={fetchDrafts}
+            onClick={() => refetch()}
             disabled={loading}
             variant="outline"
             className="rounded-none border-4 border-black bg-white px-6 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
@@ -366,7 +289,7 @@ export default function DraftsPage() {
                   </Badge>
                   {draft.linkedProject && (
                     <Badge className="rounded-none border-2 border-black bg-[#E0FFF1] text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                      🔗 {draft.linkedProject.name}
+                      🔗 {draft.linkedProject}
                     </Badge>
                   )}
                 </div>
@@ -434,11 +357,15 @@ export default function DraftsPage() {
                 <div className="flex w-full gap-2">
                   <Button
                     onClick={() => handlePublish(draft._id)}
-                    disabled={publishingId === draft._id}
+                    disabled={
+                      publishMutation.isPending &&
+                      publishMutation.variables === draft._id
+                    }
                     className="flex-1 rounded-none border-2 border-black bg-[#E0FFF1] font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
                     size="sm"
                   >
-                    {publishingId === draft._id ? (
+                    {publishMutation.isPending &&
+                    publishMutation.variables === draft._id ? (
                       <Loader2 className="mr-1 h-4 w-4 animate-spin" />
                     ) : (
                       <Send className="mr-1 h-4 w-4" />
@@ -450,11 +377,15 @@ export default function DraftsPage() {
                     <AlertDialogTrigger asChild>
                       <Button
                         variant="destructive"
-                        disabled={deletingId === draft._id}
+                        disabled={
+                          deleteMutation.isPending &&
+                          deleteMutation.variables === draft._id
+                        }
                         className="flex-1 rounded-none border-2 border-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
                         size="sm"
                       >
-                        {deletingId === draft._id ? (
+                        {deleteMutation.isPending &&
+                        deleteMutation.variables === draft._id ? (
                           <Loader2 className="mr-1 h-4 w-4 animate-spin" />
                         ) : (
                           <Trash2 className="mr-1 h-4 w-4" />
