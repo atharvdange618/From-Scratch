@@ -674,7 +674,7 @@ export default function PostEditor() {
               {showPreview && content && (
                 <div className="mt-4 rounded-none border-4 border-black bg-white p-6">
                   <h3 className="mb-4 text-xl font-bold">Preview</h3>
-                  <div className="prose max-w-none">
+                  <div className="prose max-w-none max-h-[600px] overflow-y-auto">
                     <MarkdownRenderer
                       content={content}
                       className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
