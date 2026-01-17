@@ -28,6 +28,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Upload, Save, Loader2, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { MarkdownEditor } from "@/components/editor/editor-ui/markdown-editor";
 import { useEditorAutosave } from "@/lib/hooks/use-editor-autosave";
 import { useSlugGenerator } from "@/lib/hooks/use-slug-generator";
 import { useImageUpload } from "@/lib/hooks/use-image-upload";
@@ -317,11 +318,11 @@ export default function ProjectEditor() {
                   <FormItem className="mb-4">
                     <FormLabel className="font-bold">Description *</FormLabel>
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        rows={4}
-                        className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                        placeholder="Describe your project..."
+                      <MarkdownEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Describe your project in Markdown..."
+                        minHeight={200}
                       />
                     </FormControl>
                     <FormMessage />

@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 import { formatExpiryDate } from "@/lib/dateandnumbers";
 import { MarkdownRenderer } from "../markdown-renderer";
+import { MarkdownEditor } from "./editor-ui/markdown-editor";
 import { useToast } from "../ui/use-toast";
 import { useEditorAutosave } from "@/lib/hooks/use-editor-autosave";
 import { useSlugGenerator } from "@/lib/hooks/use-slug-generator";
@@ -660,11 +661,11 @@ export default function PostEditor() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        rows={20}
-                        className="font-mono rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                      <MarkdownEditor
+                        value={field.value}
+                        onChange={field.onChange}
                         placeholder="Write your post content in Markdown..."
+                        minHeight={500}
                       />
                     </FormControl>
                     <FormMessage />
