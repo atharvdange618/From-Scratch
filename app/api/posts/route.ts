@@ -3,6 +3,7 @@ import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 import Project from "@/lib/models/Project";
 import { checkAdminAccess } from "@/lib/auth";
+import { calculateReadingTime } from "@/lib/reading-time";
 
 // GET /api/posts - Get all posts (with optional filters)
 export async function GET(request: NextRequest) {
@@ -10,10 +11,11 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get("limit") || "10");
+    const limit = parseInt(searchParams.get("limit") || "100");
     const category = searchParams.get("category");
     const linkedProject = searchParams.get("linkedProject");
     const isPublished = searchParams.get("isPublished");
+    const listView = searchParams.get("listView") === "true"; // New param for lightweight listing
 
     const query: any = {};
 
@@ -31,18 +33,48 @@ export async function GET(request: NextRequest) {
       query.linkedProject = linkedProject;
     }
 
-    const posts = await Post.find(query)
-      .populate({ path: "linkedProject", model: Project })
-      .sort({ publishedDate: -1, createdAt: -1 })
-      .limit(limit)
-      .lean();
+    let posts;
+
+    if (listView) {
+      const rawPosts = await Post.find(query)
+        .select(
+          "_id title slug summary content category tags bannerImage publishedDate isPublished createdAt updatedAt linkedProject",
+        )
+        .populate({
+          path: "linkedProject",
+          model: Project,
+          select: "_id name slug",
+        })
+        .sort({ publishedDate: -1, createdAt: -1 })
+        .limit(limit)
+        .lean();
+
+      posts = rawPosts.map((post: any) => {
+        const readingTime = calculateReadingTime(post.content || "");
+        const { content, ...postWithoutContent } = post;
+        return {
+          ...postWithoutContent,
+          readingTime,
+        };
+      });
+    } else {
+      posts = await Post.find(query)
+        .populate({
+          path: "linkedProject",
+          model: Project,
+          select: "_id name slug",
+        })
+        .sort({ publishedDate: -1, createdAt: -1 })
+        .limit(limit)
+        .lean();
+    }
 
     return NextResponse.json({ success: true, posts });
   } catch (error: any) {
     console.error("Error fetching posts:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -66,7 +98,7 @@ export async function POST(request: NextRequest) {
     console.error("Error creating post:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

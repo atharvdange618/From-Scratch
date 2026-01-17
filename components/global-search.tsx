@@ -1,11 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Fuse from "fuse.js";
 import { trackEvent } from "@/lib/analytics";
-import { usePostsQuery } from "@/lib/hooks/use-posts";
-import { useProjectsQuery } from "@/lib/hooks/use-projects";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Search, Clock } from "@deemlol/next-icons";
+import { Search, Clock, Loader2 } from "lucide-react";
 import { MarkdownRenderer } from "./markdown-renderer";
 
 interface Post {
@@ -36,7 +33,7 @@ interface Project {
 interface SearchResult {
   type: "post" | "project";
   item: Post | Project;
-  score?: number;
+  score: number;
 }
 
 interface GlobalSearchProps {
@@ -49,16 +46,13 @@ const MAX_RECENT_SEARCHES = 5;
 
 export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   const router = useRouter();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const { data: posts = [], isLoading: isLoadingPosts } = usePostsQuery();
-  const { data: projects = [], isLoading: isLoadingProjects } =
-    useProjectsQuery();
-
-  const loading = isLoadingPosts || isLoadingProjects;
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
@@ -71,70 +65,67 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
     }
   }, []);
 
-  const results = useMemo(() => {
-    if (!query.trim()) {
-      return [];
-    }
-
-    const postsFuse = new Fuse(posts, {
-      keys: [
-        { name: "title", weight: 2 },
-        { name: "summary", weight: 1 },
-        { name: "tags", weight: 1.5 },
-        { name: "category", weight: 1 },
-      ],
-      threshold: 0.4,
-      includeScore: true,
-    });
-
-    const projectsFuse = new Fuse(projects, {
-      keys: [
-        { name: "name", weight: 2 },
-        { name: "description", weight: 1 },
-        { name: "techStack", weight: 1.5 },
-      ],
-      threshold: 0.4,
-      includeScore: true,
-    });
-
-    const postResults = postsFuse.search(query).map((result) => ({
-      type: "post" as const,
-      item: result.item,
-      score: result.score,
-    }));
-
-    const projectResults = projectsFuse.search(query).map((result) => ({
-      type: "project" as const,
-      item: result.item,
-      score: result.score,
-    }));
-
-    return [...postResults, ...projectResults]
-      .sort((a, b) => (a.score || 0) - (b.score || 0))
-      .slice(0, 10);
-  }, [query, posts, projects]);
-
   useEffect(() => {
-    if (!query.trim()) {
-      setSelectedIndex(0);
+    if (!query.trim() || query.trim().length < 2) {
+      setResults([]);
+      setIsSearching(false);
       return;
     }
 
-    setSelectedIndex(0);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
 
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
 
-    if (query.trim().length >= 2) {
-      searchTimeoutRef.current = setTimeout(() => {
+    setIsSearching(true);
+
+    searchTimeoutRef.current = setTimeout(async () => {
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      try {
+        const response = await fetch(
+          `/api/search?q=${encodeURIComponent(query.trim())}`,
+          { signal: controller.signal },
+        );
+
+        if (!response.ok) {
+          throw new Error("Search failed");
+        }
+
+        const data = await response.json();
+        setResults(data.results || []);
+
         trackEvent("search_query", {
           query: query.trim(),
-          resultsCount: results.length,
+          resultsCount: data.results?.length || 0,
         });
-      }, 300);
-    }
-  }, [query, results.length]);
+      } catch (error: any) {
+        if (error.name !== "AbortError") {
+          console.error("Search error:", error);
+          setResults([]);
+        }
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300);
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, [query]);
+
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [results]);
 
   const saveRecentSearch = useCallback((searchQuery: string) => {
     const trimmed = searchQuery.trim();
@@ -171,7 +162,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
         router.push(`/projects/${result.item.slug}`);
       }
     },
-    [query, onOpenChange, router, saveRecentSearch]
+    [query, onOpenChange, router, saveRecentSearch],
   );
 
   const handleRecentSearchClick = useCallback((searchQuery: string) => {
@@ -190,7 +181,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
       if (e.key === "ArrowDown") {
         e.preventDefault();
         setSelectedIndex((prev) =>
-          prev < results.length - 1 ? prev + 1 : prev
+          prev < results.length - 1 ? prev + 1 : prev,
         );
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
@@ -220,7 +211,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
           <div className="relative">
             <Search
               className={`absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transition-colors ${
-                loading ? "animate-pulse text-gray-400" : ""
+                isSearching ? "animate-pulse text-gray-400" : ""
               }`}
             />
             <Input
@@ -231,18 +222,17 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
               autoFocus
               aria-label="Search posts and projects"
             />
-            {loading && query.trim() && (
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">
-                Searching...
-              </span>
+            {isSearching && (
+              <Loader2 className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-gray-500" />
             )}
           </div>
         </DialogHeader>
 
         <div className="max-h-[60vh] overflow-y-auto">
-          {loading ? (
+          {isSearching ? (
             <div className="flex items-center justify-center p-8 text-gray-500">
-              Loading...
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Searching...
             </div>
           ) : query.trim() ? (
             results.length > 0 ? (

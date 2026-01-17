@@ -127,6 +127,13 @@ const PostSchema: Schema<IPost> = new Schema(
 PostSchema.index({ isPublished: 1, publishedDate: -1 });
 PostSchema.index({ category: 1, isPublished: 1 });
 PostSchema.index({ linkedProject: 1, isPublished: 1 });
+PostSchema.index({
+  title: "text",
+  summary: "text",
+  content: "text",
+  category: "text",
+  tags: "text",
+});
 
 const Post: Model<IPost> =
   mongoose.models.Post || mongoose.model<IPost>("Post", PostSchema);

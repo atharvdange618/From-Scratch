@@ -1,16 +1,5 @@
-"use client";
-
 import Link from "next/link";
-import { usePostsQuery } from "@/lib/hooks/use-posts";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  Code,
-  Rocket,
-  BookOpen,
-  Lightbulb,
-  Loader2,
-  Clock,
-} from "lucide-react";
+import { Code, Rocket, BookOpen, Lightbulb, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,7 +11,9 @@ import {
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { MarkdownRenderer } from "./markdown-renderer";
-import { handlePostHover } from "@/lib/prefetch";
+import dbConnect from "@/lib/mongodb";
+import Post from "@/lib/models/Post";
+import { IPost } from "@/lib/models/Post";
 
 const getPostIcon = (tags: string[], category: string) => {
   const tagStr = tags.join(" ").toLowerCase();
@@ -44,35 +35,20 @@ const getPostIcon = (tags: string[], category: string) => {
   return { icon: <Code className="h-full w-full" />, bg: "#AFDDFF" };
 };
 
-export function BlogEntries() {
-  const queryClient = useQueryClient();
-  const { data: posts = [], isLoading, isError, error } = usePostsQuery();
+async function getRecentPosts() {
+  await dbConnect();
+  const posts = await Post.find({ isPublished: true })
+    .sort({ publishedDate: -1 })
+    .limit(4)
+    .lean();
+  return posts.map((post) => ({
+    ...post,
+    _id: post._id.toString(),
+  }));
+}
 
-  const blogPosts = posts.slice(0, 4);
-
-  if (isLoading) {
-    return (
-      <section className="mb-16" id="recent-posts">
-        <h2 className="mb-8 font-sans text-3xl font-bold">Recent Posts</h2>
-        <div className="flex items-center justify-center rounded-none border-4 border-black bg-[#AFDDFF] p-16">
-          <Loader2 className="h-12 w-12 animate-spin" />
-        </div>
-      </section>
-    );
-  }
-
-  if (isError) {
-    return (
-      <section className="mb-16" id="recent-posts">
-        <h2 className="mb-8 font-sans text-3xl font-bold">Recent Posts</h2>
-        <div className="flex flex-col items-center justify-center rounded-none border-4 border-black bg-[#FFECDB] p-16">
-          <p className="text-xl font-bold">
-            Error loading posts: {error?.message || "Failed to load posts"}
-          </p>
-        </div>
-      </section>
-    );
-  }
+export async function BlogEntries() {
+  const posts = await getRecentPosts();
 
   return (
     <section className="mb-12 md:mb-16" id="recent-posts">
@@ -88,15 +64,11 @@ export function BlogEntries() {
       </div>
 
       <div className="grid gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {blogPosts.map((post) => {
+        {posts.map((post) => {
           const { icon, bg } = getPostIcon(post.tags, post.category);
 
           return (
-            <Link
-              key={post._id}
-              href={`/posts/${post.slug}`}
-              onMouseEnter={() => handlePostHover(queryClient, post.slug)}
-            >
+            <Link key={post._id} href={`/posts/${post.slug}`}>
               <Card className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <CardHeader className="border-b-4 border-black bg-white p-3 md:p-4">
                   <div className="mb-2 flex items-center gap-2">
@@ -134,7 +106,7 @@ export function BlogEntries() {
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-2 pb-4">
-                    {post.tags.map((tag) => (
+                    {post.tags.map((tag: string) => (
                       <span
                         key={tag}
                         className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold"
@@ -155,7 +127,7 @@ export function BlogEntries() {
         })}
       </div>
 
-      {blogPosts.length === 0 && (
+      {posts.length === 0 && (
         <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black bg-[#AFDDFF] p-16">
           <svg
             className="mb-6 h-48 w-48"

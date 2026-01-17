@@ -68,10 +68,14 @@ const AnalyticsEventSchema: Schema<IAnalyticsEvent> = new Schema({
   },
 });
 
-// Compound indexes for common queries
 AnalyticsEventSchema.index({ eventType: 1, timestamp: -1 });
 AnalyticsEventSchema.index({ sessionId: 1, timestamp: -1 });
 AnalyticsEventSchema.index({ userId: 1, timestamp: -1 });
+AnalyticsEventSchema.index({ timestamp: -1 });
+AnalyticsEventSchema.index({ country: 1, timestamp: -1 });
+AnalyticsEventSchema.index({ device: 1, timestamp: -1 });
+AnalyticsEventSchema.index({ browser: 1, timestamp: -1 });
+AnalyticsEventSchema.index({ os: 1, timestamp: -1 });
 
 AnalyticsEventSchema.index({ timestamp: 1 }, { expireAfterSeconds: 7776000 });
 

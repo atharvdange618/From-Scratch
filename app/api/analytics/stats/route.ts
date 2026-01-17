@@ -3,6 +3,14 @@ import { checkAdminAccess } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import AnalyticsEvent from "@/lib/models/AnalyticsEvent";
 
+let statsCache: {
+  data: any;
+  timestamp: number;
+  params: string;
+} | null = null;
+
+const CACHE_TTL = 5 * 60 * 1000;
+
 /**
  * GET /api/analytics/stats
  * Get aggregated analytics statistics (admin only)
@@ -19,6 +27,19 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
+    const cacheKey = `${startDate || ""}-${endDate || ""}`;
+
+    if (
+      statsCache &&
+      statsCache.params === cacheKey &&
+      Date.now() - statsCache.timestamp < CACHE_TTL
+    ) {
+      return NextResponse.json({
+        success: true,
+        stats: statsCache.data,
+        cached: true,
+      });
+    }
 
     const dateFilter: any = {};
     if (startDate || endDate) {
@@ -47,7 +68,7 @@ export async function GET(request: NextRequest) {
       AnalyticsEvent.countDocuments(dateFilter),
 
       AnalyticsEvent.distinct("sessionId", dateFilter).then(
-        (sessions) => sessions.length
+        (sessions) => sessions.length,
       ),
 
       AnalyticsEvent.distinct("ipAddress", {
@@ -70,55 +91,23 @@ export async function GET(request: NextRequest) {
         {
           $match: {
             ...dateFilter,
-            $or: [
-              { eventType: "page_view" },
-              { "eventData.path": { $exists: true, $nin: [null, ""] } },
-              { "eventData.page": { $exists: true, $nin: [null, ""] } },
-              { "eventData.pathname": { $exists: true, $nin: [null, ""] } },
-              { "eventData.url": { $exists: true, $nin: [null, ""] } },
-            ],
-          },
-        },
-        {
-          $addFields: {
-            pagePath: {
-              $cond: {
-                if: { $ne: ["$eventData.path", null] },
-                then: "$eventData.path",
-                else: {
-                  $cond: {
-                    if: { $ne: ["$eventData.page", null] },
-                    then: "$eventData.page",
-                    else: {
-                      $cond: {
-                        if: { $ne: ["$eventData.pathname", null] },
-                        then: "$eventData.pathname",
-                        else: "$eventData.url",
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-        {
-          $match: {
-            pagePath: {
-              $exists: true,
-              $ne: null,
-              $nin: ["", null],
-            },
+            "eventData.path": { $exists: true, $nin: [null, ""] },
           },
         },
         {
           $group: {
-            _id: "$pagePath",
+            _id: "$eventData.path",
             count: { $sum: 1 },
           },
         },
         { $sort: { count: -1 } },
         { $limit: 10 },
+        {
+          $project: {
+            _id: 1,
+            count: 1,
+          },
+        },
       ]),
 
       AnalyticsEvent.aggregate([
@@ -216,36 +205,45 @@ export async function GET(request: NextRequest) {
       oldestEventDate = oldestEvent.timestamp;
       const daysSinceOldest = Math.floor(
         (Date.now() - new Date(oldestEvent.timestamp).getTime()) /
-          (1000 * 60 * 60 * 24)
+          (1000 * 60 * 60 * 24),
       );
       daysUntilDeletion = Math.max(0, 90 - daysSinceOldest);
     }
 
+    const stats = {
+      totalEvents,
+      uniqueSessions,
+      uniqueVisitors,
+      eventTypeDistribution,
+      topPages,
+      topCountries,
+      deviceBreakdown,
+      browserBreakdown,
+      osBreakdown,
+      dailyEvents,
+      retentionData: {
+        oldestEvent: oldestEventDate,
+        newestEvent: new Date().toISOString(),
+        totalDays: oldestEventDate
+          ? Math.floor(
+              (Date.now() - new Date(oldestEventDate).getTime()) /
+                (1000 * 60 * 60 * 24),
+            )
+          : 0,
+        daysUntilDeletion: daysUntilDeletion || 90,
+      },
+    };
+
+    statsCache = {
+      data: stats,
+      timestamp: Date.now(),
+      params: cacheKey,
+    };
+
     return NextResponse.json({
       success: true,
-      stats: {
-        totalEvents,
-        uniqueSessions,
-        uniqueVisitors,
-        eventTypeDistribution,
-        topPages,
-        topCountries,
-        deviceBreakdown,
-        browserBreakdown,
-        osBreakdown,
-        dailyEvents,
-        retentionData: {
-          oldestEvent: oldestEventDate,
-          newestEvent: new Date().toISOString(),
-          totalDays: oldestEventDate
-            ? Math.floor(
-                (Date.now() - new Date(oldestEventDate).getTime()) /
-                  (1000 * 60 * 60 * 24)
-              )
-            : 0,
-          daysUntilDeletion: daysUntilDeletion || 90,
-        },
-      },
+      stats,
+      cached: false,
     });
   } catch (error: any) {
     console.error("[Analytics] Error fetching stats:", error);
@@ -254,7 +252,7 @@ export async function GET(request: NextRequest) {
         success: false,
         error: error.message || "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

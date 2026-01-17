@@ -5,7 +5,7 @@ import AnalyticsEvent from "@/lib/models/AnalyticsEvent";
 
 /**
  * GET /api/analytics/events
- * Fetch analytics events with filtering and pagination (admin only)
+ * Fetch analytics events with filtering and cursor-based pagination (admin only)
  */
 export async function GET(request: NextRequest) {
   try {
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get("limit") || "100");
-    const skip = parseInt(searchParams.get("skip") || "0");
+    const cursor = searchParams.get("cursor"); // Cursor is the _id of the last item from previous page
     const eventType = searchParams.get("eventType");
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
@@ -44,21 +44,34 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const [events, total] = await Promise.all([
-      AnalyticsEvent.find(query)
-        .sort({ timestamp: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      AnalyticsEvent.countDocuments(query),
-    ]);
+    // Add cursor-based pagination
+    if (cursor) {
+      query._id = { $lt: cursor }; // Get events with _id less than cursor (older events)
+    }
+
+    const events = await AnalyticsEvent.find(query)
+      .sort({ _id: -1 }) // Sort by _id descending (newest first)
+      .limit(limit + 1) // Fetch one extra to check if there are more pages
+      .lean();
+
+    // Check if there are more results
+    const hasMore = events.length > limit;
+
+    // Remove the extra item if it exists
+    const resultEvents = hasMore ? events.slice(0, limit) : events;
+
+    // Get the cursor for the next page (the _id of the last item)
+    const nextCursor =
+      resultEvents.length > 0
+        ? resultEvents[resultEvents.length - 1]._id.toString()
+        : null;
 
     return NextResponse.json({
       success: true,
-      events,
-      total,
+      events: resultEvents,
+      nextCursor: hasMore ? nextCursor : null,
+      hasMore,
       limit,
-      skip,
     });
   } catch (error: any) {
     console.error("[Analytics] Error fetching events:", error);
@@ -67,7 +80,7 @@ export async function GET(request: NextRequest) {
         success: false,
         error: error.message || "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

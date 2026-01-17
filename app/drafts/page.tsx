@@ -40,17 +40,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import Image from "next/image";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Post {
   _id: string;
   title: string;
   slug: string;
   summary: string;
-  content: string;
+  content?: string;
+  readingTime?: string;
   category: string;
   tags: string[];
   publishedDate?: string;
@@ -310,7 +311,12 @@ export default function DraftsPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
-                    <span>{calculateReadingTime(draft.content)} min read</span>
+                    <span>
+                      {draft.readingTime ||
+                        (draft.content
+                          ? calculateReadingTime(draft.content)
+                          : "5 min read")}
+                    </span>
                   </div>
                   {draft.tags && draft.tags.length > 0 && (
                     <div className="flex flex-wrap items-center gap-1">

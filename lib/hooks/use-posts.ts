@@ -15,7 +15,8 @@ interface Post {
   slug: string;
   title: string;
   summary: string;
-  content: string;
+  content?: string;
+  readingTime?: string;
   category: string;
   tags: string[];
   bannerImage?: string;
@@ -55,13 +56,14 @@ export function usePostsQuery() {
   return useQuery({
     queryKey: postKeys.published(),
     queryFn: async (): Promise<Post[]> => {
-      const response = await fetch("/api/posts");
+      const response = await fetch("/api/posts?listView=true");
       if (!response.ok) {
         throw new Error("Failed to fetch posts");
       }
       const data = await response.json();
       return data.posts || [];
     },
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
 }
 
@@ -168,7 +170,7 @@ export function useUpdatePostMutation(id: string) {
         old.map((post) =>
           post._id === id
             ? { ...post, ...newData, updatedAt: new Date().toISOString() }
-            : post
+            : post,
         );
 
       queryClient.setQueryData(postKeys.drafts(), updatePost);
@@ -183,7 +185,7 @@ export function useUpdatePostMutation(id: string) {
       if (context?.previousPublished) {
         queryClient.setQueryData(
           postKeys.published(),
-          context.previousPublished
+          context.previousPublished,
         );
       }
     },
@@ -227,10 +229,10 @@ export function useDeletePostMutation() {
       const previousPublished = queryClient.getQueryData(postKeys.published());
 
       queryClient.setQueryData(postKeys.drafts(), (old: Post[] = []) =>
-        old.filter((post) => post._id !== id)
+        old.filter((post) => post._id !== id),
       );
       queryClient.setQueryData(postKeys.published(), (old: Post[] = []) =>
-        old.filter((post) => post._id !== id)
+        old.filter((post) => post._id !== id),
       );
 
       return { previousDrafts, previousPublished };
@@ -242,7 +244,7 @@ export function useDeletePostMutation() {
       if (context?.previousPublished) {
         queryClient.setQueryData(
           postKeys.published(),
-          context.previousPublished
+          context.previousPublished,
         );
       }
     },
@@ -288,7 +290,7 @@ export function usePublishPostMutation() {
 
       if (draftToPublish) {
         queryClient.setQueryData(postKeys.drafts(), (old: Post[] = []) =>
-          old.filter((post) => post._id !== id)
+          old.filter((post) => post._id !== id),
         );
 
         const publishedPost = {
@@ -312,7 +314,7 @@ export function usePublishPostMutation() {
       if (context?.previousPublished) {
         queryClient.setQueryData(
           postKeys.published(),
-          context.previousPublished
+          context.previousPublished,
         );
       }
     },

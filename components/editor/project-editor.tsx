@@ -27,7 +27,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Upload, Save, Loader2, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const projectSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -50,6 +50,10 @@ export default function ProjectEditor() {
   const [projects, setProjects] = useState<any[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>("");
   const [isEditMode, setIsEditMode] = useState(false);
+  const [lastAutosaved, setLastAutosaved] = useState<Date | null>(null);
+  const [autosaveStatus, setAutosaveStatus] = useState<
+    "idle" | "saving" | "saved"
+  >("idle");
   const { toast } = useToast();
   const router = useRouter();
 
@@ -73,7 +77,7 @@ export default function ProjectEditor() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("/api/projects");
+        const response = await fetch("/api/projects/list");
         if (response.ok) {
           const data = await response.json();
           setProjects(data.projects || []);
@@ -85,24 +89,53 @@ export default function ProjectEditor() {
     fetchProjects();
   }, []);
 
-  const loadProject = (projectId: string) => {
-    const project = projects.find((p) => p._id === projectId);
-    if (!project) return;
+  const loadProject = async (projectId: string) => {
+    try {
+      const selectedProject = projects.find((p) => p._id === projectId);
+      if (!selectedProject || !selectedProject.slug) {
+        throw new Error("Project not found in list");
+      }
 
-    form.reset({
-      name: project.name,
-      slug: project.slug,
-      description: project.description,
-      status: project.status,
-      techStack: "",
-      githubUrl: project.githubUrl || "",
-      liveUrl: project.liveUrl || "",
-      bannerImage: project.bannerImage || "",
-      featured: project.featured,
-    });
-    setTechTags(project.techStack || []);
-    setSelectedProjectId(projectId);
-    setIsEditMode(true);
+      const response = await fetch(`/api/projects/${selectedProject.slug}`);
+      if (!response.ok) {
+        throw new Error("Failed to load project");
+      }
+
+      const data = await response.json();
+      if (!data.success || !data.data) {
+        throw new Error("Invalid response from server");
+      }
+      const project = data.data;
+
+      form.reset({
+        name: project.name,
+        slug: project.slug,
+        description: project.description,
+        status: project.status,
+        techStack: "",
+        githubUrl: project.githubUrl || "",
+        liveUrl: project.liveUrl || "",
+        bannerImage: project.bannerImage || "",
+        featured: project.featured,
+      });
+      setTechTags(project.techStack || []);
+      setSelectedProjectId(projectId);
+      setIsEditMode(true);
+
+      try {
+        localStorage.removeItem("project-autosave-new");
+        localStorage.removeItem(`project-autosave-${projectId}`);
+      } catch (error) {
+        console.error("Failed to clear autosave:", error);
+      }
+    } catch (error) {
+      console.error("Error loading project:", error);
+      toast({
+        title: "❌ Error",
+        description: "Failed to load project",
+        variant: "destructive",
+      });
+    }
   };
 
   const resetForm = () => {
@@ -123,6 +156,71 @@ export default function ProjectEditor() {
       setValue("slug", slug);
     }
   }, [name, setValue, isEditMode]);
+
+  useEffect(() => {
+    const subscription = form.watch((formData) => {
+      if (!formData.name && !formData.description) {
+        return;
+      }
+
+      setAutosaveStatus("saving");
+
+      const timeoutId = setTimeout(() => {
+        try {
+          const autosaveKey = isEditMode
+            ? `project-autosave-${selectedProjectId}`
+            : "project-autosave-new";
+
+          localStorage.setItem(
+            autosaveKey,
+            JSON.stringify({
+              ...formData,
+              techTags,
+              lastSaved: new Date().toISOString(),
+            }),
+          );
+
+          setLastAutosaved(new Date());
+          setAutosaveStatus("saved");
+
+          setTimeout(() => setAutosaveStatus("idle"), 2000);
+        } catch (error) {
+          console.error("Autosave failed:", error);
+          setAutosaveStatus("idle");
+        }
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form, isEditMode, selectedProjectId, techTags]);
+
+  useEffect(() => {
+    const restoreAutosave = () => {
+      try {
+        const autosaveKey = "project-autosave-new";
+        const saved = localStorage.getItem(autosaveKey);
+
+        if (saved) {
+          const data = JSON.parse(saved);
+          if (data.name || data.description) {
+            toast({
+              title: "📝 Autosave Found",
+              description: `Draft from ${new Date(data.lastSaved).toLocaleString()} restored`,
+            });
+            form.reset(data);
+            setTechTags(data.techTags || []);
+            setLastAutosaved(new Date(data.lastSaved));
+          }
+        }
+      } catch (error) {
+        console.error("Failed to restore autosave:", error);
+      }
+    };
+
+    restoreAutosave();
+  }, []);
 
   const handleTechStackAdd = () => {
     const techStack = form.watch("techStack");
@@ -197,6 +295,15 @@ export default function ProjectEditor() {
       });
 
       if (response.ok) {
+        try {
+          const autosaveKey = isEditMode
+            ? `project-autosave-${selectedProjectId}`
+            : "project-autosave-new";
+          localStorage.removeItem(autosaveKey);
+        } catch (error) {
+          console.error("Failed to clear autosave:", error);
+        }
+
         toast({
           title: "✅ Success",
           description: isEditMode
@@ -479,8 +586,8 @@ export default function ProjectEditor() {
                           {uploading
                             ? "Uploading..."
                             : field.value
-                            ? "Change Image"
-                            : "Upload Image"}
+                              ? "Change Image"
+                              : "Upload Image"}
                         </Button>
                         {field.value && (
                           <Button
@@ -529,6 +636,26 @@ export default function ProjectEditor() {
         </div>
 
         <Card className="rounded-none border-4 border-black bg-[#FFECDB] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          {autosaveStatus !== "idle" && (
+            <div className="flex items-center gap-2 text-sm">
+              {autosaveStatus === "saving" ? (
+                <>
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  <span className="text-muted-foreground">Saving...</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-green-600">✓ Autosaved</span>
+                  {lastAutosaved && (
+                    <span className="text-muted-foreground">
+                      {lastAutosaved.toLocaleTimeString()}
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
           <div className="flex justify-end gap-3">
             <Button
               type="button"

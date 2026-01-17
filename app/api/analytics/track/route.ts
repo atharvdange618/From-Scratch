@@ -35,7 +35,7 @@ async function getIpGeolocation(ip: string): Promise<{
   timezone?: string;
 }> {
   try {
-    const response = await fetch(`http://ip-api.com/json/${ip}`);
+    const response = await fetch(`https://ip-api.com/json/${ip}`);
     const data: IpApiResponse = await response.json();
 
     if (data.status === "success") {
@@ -153,14 +153,24 @@ export async function POST(request: NextRequest) {
     const geoData =
       ipAddress !== "unknown" ? await getIpGeolocation(ipAddress) : {};
 
-    // Parse user agent
     const userAgent = request.headers.get("user-agent") || "";
     const { device, browser, os } = parseUserAgent(userAgent);
 
-    // Create analytics event
+    const normalizedEventData = eventData ? { ...eventData } : {};
+    if (!normalizedEventData.path) {
+      normalizedEventData.path =
+        normalizedEventData.page ||
+        normalizedEventData.pathname ||
+        (normalizedEventData.url
+          ? new URL(normalizedEventData.url).pathname
+          : undefined);
+    }
+    delete normalizedEventData.page;
+    delete normalizedEventData.pathname;
+
     const event = await AnalyticsEvent.create({
       eventType,
-      eventData: eventData || {},
+      eventData: normalizedEventData,
       userId: userId || undefined,
       sessionId,
       timestamp: new Date(),

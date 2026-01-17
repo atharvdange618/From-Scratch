@@ -36,9 +36,9 @@ import {
   Copy,
   Trash2,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { formatExpiryDate } from "@/lib/dateandnumbers";
 import { MarkdownRenderer } from "../markdown-renderer";
+import { useToast } from "../ui/use-toast";
 
 const postSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -67,6 +67,10 @@ export default function PostEditor() {
   const [saving, setSaving] = useState(false);
   const [previewTokens, setPreviewTokens] = useState<any[]>([]);
   const [generatingPreview, setGeneratingPreview] = useState(false);
+  const [lastAutosaved, setLastAutosaved] = useState<Date | null>(null);
+  const [autosaveStatus, setAutosaveStatus] = useState<
+    "idle" | "saving" | "saved"
+  >("idle");
   const { toast } = useToast();
   const router = useRouter();
 
@@ -97,7 +101,7 @@ export default function PostEditor() {
       try {
         const [projectsRes, postsRes] = await Promise.all([
           fetch("/api/projects"),
-          fetch("/api/posts"),
+          fetch("/api/posts/list"),
         ]);
 
         if (projectsRes.ok) {
@@ -116,27 +120,56 @@ export default function PostEditor() {
     fetchData();
   }, []);
 
-  const loadPost = (postId: string) => {
-    const post = posts.find((p) => p._id === postId);
-    if (!post) return;
+  const loadPost = async (postId: string) => {
+    try {
+      const selectedPost = posts.find((p) => p._id === postId);
+      if (!selectedPost || !selectedPost.slug) {
+        throw new Error("Post not found in list");
+      }
 
-    form.reset({
-      title: post.title,
-      slug: post.slug,
-      summary: post.summary,
-      content: post.content,
-      category: post.category,
-      tags: post.tags.join(", "),
-      linkedProject: post.linkedProject?._id || "",
-      bannerImage: post.bannerImage || "",
-      isPublished: post.isPublished,
-      seoTitle: post.seoTitle || "",
-      seoDescription: post.seoDescription || "",
-      seoKeywords: post.seoKeywords?.join(", ") || "",
-    });
-    setSelectedPostId(postId);
-    setIsEditMode(true);
-    setPreviewTokens(post.previewTokens || []);
+      const response = await fetch(`/api/posts/${selectedPost.slug}`);
+      if (!response.ok) {
+        throw new Error("Failed to load post");
+      }
+
+      const data = await response.json();
+      if (!data.success || !data.data) {
+        throw new Error("Invalid response from server");
+      }
+      const post = data.data;
+
+      form.reset({
+        title: post.title,
+        slug: post.slug,
+        summary: post.summary,
+        content: post.content,
+        category: post.category,
+        tags: post.tags.join(", "),
+        linkedProject: post.linkedProject?._id || "",
+        bannerImage: post.bannerImage || "",
+        isPublished: post.isPublished,
+        seoTitle: post.seoTitle || "",
+        seoDescription: post.seoDescription || "",
+        seoKeywords: post.seoKeywords?.join(", ") || "",
+      });
+      setSelectedPostId(postId);
+      setIsEditMode(true);
+      setPreviewTokens(post.previewTokens || []);
+
+      try {
+        localStorage.removeItem("post-autosave-new");
+        localStorage.removeItem(`post-autosave-${postId}`);
+      } catch (error) {
+        console.error("Failed to clear autosave:", error);
+      }
+    } catch (error) {
+      console.error("Error loading post:", error);
+      toast({
+        title: "❌ Error",
+        description: "Failed to load post",
+        variant: "destructive",
+      });
+    }
   };
 
   const resetForm = () => {
@@ -156,6 +189,69 @@ export default function PostEditor() {
       setValue("slug", slug);
     }
   }, [title, setValue, isEditMode]);
+
+  useEffect(() => {
+    const subscription = form.watch((formData) => {
+      if (!formData.title && !formData.content) {
+        return;
+      }
+
+      setAutosaveStatus("saving");
+
+      const timeoutId = setTimeout(() => {
+        try {
+          const autosaveKey = isEditMode
+            ? `post-autosave-${selectedPostId}`
+            : "post-autosave-new";
+
+          localStorage.setItem(
+            autosaveKey,
+            JSON.stringify({
+              ...formData,
+              lastSaved: new Date().toISOString(),
+            }),
+          );
+
+          setLastAutosaved(new Date());
+          setAutosaveStatus("saved");
+
+          setTimeout(() => setAutosaveStatus("idle"), 2000);
+        } catch (error) {
+          console.error("Autosave failed:", error);
+          setAutosaveStatus("idle");
+        }
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form, isEditMode, selectedPostId]);
+
+  useEffect(() => {
+    const restoreAutosave = () => {
+      try {
+        const autosaveKey = "post-autosave-new";
+        const saved = localStorage.getItem(autosaveKey);
+
+        if (saved) {
+          const data = JSON.parse(saved);
+          if (data.title || data.content) {
+            toast({
+              title: "📝 Autosave Found",
+              description: `Draft from ${new Date(data.lastSaved).toLocaleString()} restored`,
+            });
+            form.reset(data);
+            setLastAutosaved(new Date(data.lastSaved));
+          }
+        }
+      } catch (error) {
+        console.error("Failed to restore autosave:", error);
+      }
+    };
+
+    restoreAutosave();
+  }, []);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -228,6 +324,15 @@ export default function PostEditor() {
       });
 
       if (response.ok) {
+        try {
+          const autosaveKey = isEditMode
+            ? `post-autosave-${selectedPostId}`
+            : "post-autosave-new";
+          localStorage.removeItem(autosaveKey);
+        } catch (error) {
+          console.error("Failed to clear autosave:", error);
+        }
+
         toast({
           title: "✅ Success",
           description: isEditMode
@@ -778,6 +883,26 @@ export default function PostEditor() {
               )}
             />
 
+            {autosaveStatus !== "idle" && (
+              <div className="flex items-center gap-2 text-sm">
+                {autosaveStatus === "saving" ? (
+                  <>
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    <span className="text-muted-foreground">Saving...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-green-600">✓ Autosaved</span>
+                    {lastAutosaved && (
+                      <span className="text-muted-foreground">
+                        {lastAutosaved.toLocaleTimeString()}
+                      </span>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+
             <div className="flex gap-3">
               <Button
                 type="button"
@@ -800,8 +925,8 @@ export default function PostEditor() {
                 {isEditMode
                   ? "Update Post"
                   : form.watch("isPublished")
-                  ? "Publish Post"
-                  : "Save Draft"}
+                    ? "Publish Post"
+                    : "Save Draft"}
               </Button>
             </div>
           </div>

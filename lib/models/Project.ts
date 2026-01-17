@@ -60,10 +60,15 @@ const ProjectSchema: Schema<IProject> = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 ProjectSchema.index({ featured: 1, status: 1 });
+ProjectSchema.index({
+  name: "text",
+  description: "text",
+  techStack: "text",
+});
 
 const Project: Model<IProject> =
   mongoose.models.Project || mongoose.model<IProject>("Project", ProjectSchema);

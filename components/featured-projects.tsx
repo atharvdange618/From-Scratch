@@ -1,8 +1,5 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ExternalLink, Github, Star, Code2, Loader2 } from "lucide-react";
+import { ExternalLink, Github, Star, Code2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import {
@@ -12,6 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Project from "@/lib/models/Project";
+import dbConnect from "@/lib/mongodb";
 
 interface Project {
   _id: string;
@@ -38,106 +37,54 @@ const statusColors = {
   Archived: "#FFECDB",
 };
 
-export function FeaturedProjects() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [githubStats, setGithubStats] = useState<Record<string, GitHubStats>>(
-    {}
+async function getFeaturedProjects() {
+  await dbConnect();
+  const projects = await Project.find({ featured: true }).limit(3).lean();
+  return projects.map((project) => ({
+    ...project,
+    _id: project._id.toString(),
+  }));
+}
+
+async function getGithubStats(
+  githubUrl: string | undefined,
+): Promise<GitHubStats | null> {
+  if (!githubUrl) return null;
+
+  const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
+  if (!match) return null;
+
+  const [, owner, repo] = match;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+      headers: {
+        Accept: "application/vnd.github.v3+json",
+        Authorization: `token ${process.env.GITHUB_API_KEY}`,
+      },
+      next: {
+        revalidate: 3600,
+      },
+    });
+
+    if (!res.ok) return null;
+
+    const repoData = await res.json();
+    return {
+      stars: repoData.stargazers_count || 0,
+      forks: repoData.forks_count || 0,
+      language: repoData.language || "Unknown",
+    };
+  } catch (err) {
+    console.error(`Failed to fetch GitHub stats for ${githubUrl}:`, err);
+    return null;
+  }
+}
+
+export async function FeaturedProjects() {
+  const projects = await getFeaturedProjects();
+  const githubStats = await Promise.all(
+    projects.map((p) => getGithubStats(p.githubUrl)),
   );
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const response = await fetch("/api/projects?featured=true");
-        if (!response.ok) {
-          throw new Error("Failed to fetch featured projects");
-        }
-        const data = await response.json();
-        const featuredProjects = (data.projects || []).slice(0, 3);
-        setProjects(featuredProjects);
-
-        const statsPromises = featuredProjects
-          .filter((p: Project) => p.githubUrl)
-          .map(async (p: Project) => {
-            if (!p.githubUrl) return null;
-
-            const match = p.githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
-            if (!match) return null;
-
-            const [, owner, repo] = match;
-            try {
-              const res = await fetch(
-                `https://api.github.com/repos/${owner}/${repo}`,
-                {
-                  headers: {
-                    Accept: "application/vnd.github.v3+json",
-                  },
-                }
-              );
-
-              if (!res.ok) return null;
-
-              const repoData = await res.json();
-              return {
-                projectId: p._id,
-                stats: {
-                  stars: repoData.stargazers_count || 0,
-                  forks: repoData.forks_count || 0,
-                  language: repoData.language || "Unknown",
-                },
-              };
-            } catch (err) {
-              console.error(`Failed to fetch GitHub stats for ${p.name}:`, err);
-              return null;
-            }
-          });
-
-        const statsResults = await Promise.all(statsPromises);
-        const statsMap: Record<string, GitHubStats> = {};
-        statsResults.forEach((result) => {
-          if (result) {
-            statsMap[result.projectId] = result.stats;
-          }
-        });
-        setGithubStats(statsMap);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to load projects"
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchProjects();
-  }, []);
-
-  if (loading) {
-    return (
-      <section className="mb-12 md:mb-16">
-        <h2 className="mb-6 md:mb-8 font-sans text-2xl md:text-3xl font-bold">
-          Featured Projects
-        </h2>
-        <div className="flex items-center justify-center rounded-none border-4 border-black bg-[#AFDDFF] p-12 md:p-16">
-          <Loader2 className="h-12 w-12 animate-spin" />
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="mb-12 md:mb-16">
-        <h2 className="mb-6 md:mb-8 font-sans text-2xl md:text-3xl font-bold">
-          Featured Projects
-        </h2>
-        <div className="flex flex-col items-center justify-center rounded-none border-4 border-black bg-[#FFECDB] p-12 md:p-16">
-          <p className="text-lg md:text-xl font-bold">Error: {error}</p>
-        </div>
-      </section>
-    );
-  }
 
   if (projects.length === 0) {
     return null;
@@ -157,8 +104,8 @@ export function FeaturedProjects() {
       </div>
 
       <div className="grid gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => {
-          const stats = githubStats[project._id];
+        {projects.map((project, index) => {
+          const stats = githubStats[index];
 
           return (
             <Card

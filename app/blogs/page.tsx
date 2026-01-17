@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, Suspense, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Calendar, Tag, Search, Filter, Clock } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import { usePostsQuery, postKeys } from "@/lib/hooks/use-posts";
+import { usePostsQuery } from "@/lib/hooks/use-posts";
 import { useQueryClient } from "@tanstack/react-query";
 import { getCategoriesWithAll, getCategoryColor } from "@/lib/categories";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/dateandnumbers";
-import { calculateReadingTime } from "@/lib/reading-time";
 import { BlogCardSkeleton } from "@/components/skeletons";
 import { EmptyState } from "@/components/empty-state";
 import { RecentlyViewed } from "@/components/recently-viewed";
@@ -36,7 +35,8 @@ interface Post {
   title: string;
   slug: string;
   summary: string;
-  content: string;
+  content?: string;
+  readingTime?: string;
   category: string;
   tags: string[];
   publishedDate?: string;
@@ -55,7 +55,6 @@ function BlogsContent() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-  const { data: posts = [], isLoading, isError } = usePostsQuery();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedTag, setSelectedTag] = useState("all");
@@ -64,6 +63,8 @@ function BlogsContent() {
   const postsPerPage = 9;
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const categories = getCategoriesWithAll();
+
+  const { data: posts = [], isLoading, isError } = usePostsQuery();
 
   useEffect(() => {
     const tagFromUrl = searchParams.get("tag");
@@ -82,29 +83,25 @@ function BlogsContent() {
   const filteredPosts = useMemo(() => {
     let filtered = [...posts];
 
-    // Search filter
     if (searchQuery) {
       filtered = filtered.filter(
         (post) =>
           post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           post.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
           post.tags?.some((tag) =>
-            tag.toLowerCase().includes(searchQuery.toLowerCase())
-          )
+            tag.toLowerCase().includes(searchQuery.toLowerCase()),
+          ),
       );
     }
 
-    // Category filter
     if (selectedCategory !== "all") {
       filtered = filtered.filter((post) => post.category === selectedCategory);
     }
 
-    // Tag filter
     if (selectedTag !== "all") {
       filtered = filtered.filter((post) => post.tags?.includes(selectedTag));
     }
 
-    // Sort
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "date-desc":
@@ -161,7 +158,6 @@ function BlogsContent() {
     setSortBy("date-desc");
   };
 
-  // Pagination
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
@@ -170,7 +166,6 @@ function BlogsContent() {
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-12">
-        {/* Header */}
         <div className="mb-12">
           <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl">
             All Blog Posts
@@ -181,7 +176,6 @@ function BlogsContent() {
           </p>
         </div>
 
-        {/* Skeleton Grid */}
         <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(9)].map((_, i) => (
             <BlogCardSkeleton key={i} />
@@ -205,7 +199,6 @@ function BlogsContent() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      {/* Header */}
       <div className="mb-12">
         <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl">
           All Blog Posts
@@ -216,10 +209,8 @@ function BlogsContent() {
         </p>
       </div>
 
-      {/* Recently Viewed */}
       <RecentlyViewed />
 
-      {/* Filters Section */}
       <div className="mb-8 rounded-none border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <div className="mb-4 flex items-center gap-2">
           <Filter className="h-5 w-5" />
@@ -227,7 +218,6 @@ function BlogsContent() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
             <Input
@@ -239,7 +229,6 @@ function BlogsContent() {
             />
           </div>
 
-          {/* Category Filter */}
           <Select
             value={selectedCategory}
             onValueChange={(value) => {
@@ -262,7 +251,6 @@ function BlogsContent() {
             </SelectContent>
           </Select>
 
-          {/* Tag Filter */}
           <Select
             value={selectedTag}
             onValueChange={(value) => {
@@ -285,7 +273,6 @@ function BlogsContent() {
             </SelectContent>
           </Select>
 
-          {/* Sort */}
           <Select
             value={sortBy}
             onValueChange={(value) => {
@@ -307,7 +294,6 @@ function BlogsContent() {
           </Select>
         </div>
 
-        {/* Active Filters & Reset */}
         <div className="mt-4 flex items-center justify-between">
           <p className="text-sm font-bold">
             Showing {filteredPosts.length} of {posts.length} posts
@@ -322,7 +308,6 @@ function BlogsContent() {
         </div>
       </div>
 
-      {/* Posts Grid */}
       {currentPosts.length === 0 ? (
         <EmptyState
           title="No posts found"
@@ -333,7 +318,6 @@ function BlogsContent() {
         />
       ) : (
         <>
-          {/* Result Count */}
           {filteredPosts.length > 0 && (
             <div className="mb-4 text-center text-sm font-medium text-gray-600">
               Showing {indexOfFirstPost + 1}-
@@ -364,7 +348,7 @@ function BlogsContent() {
                       {formatDate(
                         post.publishedDate ||
                           post.createdAt ||
-                          new Date().toISOString()
+                          new Date().toISOString(),
                       )}
                     </span>
                   </div>
@@ -375,15 +359,13 @@ function BlogsContent() {
                 <CardContent className="p-4">
                   <p className="mb-4 line-clamp-3 font-serif">{post.summary}</p>
 
-                  {/* Reading Time */}
                   <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">
                     <Clock className="h-4 w-4" />
                     <span className="font-medium">
-                      {calculateReadingTime(post.content)}
+                      {post.readingTime || "5 min read"}
                     </span>
                   </div>
 
-                  {/* Category Badge */}
                   <div className="mb-3">
                     <Badge
                       className="rounded-lg border-2 border-black font-bold"
@@ -395,7 +377,6 @@ function BlogsContent() {
                     </Badge>
                   </div>
 
-                  {/* Tags */}
                   <div className="flex flex-wrap gap-2">
                     {post.tags?.slice(0, 3).map((tag) => (
                       <button
@@ -428,7 +409,6 @@ function BlogsContent() {
             ))}
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center">
               <div className="flex items-center gap-2">

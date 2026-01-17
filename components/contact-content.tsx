@@ -19,9 +19,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { formatTimeIST } from "@/lib/dateandnumbers";
 import { trackEvent } from "@/lib/analytics";
+import { useToast } from "./ui/use-toast";
 
 interface ContactFormData {
   name: string;
@@ -65,7 +65,7 @@ export function ContactContent() {
           message: data.message,
           time: formatTimeIST(now),
         },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!,
       );
 
       await trackEvent("contact_form_submit", {
