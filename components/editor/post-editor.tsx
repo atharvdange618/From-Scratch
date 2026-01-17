@@ -39,6 +39,9 @@ import {
 import { formatExpiryDate } from "@/lib/dateandnumbers";
 import { MarkdownRenderer } from "../markdown-renderer";
 import { useToast } from "../ui/use-toast";
+import { useEditorAutosave } from "@/lib/hooks/use-editor-autosave";
+import { useSlugGenerator } from "@/lib/hooks/use-slug-generator";
+import { useImageUpload } from "@/lib/hooks/use-image-upload";
 
 const postSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -63,14 +66,9 @@ export default function PostEditor() {
   const [posts, setPosts] = useState<any[]>([]);
   const [selectedPostId, setSelectedPostId] = useState<string>("");
   const [isEditMode, setIsEditMode] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [previewTokens, setPreviewTokens] = useState<any[]>([]);
   const [generatingPreview, setGeneratingPreview] = useState(false);
-  const [lastAutosaved, setLastAutosaved] = useState<Date | null>(null);
-  const [autosaveStatus, setAutosaveStatus] = useState<
-    "idle" | "saving" | "saved"
-  >("idle");
+  const [saving, setSaving] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -95,6 +93,21 @@ export default function PostEditor() {
   const { watch, setValue } = form;
   const title = watch("title");
   const content = watch("content");
+
+  const { lastAutosaved, autosaveStatus, clearAutosave } = useEditorAutosave({
+    form,
+    isEditMode,
+    selectedItemId: selectedPostId,
+    storageKey: "post-autosave",
+    checkFields: ["title", "content"],
+  });
+
+  useSlugGenerator(title, isEditMode, setValue);
+
+  const { uploading, handleImageUpload } = useImageUpload(
+    setValue,
+    "bannerImage",
+  );
 
   useEffect(() => {
     async function fetchData() {
@@ -155,13 +168,7 @@ export default function PostEditor() {
       setSelectedPostId(postId);
       setIsEditMode(true);
       setPreviewTokens(post.previewTokens || []);
-
-      try {
-        localStorage.removeItem("post-autosave-new");
-        localStorage.removeItem(`post-autosave-${postId}`);
-      } catch (error) {
-        console.error("Failed to clear autosave:", error);
-      }
+      clearAutosave(postId);
     } catch (error) {
       console.error("Error loading post:", error);
       toast({
@@ -173,128 +180,24 @@ export default function PostEditor() {
   };
 
   const resetForm = () => {
-    form.reset();
+    form.reset({
+      title: "",
+      slug: "",
+      summary: "",
+      content: "",
+      category: "",
+      tags: "",
+      linkedProject: "",
+      bannerImage: "",
+      isPublished: false,
+      seoTitle: "",
+      seoDescription: "",
+      seoKeywords: "",
+    });
     setSelectedPostId("");
     setIsEditMode(false);
     setPreviewTokens([]);
-  };
-
-  useEffect(() => {
-    if (title && !isEditMode) {
-      const slug = title
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-");
-      setValue("slug", slug);
-    }
-  }, [title, setValue, isEditMode]);
-
-  useEffect(() => {
-    const subscription = form.watch((formData) => {
-      if (!formData.title && !formData.content) {
-        return;
-      }
-
-      setAutosaveStatus("saving");
-
-      const timeoutId = setTimeout(() => {
-        try {
-          const autosaveKey = isEditMode
-            ? `post-autosave-${selectedPostId}`
-            : "post-autosave-new";
-
-          localStorage.setItem(
-            autosaveKey,
-            JSON.stringify({
-              ...formData,
-              lastSaved: new Date().toISOString(),
-            }),
-          );
-
-          setLastAutosaved(new Date());
-          setAutosaveStatus("saved");
-
-          setTimeout(() => setAutosaveStatus("idle"), 2000);
-        } catch (error) {
-          console.error("Autosave failed:", error);
-          setAutosaveStatus("idle");
-        }
-      }, 3000);
-
-      return () => clearTimeout(timeoutId);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form, isEditMode, selectedPostId]);
-
-  useEffect(() => {
-    const restoreAutosave = () => {
-      try {
-        const autosaveKey = "post-autosave-new";
-        const saved = localStorage.getItem(autosaveKey);
-
-        if (saved) {
-          const data = JSON.parse(saved);
-          if (data.title || data.content) {
-            toast({
-              title: "📝 Autosave Found",
-              description: `Draft from ${new Date(data.lastSaved).toLocaleString()} restored`,
-            });
-            form.reset(data);
-            setLastAutosaved(new Date(data.lastSaved));
-          }
-        }
-      } catch (error) {
-        console.error("Failed to restore autosave:", error);
-      }
-    };
-
-    restoreAutosave();
-  }, []);
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        const imageUrl =
-          result.data?.secure_url || result.data?.url || result.url;
-        if (!imageUrl) {
-          throw new Error("No URL in upload response");
-        }
-        setValue("bannerImage", imageUrl, { shouldValidate: true });
-        toast({
-          title: "✅ Success",
-          description: "Cover image uploaded successfully",
-        });
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Upload failed");
-      }
-    } catch (error) {
-      console.error("Upload error:", error);
-      toast({
-        title: "❌ Upload failed",
-        description:
-          error instanceof Error ? error.message : "Failed to upload image",
-        variant: "destructive",
-      });
-    } finally {
-      setUploading(false);
-      e.target.value = "";
-    }
+    clearAutosave(selectedPostId);
   };
 
   const onSubmit = async (data: PostFormValues) => {
@@ -324,14 +227,7 @@ export default function PostEditor() {
       });
 
       if (response.ok) {
-        try {
-          const autosaveKey = isEditMode
-            ? `post-autosave-${selectedPostId}`
-            : "post-autosave-new";
-          localStorage.removeItem(autosaveKey);
-        } catch (error) {
-          console.error("Failed to clear autosave:", error);
-        }
+        clearAutosave(selectedPostId);
 
         toast({
           title: "✅ Success",

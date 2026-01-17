@@ -28,6 +28,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Upload, Save, Loader2, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useEditorAutosave } from "@/lib/hooks/use-editor-autosave";
+import { useSlugGenerator } from "@/lib/hooks/use-slug-generator";
+import { useImageUpload } from "@/lib/hooks/use-image-upload";
 
 const projectSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -44,16 +47,11 @@ const projectSchema = z.object({
 type ProjectFormValues = z.infer<typeof projectSchema>;
 
 export default function ProjectEditor() {
-  const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [techTags, setTechTags] = useState<string[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>("");
   const [isEditMode, setIsEditMode] = useState(false);
-  const [lastAutosaved, setLastAutosaved] = useState<Date | null>(null);
-  const [autosaveStatus, setAutosaveStatus] = useState<
-    "idle" | "saving" | "saved"
-  >("idle");
   const { toast } = useToast();
   const router = useRouter();
 
@@ -73,6 +71,22 @@ export default function ProjectEditor() {
   });
 
   const { watch, setValue } = form;
+  const name = watch("name");
+
+  const { lastAutosaved, autosaveStatus, clearAutosave } = useEditorAutosave({
+    form,
+    isEditMode,
+    selectedItemId: selectedProjectId,
+    storageKey: "project-autosave",
+    checkFields: ["name", "description"],
+  });
+
+  useSlugGenerator(name, isEditMode, setValue);
+
+  const { uploading, handleImageUpload } = useImageUpload(
+    setValue,
+    "bannerImage",
+  );
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -102,10 +116,10 @@ export default function ProjectEditor() {
       }
 
       const data = await response.json();
-      if (!data.success || !data.data) {
+      if (!data.success || !data.project) {
         throw new Error("Invalid response from server");
       }
-      const project = data.data;
+      const project = data.project;
 
       form.reset({
         name: project.name,
@@ -139,88 +153,22 @@ export default function ProjectEditor() {
   };
 
   const resetForm = () => {
-    form.reset();
+    form.reset({
+      name: "",
+      slug: "",
+      description: "",
+      status: "Active",
+      techStack: "",
+      githubUrl: "",
+      liveUrl: "",
+      bannerImage: "",
+      featured: false,
+    });
     setTechTags([]);
     setSelectedProjectId("");
     setIsEditMode(false);
+    clearAutosave(selectedProjectId);
   };
-
-  const name = watch("name");
-  useEffect(() => {
-    if (name && !isEditMode) {
-      const slug = name
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-");
-      setValue("slug", slug);
-    }
-  }, [name, setValue, isEditMode]);
-
-  useEffect(() => {
-    const subscription = form.watch((formData) => {
-      if (!formData.name && !formData.description) {
-        return;
-      }
-
-      setAutosaveStatus("saving");
-
-      const timeoutId = setTimeout(() => {
-        try {
-          const autosaveKey = isEditMode
-            ? `project-autosave-${selectedProjectId}`
-            : "project-autosave-new";
-
-          localStorage.setItem(
-            autosaveKey,
-            JSON.stringify({
-              ...formData,
-              techTags,
-              lastSaved: new Date().toISOString(),
-            }),
-          );
-
-          setLastAutosaved(new Date());
-          setAutosaveStatus("saved");
-
-          setTimeout(() => setAutosaveStatus("idle"), 2000);
-        } catch (error) {
-          console.error("Autosave failed:", error);
-          setAutosaveStatus("idle");
-        }
-      }, 3000);
-
-      return () => clearTimeout(timeoutId);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form, isEditMode, selectedProjectId, techTags]);
-
-  useEffect(() => {
-    const restoreAutosave = () => {
-      try {
-        const autosaveKey = "project-autosave-new";
-        const saved = localStorage.getItem(autosaveKey);
-
-        if (saved) {
-          const data = JSON.parse(saved);
-          if (data.name || data.description) {
-            toast({
-              title: "📝 Autosave Found",
-              description: `Draft from ${new Date(data.lastSaved).toLocaleString()} restored`,
-            });
-            form.reset(data);
-            setTechTags(data.techTags || []);
-            setLastAutosaved(new Date(data.lastSaved));
-          }
-        }
-      } catch (error) {
-        console.error("Failed to restore autosave:", error);
-      }
-    };
-
-    restoreAutosave();
-  }, []);
 
   const handleTechStackAdd = () => {
     const techStack = form.watch("techStack");
@@ -232,47 +180,6 @@ export default function ProjectEditor() {
 
   const handleTechStackRemove = (tech: string) => {
     setTechTags(techTags.filter((t) => t !== tech));
-  };
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.status === 200) {
-        const result = await response.json();
-        const imageUrl =
-          result.data?.secure_url || result.data?.url || result.url;
-        if (!imageUrl) {
-          throw new Error("No URL in upload response");
-        }
-        setValue("bannerImage", imageUrl, { shouldValidate: true });
-        toast({
-          title: "✅ Success",
-          description: "Project image uploaded successfully",
-        });
-        e.target.value = "";
-      }
-    } catch (error) {
-      console.error("Image upload error:", error);
-      toast({
-        title: "❌ Upload failed",
-        description:
-          error instanceof Error ? error.message : "Failed to upload image",
-        variant: "destructive",
-      });
-    } finally {
-      setUploading(false);
-    }
   };
 
   const onSubmit = async (data: ProjectFormValues) => {
@@ -295,14 +202,7 @@ export default function ProjectEditor() {
       });
 
       if (response.ok) {
-        try {
-          const autosaveKey = isEditMode
-            ? `project-autosave-${selectedProjectId}`
-            : "project-autosave-new";
-          localStorage.removeItem(autosaveKey);
-        } catch (error) {
-          console.error("Failed to clear autosave:", error);
-        }
+        clearAutosave(selectedProjectId);
 
         toast({
           title: "✅ Success",
