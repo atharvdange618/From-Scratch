@@ -87,9 +87,9 @@ export default function DraftsPage() {
     }
   }, [isLoaded, isSignedIn, checkingAdmin, isAdmin, router]);
 
-  const handlePublish = async (postId: string) => {
+  const handlePublish = async (postSlug: string) => {
     try {
-      await publishMutation.mutateAsync(postId);
+      await publishMutation.mutateAsync(postSlug);
       toast({
         title: "✅ Published",
         description: "Post has been published successfully",
@@ -103,8 +103,8 @@ export default function DraftsPage() {
     }
   };
 
-  const handleDelete = async (postId: string) => {
-    const draftToDelete = drafts.find((d) => d._id === postId);
+  const handleDelete = async (postSlug: string) => {
+    const draftToDelete = drafts.find((d) => d.slug === postSlug);
     if (!draftToDelete) return;
 
     if (undoTimeout) {
@@ -131,7 +131,7 @@ export default function DraftsPage() {
     });
 
     const timeout = setTimeout(() => {
-      performDelete(postId);
+      performDelete(postSlug);
     }, 5000);
 
     setUndoTimeout(timeout);
@@ -149,9 +149,9 @@ export default function DraftsPage() {
     }
   };
 
-  const performDelete = async (postId: string) => {
+  const performDelete = async (postSlug: string) => {
     try {
-      await deleteMutation.mutateAsync(postId);
+      await deleteMutation.mutateAsync(postSlug);
       setDeletedDraft(null);
       setUndoTimeout(null);
     } catch (error) {
@@ -362,16 +362,16 @@ export default function DraftsPage() {
 
                 <div className="flex w-full gap-2">
                   <Button
-                    onClick={() => handlePublish(draft._id)}
+                    onClick={() => handlePublish(draft.slug)}
                     disabled={
                       publishMutation.isPending &&
-                      publishMutation.variables === draft._id
+                      publishMutation.variables === draft.slug
                     }
                     className="flex-1 rounded-none border-2 border-black bg-[#E0FFF1] font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
                     size="sm"
                   >
                     {publishMutation.isPending &&
-                    publishMutation.variables === draft._id ? (
+                    publishMutation.variables === draft.slug ? (
                       <Loader2 className="mr-1 h-4 w-4 animate-spin" />
                     ) : (
                       <Send className="mr-1 h-4 w-4" />
@@ -385,13 +385,13 @@ export default function DraftsPage() {
                         variant="destructive"
                         disabled={
                           deleteMutation.isPending &&
-                          deleteMutation.variables === draft._id
+                          deleteMutation.variables === draft.slug
                         }
                         className="flex-1 rounded-none border-2 border-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
                         size="sm"
                       >
                         {deleteMutation.isPending &&
-                        deleteMutation.variables === draft._id ? (
+                        deleteMutation.variables === draft.slug ? (
                           <Loader2 className="mr-1 h-4 w-4 animate-spin" />
                         ) : (
                           <Trash2 className="mr-1 h-4 w-4" />
@@ -414,7 +414,7 @@ export default function DraftsPage() {
                           Cancel
                         </AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => handleDelete(draft._id)}
+                          onClick={() => handleDelete(draft.slug)}
                           className="rounded-none border-2 border-black bg-red-500 font-bold text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-red-600"
                         >
                           Delete

@@ -15,6 +15,9 @@ import {
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import Image from "next/image";
+import connectDB from "@/lib/mongodb";
+import Project from "@/lib/models/Project";
+import Post from "@/lib/models/Post";
 
 interface Project {
   _id: string;
@@ -42,14 +45,20 @@ interface BlogPost {
 }
 
 async function getProject(slug: string): Promise<Project | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   try {
-    const res = await fetch(`${baseUrl}/api/projects/${slug}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.project;
+    await connectDB();
+    const project = await Project.findOne({ slug }).lean();
+
+    if (!project) {
+      return null;
+    }
+
+    return {
+      ...project,
+      _id: project._id.toString(),
+      createdAt: project.createdAt?.toISOString() || "",
+      updatedAt: project.updatedAt?.toISOString() || "",
+    } as any;
   } catch (error) {
     console.error("Error fetching project:", error);
     return null;
@@ -57,15 +66,24 @@ async function getProject(slug: string): Promise<Project | null> {
 }
 
 async function getRelatedPosts(projectId: string): Promise<BlogPost[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   try {
-    const res = await fetch(
-      `${baseUrl}/api/posts?linkedProject=${projectId}&isPublished=true`,
-      { cache: "no-store" }
-    );
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.posts || [];
+    await connectDB();
+    const posts = await Post.find({
+      linkedProject: projectId,
+      isPublished: true,
+    })
+      .select("title slug summary tags category publishedDate")
+      .sort({ publishedDate: -1 })
+      .lean();
+
+    return posts.map((post: any) => ({
+      ...post,
+      _id: post._id.toString(),
+      publishedDate:
+        post.publishedDate?.toISOString() ||
+        post.createdAt?.toISOString() ||
+        "",
+    }));
   } catch (error) {
     console.error("Error fetching related posts:", error);
     return [];

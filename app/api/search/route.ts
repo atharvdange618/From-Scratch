@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import dbConnect from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 import Project from "@/lib/models/Project";
 
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    await dbConnect();
+    await connectDB();
 
     const posts = await Post.find(
       {

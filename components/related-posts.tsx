@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { getCategoryColor } from "@/lib/categories";
-import dbConnect from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 
 interface PostData {
@@ -48,7 +48,7 @@ const getRelatedPostsFromDB = async (
   currentTags: string[],
   linkedProjectId?: string,
 ): Promise<PostData[]> => {
-  await dbConnect();
+  await connectDB();
 
   const allPosts = await Post.find({
     isPublished: true,

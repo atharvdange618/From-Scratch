@@ -66,6 +66,7 @@ export default function PostEditor() {
   const [projects, setProjects] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [selectedPostId, setSelectedPostId] = useState<string>("");
+  const [selectedPostSlug, setSelectedPostSlug] = useState<string>("");
   const [isEditMode, setIsEditMode] = useState(false);
   const [previewTokens, setPreviewTokens] = useState<any[]>([]);
   const [generatingPreview, setGeneratingPreview] = useState(false);
@@ -167,6 +168,7 @@ export default function PostEditor() {
         seoKeywords: post.seoKeywords?.join(", ") || "",
       });
       setSelectedPostId(postId);
+      setSelectedPostSlug(post.slug);
       setIsEditMode(true);
       setPreviewTokens(post.previewTokens || []);
       clearAutosave(postId);
@@ -196,6 +198,7 @@ export default function PostEditor() {
       seoKeywords: "",
     });
     setSelectedPostId("");
+    setSelectedPostSlug("");
     setIsEditMode(false);
     setPreviewTokens([]);
     clearAutosave(selectedPostId);
@@ -218,7 +221,7 @@ export default function PostEditor() {
         publishedDate: new Date().toISOString(),
       };
 
-      const url = isEditMode ? `/api/posts/id/${selectedPostId}` : "/api/posts";
+      const url = isEditMode ? `/api/posts/${selectedPostSlug}` : "/api/posts";
       const method = isEditMode ? "PUT" : "POST";
 
       const response = await fetch(url, {

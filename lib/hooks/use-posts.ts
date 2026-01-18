@@ -138,15 +138,15 @@ export function useCreatePostMutation() {
 }
 
 /**
- * Update an existing post by ID
+ * Update an existing post by slug
  */
-export function useUpdatePostMutation(id: string) {
+export function useUpdatePostMutation(slug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (data: UpdatePostData): Promise<Post> => {
-      const response = await fetch(`/api/posts/id/${id}`, {
-        method: "PATCH",
+      const response = await fetch(`/api/posts/${slug}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -168,7 +168,7 @@ export function useUpdatePostMutation(id: string) {
 
       const updatePost = (old: Post[] = []) =>
         old.map((post) =>
-          post._id === id
+          post.slug === slug
             ? { ...post, ...newData, updatedAt: new Date().toISOString() }
             : post,
         );
@@ -204,14 +204,14 @@ export function useUpdatePostMutation(id: string) {
 }
 
 /**
- * Delete a post by ID
+ * Delete a post by slug
  */
 export function useDeletePostMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string): Promise<{ message: string }> => {
-      const response = await fetch(`/api/posts/id/${id}`, {
+    mutationFn: async (slug: string): Promise<{ message: string }> => {
+      const response = await fetch(`/api/posts/${slug}`, {
         method: "DELETE",
       });
 
@@ -261,9 +261,9 @@ export function usePublishPostMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string): Promise<Post> => {
-      const response = await fetch(`/api/posts/id/${id}`, {
-        method: "PATCH",
+    mutationFn: async (slug: string): Promise<Post> => {
+      const response = await fetch(`/api/posts/${slug}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -277,7 +277,7 @@ export function usePublishPostMutation() {
 
       return response.json();
     },
-    onMutate: async (id: string) => {
+    onMutate: async (slug: string) => {
       await queryClient.cancelQueries({ queryKey: postKeys.all });
 
       const previousDrafts = queryClient.getQueryData(postKeys.drafts());
@@ -286,11 +286,11 @@ export function usePublishPostMutation() {
       const drafts = queryClient.getQueryData(postKeys.drafts()) as
         | Post[]
         | undefined;
-      const draftToPublish = drafts?.find((post) => post._id === id);
+      const draftToPublish = drafts?.find((post) => post.slug === slug);
 
       if (draftToPublish) {
         queryClient.setQueryData(postKeys.drafts(), (old: Post[] = []) =>
-          old.filter((post) => post._id !== id),
+          old.filter((post) => post.slug !== slug),
         );
 
         const publishedPost = {
@@ -307,7 +307,7 @@ export function usePublishPostMutation() {
 
       return { previousDrafts, previousPublished };
     },
-    onError: (err, id, context) => {
+    onError: (err, slug, context) => {
       if (context?.previousDrafts) {
         queryClient.setQueryData(postKeys.drafts(), context.previousDrafts);
       }

@@ -20,7 +20,7 @@ import { ClickableTags } from "@/components/clickable-tags";
 import { SocialShare } from "@/components/social-share";
 import { getCategoryColor } from "@/lib/categories";
 import { PostTracker } from "@/components/post-tracker";
-import dbConnect from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 
 // @ts-ignore - CSS import for syntax highlighting
@@ -54,7 +54,7 @@ interface Post {
 
 async function getPost(slug: string): Promise<Post | null> {
   try {
-    await dbConnect();
+    await connectDB();
     const post = await Post.findOne({ slug, isPublished: true })
       .populate("linkedProject", "_id name slug githubUrl")
       .lean();
@@ -92,7 +92,7 @@ async function getPost(slug: string): Promise<Post | null> {
 
 export async function generateStaticParams() {
   try {
-    await dbConnect();
+    await connectDB();
     const posts = await Post.find({ isPublished: true }).select("slug").lean();
 
     return posts.map((post) => ({
@@ -264,9 +264,10 @@ export default async function PostPage({
             {post.title}
           </h1>
 
-          <p className="mb-6 font-serif text-xl text-gray-700">
-            {post.summary}
-          </p>
+          <MarkdownRenderer
+            content={post.summary}
+            className="prose-lg max-w-none font-serif"
+          />
 
           <ClickableTags tags={post.tags} postTitle={post.title} />
 

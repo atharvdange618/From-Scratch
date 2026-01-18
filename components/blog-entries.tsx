@@ -13,7 +13,7 @@ import {
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { MarkdownRenderer } from "./markdown-renderer";
-import dbConnect from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 import Post, { IPost } from "@/lib/models/Post";
 
 const getPostIcon = (tags: string[], category: string) => {
@@ -37,7 +37,7 @@ const getPostIcon = (tags: string[], category: string) => {
 };
 
 const getRecentPostsFromDB = async () => {
-  await dbConnect();
+  await connectDB();
   const posts = await Post.find({ isPublished: true })
     .sort({ publishedDate: -1 })
     .limit(3)

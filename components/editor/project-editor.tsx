@@ -52,6 +52,7 @@ export default function ProjectEditor() {
   const [techTags, setTechTags] = useState<string[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>("");
+  const [selectedProjectSlug, setSelectedProjectSlug] = useState<string>("");
   const [isEditMode, setIsEditMode] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -135,6 +136,7 @@ export default function ProjectEditor() {
       });
       setTechTags(project.techStack || []);
       setSelectedProjectId(projectId);
+      setSelectedProjectSlug(project.slug);
       setIsEditMode(true);
 
       try {
@@ -167,6 +169,7 @@ export default function ProjectEditor() {
     });
     setTechTags([]);
     setSelectedProjectId("");
+    setSelectedProjectSlug("");
     setIsEditMode(false);
     clearAutosave(selectedProjectId);
   };
@@ -192,7 +195,7 @@ export default function ProjectEditor() {
       };
 
       const url = isEditMode
-        ? `/api/projects/id/${selectedProjectId}`
+        ? `/api/projects/${selectedProjectSlug}`
         : "/api/projects";
       const method = isEditMode ? "PUT" : "POST";
 

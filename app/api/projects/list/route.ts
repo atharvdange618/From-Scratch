@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { checkAdminAccess } from "@/lib/auth";
-import dbConnect from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 import Project from "@/lib/models/Project";
 
 export async function GET() {
@@ -10,7 +10,7 @@ export async function GET() {
       return adminCheck.response;
     }
 
-    await dbConnect();
+    await connectDB();
 
     const projects = await Project.find({})
       .select("_id name slug status createdAt")

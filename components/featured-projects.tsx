@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Project from "@/lib/models/Project";
-import dbConnect from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 
 interface Project {
   _id: string;
@@ -38,7 +38,7 @@ const statusColors = {
 };
 
 async function getFeaturedProjects() {
-  await dbConnect();
+  await connectDB();
   const projects = await Project.find({ featured: true }).limit(3).lean();
   return projects.map((project) => ({
     ...project,
