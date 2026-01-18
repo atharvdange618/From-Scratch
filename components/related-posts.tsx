@@ -1,8 +1,6 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Clock, Calendar } from "lucide-react";
+import { unstable_cache } from "next/cache";
 import {
   Card,
   CardContent,
@@ -15,8 +13,10 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { getCategoryColor } from "@/lib/categories";
+import dbConnect from "@/lib/mongodb";
+import Post from "@/lib/models/Post";
 
-interface Post {
+interface PostData {
   _id: string;
   title: string;
   slug: string;
@@ -38,84 +38,100 @@ interface RelatedPostsProps {
   linkedProjectId?: string;
 }
 
-interface ScoredPost extends Post {
+interface ScoredPost extends PostData {
   score: number;
 }
 
-export function RelatedPosts({
+const getRelatedPostsFromDB = async (
+  currentPostId: string,
+  currentCategory: string,
+  currentTags: string[],
+  linkedProjectId?: string,
+): Promise<PostData[]> => {
+  await dbConnect();
+
+  const allPosts = await Post.find({
+    isPublished: true,
+    _id: { $ne: currentPostId },
+  })
+    .select(
+      "title slug summary content category tags publishedDate linkedProject",
+    )
+    .populate("linkedProject", "_id name")
+    .lean();
+
+  const scoredPosts: ScoredPost[] = allPosts.map((post: any) => {
+    let score = 0;
+
+    if (post.category === currentCategory) {
+      score += 3;
+    }
+
+    const sharedTags = post.tags.filter((tag: string) =>
+      currentTags.includes(tag),
+    );
+    score += sharedTags.length * 2;
+
+    if (
+      linkedProjectId &&
+      post.linkedProject?._id?.toString() === linkedProjectId
+    ) {
+      score += 2;
+    }
+
+    const daysDiff =
+      (new Date().getTime() - new Date(post.publishedDate).getTime()) /
+      (1000 * 60 * 60 * 24);
+    if (daysDiff <= 60) {
+      score += 1;
+    }
+
+    return {
+      ...post,
+      _id: post._id.toString(),
+      linkedProject: post.linkedProject
+        ? {
+            _id: post.linkedProject._id.toString(),
+            name: post.linkedProject.name,
+          }
+        : undefined,
+      score,
+    };
+  });
+
+  const topPosts = scoredPosts
+    .sort((a, b) => b.score - a.score)
+    .filter((p) => p.score >= 2)
+    .slice(0, 4);
+
+  if (topPosts.length === 0) {
+    const recentPosts = scoredPosts
+      .sort(
+        (a, b) =>
+          new Date(b.publishedDate).getTime() -
+          new Date(a.publishedDate).getTime(),
+      )
+      .slice(0, 3);
+    return recentPosts;
+  }
+
+  return topPosts;
+};
+
+export async function RelatedPosts({
   currentPostId,
   currentCategory,
   currentTags,
   linkedProjectId,
 }: RelatedPostsProps) {
-  const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const relatedPosts = await getRelatedPostsFromDB(
+    currentPostId,
+    currentCategory,
+    currentTags,
+    linkedProjectId,
+  );
 
-  useEffect(() => {
-    async function fetchAndScorePosts() {
-      try {
-        const response = await fetch("/api/posts?isPublished=true");
-        if (!response.ok) return;
-
-        const data = await response.json();
-        const allPosts: Post[] = data.posts || [];
-
-        const otherPosts = allPosts.filter((p) => p._id !== currentPostId);
-
-        const scoredPosts: ScoredPost[] = otherPosts.map((post) => {
-          let score = 0;
-
-          if (post.category === currentCategory) {
-            score += 3;
-          }
-
-          const sharedTags = post.tags.filter((tag) =>
-            currentTags.includes(tag)
-          );
-          score += sharedTags.length * 2;
-
-          if (linkedProjectId && post.linkedProject?._id === linkedProjectId) {
-            score += 2;
-          }
-
-          const daysDiff =
-            (new Date().getTime() - new Date(post.publishedDate).getTime()) /
-            (1000 * 60 * 60 * 24);
-          if (daysDiff <= 60) {
-            score += 1;
-          }
-
-          return { ...post, score };
-        });
-
-        const topPosts = scoredPosts
-          .sort((a, b) => b.score - a.score)
-          .filter((p) => p.score >= 2)
-          .slice(0, 4);
-
-        if (topPosts.length === 0) {
-          const recentPosts = otherPosts
-            .sort(
-              (a, b) =>
-                new Date(b.publishedDate).getTime() -
-                new Date(a.publishedDate).getTime()
-            )
-            .slice(0, 3);
-          setRelatedPosts(recentPosts);
-        } else {
-          setRelatedPosts(topPosts);
-        }
-      } catch (error) {
-        console.error("Failed to fetch related posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchAndScorePosts();
-  }, [currentPostId, currentCategory, currentTags, linkedProjectId]);
-
-  if (loading || relatedPosts.length === 0) {
+  if (relatedPosts.length === 0) {
     return null;
   }
 

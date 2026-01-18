@@ -9,7 +9,6 @@ import { Loader2, AlertCircle } from "lucide-react";
 import PostEditor from "@/components/editor/post-editor";
 import ProjectEditor from "@/components/editor/project-editor";
 import { IPost } from "@/lib/models/Post";
-import { IProject } from "@/lib/models/Project";
 
 export type PostWithStringId = {
   _id: string;

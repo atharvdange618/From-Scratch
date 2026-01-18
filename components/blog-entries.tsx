@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Code, Rocket, BookOpen, Lightbulb, Clock } from "lucide-react";
+import { unstable_cache } from "next/cache";
+import { PrefetchLink } from "./prefetch-link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,8 +14,7 @@ import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { MarkdownRenderer } from "./markdown-renderer";
 import dbConnect from "@/lib/mongodb";
-import Post from "@/lib/models/Post";
-import { IPost } from "@/lib/models/Post";
+import Post, { IPost } from "@/lib/models/Post";
 
 const getPostIcon = (tags: string[], category: string) => {
   const tagStr = tags.join(" ").toLowerCase();
@@ -35,17 +36,22 @@ const getPostIcon = (tags: string[], category: string) => {
   return { icon: <Code className="h-full w-full" />, bg: "#AFDDFF" };
 };
 
-async function getRecentPosts() {
+const getRecentPostsFromDB = async () => {
   await dbConnect();
   const posts = await Post.find({ isPublished: true })
     .sort({ publishedDate: -1 })
-    .limit(4)
+    .limit(3)
     .lean();
-  return posts.map((post) => ({
+  return posts.map((post: IPost) => ({
     ...post,
     _id: post._id.toString(),
   }));
-}
+};
+
+const getRecentPosts = unstable_cache(getRecentPostsFromDB, ["recent-posts"], {
+  revalidate: 60,
+  tags: ["posts"],
+});
 
 export async function BlogEntries() {
   const posts = await getRecentPosts();
@@ -68,61 +74,65 @@ export async function BlogEntries() {
           const { icon, bg } = getPostIcon(post.tags, post.category);
 
           return (
-            <Link key={post._id} href={`/posts/${post.slug}`}>
-              <Card className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <CardHeader className="border-b-4 border-black bg-white p-3 md:p-4">
-                  <div className="mb-2 flex items-center gap-2">
-                    <div
-                      className="h-10 w-10 rounded-full border-2 border-black p-2"
-                      style={{ backgroundColor: bg }}
-                    >
-                      {icon}
-                    </div>
-                    <div className="flex-1">
-                      <span className="text-sm font-bold">
-                        {formatDate(post.publishedDate || post.createdAt || "")}
-                      </span>
-                      <div className="mt-1">
-                        <span className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-0.5 text-xs font-bold">
-                          {post.category}
+            <PrefetchLink key={post._id} href={`/posts/${post.slug}`}>
+              <Link href={`/posts/${post.slug}`}>
+                <Card className="group flex flex-col h-full overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  <CardHeader className="border-b-4 border-black bg-white p-3 md:p-4">
+                    <div className="mb-2 flex items-center gap-2">
+                      <div
+                        className="h-10 w-10 rounded-full border-2 border-black p-2"
+                        style={{ backgroundColor: bg }}
+                      >
+                        {icon}
+                      </div>
+                      <div className="flex-1">
+                        <span className="text-sm font-bold">
+                          {formatDate(
+                            post.publishedDate || post.createdAt || "",
+                          )}
                         </span>
+                        <div className="mt-1">
+                          <span className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-0.5 text-xs font-bold">
+                            {post.category}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <CardTitle className="text-xl font-bold leading-tight">
-                    {post.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1 px-4 pt-4 pb-0">
-                  <MarkdownRenderer
-                    content={post.summary}
-                    className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
-                    truncate={150}
-                  />
-                  <div className="mb-3">
-                    <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
-                      <Clock className="h-3 w-3" />
-                      {calculateReadingTime(post.content)}
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-2 pb-4">
-                    {post.tags.map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold"
-                      >
-                        {tag}
+                    <CardTitle className="text-xl font-bold leading-tight">
+                      {post.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 px-4 pt-4 pb-0">
+                    <MarkdownRenderer
+                      content={post.summary}
+                      className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                      truncate={150}
+                    />
+                    <div className="mb-3">
+                      <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
+                        <Clock className="h-3 w-3" />
+                        {calculateReadingTime(post.content)}
                       </span>
-                    ))}
-                  </div>
-                </CardContent>
-                <CardFooter className="mt-auto border-t-4 border-black bg-[#AFDDFF] p-4">
-                  <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
-                    Read More
-                  </Button>
-                </CardFooter>
-              </Card>
-            </Link>
+                    </div>
+                    <div className="flex flex-wrap gap-2 pb-4">
+                      {post.tags.map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </CardContent>
+                  <CardFooter className="mt-auto border-t-4 border-black bg-[#AFDDFF] p-4">
+                    <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
+                      Read More
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </Link>
+            </PrefetchLink>
           );
         })}
       </div>

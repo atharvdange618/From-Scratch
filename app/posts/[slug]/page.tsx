@@ -20,8 +20,14 @@ import { ClickableTags } from "@/components/clickable-tags";
 import { SocialShare } from "@/components/social-share";
 import { getCategoryColor } from "@/lib/categories";
 import { PostTracker } from "@/components/post-tracker";
+import dbConnect from "@/lib/mongodb";
+import Post from "@/lib/models/Post";
 
+// @ts-ignore - CSS import for syntax highlighting
 import "highlight.js/styles/atom-one-dark.css";
+
+export const revalidate = 60;
+export const dynamicParams = true;
 
 interface Post {
   _id: string;
@@ -48,18 +54,53 @@ interface Post {
 
 async function getPost(slug: string): Promise<Post | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/posts/${slug}`);
+    await dbConnect();
+    const post = await Post.findOne({ slug, isPublished: true })
+      .populate("linkedProject", "_id name slug githubUrl")
+      .lean();
 
-    if (!res.ok) {
+    if (!post) {
       return null;
     }
 
-    const data = await res.json();
-    return data.data;
+    const formattedPost: any = {
+      ...post,
+      _id: post._id.toString(),
+      publishedDate:
+        post.publishedDate?.toISOString() ||
+        post.createdAt?.toISOString() ||
+        "",
+      createdAt: post.createdAt?.toISOString() || "",
+      updatedAt: post.updatedAt?.toISOString() || "",
+    };
+
+    if (post.linkedProject && typeof post.linkedProject === "object") {
+      formattedPost.linkedProject = {
+        _id: (post.linkedProject as any)._id.toString(),
+        name: (post.linkedProject as any).name,
+        slug: (post.linkedProject as any).slug,
+        githubUrl: (post.linkedProject as any).githubUrl,
+      };
+    }
+
+    return formattedPost as Post;
   } catch (error) {
     console.error("Error fetching post:", error);
     return null;
+  }
+}
+
+export async function generateStaticParams() {
+  try {
+    await dbConnect();
+    const posts = await Post.find({ isPublished: true }).select("slug").lean();
+
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
   }
 }
 
@@ -79,7 +120,7 @@ export async function generateMetadata({
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   const ogImageUrl = `${baseUrl}/api/og?title=${encodeURIComponent(
-    post.title
+    post.title,
   )}&description=${encodeURIComponent(post.summary)}&type=blog`;
 
   return {

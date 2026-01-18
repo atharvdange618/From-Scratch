@@ -5,7 +5,6 @@ import { calculateReadingTime } from "@/lib/reading-time";
 
 export const dynamic = "force-dynamic";
 
-// Public API endpoint for latest blog posts
 export async function GET() {
   try {
     await connectDB();
@@ -42,13 +41,13 @@ export async function GET() {
           "Cache-Control":
             "public, s-maxage=3600, stale-while-revalidate=86400",
         },
-      }
+      },
     );
   } catch (error) {
     console.error("Error fetching latest posts:", error);
     return NextResponse.json(
       { success: false, message: "Failed to fetch latest posts" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

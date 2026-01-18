@@ -6,10 +6,9 @@ import { checkAdminAccess } from "@/lib/auth";
 // Delete/revoke a preview token
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ token: string }> }
+  { params }: { params: Promise<{ token: string }> },
 ) {
   try {
-    // Check admin access
     const adminCheck = await checkAdminAccess();
     if (!adminCheck.authorized) {
       return adminCheck.response;
@@ -19,7 +18,6 @@ export async function DELETE(
 
     await connectDB();
 
-    // Find post with this token
     const post = await Post.findOne({
       "previewTokens.token": token,
     });
@@ -27,11 +25,10 @@ export async function DELETE(
     if (!post) {
       return NextResponse.json(
         { success: false, message: "Preview token not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
-    // Remove the token
     post.previewTokens = post.previewTokens.filter((t) => t.token !== token);
     await post.save();
 
@@ -40,13 +37,13 @@ export async function DELETE(
         success: true,
         message: "Preview token revoked successfully",
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error revoking preview token:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

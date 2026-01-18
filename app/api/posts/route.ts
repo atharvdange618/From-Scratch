@@ -4,6 +4,9 @@ import Post from "@/lib/models/Post";
 import Project from "@/lib/models/Project";
 import { checkAdminAccess } from "@/lib/auth";
 import { calculateReadingTime } from "@/lib/reading-time";
+import { revalidatePosts } from "@/lib/cache";
+
+export const revalidate = 60;
 
 // GET /api/posts - Get all posts (with optional filters)
 export async function GET(request: NextRequest) {
@@ -15,7 +18,7 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category");
     const linkedProject = searchParams.get("linkedProject");
     const isPublished = searchParams.get("isPublished");
-    const listView = searchParams.get("listView") === "true"; // New param for lightweight listing
+    const listView = searchParams.get("listView") === "true";
 
     const query: any = {};
 
@@ -69,7 +72,14 @@ export async function GET(request: NextRequest) {
         .lean();
     }
 
-    return NextResponse.json({ success: true, posts });
+    return NextResponse.json(
+      { success: true, posts },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
+        },
+      },
+    );
   } catch (error: any) {
     console.error("Error fetching posts:", error);
     return NextResponse.json(
@@ -92,6 +102,8 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const post = await Post.create(body);
+
+    await revalidatePosts();
 
     return NextResponse.json({ success: true, data: post }, { status: 201 });
   } catch (error: any) {

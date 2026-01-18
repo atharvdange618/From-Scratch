@@ -2,13 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
+import { revalidatePost, revalidatePosts } from "@/lib/cache";
 
 type Params = Promise<{ slug: string }>;
+
+export const revalidate = 60;
 
 // GET /api/posts/[slug] - Get a single post by slug
 export async function GET(
   request: NextRequest,
-  segmentData: { params: Params }
+  segmentData: { params: Params },
 ) {
   try {
     await connectDB();
@@ -19,7 +22,7 @@ export async function GET(
     if (!post) {
       return NextResponse.json(
         { success: false, error: "Post not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -27,16 +30,23 @@ export async function GET(
     if (!post.isPublished && !userId) {
       return NextResponse.json(
         { success: false, error: "Post not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
-    return NextResponse.json({ success: true, data: post });
+    return NextResponse.json(
+      { success: true, data: post },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
+        },
+      },
+    );
   } catch (error: any) {
     console.error("Error fetching post:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -44,7 +54,7 @@ export async function GET(
 // PUT /api/posts/[slug] - Update a post (protected)
 export async function PUT(
   request: NextRequest,
-  segmentData: { params: Params }
+  segmentData: { params: Params },
 ) {
   try {
     const { userId } = await auth();
@@ -52,7 +62,7 @@ export async function PUT(
     if (!userId) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -69,16 +79,18 @@ export async function PUT(
     if (!post) {
       return NextResponse.json(
         { success: false, error: "Post not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
+
+    await revalidatePost(slug);
 
     return NextResponse.json({ success: true, data: post });
   } catch (error: any) {
     console.error("Error updating post:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -86,7 +98,7 @@ export async function PUT(
 // DELETE /api/posts/[slug] - Delete a post (protected)
 export async function DELETE(
   request: NextRequest,
-  segmentData: { params: Params }
+  segmentData: { params: Params },
 ) {
   try {
     const { userId } = await auth();
@@ -94,7 +106,7 @@ export async function DELETE(
     if (!userId) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -106,16 +118,18 @@ export async function DELETE(
     if (!post) {
       return NextResponse.json(
         { success: false, error: "Post not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
+
+    await revalidatePosts();
 
     return NextResponse.json({ success: true, data: post });
   } catch (error: any) {
     console.error("Error deleting post:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

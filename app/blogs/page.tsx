@@ -30,27 +30,6 @@ import { EmptyState } from "@/components/empty-state";
 import { RecentlyViewed } from "@/components/recently-viewed";
 import { handlePostHover } from "@/lib/prefetch";
 
-interface Post {
-  _id: string;
-  title: string;
-  slug: string;
-  summary: string;
-  content?: string;
-  readingTime?: string;
-  category: string;
-  tags: string[];
-  publishedDate?: string;
-  isPublished: boolean;
-  bannerImage?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  linkedProject?: {
-    _id: string;
-    name: string;
-    slug: string;
-  };
-}
-
 function BlogsContent() {
   const router = useRouter();
   const queryClient = useQueryClient();
