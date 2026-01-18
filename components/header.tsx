@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+// import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
@@ -21,7 +21,7 @@ import { GlobalSearch } from "./global-search";
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isSignedIn } = useUser();
+  // const { isSignedIn } = useUser();
   const pathname = usePathname();
   const { data: isAdmin } = useAdminCheckQuery();
 
@@ -122,7 +122,7 @@ export function Header() {
               </span>
             </Button>
 
-            {isSignedIn ? (
+            {/* {isSignedIn ? (
               <div className="flex h-10 w-10 items-center justify-center rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <UserButton
                   afterSignOutUrl="/"
@@ -139,7 +139,7 @@ export function Header() {
                   Sign In
                 </Button>
               </SignInButton>
-            )}
+            )} */}
           </div>
         </div>
 
