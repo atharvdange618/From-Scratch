@@ -38,7 +38,7 @@ export default function ProjectsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white py-20">
+      <div className="min-h-screen bg-white dark:bg-gray-900 py-20">
         <div className="container mx-auto px-4">
           <h1 className="mb-8 font-sans text-4xl font-bold md:text-5xl">
             My Projects
@@ -55,9 +55,9 @@ export default function ProjectsPage() {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-white py-20">
+      <div className="min-h-screen bg-white dark:bg-gray-900 py-20">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-center rounded-none border-4 border-black bg-[#FFECDB] p-16">
+          <div className="flex flex-col items-center justify-center rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-16">
             <p className="text-xl font-bold">
               Error loading projects:{" "}
               {error?.message || "Failed to load projects"}
@@ -69,13 +69,13 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-12 md:py-20">
+    <div className="min-h-screen bg-white dark:bg-gray-900 py-12 md:py-20">
       <div className="container mx-auto px-4">
         <div className="mb-8 md:mb-12 text-center">
           <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">
             My Projects
           </h1>
-          <p className="mx-auto max-w-2xl font-serif text-base md:text-lg lg:text-xl text-gray-700">
+          <p className="mx-auto max-w-2xl font-serif text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300">
             A collection of projects I&apos;ve built from scratch, exploring
             different technologies and solving real-world problems.
           </p>
@@ -86,10 +86,10 @@ export default function ProjectsPage() {
             <Button
               key={status}
               onClick={() => setSelectedStatus(status)}
-              className={`rounded-none border-4 border-black px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+              className={`rounded-none border-4 border-black dark:border-gray-700 px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] ${
                 selectedStatus === status
-                  ? "bg-black text-white"
-                  : "bg-white text-black hover:bg-[#AFDDFF]"
+                  ? "bg-black dark:bg-white text-white dark:text-black"
+                  : "bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
               }`}
             >
               {status}
@@ -101,19 +101,19 @@ export default function ProjectsPage() {
           {filteredProjects.map((project) => (
             <Card
               key={project._id}
-              className="group flex flex-col overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="group flex flex-col overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
             >
               <CardHeader
-                className="border-b-4 border-black p-4 md:p-6"
+                className="border-b-4 border-black dark:border-gray-700 p-4 md:p-6"
                 style={{ backgroundColor: statusColors[project.status] }}
               >
                 <div className="mb-3 flex items-start justify-between">
-                  <CardTitle className="text-2xl font-bold leading-tight">
+                  <CardTitle className="text-2xl font-bold leading-tight dark:text-black">
                     {project.name}
                   </CardTitle>
                   {project.featured && <Star className="h-6 w-6 fill-black" />}
                 </div>
-                <Badge className="w-fit rounded-lg border-2 border-black bg-white px-3 py-1 font-bold text-black hover:bg-white">
+                <Badge className="w-fit rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-1 font-bold text-black dark:text-white hover:bg-white dark:hover:bg-gray-900">
                   {project.status}
                 </Badge>
               </CardHeader>
@@ -121,7 +121,7 @@ export default function ProjectsPage() {
               <CardContent className="flex-1 p-6">
                 <MarkdownRenderer
                   content={project.description}
-                  className="mb-4 font-serif text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                  className="mb-4 font-serif text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
                   truncate={150}
                 />
 
@@ -133,7 +133,7 @@ export default function ProjectsPage() {
                     {project.techStack.map((tech) => (
                       <span
                         key={tech}
-                        className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold"
+                        className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 text-black dark:text-white px-2 py-1 text-xs font-bold"
                       >
                         {tech}
                       </span>
@@ -142,7 +142,7 @@ export default function ProjectsPage() {
                 </div>
               </CardContent>
 
-              <CardFooter className="flex flex-col gap-3 border-t-4 border-black bg-[#FFECDB] p-6">
+              <CardFooter className="flex flex-col gap-3 border-t-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-700 p-6">
                 <Link
                   href={`/projects/${project.slug}`}
                   className="w-full"
@@ -150,7 +150,7 @@ export default function ProjectsPage() {
                     handleProjectHover(queryClient, project.slug)
                   }
                 >
-                  <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
+                  <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white px-6 py-3 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,1)]">
                     View Details
                   </Button>
                 </Link>
@@ -163,7 +163,7 @@ export default function ProjectsPage() {
                       rel="noopener noreferrer"
                       className="flex-1"
                     >
-                      <Button className="w-full rounded-none border-4 border-black bg-white px-4 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
                         <Github className="mr-2 h-4 w-4" />
                         GitHub
                       </Button>
@@ -176,7 +176,7 @@ export default function ProjectsPage() {
                       rel="noopener noreferrer"
                       className="flex-1"
                     >
-                      <Button className="w-full rounded-none border-4 border-black bg-white px-4 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
                         <ExternalLink className="mr-2 h-4 w-4" />
                         Live
                       </Button>
@@ -189,7 +189,7 @@ export default function ProjectsPage() {
         </div>
 
         {filteredProjects.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black bg-[#AFDDFF] p-16">
+          <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-16">
             <h3 className="mb-2 text-2xl font-bold">
               No {selectedStatus !== "All" ? selectedStatus : ""} Projects
             </h3>

@@ -205,12 +205,12 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl border-4 border-black bg-white p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:rounded-none">
-        <DialogHeader className="border-b-4 border-black p-4">
+      <DialogContent className="max-w-2xl border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] sm:rounded-none">
+        <DialogHeader className="border-b-4 border-black dark:border-gray-700 p-4">
           <DialogTitle className="sr-only">Search</DialogTitle>
           <div className="relative">
             <Search
-              className={`absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transition-colors ${
+              className={`absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transition-colors dark:text-gray-400 ${
                 isSearching ? "animate-pulse text-gray-400" : ""
               }`}
             />
@@ -218,7 +218,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search posts and projects..."
-              className="h-12 rounded-none border-none bg-transparent pl-12 pr-4 text-lg font-medium focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-12 rounded-none border-none bg-transparent dark:text-white pl-12 pr-4 text-lg font-medium focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:placeholder:text-gray-500"
               autoFocus
               aria-label="Search posts and projects"
             />
@@ -230,7 +230,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
 
         <div className="max-h-[60vh] overflow-y-auto">
           {isSearching ? (
-            <div className="flex items-center justify-center p-8 text-gray-500">
+            <div className="flex items-center justify-center p-8 text-gray-500 dark:text-gray-400">
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
               Searching...
             </div>
@@ -251,10 +251,10 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                     <button
                       key={`${result.type}-${item._id}`}
                       onClick={() => handleSelect(result)}
-                      className={`w-full rounded-none border-4 border-black p-4 text-left transition-all ${
+                      className={`w-full rounded-none border-4 border-black dark:border-gray-700 p-4 text-left transition-all ${
                         index === selectedIndex
-                          ? "bg-[#60B5FF] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                          : "bg-white hover:bg-[#AFDDFF]"
+                          ? "bg-[#60B5FF] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
+                          : "bg-white dark:bg-gray-800 hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
                       } ${index > 0 ? "mt-2" : ""}`}
                     >
                       <div className="flex items-start justify-between gap-2">
@@ -262,15 +262,15 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                           <h3 className="truncate font-bold">{title}</h3>
                           <MarkdownRenderer
                             content={description}
-                            className="mb-4 font-serif text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                            className="mb-4 font-serif text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
                             truncate={100}
                           />
                         </div>
                         <span
-                          className={`shrink-0 rounded-none border-2 border-black px-2 py-1 text-xs font-bold ${
+                          className={`shrink-0 rounded-none border-2 border-black dark:border-gray-700 px-2 py-1 text-xs font-bold ${
                             isPost
                               ? "bg-[#FF9149] text-white"
-                              : "bg-[#E0FFF1] text-black"
+                              : "bg-[#E0FFF1] text-black dark:text-gray-900"
                           }`}
                         >
                           {isPost ? "POST" : "PROJECT"}
@@ -281,18 +281,18 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                 })}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center p-12 text-gray-500">
-                <div className="mb-4 rounded-full border-4 border-black bg-[#AFDDFF] p-4">
+              <div className="flex flex-col items-center justify-center p-12 text-gray-500 dark:text-gray-400">
+                <div className="mb-4 rounded-full border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-4">
                   <Search className="h-12 w-12" />
                 </div>
-                <p className="mb-1 text-lg font-bold text-black">
+                <p className="mb-1 text-lg font-bold text-black dark:text-white">
                   No results found
                 </p>
                 <p className="text-sm">
                   Try a different search term or check your spelling
                 </p>
                 {query.length < 2 && (
-                  <p className="mt-2 text-xs font-medium text-gray-600">
+                  <p className="mt-2 text-xs font-medium text-gray-600 dark:text-gray-400">
                     Tip: Type at least 2 characters to search
                   </p>
                 )}
@@ -303,12 +303,12 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
               {recentSearches.length > 0 ? (
                 <div>
                   <div className="mb-3 flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-gray-600">
+                    <h3 className="text-sm font-bold text-gray-600 dark:text-gray-400">
                       Recent Searches
                     </h3>
                     <button
                       onClick={clearRecentSearches}
-                      className="text-xs font-medium text-gray-500 hover:text-black"
+                      className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white"
                     >
                       Clear all
                     </button>
@@ -318,7 +318,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                       <button
                         key={index}
                         onClick={() => handleRecentSearchClick(search)}
-                        className="flex w-full items-center gap-3 rounded-none border-2 border-black bg-white p-3 text-left font-medium transition-all hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                        className="flex w-full items-center gap-3 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white p-3 text-left font-medium transition-all hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
                       >
                         <Clock className="h-4 w-4 shrink-0" />
                         <span className="truncate">{search}</span>
@@ -327,25 +327,27 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-                  <div className="mb-4 rounded-full border-4 border-black bg-[#E0FFF1] p-4">
+                <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+                  <div className="mb-4 rounded-full border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-4">
                     <Search className="h-12 w-12" />
                   </div>
-                  <p className="mb-1 text-lg font-bold text-black">
+                  <p className="mb-1 text-lg font-bold text-black dark:text-white">
                     Start typing to search
                   </p>
                   <p className="text-sm">
                     Search across all posts and projects
                   </p>
                   <div className="mt-4 flex gap-2 text-xs">
-                    <kbd className="rounded border-2 border-black bg-white px-2 py-1 font-bold">
+                    <kbd className="rounded border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 font-bold">
                       Ctrl
                     </kbd>
                     <span className="font-bold">+</span>
-                    <kbd className="rounded border-2 border-black bg-white px-2 py-1 font-bold">
+                    <kbd className="rounded border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 font-bold">
                       K
                     </kbd>
-                    <span className="text-gray-600">to open anytime</span>
+                    <span className="text-gray-600 dark:text-gray-400">
+                      to open anytime
+                    </span>
                   </div>
                 </div>
               )}
@@ -353,22 +355,22 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
           )}
         </div>
 
-        <div className="border-t-4 border-black bg-[#FFECDB] p-3">
-          <div className="flex flex-wrap gap-4 text-xs font-medium text-gray-600">
+        <div className="border-t-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-3">
+          <div className="flex flex-wrap gap-4 text-xs font-medium text-gray-600 dark:text-gray-400">
             <div className="flex items-center gap-1">
-              <kbd className="rounded-none border-2 border-black bg-white px-2 py-1 font-bold">
+              <kbd className="rounded-none border-2 dark:text-black border-black bg-white px-2 py-1 font-bold">
                 ↑↓
               </kbd>
               <span>Navigate</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="rounded-none border-2 border-black bg-white px-2 py-1 font-bold">
+              <kbd className="rounded-none border-2 dark:text-black border-black bg-white px-2 py-1 font-bold">
                 Enter
               </kbd>
               <span>Select</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="rounded-none border-2 border-black bg-white px-2 py-1 font-bold">
+              <kbd className="rounded-none border-2 dark:text-black border-black bg-white px-2 py-1 font-bold">
                 ESC
               </kbd>
               <span>Close</span>
