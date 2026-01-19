@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { GiscusComments } from "@/components/giscus-comments";
 import { RelatedPosts } from "@/components/related-posts";
+import { ResourcesList } from "@/components/resources-list";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import TrackableLink from "@/components/analytics/trackable-link";
@@ -21,7 +22,8 @@ import { SocialShare } from "@/components/social-share";
 import { getCategoryColor } from "@/lib/categories";
 import { PostTracker } from "@/components/post-tracker";
 import connectDB from "@/lib/mongodb";
-import Post from "@/lib/models/Post";
+import { Post as PostModel } from "@/lib/model-registry";
+import type { Post } from "@/lib/types";
 
 // @ts-ignore - CSS import for syntax highlighting
 import "highlight.js/styles/atom-one-dark.css";
@@ -29,33 +31,10 @@ import "highlight.js/styles/atom-one-dark.css";
 export const revalidate = 60;
 export const dynamicParams = true;
 
-interface Post {
-  _id: string;
-  title: string;
-  slug: string;
-  summary: string;
-  content: string;
-  category: string;
-  tags: string[];
-  linkedProject?: {
-    _id: string;
-    name: string;
-    slug: string;
-    githubUrl?: string;
-  };
-  bannerImage?: string;
-  publishedDate: string;
-  author: string;
-  seoTitle?: string;
-  seoDescription?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 async function getPost(slug: string): Promise<Post | null> {
   try {
     await connectDB();
-    const post = await Post.findOne({ slug, isPublished: true })
+    const post = await PostModel.findOne({ slug, isPublished: true })
       .populate("linkedProject", "_id name slug githubUrl")
       .lean();
 
@@ -72,6 +51,10 @@ async function getPost(slug: string): Promise<Post | null> {
         "",
       createdAt: post.createdAt?.toISOString() || "",
       updatedAt: post.updatedAt?.toISOString() || "",
+      resources: post.resources?.map(({ title, url }: any) => ({
+        title,
+        url,
+      })) || [],
     };
 
     if (post.linkedProject && typeof post.linkedProject === "object") {
@@ -93,7 +76,7 @@ async function getPost(slug: string): Promise<Post | null> {
 export async function generateStaticParams() {
   try {
     await connectDB();
-    const posts = await Post.find({ isPublished: true }).select("slug").lean();
+    const posts = await PostModel.find({ isPublished: true }).select("slug").lean();
 
     return posts.map((post) => ({
       slug: post.slug,
@@ -347,6 +330,12 @@ export default async function PostPage({
             description={post.summary}
           />
         </div>
+
+        <ResourcesList
+          resources={post.resources || []}
+          postTitle={post.title}
+          category={post.category}
+        />
 
         <RelatedPosts
           currentPostId={post._id}

@@ -57,6 +57,15 @@ const postSchema = z.object({
   seoTitle: z.string().optional(),
   seoDescription: z.string().optional(),
   seoKeywords: z.string().optional(),
+  resources: z
+    .array(
+      z.object({
+        title: z.string().min(1, "Title is required"),
+        url: z.string().url("Must be a valid URL"),
+      }),
+    )
+    .max(10, "Cannot exceed 10 resources")
+    .optional(),
 });
 
 type PostFormValues = z.infer<typeof postSchema>;
@@ -89,6 +98,7 @@ export default function PostEditor() {
       seoTitle: "",
       seoDescription: "",
       seoKeywords: "",
+      resources: [],
     },
   });
 
@@ -166,6 +176,7 @@ export default function PostEditor() {
         seoTitle: post.seoTitle || "",
         seoDescription: post.seoDescription || "",
         seoKeywords: post.seoKeywords?.join(", ") || "",
+        resources: post.resources || [],
       });
       setSelectedPostId(postId);
       setSelectedPostSlug(post.slug);
@@ -196,6 +207,7 @@ export default function PostEditor() {
       seoTitle: "",
       seoDescription: "",
       seoKeywords: "",
+      resources: [],
     });
     setSelectedPostId("");
     setSelectedPostSlug("");
@@ -509,6 +521,94 @@ export default function PostEditor() {
                         ))}
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="resources"
+                render={({ field }) => (
+                  <FormItem className="mb-4">
+                    <FormLabel className="font-bold">
+                      Resources (Optional, max 10)
+                    </FormLabel>
+                    <div className="space-y-3">
+                      {field.value && field.value.length > 0 ? (
+                        field.value.map((resource, index) => (
+                          <div
+                            key={index}
+                            className="rounded-none border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                          >
+                            <div className="mb-2 flex items-center justify-between">
+                              <span className="text-sm font-bold">
+                                Resource {index + 1}
+                              </span>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => {
+                                  const newResources = field.value!.filter(
+                                    (_, i) => i !== index,
+                                  );
+                                  field.onChange(newResources);
+                                }}
+                                className="h-7 rounded-none border-2 border-black px-2 font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                            <Input
+                              value={resource.title}
+                              onChange={(e) => {
+                                const newResources = [...field.value!];
+                                newResources[index].title = e.target.value;
+                                field.onChange(newResources);
+                              }}
+                              placeholder="Resource title..."
+                              className="mb-2 rounded-none border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                            />
+                            <Input
+                              value={resource.url}
+                              onChange={(e) => {
+                                const newResources = [...field.value!];
+                                newResources[index].url = e.target.value;
+                                field.onChange(newResources);
+                              }}
+                              placeholder="https://..."
+                              className="rounded-none border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                            />
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-gray-600">
+                          No resources added yet
+                        </p>
+                      )}
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          const currentResources = field.value || [];
+                          if (currentResources.length < 10) {
+                            field.onChange([
+                              ...currentResources,
+                              { title: "", url: "" },
+                            ]);
+                          }
+                        }}
+                        disabled={field.value && field.value.length >= 10}
+                        className="w-full rounded-none border-4 border-black bg-[#AFDDFF] font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+                      >
+                        + Add Resource
+                        {field.value && field.value.length > 0 && (
+                          <span className="ml-2">
+                            ({field.value.length}/10)
+                          </span>
+                        )}
+                      </Button>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}

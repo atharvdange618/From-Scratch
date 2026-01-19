@@ -28,6 +28,10 @@ export interface IPost extends Document {
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string[];
+  resources?: Array<{
+    title: string;
+    url: string;
+  }>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -118,10 +122,36 @@ const PostSchema: Schema<IPost> = new Schema(
       type: [String],
       default: [],
     },
+    resources: {
+      type: [
+        {
+          title: {
+            type: String,
+            required: true,
+            trim: true,
+          },
+          url: {
+            type: String,
+            required: true,
+            trim: true,
+          },
+          _id: false,
+        },
+      ],
+      default: [],
+      validate: [
+        {
+          validator: function (v: any[]) {
+            return v.length <= 10;
+          },
+          message: "Resources cannot exceed 10 items",
+        },
+      ],
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 PostSchema.index({ isPublished: 1, publishedDate: -1 });

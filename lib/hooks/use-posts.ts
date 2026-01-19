@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { Post } from "@/lib/types";
 
 // Query Keys
 export const postKeys = {
@@ -10,27 +11,6 @@ export const postKeys = {
 };
 
 // Types
-interface Post {
-  _id: string;
-  slug: string;
-  title: string;
-  summary: string;
-  content?: string;
-  readingTime?: string;
-  category: string;
-  tags: string[];
-  bannerImage?: string;
-  isPublished: boolean;
-  publishedDate?: string;
-  linkedProject?: string;
-  author: string;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoKeywords?: string[];
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface CreatePostData {
   title: string;
   summary: string;

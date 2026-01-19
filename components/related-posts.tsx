@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Clock, Calendar } from "lucide-react";
-import { unstable_cache } from "next/cache";
 import {
   Card,
   CardContent,
@@ -14,7 +13,7 @@ import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { getCategoryColor } from "@/lib/categories";
 import connectDB from "@/lib/mongodb";
-import Post from "@/lib/models/Post";
+import { Post, ensureModelsLoaded } from "@/lib/model-registry";
 
 interface PostData {
   _id: string;
@@ -49,6 +48,9 @@ const getRelatedPostsFromDB = async (
   linkedProjectId?: string,
 ): Promise<PostData[]> => {
   await connectDB();
+
+  // Ensure all models are registered before populate
+  ensureModelsLoaded();
 
   const allPosts = await Post.find({
     isPublished: true,

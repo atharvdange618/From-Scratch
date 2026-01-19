@@ -16,38 +16,16 @@ import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import Image from "next/image";
 import connectDB from "@/lib/mongodb";
-import Project from "@/lib/models/Project";
-import Post from "@/lib/models/Post";
-
-interface Project {
-  _id: string;
-  name: string;
-  slug: string;
-  description: string;
-  status: "Active" | "Completed" | "Archived";
-  techStack: string[];
-  githubUrl?: string;
-  liveUrl?: string;
-  bannerImage?: string;
-  featured: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface BlogPost {
-  _id: string;
-  title: string;
-  slug: string;
-  summary: string;
-  tags: string[];
-  category: string;
-  publishedDate: string;
-}
+import {
+  Project as ProjectModel,
+  Post as PostModel,
+} from "@/lib/model-registry";
+import type { Project, PostListItem } from "@/lib/types";
 
 async function getProject(slug: string): Promise<Project | null> {
   try {
     await connectDB();
-    const project = await Project.findOne({ slug }).lean();
+    const project = await ProjectModel.findOne({ slug }).lean();
 
     if (!project) {
       return null;
@@ -65,10 +43,10 @@ async function getProject(slug: string): Promise<Project | null> {
   }
 }
 
-async function getRelatedPosts(projectId: string): Promise<BlogPost[]> {
+async function getRelatedPosts(projectId: string): Promise<PostListItem[]> {
   try {
     await connectDB();
-    const posts = await Post.find({
+    const posts = await PostModel.find({
       linkedProject: projectId,
       isPublished: true,
     })

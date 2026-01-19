@@ -8,43 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, AlertCircle } from "lucide-react";
 import PostEditor from "@/components/editor/post-editor";
 import ProjectEditor from "@/components/editor/project-editor";
-import { IPost } from "@/lib/models/Post";
-
-export type PostWithStringId = {
-  _id: string;
-  title: string;
-  slug: string;
-  summary: string;
-  content: string;
-  category: IPost["category"];
-  tags: string[];
-  linkedProject?: string;
-  bannerImage?: string;
-  publishedDate?: Date;
-  isPublished: boolean;
-  previewTokens: any[];
-  author: string;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoKeywords?: string[];
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type ProjectWithStringId = {
-  _id: string;
-  name: string;
-  slug: string;
-  description: string;
-  status: "Active" | "Completed" | "Archived";
-  techStack: string[];
-  githubUrl?: string;
-  liveUrl?: string;
-  bannerImage?: string;
-  featured: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
 
 export default function EditorAuthWrapper() {
   const { isLoaded, isSignedIn } = useUser();
