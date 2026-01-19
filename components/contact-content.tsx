@@ -104,7 +104,7 @@ export function ContactContent() {
         <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
           Get in Touch
         </h1>
-        <p className="mx-auto max-w-2xl font-serif text-base md:text-lg">
+        <p className="mx-auto max-w-2xl font-serif text-base md:text-lg dark:text-gray-300">
           Have a question, suggestion, or just want to say hello? I'd love to
           hear from you!
         </p>
@@ -121,12 +121,14 @@ export function ContactContent() {
               href="mailto:atharvdange.dev@gmail.com"
               className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
             >
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black bg-[#60B5FF] transition-colors group-hover:bg-[#4A9FE8]">
+              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-[#60B5FF] transition-colors group-hover:bg-[#4A9FE8] dark:text-black">
                 <Mail className="h-4 w-4 md:h-5 md:w-5" />
               </div>
               <div>
-                <h3 className="font-bold text-sm md:text-base">Email</h3>
-                <p className="font-serif text-sm md:text-base underline decoration-2 underline-offset-2 group-hover:decoration-[#60B5FF]">
+                <h3 className="font-bold text-sm md:text-base dark:text-gray-300">
+                  Email
+                </h3>
+                <p className="font-serif text-sm md:text-base dark:text-gray-300 underline decoration-2 underline-offset-2 group-hover:decoration-[#60B5FF]">
                   atharvdange.dev@gmail.com
                 </p>
               </div>
@@ -136,12 +138,14 @@ export function ContactContent() {
               href="tel:+917875273298"
               className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
             >
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black bg-[#FF9149] transition-colors group-hover:bg-[#E87C35]">
+              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-[#FF9149] transition-colors group-hover:bg-[#E87C35] dark:text-black">
                 <Phone className="h-4 w-4 md:h-5 md:w-5" />
               </div>
               <div>
-                <h3 className="font-bold text-sm md:text-base">Phone</h3>
-                <p className="font-serif text-sm md:text-base underline decoration-2 underline-offset-2 group-hover:decoration-[#FF9149]">
+                <h3 className="font-bold text-sm md:text-base dark:text-gray-300">
+                  Phone
+                </h3>
+                <p className="font-serif text-sm md:text-base dark:text-gray-300 underline decoration-2 underline-offset-2 group-hover:decoration-[#FF9149]">
                   +91 7875273298
                 </p>
               </div>
@@ -153,26 +157,28 @@ export function ContactContent() {
               rel="noopener noreferrer"
               className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
             >
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black bg-[#AFDDFF] transition-colors group-hover:bg-[#98CCEE]">
+              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-[#AFDDFF] transition-colors group-hover:bg-[#98CCEE] dark:text-black">
                 <MapPin className="h-4 w-4 md:h-5 md:w-5" />
               </div>
               <div>
-                <h3 className="font-bold text-sm md:text-base">Location</h3>
-                <p className="font-serif text-sm md:text-base underline decoration-2 underline-offset-2 group-hover:decoration-[#AFDDFF]">
+                <h3 className="font-bold text-sm md:text-base dark:text-gray-300">
+                  Location
+                </h3>
+                <p className="font-serif text-sm md:text-base dark:text-gray-300 underline decoration-2 underline-offset-2 group-hover:decoration-[#AFDDFF]">
                   Pune, India
                 </p>
               </div>
             </a>
           </div>
 
-          <h3 className="mb-3 md:mb-4 font-bold text-sm md:text-base">
+          <h3 className="mb-3 md:mb-4 font-bold text-sm md:text-base dark:text-gray-300">
             Connect with me
           </h3>
           <div className="flex gap-2 md:gap-4">
             <Button
               asChild
               size="icon"
-              className="rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
             >
               <a
                 href="https://www.instagram.com/atharvdange._"
@@ -185,7 +191,7 @@ export function ContactContent() {
             </Button>
             <Button
               size="icon"
-              className="rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               <a
                 href="https://github.com/atharvdange618"
@@ -198,7 +204,7 @@ export function ContactContent() {
             </Button>
             <Button
               size="icon"
-              className="rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               <a
                 href="https://www.linkedin.com/in/atharvdange"
@@ -211,7 +217,7 @@ export function ContactContent() {
             </Button>
             <Button
               size="icon"
-              className="rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               <a href="mailto:atharvdange.dev@gmail.com">
                 <Mail className="h-5 w-5" />
@@ -227,9 +233,9 @@ export function ContactContent() {
           </h2>
 
           {isSubmitted ? (
-            <Card className="overflow-hidden rounded-none border-4 border-black bg-[#E0FFF1] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <Card className="overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
               <CardContent className="p-5 md:p-6 text-center">
-                <div className="mx-auto mb-3 md:mb-4 flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full border-4 border-black bg-[#60B5FF]">
+                <div className="mx-auto mb-3 md:mb-4 flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-[#60B5FF]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -249,12 +255,12 @@ export function ContactContent() {
                 <h3 className="mb-2 text-xl md:text-2xl font-bold">
                   Message Sent!
                 </h3>
-                <p className="font-serif text-sm md:text-base">
+                <p className="font-serif text-sm md:text-base dark:text-gray-300">
                   Thank you for reaching out. I'll get back to you as soon as
                   possible.
                 </p>
                 <Button
-                  className="mt-5 md:mt-6 rounded-none border-4 border-black bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  className="mt-5 md:mt-6 rounded-none border-4 border-black dark:border-gray-700 bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
                   onClick={() => setIsSubmitted(false)}
                 >
                   Send Another Message
@@ -281,8 +287,10 @@ export function ContactContent() {
                         message: "Name must be at least 2 characters",
                       },
                     })}
-                    className={`rounded-none border-4 bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
-                      errors.name ? "border-red-600" : "border-black"
+                    className={`rounded-none border-4 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                      errors.name
+                        ? "border-red-600"
+                        : "border-black dark:border-gray-700"
                     }`}
                     aria-invalid={!!errors.name}
                     aria-describedby={errors.name ? "name-error" : undefined}
@@ -311,8 +319,10 @@ export function ContactContent() {
                         message: "Please enter a valid email address",
                       },
                     })}
-                    className={`rounded-none border-4 bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
-                      errors.email ? "border-red-600" : "border-black"
+                    className={`rounded-none border-4 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                      errors.email
+                        ? "border-red-600"
+                        : "border-black dark:border-gray-700"
                     }`}
                     aria-invalid={!!errors.email}
                     aria-describedby={errors.email ? "email-error" : undefined}
@@ -342,8 +352,10 @@ export function ContactContent() {
                       message: "Subject must be at least 3 characters",
                     },
                   })}
-                  className={`rounded-none border-4 bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
-                    errors.subject ? "border-red-600" : "border-black"
+                  className={`rounded-none border-4 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                    errors.subject
+                      ? "border-red-600"
+                      : "border-black dark:border-gray-700"
                   }`}
                   aria-invalid={!!errors.subject}
                   aria-describedby={
@@ -375,8 +387,10 @@ export function ContactContent() {
                       message: "Message must be at least 10 characters",
                     },
                   })}
-                  className={`rounded-none border-4 bg-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
-                    errors.message ? "border-red-600" : "border-black"
+                  className={`rounded-none border-4 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                    errors.message
+                      ? "border-red-600"
+                      : "border-black dark:border-gray-700"
                   }`}
                   aria-invalid={!!errors.message}
                   aria-describedby={
@@ -391,7 +405,7 @@ export function ContactContent() {
                     {errors.message.message}
                   </p>
                 )}
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   {messageLength} / 10 minimum characters
                 </p>
               </div>
@@ -399,7 +413,7 @@ export function ContactContent() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-none border-4 border-black bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
