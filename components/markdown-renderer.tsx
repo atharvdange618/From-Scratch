@@ -33,7 +33,7 @@ function CodeBlock({ children, className }: CodeBlockProps) {
   };
 
   return (
-    <div className="group relative my-6 font-mono">
+    <div className="group relative my-6 font-mono not-prose">
       <div className="overflow-hidden rounded-md border-2 border-black dark:border-gray-700 bg-zinc-950 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
         <div className="flex items-center justify-between border-b-2 border-black dark:border-gray-700 bg-zinc-100 dark:bg-gray-800 px-4 py-2">
           <div className="flex items-center gap-3">

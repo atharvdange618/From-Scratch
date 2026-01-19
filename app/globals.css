@@ -119,7 +119,7 @@
   @apply italic;
 }
 
-.prose code {
+.prose :not(pre) > code {
   @apply bg-[#FFECDB] dark:bg-gray-800 border-2 border-black dark:border-gray-600 px-2 py-1 rounded-lg font-mono text-sm dark:text-gray-200;
 }
 
