@@ -24,6 +24,8 @@ function CodeBlock({ children, className }: CodeBlockProps) {
   const code = String(children).replace(/\n$/, "");
   const language = className?.replace("language-", "") || "bash";
 
+  const isPlain = ["text", "plain", "ascii", "none"].includes(language);
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
     setCopied(true);
@@ -68,28 +70,34 @@ function CodeBlock({ children, className }: CodeBlockProps) {
         </div>
 
         <div className="relative">
-          <SyntaxHighlighter
-            language={language}
-            style={dracula}
-            showLineNumbers={true}
-            wrapLines={true}
-            customStyle={{
-              margin: 0,
-              borderRadius: 0,
-              background: "#18181b",
-              padding: "1.5rem",
-              fontSize: "0.875rem",
-              lineHeight: "1.6",
-            }}
-            lineNumberStyle={{
-              minWidth: "2em",
-              paddingRight: "1em",
-              color: "#52525b",
-              textAlign: "right",
-            }}
-          >
-            {code}
-          </SyntaxHighlighter>
+          {isPlain ? (
+            <pre className="overflow-x-auto p-6 text-sm leading-relaxed text-zinc-300">
+              <code>{code}</code>
+            </pre>
+          ) : (
+            <SyntaxHighlighter
+              language={language}
+              style={dracula}
+              showLineNumbers={true}
+              wrapLines={true}
+              customStyle={{
+                margin: 0,
+                borderRadius: 0,
+                background: "#18181b",
+                padding: "1.5rem",
+                fontSize: "0.875rem",
+                lineHeight: "1.6",
+              }}
+              lineNumberStyle={{
+                minWidth: "2em",
+                paddingRight: "1em",
+                color: "#52525b",
+                textAlign: "right",
+              }}
+            >
+              {code}
+            </SyntaxHighlighter>
+          )}
         </div>
       </div>
     </div>
