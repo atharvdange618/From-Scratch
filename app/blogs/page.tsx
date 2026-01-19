@@ -149,7 +149,7 @@ function BlogsContent() {
           <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl">
             All Blog Posts
           </h1>
-          <p className="font-serif text-lg text-gray-700">
+          <p className="font-serif text-lg text-gray-700 dark:text-gray-300">
             Deep dives into projects, technical tutorials, and reflections on
             the journey of building from scratch.
           </p>
@@ -182,7 +182,7 @@ function BlogsContent() {
         <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl">
           All Blog Posts
         </h1>
-        <p className="font-serif text-lg text-gray-700">
+        <p className="font-serif text-lg text-gray-700 dark:text-gray-300">
           Deep dives into projects, technical tutorials, and reflections on the
           journey of building from scratch.
         </p>
@@ -190,7 +190,7 @@ function BlogsContent() {
 
       <RecentlyViewed />
 
-      <div className="mb-8 rounded-none border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <div className="mb-8 rounded-none border-4 border-black bg-white dark:bg-gray-800 dark:border-gray-700 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
         <div className="mb-4 flex items-center gap-2">
           <Filter className="h-5 w-5" />
           <h2 className="text-xl font-bold">Filter & Search</h2>
@@ -198,13 +198,13 @@ function BlogsContent() {
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 dark:text-gray-400" />
             <Input
               type="text"
               placeholder="Search posts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="rounded-none border-4 border-black pl-10 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 pl-10 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] dark:bg-gray-900 dark:text-white"
             />
           </div>
 
@@ -218,10 +218,10 @@ function BlogsContent() {
               });
             }}
           >
-            <SelectTrigger className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] dark:bg-gray-900 dark:text-white">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
-            <SelectContent className="rounded-none border-4 border-black">
+            <SelectContent className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-900">
               {categories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category === "all" ? "All Categories" : category}
@@ -240,10 +240,10 @@ function BlogsContent() {
               });
             }}
           >
-            <SelectTrigger className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] dark:bg-gray-900 dark:text-white">
               <SelectValue placeholder="Tag" />
             </SelectTrigger>
-            <SelectContent className="rounded-none border-4 border-black">
+            <SelectContent className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-900">
               {allTags.map((tag) => (
                 <SelectItem key={tag} value={tag}>
                   {tag === "all" ? "All Tags" : tag}
@@ -261,10 +261,10 @@ function BlogsContent() {
               });
             }}
           >
-            <SelectTrigger className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] dark:bg-gray-900 dark:text-white">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
-            <SelectContent className="rounded-none border-4 border-black">
+            <SelectContent className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-900">
               <SelectItem value="date-desc">Newest First</SelectItem>
               <SelectItem value="date-asc">Oldest First</SelectItem>
               <SelectItem value="title-asc">Title (A-Z)</SelectItem>
@@ -274,13 +274,13 @@ function BlogsContent() {
         </div>
 
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-sm font-bold">
+          <p className="text-sm font-bold dark:text-gray-300">
             Showing {filteredPosts.length} of {posts.length} posts
           </p>
           <Button
             onClick={handleReset}
             variant="outline"
-            className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF]"
+            className="rounded-none border-4 border-black dark:border-gray-700 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 dark:bg-gray-900 dark:text-white"
           >
             Reset Filters
           </Button>
@@ -298,7 +298,7 @@ function BlogsContent() {
       ) : (
         <>
           {filteredPosts.length > 0 && (
-            <div className="mb-4 text-center text-sm font-medium text-gray-600">
+            <div className="mb-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
               Showing {indexOfFirstPost + 1}-
               {Math.min(indexOfLastPost, filteredPosts.length)} of{" "}
               {filteredPosts.length} posts
@@ -309,14 +309,14 @@ function BlogsContent() {
             {currentPosts.map((post) => (
               <Card
                 key={post._id}
-                className="group cursor-pointer overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                className="group cursor-pointer overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
                 onClick={() => router.push(`/posts/${post.slug}`)}
                 onMouseEnter={() => handlePostHover(queryClient, post.slug)}
               >
-                <CardHeader className="border-b-4 border-black bg-white p-4">
+                <CardHeader className="border-b-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
                   <div className="mb-2 flex items-center gap-2">
                     <div
-                      className="h-10 w-10 rounded-full border-2 border-black p-2"
+                      className="h-10 w-10 rounded-full border-2 border-black p-2 dark:text-black"
                       style={{
                         backgroundColor: getCategoryColor(post.category),
                       }}
@@ -336,9 +336,11 @@ function BlogsContent() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-4">
-                  <p className="mb-4 line-clamp-3 font-serif">{post.summary}</p>
+                  <p className="mb-4 line-clamp-3 font-serif dark:text-gray-300">
+                    {post.summary}
+                  </p>
 
-                  <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">
+                  <div className="mb-3 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <Clock className="h-4 w-4" />
                     <span className="font-medium">
                       {post.readingTime || "5 min read"}
@@ -365,7 +367,7 @@ function BlogsContent() {
                           setSelectedTag(tag);
                           trackEvent("blog_tag_click", { tag });
                         }}
-                        className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                        className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 dark:text-white px-2 py-1 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#60B5FF] dark:hover:bg-gray-600 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
                         aria-label={`Filter by ${tag}`}
                       >
                         <Tag className="mr-1 inline h-3 w-3" />
@@ -373,14 +375,14 @@ function BlogsContent() {
                       </button>
                     ))}
                     {post.tags && post.tags.length > 3 && (
-                      <span className="inline-block rounded-lg border-2 border-black bg-gray-200 px-2 py-1 text-xs font-bold">
+                      <span className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-gray-200 dark:bg-gray-700 dark:text-white px-2 py-1 text-xs font-bold">
                         +{post.tags.length - 3}
                       </span>
                     )}
                   </div>
                 </CardContent>
-                <CardFooter className="border-t-4 border-black bg-white p-4">
-                  <Button className="w-full rounded-none border-4 border-black bg-[#FF9149] px-4 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <CardFooter className="border-t-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+                  <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] px-4 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:group-hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
                     Read More
                   </Button>
                 </CardFooter>
@@ -396,7 +398,7 @@ function BlogsContent() {
                     setCurrentPage((prev) => Math.max(prev - 1, 1))
                   }
                   disabled={currentPage === 1}
-                  className="rounded-none border-4 border-black bg-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+                  className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] disabled:opacity-50"
                 >
                   Previous
                 </Button>
@@ -412,10 +414,10 @@ function BlogsContent() {
                       <Button
                         key={pageNum}
                         onClick={() => setCurrentPage(pageNum)}
-                        className={`rounded-none border-4 border-black px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+                        className={`rounded-none border-4 border-black dark:border-gray-700 px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] ${
                           currentPage === pageNum
-                            ? "bg-[#60B5FF]"
-                            : "bg-white hover:bg-[#AFDDFF]"
+                            ? "bg-[#60B5FF] dark:bg-gray-600 dark:text-white"
+                            : "bg-white dark:bg-gray-800 dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
                         }`}
                       >
                         {pageNum}
@@ -439,7 +441,7 @@ function BlogsContent() {
                     setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                   }
                   disabled={currentPage === totalPages}
-                  className="rounded-none border-4 border-black bg-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+                  className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] disabled:opacity-50"
                 >
                   Next
                 </Button>
@@ -458,7 +460,7 @@ export default function BlogsPage() {
       fallback={
         <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
-            <div className="mb-4 inline-block h-12 w-12 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
+            <div className="mb-4 inline-block h-12 w-12 animate-spin rounded-full border-4 border-black dark:border-white border-t-transparent"></div>
             <p className="font-bold">Loading blogs...</p>
           </div>
         </div>

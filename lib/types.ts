@@ -47,6 +47,7 @@ export interface Post {
   content: string;
   category: PostCategory;
   tags: string[];
+  readingTime?: string;
   linkedProject?: LinkedProject;
   bannerImage?: string;
   publishedDate: string;
