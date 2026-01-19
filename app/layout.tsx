@@ -6,13 +6,14 @@ import { BackToTop } from "@/components/back-to-top";
 import { SkipToContent } from "@/components/skip-to-content";
 import { Toaster } from "@/components/ui/toaster";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
   ),
   title: {
     default: "From Scratch | Atharv Dange",
@@ -85,16 +86,23 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body>
-          <QueryProvider>
-            <SkipToContent />
-            <Header />
-            <main id="main-content">{children}</main>
-            <Footer />
-            <BackToTop />
-            <Analytics />
-            <SpeedInsights />
-            <Toaster />
-          </QueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            storageKey="from-scratch-theme"
+          >
+            <QueryProvider>
+              <SkipToContent />
+              <Header />
+              <main id="main-content">{children}</main>
+              <Footer />
+              <BackToTop />
+              <Analytics />
+              <SpeedInsights />
+              <Toaster />
+            </QueryProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

@@ -32,8 +32,8 @@ function CodeBlock({ children, className }: CodeBlockProps) {
 
   return (
     <div className="group relative my-6 font-mono">
-      <div className="overflow-hidden rounded-md border-2 border-black bg-zinc-950 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <div className="flex items-center justify-between border-b-2 border-black bg-zinc-100 px-4 py-2">
+      <div className="overflow-hidden rounded-md border-2 border-black dark:border-gray-700 bg-zinc-950 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
+        <div className="flex items-center justify-between border-b-2 border-black dark:border-gray-700 bg-zinc-100 dark:bg-gray-800 px-4 py-2">
           <div className="flex items-center gap-3">
             <div className="flex gap-1.5 opacity-70 transition-opacity group-hover:opacity-100">
               <div className="h-2.5 w-2.5 rounded-full bg-red-500 border border-black/20"></div>
@@ -41,7 +41,7 @@ function CodeBlock({ children, className }: CodeBlockProps) {
               <div className="h-2.5 w-2.5 rounded-full bg-green-500 border border-black/20"></div>
             </div>
 
-            <div className="flex items-center gap-1.5 rounded-sm border border-black/10 bg-white px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-zinc-600">
+            <div className="flex items-center gap-1.5 rounded-sm border border-black/10 dark:border-white/10 bg-white dark:bg-gray-900 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-zinc-600 dark:text-gray-300">
               <Terminal className="h-3 w-3" />
               {language}
             </div>
@@ -51,7 +51,7 @@ function CodeBlock({ children, className }: CodeBlockProps) {
             onClick={handleCopy}
             variant="ghost"
             size="sm"
-            className="h-7 px-2 text-xs font-medium text-zinc-600 hover:bg-zinc-200 hover:text-black"
+            className="h-7 px-2 text-xs font-medium text-zinc-600 dark:text-gray-300 hover:bg-zinc-200 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white"
           >
             {copied ? (
               <span className="flex items-center text-green-600">
@@ -120,7 +120,7 @@ export function MarkdownRenderer({
             if (isInline) {
               return (
                 <code
-                  className="rounded-md border border-zinc-200 bg-zinc-100 px-1.5 py-0.5 font-mono text-sm font-medium text-pink-600"
+                  className="rounded-md border border-zinc-200 dark:border-gray-700 bg-zinc-100 dark:bg-gray-800 px-1.5 py-0.5 font-mono text-sm font-medium text-pink-600 dark:text-pink-400"
                   {...props}
                 >
                   {children}

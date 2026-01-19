@@ -205,7 +205,7 @@ export default async function PostPage({
         <Button
           asChild
           variant="outline"
-          className="mb-8 rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
         >
           <Link href="/">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -229,14 +229,14 @@ export default async function PostPage({
             </Badge>
             <Badge
               variant="outline"
-              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black bg-white px-3 py-1 font-serif text-sm"
+              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif text-sm"
             >
               <Calendar className="h-4 w-4" />
               {formatDate(post.publishedDate)}
             </Badge>
             <Badge
               variant="outline"
-              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black bg-white px-3 py-1 font-serif text-sm"
+              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif text-sm"
             >
               <Clock className="h-4 w-4" />
               {calculateReadingTime(post.content)}
@@ -255,20 +255,20 @@ export default async function PostPage({
           <ClickableTags tags={post.tags} postTitle={post.title} />
 
           {post.linkedProject && (
-            <Card className="mt-8 rounded-none border-4 border-black bg-[#FFECDB] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <Card className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)]">
               <CardContent className="flex items-center justify-between p-6">
                 <div>
-                  <p className="mb-1 font-serif text-sm font-bold uppercase tracking-wide text-gray-600">
+                  <p className="mb-1 font-serif text-sm font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400">
                     Related Project
                   </p>
-                  <h3 className="font-sans text-2xl font-bold">
+                  <h3 className="font-sans text-2xl font-bold dark:text-white">
                     {post.linkedProject.name}
                   </h3>
                 </div>
                 {post.linkedProject.githubUrl && (
                   <Button
                     asChild
-                    className="rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                    className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-primary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
                   >
                     <TrackableLink
                       href={post.linkedProject.githubUrl}
@@ -296,7 +296,7 @@ export default async function PostPage({
         </header>
 
         {post.bannerImage && (
-          <div className="mb-12 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <div className="mb-12 overflow-hidden rounded-none border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
             <Image
               src={post.bannerImage}
               alt={post.title}
@@ -308,14 +308,14 @@ export default async function PostPage({
           </div>
         )}
 
-        <Separator className="my-4 border-2 border-black" />
+        <Separator className="my-4 border-2 border-black dark:border-gray-700" />
 
         <ScrollTracker
           postTitle={post.title}
           category={post.category}
           readingTime={calculateReadingTime(post.content)}
         >
-          <div className="mb-8 rounded-none bg-white p-6 sm:p-8">
+          <div className="mb-8 rounded-none bg-white dark:bg-gray-900 p-6 sm:p-8">
             <MarkdownRenderer
               content={post.content}
               className="prose-lg max-w-none font-serif"
@@ -344,11 +344,11 @@ export default async function PostPage({
           linkedProjectId={post.linkedProject?._id}
         />
 
-        <Separator className="my-12 border-2 border-black" />
+        <Separator className="my-12 border-2 border-black dark:border-gray-700" />
 
         <div className="mx-auto max-w-4xl">
-          <h2 className="mb-6 font-sans text-3xl font-bold">Comments</h2>
-          <Card className="rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="mb-6 font-sans text-3xl font-bold dark:text-white">Comments</h2>
+          <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
             <CardContent className="p-6">
               <GiscusComments />
             </CardContent>

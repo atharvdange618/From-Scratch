@@ -11,21 +11,23 @@ export function HeroSection() {
     <section className="mb-12 mt-4 md:mb-16 md:mt-8">
       <div className="grid gap-8 md:gap-12 md:grid-cols-2 items-center">
         <div className="flex flex-col justify-center items-start">
-          <div className="mb-3 md:mb-4 inline-block rounded-lg border-4 border-black bg-[#FFECDB] px-3 py-1 text-sm font-bold">
+          <div className="mb-3 md:mb-4 inline-block rounded-lg border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 px-3 py-1 text-sm font-bold dark:text-white">
             BUILD IN PUBLIC
           </div>
-          <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
+          <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight dark:text-white">
             Building tools and apps,{" "}
-            <span className="text-[#FF9149]">one commit at a time</span>
+            <span className="text-[#FF9149] dark:text-secondary">
+              one commit at a time
+            </span>
           </h1>
-          <p className="mb-5 md:mb-6 font-serif text-base md:text-lg">
+          <p className="mb-5 md:mb-6 font-serif text-base md:text-lg dark:text-gray-300">
             Creating frameworks, apps, and ideas from the ground up. Follow my
             journey as I ship projects, share learnings, and build everything
             from scratch.
           </p>
           <div className="flex flex-wrap gap-3 md:gap-4">
             <Button
-              className="rounded-none border-4 border-black bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-primary px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold dark:text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(96,181,255,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
               onClick={() => {
                 document
                   .getElementById("recent-posts")
@@ -37,7 +39,7 @@ export function HeroSection() {
             </Button>
             <Button
               onClick={() => router.push("/about")}
-              className="rounded-none border-4 border-black bg-white px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold dark:text-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(96,181,255,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
             >
               About Me
             </Button>

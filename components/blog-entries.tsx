@@ -59,11 +59,11 @@ export async function BlogEntries() {
   return (
     <section className="mb-12 md:mb-16" id="recent-posts">
       <div className="mb-6 md:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <h2 className="font-sans text-2xl md:text-3xl font-bold">
+        <h2 className="font-sans text-2xl md:text-3xl font-bold dark:text-white">
           Recent Posts
         </h2>
         <Link href="/blogs">
-          <Button className="rounded-none border-4 border-black bg-white px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <Button className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]">
             View All Posts
           </Button>
         </Link>
@@ -76,40 +76,40 @@ export async function BlogEntries() {
           return (
             <PrefetchLink key={post._id} href={`/posts/${post.slug}`}>
               <Link href={`/posts/${post.slug}`}>
-                <Card className="group flex flex-col h-full overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <CardHeader className="border-b-4 border-black bg-white p-3 md:p-4">
+                <Card className="group flex flex-col h-full overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(96,181,255,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
+                  <CardHeader className="border-b-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-3 md:p-4">
                     <div className="mb-2 flex items-center gap-2">
                       <div
-                        className="h-10 w-10 rounded-full border-2 border-black p-2"
+                        className="h-10 w-10 rounded-full border-2 border-black dark:border-gray-700 p-2 dark:text-black"
                         style={{ backgroundColor: bg }}
                       >
                         {icon}
                       </div>
                       <div className="flex-1">
-                        <span className="text-sm font-bold">
+                        <span className="text-sm font-bold dark:text-white">
                           {formatDate(
                             post.publishedDate || post.createdAt || "",
                           )}
                         </span>
                         <div className="mt-1">
-                          <span className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-0.5 text-xs font-bold">
+                          <span className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-700 px-2 py-0.5 text-xs font-bold dark:text-white">
                             {post.category}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <CardTitle className="text-xl font-bold leading-tight">
+                    <CardTitle className="text-xl font-bold leading-tight dark:text-white">
                       {post.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex-1 px-4 pt-4 pb-0">
                     <MarkdownRenderer
                       content={post.summary}
-                      className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                      className="mb-4 font-serif text-sm md:text-base text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
                       truncate={150}
                     />
                     <div className="mb-3">
-                      <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
+                      <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 text-xs font-bold">
                         <Clock className="h-3 w-3" />
                         {calculateReadingTime(post.content)}
                       </span>
@@ -118,15 +118,15 @@ export async function BlogEntries() {
                       {post.tags.map((tag: string) => (
                         <span
                           key={tag}
-                          className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-1 text-xs font-bold"
+                          className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 px-2 py-1 text-xs font-bold dark:text-white"
                         >
                           {tag}
                         </span>
                       ))}
                     </div>
                   </CardContent>
-                  <CardFooter className="mt-auto border-t-4 border-black bg-[#AFDDFF] p-4">
-                    <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
+                  <CardFooter className="mt-auto border-t-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-4">
+                    <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-primary px-6 py-3 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,145,73,0.5)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,0.5)]">
                       Read More
                     </Button>
                   </CardFooter>
@@ -138,7 +138,7 @@ export async function BlogEntries() {
       </div>
 
       {posts.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black bg-[#AFDDFF] p-16">
+        <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-16">
           <svg
             className="mb-6 h-48 w-48"
             viewBox="0 0 200 200"
@@ -173,7 +173,9 @@ export async function BlogEntries() {
               strokeLinejoin="round"
             />
           </svg>
-          <h3 className="mb-2 text-2xl font-bold">No Posts Yet</h3>
+          <h3 className="mb-2 text-2xl font-bold dark:text-white">
+            No Posts Yet
+          </h3>
         </div>
       )}
     </section>

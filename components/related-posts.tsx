@@ -139,11 +139,11 @@ export async function RelatedPosts({
 
   return (
     <section className="my-16">
-      <div className="mb-8 rounded-none border-4 border-black bg-[#FFECDB] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-        <h2 className="font-sans text-2xl font-bold md:text-3xl">
+      <div className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)]">
+        <h2 className="font-sans text-2xl font-bold md:text-3xl dark:text-white">
           You Might Also Like
         </h2>
-        <p className="mt-2 font-serif text-gray-700">
+        <p className="mt-2 font-serif text-gray-700 dark:text-gray-300">
           Related posts based on tags, category, and projects
         </p>
       </div>
@@ -151,32 +151,32 @@ export async function RelatedPosts({
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {relatedPosts.map((post) => (
           <Link key={post._id} href={`/posts/${post.slug}`}>
-            <Card className="group h-full overflow-hidden rounded-none border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+            <Card className="group h-full overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(96,181,255,0.3)]">
               <CardHeader
-                className="border-b-4 border-black p-4"
+                className="border-b-4 border-black dark:border-gray-700 p-4"
                 style={{ backgroundColor: getCategoryColor(post.category) }}
               >
                 <div className="mb-2 flex items-center justify-between gap-2">
-                  <Badge className="rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold text-black hover:bg-white">
+                  <Badge className="rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1 text-xs font-bold text-black dark:text-white hover:bg-white dark:hover:bg-gray-800">
                     {post.category}
                   </Badge>
                 </div>
-                <CardTitle className="text-lg font-bold leading-tight">
+                <CardTitle className="text-lg font-bold leading-tight dark:text-black">
                   {post.title}
                 </CardTitle>
               </CardHeader>
 
               <CardContent className="p-4">
-                <p className="mb-4 line-clamp-2 font-serif text-sm text-gray-700">
+                <p className="mb-4 line-clamp-2 font-serif text-sm text-gray-700 dark:text-gray-300">
                   {post.summary}
                 </p>
 
                 <div className="mb-3 flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-1 rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
+                  <span className="inline-flex items-center gap-1 rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 text-xs font-bold">
                     <Calendar className="h-3 w-3" />
                     {formatDate(post.publishedDate)}
                   </span>
-                  <span className="inline-flex items-center gap-1 rounded-lg border-2 border-black bg-white px-2 py-1 text-xs font-bold">
+                  <span className="inline-flex items-center gap-1 rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 text-xs font-bold">
                     <Clock className="h-3 w-3" />
                     {calculateReadingTime(post.content)}
                   </span>
@@ -186,21 +186,21 @@ export async function RelatedPosts({
                   {post.tags.slice(0, 2).map((tag) => (
                     <span
                       key={tag}
-                      className="inline-block rounded-lg border-2 border-black bg-[#AFDDFF] px-2 py-0.5 text-xs font-bold"
+                      className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 px-2 py-0.5 text-xs font-bold dark:text-white"
                     >
                       {tag}
                     </span>
                   ))}
                   {post.tags.length > 2 && (
-                    <span className="inline-block rounded-lg border-2 border-black bg-gray-200 px-2 py-0.5 text-xs font-bold">
+                    <span className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-gray-200 dark:bg-gray-600 px-2 py-0.5 text-xs font-bold dark:text-white">
                       +{post.tags.length - 2}
                     </span>
                   )}
                 </div>
               </CardContent>
 
-              <CardFooter className="border-t-4 border-black bg-white p-4">
-                <Button className="w-full rounded-none border-4 border-black bg-black px-4 py-2 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
+              <CardFooter className="border-t-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+                <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-primary px-4 py-2 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,145,73,0.5)] transition-all group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)] dark:group-hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,0.5)]">
                   Read More
                 </Button>
               </CardFooter>

@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
+import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,15 +16,17 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { Search, Menu, X } from "@deemlol/next-icons";
+import { Search, Menu, X, Sun, Moon } from "@deemlol/next-icons";
 import { GlobalSearch } from "./global-search";
 
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   // const { isSignedIn } = useUser();
   const pathname = usePathname();
   const { data: isAdmin } = useAdminCheckQuery();
+  const { theme, setTheme } = useTheme();
 
   const navLinks = [
     { href: "/about", label: "About" },
@@ -44,6 +47,10 @@ export function Header() {
   };
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
@@ -56,15 +63,17 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b-4 border-black bg-white py-4">
+    <header className="sticky top-0 z-50 w-full border-b-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 py-4">
       <div className="container mx-auto flex items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
-          <div className="relative h-10 w-10 rounded-full border-4 border-black bg-[#60B5FF]">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-xl font-bold">
+          <div className="relative h-10 w-10 rounded-full border-4 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-primary">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-xl font-bold dark:text-black">
               FS
             </div>
           </div>
-          <span className="text-xl font-bold">From Scratch</span>
+          <span className="text-xl font-bold dark:text-white">
+            From Scratch
+          </span>
         </Link>
 
         <div className="hidden items-center gap-6 md:flex">
@@ -74,9 +83,9 @@ export function Header() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`font-bold hover:text-[#FF9149] hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors ${
+                    className={`font-bold hover:text-[#FF9149] dark:hover:text-secondary hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors dark:text-gray-200 ${
                       isActiveLink(link.href)
-                        ? "text-[#FF9149] underline decoration-4 underline-offset-4"
+                        ? "text-[#FF9149] dark:text-secondary underline decoration-4 underline-offset-4"
                         : ""
                     }`}
                   >
@@ -89,10 +98,10 @@ export function Header() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className={`font-bold hover:text-[#60B5FF] hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors ${
+                      className={`font-bold hover:text-[#60B5FF] dark:hover:text-primary hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors ${
                         isActiveLink(link.href)
-                          ? "text-[#60B5FF] underline decoration-4 underline-offset-4"
-                          : "text-gray-700"
+                          ? "text-[#60B5FF] dark:text-primary underline decoration-4 underline-offset-4"
+                          : "text-gray-700 dark:text-gray-400"
                       }`}
                     >
                       {link.label}
@@ -106,15 +115,38 @@ export function Header() {
             <Button
               size="icon"
               onClick={() => {
+                setTheme(theme === "dark" ? "light" : "dark");
+                trackEvent("theme_toggled", {
+                  newTheme: theme === "dark" ? "light" : "dark",
+                });
+              }}
+              className="group relative h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
+              aria-label="Toggle theme"
+            >
+              {mounted &&
+                (theme === "dark" ? (
+                  <Sun className="h-5 w-5 text-black dark:text-white" />
+                ) : (
+                  <Moon className="h-5 w-5 text-black dark:text-white" />
+                ))}
+              <span className="sr-only">Toggle theme</span>
+              <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black bg-black px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100">
+                Toggle theme
+              </span>
+            </Button>
+
+            <Button
+              size="icon"
+              onClick={() => {
                 setIsSearchOpen(true);
                 trackEvent("search_opened", {});
               }}
-              className="group relative h-10 w-10 rounded-none border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="group relative h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
               aria-label="Search (Cmd+K)"
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-5 w-5 dark:text-white" />
               <span className="sr-only">Search (Ctrl+K)</span>
-              <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black bg-black px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100">
+              <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black dark:border-gray-700 bg-black dark:bg-gray-800 px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] transition-opacity group-hover:opacity-100">
                 Search{" "}
                 <kbd className="ml-1 rounded border border-white/20 bg-white/10 px-1">
                   Ctrl + K
@@ -147,13 +179,33 @@ export function Header() {
           <Button
             size="icon"
             onClick={() => {
+              setTheme(theme === "dark" ? "light" : "dark");
+              trackEvent("theme_toggled", {
+                newTheme: theme === "dark" ? "light" : "dark",
+              });
+            }}
+            className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
+            aria-label="Toggle theme"
+          >
+            {mounted &&
+              (theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              ))}
+            <span className="sr-only">Toggle theme</span>
+          </Button>
+
+          <Button
+            size="icon"
+            onClick={() => {
               setIsSearchOpen(true);
               trackEvent("search_opened", {});
             }}
             className="h-10 w-10 rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
             aria-label="Search"
           >
-            <Search className="h-5 w-5" />
+            <Search className="h-5 w-5 dark:text-white" />
             <span className="sr-only">Search</span>
           </Button>
 
@@ -161,16 +213,16 @@ export function Header() {
             <SheetTrigger asChild>
               <Button
                 size="icon"
-                className="h-10 w-10 rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
+                className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
                 aria-label="Open menu"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-5 w-5 dark:text-white" />
                 <span className="sr-only">Menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-[300px] border-l-4 border-black bg-white p-0 [&>button]:hidden"
+              className="w-[300px] border-l-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 [&>button]:hidden"
             >
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <SheetDescription className="sr-only">
@@ -178,14 +230,17 @@ export function Header() {
               </SheetDescription>
 
               <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between border-b-4 border-black p-6">
-                  <span className="text-xl font-bold" aria-hidden="true">
+                <div className="flex items-center justify-between border-b-4 border-black dark:border-gray-700 p-6">
+                  <span
+                    className="text-xl font-bold dark:text-white"
+                    aria-hidden="true"
+                  >
                     Menu
                   </span>
                   <Button
                     size="icon"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="h-10 w-10 rounded-none border-4 border-black bg-[#FF9149] p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149]/80 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                    className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149]/80 dark:hover:bg-secondary/80 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
                     aria-label="Close menu"
                   >
                     <X className="h-5 w-5 text-white" />
@@ -199,10 +254,10 @@ export function Header() {
                         <Link
                           href={link.href}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className={`block rounded-none border-4 border-black px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+                          className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] ${
                             isActiveLink(link.href)
-                              ? "bg-[#FF9149] text-white"
-                              : "bg-white hover:bg-[#AFDDFF]"
+                              ? "bg-[#FF9149] dark:bg-secondary text-white dark:text-black"
+                              : "bg-white dark:bg-gray-800 dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
                           }`}
                         >
                           {link.label}
@@ -215,10 +270,10 @@ export function Header() {
                           <Link
                             href={link.href}
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className={`block rounded-none border-4 border-black px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+                            className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] ${
                               isActiveLink(link.href)
-                                ? "bg-[#60B5FF] text-white"
-                                : "bg-gray-100 hover:bg-[#60B5FF] hover:text-white"
+                                ? "bg-[#60B5FF] dark:bg-primary text-white dark:text-black"
+                                : "bg-gray-100 dark:bg-gray-800 dark:text-white hover:bg-[#60B5FF] dark:hover:bg-primary hover:text-white dark:hover:text-black"
                             }`}
                           >
                             {link.label}

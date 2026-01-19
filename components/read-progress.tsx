@@ -21,9 +21,9 @@ export function ReadProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-gray-200">
+    <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-gray-200 dark:bg-gray-800">
       <div
-        className="h-full bg-gradient-to-r from-[#60B5FF] via-[#FF9149] to-[#60B5FF] transition-all duration-150 ease-out shadow-[0_0_8px_rgba(96,181,255,0.5)]"
+        className="h-full bg-gradient-to-r from-[#60B5FF] via-[#FF9149] to-[#60B5FF] transition-all duration-150 ease-out shadow-[0_0_8px_rgba(96,181,255,0.5)] dark:shadow-[0_0_8px_rgba(96,181,255,0.8)]"
         style={{ width: `${progress}%` }}
       />
     </div>
