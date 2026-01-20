@@ -12,7 +12,9 @@ export async function GET() {
     const posts = await Post.find({ isPublished: true })
       .sort({ publishedDate: -1 })
       .limit(5)
-      .select("title slug summary publishedDate category tags content")
+      .select(
+        "title slug summary publishedDate category tags content bannerImage",
+      )
       .lean();
 
     const postsWithReadingTime = posts.map((post) => ({
@@ -22,6 +24,7 @@ export async function GET() {
       publishedDate: post.publishedDate,
       category: post.category,
       tags: post.tags,
+      bannerImage: post.bannerImage,
       readingTime: calculateReadingTime(post.content),
       url: `${
         process.env.NEXT_PUBLIC_BASE_URL ||
