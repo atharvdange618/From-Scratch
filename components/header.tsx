@@ -144,7 +144,7 @@ export function Header() {
               className="group relative h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
               aria-label="Search (Cmd+K)"
             >
-              <Search className="h-5 w-5 dark:text-white" />
+              <Search className="h-5 w-5 text-black dark:text-white" />
               <span className="sr-only">Search (Ctrl+K)</span>
               <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black dark:border-gray-700 bg-black dark:bg-gray-800 px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] transition-opacity group-hover:opacity-100">
                 Search{" "}
@@ -189,9 +189,9 @@ export function Header() {
           >
             {mounted &&
               (theme === "dark" ? (
-                <Sun className="h-5 w-5" />
+                <Sun className="h-5 w-5 text-black dark:text-white" />
               ) : (
-                <Moon className="h-5 w-5" />
+                <Moon className="h-5 w-5 text-black dark:text-white" />
               ))}
             <span className="sr-only">Toggle theme</span>
           </Button>
@@ -202,10 +202,10 @@ export function Header() {
               setIsSearchOpen(true);
               trackEvent("search_opened", {});
             }}
-            className="h-10 w-10 rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
+            className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
             aria-label="Search"
           >
-            <Search className="h-5 w-5 dark:text-white" />
+            <Search className="h-5 w-5 text-black dark:text-white" />
             <span className="sr-only">Search</span>
           </Button>
 
@@ -216,7 +216,7 @@ export function Header() {
                 className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
                 aria-label="Open menu"
               >
-                <Menu className="h-5 w-5 dark:text-white" />
+                <Menu className="h-5 w-5 text-black dark:text-white" />
                 <span className="sr-only">Menu</span>
               </Button>
             </SheetTrigger>

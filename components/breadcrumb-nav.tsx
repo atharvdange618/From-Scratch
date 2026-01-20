@@ -19,7 +19,7 @@ export function BreadcrumbNav({ items }: BreadcrumbNavProps) {
         <li>
           <Link
             href="/"
-            className="flex items-center gap-1 font-medium text-gray-600 transition-colors hover:text-[#60B5FF] hover:underline"
+            className="flex items-center gap-1 font-medium text-gray-600 transition-colors hover:text-[#60B5FF] hover:underline dark:text-white"
             aria-label="Home"
           >
             <Home className="h-4 w-4" />
@@ -37,13 +37,13 @@ export function BreadcrumbNav({ items }: BreadcrumbNavProps) {
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
-                  className="font-medium text-gray-600 transition-colors hover:text-[#60B5FF] hover:underline"
+                  className="font-medium text-gray-600 dark:text-white transition-colors hover:text-[#60B5FF] hover:underline"
                 >
                   {item.label}
                 </Link>
               ) : (
                 <span
-                  className="font-bold text-black"
+                  className="font-bold text-black dark:text-white"
                   aria-current={isLast ? "page" : undefined}
                 >
                   {item.label}

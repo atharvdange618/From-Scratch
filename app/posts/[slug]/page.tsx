@@ -22,7 +22,6 @@ import { SocialShare } from "@/components/social-share";
 import { getCategoryColor } from "@/lib/categories";
 import { PostTracker } from "@/components/post-tracker";
 import { TableOfContents } from "@/components/table-of-contents";
-import { MobileTOC } from "@/components/mobile-toc";
 import { extractHeadings } from "@/lib/toc-generator";
 import connectDB from "@/lib/mongodb";
 import { Post as PostModel } from "@/lib/model-registry";
@@ -317,8 +316,6 @@ export default async function PostPage({
         )}
 
         <Separator className="my-4 border-2 border-black dark:border-gray-700" />
-
-        {headings.length > 0 && <MobileTOC headings={headings} />}
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
           <div>
