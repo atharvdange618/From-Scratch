@@ -90,6 +90,14 @@
   @apply text-xl font-bold font-sans mb-2 mt-4 dark:text-white;
 }
 
+.prose .heading-anchor {
+  @apply no-underline text-inherit;
+}
+
+.prose .heading-anchor:hover {
+  @apply no-underline;
+}
+
 .prose p {
   @apply mb-4 leading-relaxed;
 }

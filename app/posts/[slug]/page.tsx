@@ -21,6 +21,9 @@ import { ClickableTags } from "@/components/clickable-tags";
 import { SocialShare } from "@/components/social-share";
 import { getCategoryColor } from "@/lib/categories";
 import { PostTracker } from "@/components/post-tracker";
+import { TableOfContents } from "@/components/table-of-contents";
+import { MobileTOC } from "@/components/mobile-toc";
+import { extractHeadings } from "@/lib/toc-generator";
 import connectDB from "@/lib/mongodb";
 import { Post as PostModel } from "@/lib/model-registry";
 import type { Post } from "@/lib/types";
@@ -51,10 +54,11 @@ async function getPost(slug: string): Promise<Post | null> {
         "",
       createdAt: post.createdAt?.toISOString() || "",
       updatedAt: post.updatedAt?.toISOString() || "",
-      resources: post.resources?.map(({ title, url }: any) => ({
-        title,
-        url,
-      })) || [],
+      resources:
+        post.resources?.map(({ title, url }: any) => ({
+          title,
+          url,
+        })) || [],
     };
 
     if (post.linkedProject && typeof post.linkedProject === "object") {
@@ -76,7 +80,9 @@ async function getPost(slug: string): Promise<Post | null> {
 export async function generateStaticParams() {
   try {
     await connectDB();
-    const posts = await PostModel.find({ isPublished: true }).select("slug").lean();
+    const posts = await PostModel.find({ isPublished: true })
+      .select("slug")
+      .lean();
 
     return posts.map((post) => ({
       slug: post.slug,
@@ -152,6 +158,8 @@ export default async function PostPage({
   if (!post) {
     notFound();
   }
+
+  const headings = extractHeadings(post.content);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
@@ -310,32 +318,44 @@ export default async function PostPage({
 
         <Separator className="my-4 border-2 border-black dark:border-gray-700" />
 
-        <ScrollTracker
-          postTitle={post.title}
-          category={post.category}
-          readingTime={calculateReadingTime(post.content)}
-        >
-          <div className="mb-8 rounded-none bg-white dark:bg-gray-900 p-6 sm:p-8">
-            <MarkdownRenderer
-              content={post.content}
-              className="prose-lg max-w-none font-serif"
+        {headings.length > 0 && <MobileTOC headings={headings} />}
+
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
+          <div>
+            <ScrollTracker
+              postTitle={post.title}
+              category={post.category}
+              readingTime={calculateReadingTime(post.content)}
+            >
+              <div className="mb-8 rounded-none bg-white dark:bg-gray-900 p-6 sm:p-8">
+                <MarkdownRenderer
+                  content={post.content}
+                  className="prose-lg max-w-none font-serif"
+                />
+              </div>
+            </ScrollTracker>
+
+            <div className="mb-12">
+              <SocialShare
+                title={post.title}
+                url={`${baseUrl}/posts/${post.slug}`}
+                description={post.summary}
+              />
+            </div>
+
+            <ResourcesList
+              resources={post.resources || []}
+              postTitle={post.title}
+              category={post.category}
             />
           </div>
-        </ScrollTracker>
 
-        <div className="mb-12">
-          <SocialShare
-            title={post.title}
-            url={`${baseUrl}/posts/${post.slug}`}
-            description={post.summary}
-          />
+          {headings.length > 0 && (
+            <aside className="hidden lg:block">
+              <TableOfContents headings={headings} />
+            </aside>
+          )}
         </div>
-
-        <ResourcesList
-          resources={post.resources || []}
-          postTitle={post.title}
-          category={post.category}
-        />
 
         <RelatedPosts
           currentPostId={post._id}
@@ -347,7 +367,9 @@ export default async function PostPage({
         <Separator className="my-12 border-2 border-black dark:border-gray-700" />
 
         <div className="mx-auto max-w-4xl">
-          <h2 className="mb-6 font-sans text-3xl font-bold dark:text-white">Comments</h2>
+          <h2 className="mb-6 font-sans text-3xl font-bold dark:text-white">
+            Comments
+          </h2>
           <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
             <CardContent className="p-6">
               <GiscusComments />
