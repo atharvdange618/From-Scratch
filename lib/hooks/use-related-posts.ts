@@ -29,6 +29,6 @@ export function useRelatedPostsQuery(slug: string, limit: number = 3) {
       return response.json();
     },
     enabled: !!slug,
-    staleTime: 1000 * 60 * 10, // 10 minutes - related posts don't change often
+    staleTime: 1000 * 60 * 10,
   });
 }

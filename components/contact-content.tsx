@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { formatTimeIST } from "@/lib/dateandnumbers";
 import { trackEvent } from "@/lib/analytics";
 import { useToast } from "./ui/use-toast";
+import { X } from "lucide-react";
 
 interface ContactFormData {
   name: string;
@@ -181,12 +182,12 @@ export function ContactContent() {
               className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
             >
               <a
-                href="https://www.instagram.com/atharvdange._"
+                href="https://x.com/atharvdangedev"
                 target="_blank"
                 referrerPolicy="no-referrer"
               >
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
+                <X className="h-5 w-5" />
+                <span className="sr-only">X</span>
               </a>
             </Button>
             <Button

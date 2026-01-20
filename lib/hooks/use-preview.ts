@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 
-// Query Keys
 export const previewKeys = {
   all: ["preview"] as const,
   token: (token: string) => [...previewKeys.all, token] as const,
@@ -37,7 +36,7 @@ export function usePreviewQuery(token: string) {
       return response.json();
     },
     enabled: !!token,
-    staleTime: 0, // Always fetch fresh data
-    gcTime: 0, // Don't cache previews
+    staleTime: 0,
+    gcTime: 0,
   });
 }

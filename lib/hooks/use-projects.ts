@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-// Query Keys
 export const projectKeys = {
   all: ["projects"] as const,
   featured: () => [...projectKeys.all, { featured: true }] as const,

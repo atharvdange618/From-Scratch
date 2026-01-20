@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get("limit") || "100");
-    const cursor = searchParams.get("cursor"); // Cursor is the _id of the last item from previous page
+    const cursor = searchParams.get("cursor");
     const eventType = searchParams.get("eventType");
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
@@ -44,23 +44,19 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Add cursor-based pagination
     if (cursor) {
-      query._id = { $lt: cursor }; // Get events with _id less than cursor (older events)
+      query._id = { $lt: cursor };
     }
 
     const events = await AnalyticsEvent.find(query)
-      .sort({ _id: -1 }) // Sort by _id descending (newest first)
-      .limit(limit + 1) // Fetch one extra to check if there are more pages
+      .sort({ _id: -1 })
+      .limit(limit + 1)
       .lean();
 
-    // Check if there are more results
     const hasMore = events.length > limit;
 
-    // Remove the extra item if it exists
     const resultEvents = hasMore ? events.slice(0, limit) : events;
 
-    // Get the cursor for the next page (the _id of the last item)
     const nextCursor =
       resultEvents.length > 0
         ? resultEvents[resultEvents.length - 1]._id.toString()

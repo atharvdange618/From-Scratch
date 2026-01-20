@@ -76,7 +76,6 @@ AnalyticsEventSchema.index({ country: 1, timestamp: -1 });
 AnalyticsEventSchema.index({ device: 1, timestamp: -1 });
 AnalyticsEventSchema.index({ browser: 1, timestamp: -1 });
 AnalyticsEventSchema.index({ os: 1, timestamp: -1 });
-
 AnalyticsEventSchema.index({ timestamp: 1 }, { expireAfterSeconds: 7776000 });
 
 const AnalyticsEvent: Model<IAnalyticsEvent> =

@@ -350,13 +350,13 @@ export default function PostEditor() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+        <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
           <h2 className="mb-4 text-xl font-bold dark:text-white">
             {isEditMode ? "Editing Post" : "Load Existing Post"}
           </h2>
           <div className="flex gap-3">
             <Select value={selectedPostId} onValueChange={loadPost}>
-              <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
+              <SelectTrigger className="rounded-none border-4 border-black dark:border-neutral-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
                 <SelectValue placeholder="Select a post to edit..." />
               </SelectTrigger>
               <SelectContent>
@@ -678,7 +678,7 @@ export default function PostEditor() {
               />
             </Card>
 
-            <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+            <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
               <h2 className="mb-4 text-2xl font-bold dark:text-white">
                 SEO Settings
               </h2>
@@ -744,7 +744,7 @@ export default function PostEditor() {
           </div>
 
           <div className="space-y-6">
-            <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+            <Card className="rounded-none border-4 border-black dark:border-gray-700 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-2xl font-bold dark:text-white">
                   Content *
@@ -754,7 +754,7 @@ export default function PostEditor() {
                   onClick={() => setShowPreview(!showPreview)}
                   variant="outline"
                   size="sm"
-                  className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                  className="rounded-none border-4 border-black dark:border-gray-700 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                 >
                   {showPreview ? (
                     <EyeOff className="mr-2 h-4 w-4" />
@@ -784,7 +784,7 @@ export default function PostEditor() {
               />
 
               {showPreview && content && (
-                <div className="mt-4 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+                <div className="mt-4 rounded-none border-4 border-black dark:border-gray-700 p-6">
                   <h3 className="mb-4 text-xl font-bold dark:text-white">
                     Preview
                   </h3>

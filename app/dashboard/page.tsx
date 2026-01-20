@@ -1,22 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
-import {
-  useAnalyticsStatsQuery,
-  useAnalyticsEventsQuery,
-} from "@/lib/hooks/use-analytics";
+import { useAnalyticsStatsQuery } from "@/lib/hooks/use-analytics";
 import StatsCards from "./components/StatsCards";
 import EventsOverTimeChart from "./components/EventsOverTimeChart";
 import EventTypeChart from "./components/EventTypeChart";
 import TopPagesChart from "./components/TopPagesChart";
 import DeviceChart from "./components/DeviceChart";
 import TopCountriesChart from "./components/TopCountriesChart";
+import TopCitiesChart from "./components/TopCitiesChart";
+import ScrollInsights from "./components/ScrollInsights";
 import RetentionIndicator from "./components/RetentionIndicator";
-import RecentEventsTable from "./components/RecentEventsTable";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -27,21 +24,8 @@ export default function DashboardPage() {
     data: stats,
     isLoading: isLoadingStats,
     refetch: refetchStats,
+    isRefetching,
   } = useAnalyticsStatsQuery();
-
-  const {
-    data: recentEvents,
-    isLoading: isLoadingEvents,
-    refetch: refetchEvents,
-  } = useAnalyticsEventsQuery(10);
-
-  const [refreshing, setRefreshing] = useState(false);
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await Promise.all([refetchStats(), refetchEvents()]);
-    setRefreshing(false);
-  };
 
   if (!isLoaded || isCheckingAdmin) {
     return (
@@ -87,13 +71,13 @@ export default function DashboardPage() {
           </p>
         </div>
         <Button
-          onClick={handleRefresh}
-          disabled={refreshing || isLoadingStats || isLoadingEvents}
+          onClick={() => refetchStats()}
+          disabled={isRefetching || isLoadingStats}
           variant="outline"
           className="gap-2"
         >
           <RefreshCw
-            className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
+            className={`h-4 w-4 ${isRefetching ? "animate-spin" : ""}`}
           />
           Refresh
         </Button>
@@ -107,20 +91,23 @@ export default function DashboardPage() {
             totalEvents={stats.totalEvents}
             uniqueSessions={stats.uniqueSessions}
             uniqueVisitors={stats.uniqueVisitors}
+            avgSessionDuration={stats.avgSessionDuration}
           />
 
+          <ScrollInsights scrollInsights={stats.scrollInsights} />
+
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
-            <EventsOverTimeChart dailyEvents={stats.dailyEvents} />
+            <EventsOverTimeChart
+              dailyEvents={stats.dailyEvents}
+              dailyUniqueVisitors={stats.dailyUniqueVisitors}
+            />
             <EventTypeChart
               eventTypeDistribution={stats.eventTypeDistribution}
             />
             <TopPagesChart topPages={stats.topPages} />
             <DeviceChart deviceBreakdown={stats.deviceBreakdown} />
             <TopCountriesChart topCountries={stats.topCountries} />
-          </div>
-
-          <div className="mt-8">
-            <RecentEventsTable events={recentEvents || []} />
+            <TopCitiesChart topCities={stats.topCities} />
           </div>
         </>
       )}

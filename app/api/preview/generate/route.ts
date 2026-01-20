@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
 
     const token = randomBytes(32).toString("hex");
     const createdAt = new Date();
-    const expiresAt = new Date(createdAt.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    const expiresAt = new Date(createdAt.getTime() + 7 * 24 * 60 * 60 * 1000);
 
     post.previewTokens.push({
       token,

@@ -24,8 +24,8 @@ export function useAdminCheckQuery() {
       const data = await response.json();
       return data.isAdmin || false;
     },
-    enabled: isLoaded && !!user, // Only run if user is loaded and exists
-    staleTime: Infinity, // Cache for entire session
-    gcTime: Infinity, // Never garbage collect
+    enabled: isLoaded && !!user,
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 }

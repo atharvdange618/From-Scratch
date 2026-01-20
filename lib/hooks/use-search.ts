@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 
-// Query Keys
 export const searchKeys = {
   all: ["search"] as const,
   query: (query: string) => [...searchKeys.all, query] as const,
@@ -58,14 +57,14 @@ export function useSearchQuery(query: string, debounceMs: number = 500) {
     queryKey: searchKeys.query(debouncedQuery),
     queryFn: async (): Promise<SearchResult> => {
       const response = await fetch(
-        `/api/search?q=${encodeURIComponent(debouncedQuery)}`
+        `/api/search?q=${encodeURIComponent(debouncedQuery)}`,
       );
       if (!response.ok) {
         throw new Error("Failed to search");
       }
       return response.json();
     },
-    enabled: debouncedQuery.length > 0, // Only search if query is not empty
-    staleTime: 1000 * 60 * 2, // 2 minutes - search results can be cached shorter
+    enabled: debouncedQuery.length > 0,
+    staleTime: 1000 * 60 * 2,
   });
 }

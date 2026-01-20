@@ -226,7 +226,7 @@ export function AboutContent() {
         </div>
       </div>
 
-      <Separator className="my-12 md:my-16 border-2 border-black" />
+      <Separator className="my-12 md:my-16 border-2 border-black dark:border-gray-700" />
 
       <div className="mb-12 md:mb-16">
         <h2 className="mb-6 md:mb-8 text-center font-sans text-2xl md:text-3xl font-bold">

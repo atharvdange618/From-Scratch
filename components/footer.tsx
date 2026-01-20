@@ -4,7 +4,7 @@ import { SocialLinks } from "@/components/analytics/social-links";
 
 export function Footer() {
   return (
-    <footer className="border-t-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-900 py-8 md:py-12">
+    <footer className="border-t-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-neutral-900 py-8 md:py-12">
       <div className="container mx-auto px-4">
         <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:gap-12">
           <div>

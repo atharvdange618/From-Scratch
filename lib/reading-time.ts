@@ -6,7 +6,7 @@
  */
 export function calculateReadingTime(
   content: string,
-  wordsPerMinute: number = 200
+  wordsPerMinute: number = 200,
 ): string {
   // Strip markdown syntax
   const plainText = content
@@ -29,7 +29,7 @@ export function calculateReadingTime(
     // Remove HTML tags
     .replace(/<[^>]*>/g, "");
 
-  // Count words (split by whitespace and filter empty strings)
+  // Count words
   const words = plainText
     .trim()
     .split(/\s+/)

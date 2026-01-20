@@ -49,7 +49,6 @@ const getRelatedPostsFromDB = async (
 ): Promise<PostData[]> => {
   await connectDB();
 
-  // Ensure all models are registered before populate
   ensureModelsLoaded();
 
   const allPosts = await Post.find({

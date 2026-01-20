@@ -9,33 +9,40 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 
 interface EventsOverTimeChartProps {
   dailyEvents: Array<{ _id: string; count: number }>;
+  dailyUniqueVisitors: Array<{ _id: string; uniqueVisitors: number }>;
 }
 
 export default function EventsOverTimeChart({
   dailyEvents = [],
+  dailyUniqueVisitors = [],
 }: EventsOverTimeChartProps) {
+  const visitorsMap = new Map(
+    dailyUniqueVisitors.map((item) => [item._id, item.uniqueVisitors]),
+  );
+
   const chartData = dailyEvents
     .map((item) => ({
       date: new Date(item._id).toLocaleDateString("en-IN", {
         timeZone: "Asia/Kolkata",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
+        month: "short",
+        day: "numeric",
       }),
-      events: item.count,
+      pageViews: item.count,
+      uniqueVisitors: visitorsMap.get(item._id) || 0,
     }))
     .reverse();
 
   return (
-    <Card>
+    <Card className="col-span-2">
       <CardHeader>
-        <CardTitle>Events Over Time</CardTitle>
+        <CardTitle>Traffic Over Time</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Daily event count for the last 30 days
+          Page views vs unique visitors for the last 30 days
         </p>
       </CardHeader>
       <CardContent>
@@ -51,13 +58,24 @@ export default function EventsOverTimeChart({
             />
             <YAxis tick={{ fontSize: 12 }} />
             <Tooltip />
+            <Legend />
             <Line
               type="monotone"
-              dataKey="events"
+              dataKey="uniqueVisitors"
               stroke="#2563eb"
               strokeWidth={2}
               dot={{ r: 3 }}
               activeDot={{ r: 5 }}
+              name="Unique Visitors"
+            />
+            <Line
+              type="monotone"
+              dataKey="pageViews"
+              stroke="#16a34a"
+              strokeWidth={2}
+              dot={{ r: 3 }}
+              activeDot={{ r: 5 }}
+              name="Page Views"
             />
           </LineChart>
         </ResponsiveContainer>

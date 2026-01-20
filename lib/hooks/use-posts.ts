@@ -43,7 +43,7 @@ export function usePostsQuery() {
       const data = await response.json();
       return data.posts || [];
     },
-    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 }
 
@@ -79,7 +79,7 @@ export function useDraftsQuery() {
       const data = await response.json();
       return data.posts || [];
     },
-    staleTime: 1000 * 60 * 2, // 2 minutes - shorter stale time for admin content
+    staleTime: 1000 * 60 * 2,
   });
 }
 

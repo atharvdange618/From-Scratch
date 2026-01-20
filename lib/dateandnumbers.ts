@@ -20,8 +20,7 @@ export const formatDateTimeIST = (date: string | number | Date): string => {
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
+    hour12: true,
   });
 };
 
@@ -31,7 +30,7 @@ export const formatTimeIST = (date: Date | string | number) =>
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: false,
+    hour12: true,
   });
 
 export const formatDateTimeLocal = (isoString: string | null | undefined) => {
@@ -61,7 +60,7 @@ export const formatDate = (date: Date | string | number) =>
  */
 export const formatNumber = (
   number: number | string,
-  locale: string = "en-IN"
+  locale: string = "en-IN",
 ): string => {
   const num = Number(number);
   if (isNaN(num)) return "NaN";
@@ -72,7 +71,7 @@ export const formatNumber = (
  * Format relative time (e.g., "5 mins ago")
  */
 export const formatRelativeTime = (
-  date: string | Date | null | undefined
+  date: string | Date | null | undefined,
 ): string => {
   if (!date) return "N/A";
 

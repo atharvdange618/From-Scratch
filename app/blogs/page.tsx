@@ -177,7 +177,7 @@ function BlogsContent() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12 ">
       <div className="mb-12">
         <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl">
           All Blog Posts

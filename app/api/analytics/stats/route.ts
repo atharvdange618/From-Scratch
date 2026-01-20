@@ -59,6 +59,7 @@ export async function GET(request: NextRequest) {
       eventTypeDistribution,
       topPages,
       topCountries,
+      topCities,
       deviceBreakdown,
       browserBreakdown,
       osBreakdown,
@@ -125,6 +126,23 @@ export async function GET(request: NextRequest) {
         },
         { $sort: { count: -1 } },
         { $limit: 5 },
+      ]),
+
+      AnalyticsEvent.aggregate([
+        {
+          $match: {
+            ...dateFilter,
+            city: { $exists: true, $ne: null },
+          },
+        },
+        {
+          $group: {
+            _id: "$city",
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+        { $limit: 10 },
       ]),
 
       AnalyticsEvent.aggregate([
@@ -199,6 +217,92 @@ export async function GET(request: NextRequest) {
         .lean(),
     ]);
 
+    const scrollDepthEvents = await AnalyticsEvent.find({
+      ...dateFilter,
+      eventType: "scroll_depth",
+      "eventData.scrollPercentage": { $exists: true },
+    }).lean();
+
+    const scrollInsights = {
+      averageDepth: 0,
+      engagementRate: 0,
+      completionRate: 0,
+      deepReadRate: 0,
+    };
+
+    if (scrollDepthEvents.length > 0) {
+      const depths = scrollDepthEvents.map(
+        (e: any) => parseInt(e.eventData.scrollPercentage) || 0,
+      );
+      scrollInsights.averageDepth = Math.round(
+        depths.reduce((a, b) => a + b, 0) / depths.length,
+      );
+      scrollInsights.engagementRate = Math.round(
+        (depths.filter((d) => d >= 50).length / depths.length) * 100,
+      );
+      scrollInsights.completionRate = Math.round(
+        (depths.filter((d) => d >= 90).length / depths.length) * 100,
+      );
+      scrollInsights.deepReadRate = Math.round(
+        (depths.filter((d) => d >= 75).length / depths.length) * 100,
+      );
+    }
+
+    const sessionTimes = await AnalyticsEvent.aggregate([
+      { $match: dateFilter },
+      {
+        $group: {
+          _id: "$sessionId",
+          firstEvent: { $min: "$timestamp" },
+          lastEvent: { $max: "$timestamp" },
+        },
+      },
+      {
+        $project: {
+          duration: {
+            $subtract: ["$lastEvent", "$firstEvent"],
+          },
+        },
+      },
+    ]);
+
+    const avgSessionDuration =
+      sessionTimes.length > 0
+        ? Math.round(
+            sessionTimes.reduce((sum, s) => sum + s.duration, 0) /
+              sessionTimes.length /
+              1000,
+          )
+        : 0;
+
+    const dailyUniqueVisitors = await AnalyticsEvent.aggregate([
+      {
+        $match: {
+          timestamp: {
+            $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+          },
+          ipAddress: { $exists: true, $ne: null },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            date: {
+              $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
+            },
+            ip: "$ipAddress",
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.date",
+          uniqueVisitors: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
     let daysUntilDeletion = 90;
     let oldestEventDate = null;
     if (oldestEvent) {
@@ -214,13 +318,17 @@ export async function GET(request: NextRequest) {
       totalEvents,
       uniqueSessions,
       uniqueVisitors,
+      avgSessionDuration,
       eventTypeDistribution,
       topPages,
       topCountries,
+      topCities,
       deviceBreakdown,
       browserBreakdown,
       osBreakdown,
       dailyEvents,
+      dailyUniqueVisitors,
+      scrollInsights,
       retentionData: {
         oldestEvent: oldestEventDate,
         newestEvent: new Date().toISOString(),

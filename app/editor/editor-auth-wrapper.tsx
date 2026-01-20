@@ -65,17 +65,19 @@ export default function EditorAuthWrapper() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 py-20">
+    <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
         <div className="mb-8">
-          <h1 className="mb-2 font-sans text-4xl font-bold dark:text-white">Content Editor</h1>
+          <h1 className="mb-2 font-sans text-4xl font-bold dark:text-white">
+            Content Editor
+          </h1>
           <p className="font-serif text-lg text-gray-700 dark:text-gray-300">
             Create and manage your blog posts and projects
           </p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
+          <TabsList className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-neutral-900 p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
             <TabsTrigger
               value="posts"
               className="rounded-none border-2 border-transparent px-6 py-2 font-bold dark:text-gray-300 data-[state=active]:border-black dark:data-[state=active]:border-white data-[state=active]:bg-[#60B5FF] dark:data-[state=active]:bg-[#4A90CC] data-[state=active]:text-black dark:data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:data-[state=active]:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"

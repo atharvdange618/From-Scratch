@@ -38,7 +38,7 @@ export default function ProjectsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 py-20">
+      <div className="min-h-screen">
         <div className="container mx-auto px-4">
           <h1 className="mb-8 font-sans text-4xl font-bold md:text-5xl">
             My Projects
@@ -55,7 +55,7 @@ export default function ProjectsPage() {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 py-20">
+      <div className="min-h-screen">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-16">
             <p className="text-xl font-bold">
@@ -69,7 +69,7 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 py-12 md:py-20">
+    <div className="min-h-screen bg-white dark:bg-neutral-900 py-12 md:py-20">
       <div className="container mx-auto px-4">
         <div className="mb-8 md:mb-12 text-center">
           <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">

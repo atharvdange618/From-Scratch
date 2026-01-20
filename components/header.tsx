@@ -63,7 +63,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 py-4">
+    <header className="sticky top-0 z-50 w-full border-b-4 border-black dark:border-gray-700 bg-white dark:bg-neutral-900 py-4">
       <div className="container mx-auto flex items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative h-10 w-10 rounded-full border-4 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-primary">

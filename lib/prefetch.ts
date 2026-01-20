@@ -11,7 +11,7 @@ export const handlePostHover = (queryClient: QueryClient, slug: string) => {
       const data = await response.json();
       return data.data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 };
 
@@ -24,6 +24,6 @@ export const handleProjectHover = (queryClient: QueryClient, slug: string) => {
       const data = await response.json();
       return data.project;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 };
