@@ -44,23 +44,7 @@ import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
-
-interface Post {
-  _id: string;
-  title: string;
-  slug: string;
-  summary: string;
-  content?: string;
-  readingTime?: string;
-  category: string;
-  tags: string[];
-  publishedDate?: string;
-  isPublished: boolean;
-  linkedProject?: string;
-  bannerImage?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { Post } from "@/lib/types";
 
 export default function DraftsPage() {
   const router = useRouter();
@@ -290,7 +274,7 @@ export default function DraftsPage() {
                   </Badge>
                   {draft.linkedProject && (
                     <Badge className="rounded-none border-2 border-black bg-[#E0FFF1] text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                      🔗 {draft.linkedProject}
+                      🔗 {draft.linkedProject.name}
                     </Badge>
                   )}
                 </div>

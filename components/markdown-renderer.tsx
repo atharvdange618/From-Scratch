@@ -50,6 +50,7 @@ function CodeBlock({ children, className }: CodeBlockProps) {
           </div>
 
           <Button
+            type="button"
             onClick={handleCopy}
             variant="ghost"
             size="sm"

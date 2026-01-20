@@ -40,7 +40,6 @@ import { formatExpiryDate } from "@/lib/dateandnumbers";
 import { MarkdownRenderer } from "../markdown-renderer";
 import { MarkdownEditor } from "./editor-ui/markdown-editor";
 import { useToast } from "../ui/use-toast";
-import { useEditorAutosave } from "@/lib/hooks/use-editor-autosave";
 import { useSlugGenerator } from "@/lib/hooks/use-slug-generator";
 import { useImageUpload } from "@/lib/hooks/use-image-upload";
 
@@ -105,14 +104,6 @@ export default function PostEditor() {
   const { watch, setValue } = form;
   const title = watch("title");
   const content = watch("content");
-
-  const { lastAutosaved, autosaveStatus, clearAutosave } = useEditorAutosave({
-    form,
-    isEditMode,
-    selectedItemId: selectedPostId,
-    storageKey: "post-autosave",
-    checkFields: ["title", "content"],
-  });
 
   useSlugGenerator(title, isEditMode, setValue);
 
@@ -182,7 +173,6 @@ export default function PostEditor() {
       setSelectedPostSlug(post.slug);
       setIsEditMode(true);
       setPreviewTokens(post.previewTokens || []);
-      clearAutosave(postId);
     } catch (error) {
       console.error("Error loading post:", error);
       toast({
@@ -213,7 +203,6 @@ export default function PostEditor() {
     setSelectedPostSlug("");
     setIsEditMode(false);
     setPreviewTokens([]);
-    clearAutosave(selectedPostId);
   };
 
   const onSubmit = async (data: PostFormValues) => {
@@ -243,8 +232,6 @@ export default function PostEditor() {
       });
 
       if (response.ok) {
-        clearAutosave(selectedPostId);
-
         toast({
           title: "✅ Success",
           description: isEditMode
@@ -363,13 +350,13 @@ export default function PostEditor() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="mb-4 text-xl font-bold">
+        <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+          <h2 className="mb-4 text-xl font-bold dark:text-white">
             {isEditMode ? "Editing Post" : "Load Existing Post"}
           </h2>
           <div className="flex gap-3">
             <Select value={selectedPostId} onValueChange={loadPost}>
-              <SelectTrigger className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
                 <SelectValue placeholder="Select a post to edit..." />
               </SelectTrigger>
               <SelectContent>
@@ -380,16 +367,14 @@ export default function PostEditor() {
                 ))}
               </SelectContent>
             </Select>
-            {isEditMode && (
-              <Button
-                type="button"
-                onClick={resetForm}
-                variant="outline"
-                className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Create New
-              </Button>
-            )}
+            <Button
+              type="button"
+              onClick={resetForm}
+              variant="outline"
+              className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            >
+              Create New
+            </Button>
           </div>
         </Card>
 
@@ -403,11 +388,13 @@ export default function PostEditor() {
                 name="title"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">Title *</FormLabel>
+                    <FormLabel className="font-bold dark:text-gray-200">
+                      Title *
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                         placeholder="Enter post title..."
                       />
                     </FormControl>
@@ -421,11 +408,13 @@ export default function PostEditor() {
                 name="slug"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">Slug *</FormLabel>
+                    <FormLabel className="font-bold dark:text-gray-200">
+                      Slug *
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                         placeholder="post-url-slug"
                       />
                     </FormControl>
@@ -439,12 +428,14 @@ export default function PostEditor() {
                 name="summary"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">Summary *</FormLabel>
+                    <FormLabel className="font-bold dark:text-gray-200">
+                      Summary *
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         {...field}
                         rows={3}
-                        className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                         placeholder="Brief description of the post..."
                       />
                     </FormControl>
@@ -458,10 +449,12 @@ export default function PostEditor() {
                 name="category"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">Category *</FormLabel>
+                    <FormLabel className="font-bold dark:text-gray-200">
+                      Category *
+                    </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                       </FormControl>
@@ -483,13 +476,13 @@ export default function PostEditor() {
                 name="tags"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">
+                    <FormLabel className="font-bold dark:text-gray-200">
                       Tags (comma-separated)
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                         placeholder="TypeScript, React, Next.js"
                       />
                     </FormControl>
@@ -503,13 +496,15 @@ export default function PostEditor() {
                 name="linkedProject"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">Linked Project</FormLabel>
+                    <FormLabel className="font-bold dark:text-gray-200">
+                      Linked Project
+                    </FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       value={field.value || undefined}
                     >
                       <FormControl>
-                        <SelectTrigger className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
                           <SelectValue placeholder="Select project (optional)" />
                         </SelectTrigger>
                       </FormControl>
@@ -531,7 +526,7 @@ export default function PostEditor() {
                 name="resources"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">
+                    <FormLabel className="font-bold dark:text-gray-200">
                       Resources (Optional, max 10)
                     </FormLabel>
                     <div className="space-y-3">
@@ -539,10 +534,10 @@ export default function PostEditor() {
                         field.value.map((resource, index) => (
                           <div
                             key={index}
-                            className="rounded-none border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                            className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
                           >
                             <div className="mb-2 flex items-center justify-between">
-                              <span className="text-sm font-bold">
+                              <span className="text-sm font-bold dark:text-white">
                                 Resource {index + 1}
                               </span>
                               <Button
@@ -555,7 +550,7 @@ export default function PostEditor() {
                                   );
                                   field.onChange(newResources);
                                 }}
-                                className="h-7 rounded-none border-2 border-black px-2 font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                className="h-7 rounded-none border-2 border-black dark:border-gray-700 px-2 font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
                               >
                                 <Trash2 className="h-3 w-3" />
                               </Button>
@@ -568,7 +563,7 @@ export default function PostEditor() {
                                 field.onChange(newResources);
                               }}
                               placeholder="Resource title..."
-                              className="mb-2 rounded-none border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                              className="mb-2 rounded-none border-2 border-black dark:border-gray-700 dark:bg-gray-700 dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
                             />
                             <Input
                               value={resource.url}
@@ -578,12 +573,12 @@ export default function PostEditor() {
                                 field.onChange(newResources);
                               }}
                               placeholder="https://..."
-                              className="rounded-none border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                              className="rounded-none border-2 border-black dark:border-gray-700 dark:bg-gray-700 dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
                             />
                           </div>
                         ))
                       ) : (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                           No resources added yet
                         </p>
                       )}
@@ -599,7 +594,7 @@ export default function PostEditor() {
                           }
                         }}
                         disabled={field.value && field.value.length >= 10}
-                        className="w-full rounded-none border-4 border-black bg-[#AFDDFF] font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+                        className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] disabled:opacity-50"
                       >
                         + Add Resource
                         {field.value && field.value.length > 0 && (
@@ -619,17 +614,19 @@ export default function PostEditor() {
                 name="bannerImage"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">Banner Image</FormLabel>
+                    <FormLabel className="font-bold dark:text-gray-200">
+                      Banner Image
+                    </FormLabel>
                     <div className="space-y-3">
                       {field.value && (
                         <div className="relative">
                           <img
                             src={field.value}
                             alt="Cover preview"
-                            className="h-48 w-full rounded-none border-4 border-black object-cover shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            className="h-48 w-full rounded-none border-4 border-black dark:border-gray-700 object-cover shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                           />
-                          <div className="mt-2 flex items-center gap-2 rounded-none border-2 border-black bg-[#E0FFF1] p-2">
-                            <span className="text-sm font-bold">
+                          <div className="mt-2 flex items-center gap-2 rounded-none border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-[#2D5F4D] p-2">
+                            <span className="text-sm font-bold dark:text-white">
                               ✓ Image uploaded
                             </span>
                           </div>
@@ -649,7 +646,7 @@ export default function PostEditor() {
                             document.getElementById("cover-upload")?.click()
                           }
                           disabled={uploading}
-                          className="rounded-none border-4 border-black bg-[#AFDDFF] font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                          className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
                         >
                           {uploading ? (
                             <>
@@ -668,7 +665,7 @@ export default function PostEditor() {
                             type="button"
                             variant="outline"
                             onClick={() => field.onChange("")}
-                            className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                           >
                             Remove
                           </Button>
@@ -681,19 +678,23 @@ export default function PostEditor() {
               />
             </Card>
 
-            <Card className="rounded-none border-4 border-black bg-[#FFECDB] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-              <h2 className="mb-4 text-2xl font-bold">SEO Settings</h2>
+            <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+              <h2 className="mb-4 text-2xl font-bold dark:text-white">
+                SEO Settings
+              </h2>
 
               <FormField
                 control={form.control}
                 name="seoTitle"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">SEO Title</FormLabel>
+                    <FormLabel className="font-bold dark:text-gray-200">
+                      SEO Title
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                         placeholder="Custom title for search engines"
                       />
                     </FormControl>
@@ -706,12 +707,14 @@ export default function PostEditor() {
                 name="seoDescription"
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel className="font-bold">SEO Description</FormLabel>
+                    <FormLabel className="font-bold dark:text-gray-200">
+                      SEO Description
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         {...field}
                         rows={2}
-                        className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                         placeholder="Meta description..."
                       />
                     </FormControl>
@@ -724,11 +727,13 @@ export default function PostEditor() {
                 name="seoKeywords"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-bold">SEO Keywords</FormLabel>
+                    <FormLabel className="font-bold dark:text-gray-200">
+                      SEO Keywords
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                         placeholder="keyword1, keyword2, keyword3"
                       />
                     </FormControl>
@@ -739,15 +744,17 @@ export default function PostEditor() {
           </div>
 
           <div className="space-y-6">
-            <Card className="rounded-none border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-2xl font-bold">Content *</h2>
+                <h2 className="text-2xl font-bold dark:text-white">
+                  Content *
+                </h2>
                 <Button
                   type="button"
                   onClick={() => setShowPreview(!showPreview)}
                   variant="outline"
                   size="sm"
-                  className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                  className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                 >
                   {showPreview ? (
                     <EyeOff className="mr-2 h-4 w-4" />
@@ -777,12 +784,14 @@ export default function PostEditor() {
               />
 
               {showPreview && content && (
-                <div className="mt-4 rounded-none border-4 border-black bg-white p-6">
-                  <h3 className="mb-4 text-xl font-bold">Preview</h3>
-                  <div className="prose max-w-none max-h-[600px] overflow-y-auto">
+                <div className="mt-4 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+                  <h3 className="mb-4 text-xl font-bold dark:text-white">
+                    Preview
+                  </h3>
+                  <div className="prose dark:prose-invert max-w-none max-h-[600px] overflow-y-auto">
                     <MarkdownRenderer
                       content={content}
-                      className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                      className="mb-4 font-serif text-sm md:text-base text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
                     />
                   </div>
                 </div>
@@ -792,11 +801,13 @@ export default function PostEditor() {
         </div>
 
         {isEditMode && !form.watch("isPublished") && (
-          <Card className="rounded-none border-4 border-black bg-[#AFDDFF] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
             <div className="mb-4 flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold">Preview Links</h2>
-                <p className="text-sm text-gray-700">
+                <h2 className="text-xl font-bold dark:text-white">
+                  Preview Links
+                </h2>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
                   Share draft previews without publishing
                 </p>
               </div>
@@ -804,7 +815,7 @@ export default function PostEditor() {
                 type="button"
                 onClick={generatePreviewLink}
                 disabled={generatingPreview}
-                className="rounded-none border-4 border-black bg-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-[#4A90CC] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
               >
                 {generatingPreview ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -820,14 +831,14 @@ export default function PostEditor() {
                 {previewTokens.map((tokenData) => (
                   <Card
                     key={tokenData.token}
-                    className="rounded-none border-2 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                    className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <p className="truncate font-mono text-sm">
+                        <p className="truncate font-mono text-sm dark:text-white">
                           {tokenData.previewUrl}
                         </p>
-                        <p className="mt-1 text-xs text-gray-600">
+                        <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
                           {formatExpiryDate(tokenData.expiresAt)}
                         </p>
                       </div>
@@ -836,7 +847,7 @@ export default function PostEditor() {
                           type="button"
                           size="sm"
                           onClick={() => copyPreviewLink(tokenData.previewUrl)}
-                          className="rounded-none border-2 border-black bg-[#E0FFF1] font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                          className="rounded-none border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-[#2D5F4D] dark:text-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(96,181,255,0.3)]"
                         >
                           <Copy className="h-4 w-4" />
                         </Button>
@@ -845,7 +856,7 @@ export default function PostEditor() {
                           size="sm"
                           onClick={() => revokePreviewToken(tokenData.token)}
                           variant="destructive"
-                          className="rounded-none border-2 border-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                          className="rounded-none border-2 border-black dark:border-gray-700 font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(96,181,255,0.3)]"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -855,14 +866,14 @@ export default function PostEditor() {
                 ))}
               </div>
             ) : (
-              <p className="text-center text-sm text-gray-600">
+              <p className="text-center text-sm text-gray-600 dark:text-gray-400">
                 No preview links generated yet
               </p>
             )}
           </Card>
         )}
 
-        <Card className="rounded-none border-4 border-black bg-[#E0FFF1] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <FormField
               control={form.control}
@@ -873,49 +884,29 @@ export default function PostEditor() {
                     <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      className="data-[state=checked]:bg-black"
+                      className="data-[state=checked]:bg-black dark:data-[state=checked]:bg-white"
                     />
                   </FormControl>
-                  <FormLabel className="font-bold">
+                  <FormLabel className="font-bold dark:text-white">
                     Publish immediately
                   </FormLabel>
                 </FormItem>
               )}
             />
 
-            {autosaveStatus !== "idle" && (
-              <div className="flex items-center gap-2 text-sm">
-                {autosaveStatus === "saving" ? (
-                  <>
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                    <span className="text-muted-foreground">Saving...</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-green-600">✓ Autosaved</span>
-                    {lastAutosaved && (
-                      <span className="text-muted-foreground">
-                        {lastAutosaved.toLocaleTimeString()}
-                      </span>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
-
             <div className="flex gap-3">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => form.reset()}
-                className="rounded-none border-4 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
               >
                 Reset
               </Button>
               <Button
                 type="submit"
                 disabled={saving}
-                className="rounded-none border-4 border-black bg-black font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]"
+                className="rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]"
               >
                 {saving ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
