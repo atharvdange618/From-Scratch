@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link as LinkIcon } from "lucide-react";
 import type { TocItem } from "@/lib/toc-generator";
 
@@ -10,6 +10,7 @@ interface TableOfContentsProps {
 
 export function TableOfContents({ headings }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>("");
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -36,6 +37,34 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
     return () => observer.disconnect();
   }, [headings]);
 
+  useEffect(() => {
+    if (activeId && navRef.current) {
+      const activeElement = navRef.current.querySelector(
+        `a[href="#${activeId}"]`,
+      );
+      if (activeElement) {
+        const navRect = navRef.current.getBoundingClientRect();
+        const elementRect = activeElement.getBoundingClientRect();
+
+        const relativeTop = elementRect.top - navRect.top;
+        const relativeBottom = elementRect.bottom - navRect.top;
+
+        if (relativeTop < 0 || relativeBottom > navRect.height) {
+          const scrollTo =
+            navRef.current.scrollTop +
+            relativeTop -
+            navRect.height / 2 +
+            elementRect.height / 2;
+
+          navRef.current.scrollTo({
+            top: scrollTo,
+            behavior: "smooth",
+          });
+        }
+      }
+    }
+  }, [activeId]);
+
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -54,6 +83,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 
   return (
     <nav
+      ref={navRef}
       className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
       aria-label="Table of contents"
     >
