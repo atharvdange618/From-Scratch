@@ -1,40 +1,10 @@
 import Link from "next/link";
-import { Code, Rocket, BookOpen, Lightbulb, Clock } from "lucide-react";
 import { unstable_cache } from "next/cache";
 import { PrefetchLink } from "./prefetch-link";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { formatDate } from "@/lib/dateandnumbers";
-import { calculateReadingTime } from "@/lib/reading-time";
-import { MarkdownRenderer } from "./markdown-renderer";
 import connectDB from "@/lib/mongodb";
 import Post, { IPost } from "@/lib/models/Post";
-
-const getPostIcon = (tags: string[], category: string) => {
-  const tagStr = tags.join(" ").toLowerCase();
-  const catStr = category.toLowerCase();
-
-  if (tagStr.includes("reiatsu") || tagStr.includes("framework")) {
-    return { icon: <Code className="h-full w-full" />, bg: "#AFDDFF" };
-  }
-  if (tagStr.includes("telemetry") || tagStr.includes("analytics")) {
-    return { icon: <Rocket className="h-full w-full" />, bg: "#FFECDB" };
-  }
-  if (tagStr.includes("archive") || tagStr.includes("mobile")) {
-    return { icon: <Lightbulb className="h-full w-full" />, bg: "#E0FFF1" };
-  }
-  if (tagStr.includes("journey") || catStr.includes("update")) {
-    return { icon: <BookOpen className="h-full w-full" />, bg: "#AFDDFF" };
-  }
-
-  return { icon: <Code className="h-full w-full" />, bg: "#AFDDFF" };
-};
+import { BlogCard } from "./blog-card";
 
 const getRecentPostsFromDB = async () => {
   await connectDB();
@@ -71,67 +41,9 @@ export async function BlogEntries() {
 
       <div className="grid gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => {
-          const { icon, bg } = getPostIcon(post.tags, post.category);
-
           return (
             <PrefetchLink key={post._id} href={`/posts/${post.slug}`}>
-              <Link href={`/posts/${post.slug}`}>
-                <Card className="group flex flex-col h-full overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(96,181,255,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
-                  <CardHeader className="border-b-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-3 md:p-4">
-                    <div className="mb-2 flex items-center gap-2">
-                      <div
-                        className="h-10 w-10 rounded-full border-2 border-black dark:border-gray-700 p-2 dark:text-black"
-                        style={{ backgroundColor: bg }}
-                      >
-                        {icon}
-                      </div>
-                      <div className="flex-1">
-                        <span className="text-sm font-bold dark:text-white">
-                          {formatDate(
-                            post.publishedDate || post.createdAt || "",
-                          )}
-                        </span>
-                        <div className="mt-1">
-                          <span className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-700 px-2 py-0.5 text-xs font-bold dark:text-white">
-                            {post.category}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <CardTitle className="text-xl font-bold leading-tight dark:text-white">
-                      {post.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1 px-4 pt-4 pb-0">
-                    <MarkdownRenderer
-                      content={post.summary}
-                      className="mb-4 font-serif text-sm md:text-base text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
-                      truncate={150}
-                    />
-                    <div className="mb-3">
-                      <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 text-xs font-bold">
-                        <Clock className="h-3 w-3" />
-                        {calculateReadingTime(post.content)}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2 pb-4">
-                      {post.tags.map((tag: string) => (
-                        <span
-                          key={tag}
-                          className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 px-2 py-1 text-xs font-bold dark:text-white"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </CardContent>
-                  <CardFooter className="mt-auto border-t-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-4">
-                    <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-primary px-6 py-3 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,145,73,0.5)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,0.5)]">
-                      Read More
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </Link>
+              <BlogCard key={post._id} post={post} />
             </PrefetchLink>
           );
         })}

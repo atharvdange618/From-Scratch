@@ -1,21 +1,14 @@
 "use client";
 
 import { useEffect, useState, useRef, Suspense, useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Calendar, Tag, Search, Filter, Clock } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Search, Filter } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { usePostsQuery } from "@/lib/hooks/use-posts";
 import { useQueryClient } from "@tanstack/react-query";
-import { getCategoriesWithAll, getCategoryColor } from "@/lib/categories";
+import { getCategoriesWithAll } from "@/lib/categories";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -23,23 +16,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { formatDate } from "@/lib/dateandnumbers";
 import { BlogCardSkeleton } from "@/components/skeletons";
 import { EmptyState } from "@/components/empty-state";
 import { RecentlyViewed } from "@/components/recently-viewed";
-import { handlePostHover } from "@/lib/prefetch";
+import { BlogCard } from "@/components/blog-card";
 
 function BlogsContent() {
-  const router = useRouter();
-  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedTag, setSelectedTag] = useState("all");
   const [sortBy, setSortBy] = useState("date-desc");
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 9;
+  const postsPerPage = 6;
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const categories = getCategoriesWithAll();
 
@@ -307,86 +296,12 @@ function BlogsContent() {
 
           <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {currentPosts.map((post) => (
-              <Card
+              <BlogCard
                 key={post._id}
-                className="group cursor-pointer overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
-                onClick={() => router.push(`/posts/${post.slug}`)}
-                onMouseEnter={() => handlePostHover(queryClient, post.slug)}
-              >
-                <CardHeader className="border-b-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
-                  <div className="mb-2 flex items-center gap-2">
-                    <div
-                      className="h-10 w-10 rounded-full border-2 border-black p-2 dark:text-black"
-                      style={{
-                        backgroundColor: getCategoryColor(post.category),
-                      }}
-                    >
-                      <Calendar className="h-full w-full" />
-                    </div>
-                    <span className="text-sm font-bold">
-                      {formatDate(
-                        post.publishedDate ||
-                          post.createdAt ||
-                          new Date().toISOString(),
-                      )}
-                    </span>
-                  </div>
-                  <CardTitle className="text-xl font-bold leading-tight">
-                    {post.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4">
-                  <p className="mb-4 line-clamp-3 font-serif dark:text-gray-300">
-                    {post.summary}
-                  </p>
-
-                  <div className="mb-3 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <Clock className="h-4 w-4" />
-                    <span className="font-medium">
-                      {post.readingTime || "5 min read"}
-                    </span>
-                  </div>
-
-                  <div className="mb-3">
-                    <Badge
-                      className="rounded-lg border-2 border-black font-bold"
-                      style={{
-                        backgroundColor: getCategoryColor(post.category),
-                      }}
-                    >
-                      {post.category}
-                    </Badge>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags?.slice(0, 3).map((tag) => (
-                      <button
-                        key={tag}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedTag(tag);
-                          trackEvent("blog_tag_click", { tag });
-                        }}
-                        className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 dark:text-white px-2 py-1 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#60B5FF] dark:hover:bg-gray-600 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
-                        aria-label={`Filter by ${tag}`}
-                      >
-                        <Tag className="mr-1 inline h-3 w-3" />
-                        {tag}
-                      </button>
-                    ))}
-                    {post.tags && post.tags.length > 3 && (
-                      <span className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-gray-200 dark:bg-gray-700 dark:text-white px-2 py-1 text-xs font-bold">
-                        +{post.tags.length - 3}
-                      </span>
-                    )}
-                  </div>
-                </CardContent>
-                <CardFooter className="border-t-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
-                  <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] px-4 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:group-hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
-                    Read More
-                  </Button>
-                </CardFooter>
-              </Card>
+                post={post}
+                onTagClick={setSelectedTag}
+                enableTagFiltering={true}
+              />
             ))}
           </div>
 

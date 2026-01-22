@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import { ArrowLeft, Calendar, ExternalLink, Clock } from "@deemlol/next-icons";
+import { Calendar, ExternalLink, Clock } from "@deemlol/next-icons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,6 +23,7 @@ import { getCategoryColor } from "@/lib/categories";
 import { PostTracker } from "@/components/post-tracker";
 import { TableOfContents } from "@/components/table-of-contents";
 import { extractHeadings } from "@/lib/toc-generator";
+import { BackButton } from "@/components/back-button";
 import connectDB from "@/lib/mongodb";
 import { Post as PostModel } from "@/lib/model-registry";
 import type { Post } from "@/lib/types";
@@ -209,16 +210,9 @@ export default async function PostPage({
       />
 
       <article className="container mx-auto px-4 py-8">
-        <Button
-          asChild
-          variant="outline"
-          className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
-        >
-          <Link href="/">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Link>
-        </Button>
+        <div className="mb-8">
+          <BackButton />
+        </div>
 
         <BreadcrumbNav
           items={[{ label: "Blog", href: "/blogs" }, { label: post.title }]}
