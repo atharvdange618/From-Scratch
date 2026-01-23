@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import connectDB from "@/lib/mongodb";
 import Post, { IPost } from "@/lib/models/Post";
 import { BlogCard } from "./blog-card";
+import { calculateReadingTime } from "@/lib/reading-time";
 
 const getRecentPostsFromDB = async () => {
   await connectDB();
@@ -15,6 +16,7 @@ const getRecentPostsFromDB = async () => {
   return posts.map((post: IPost) => ({
     ...post,
     _id: post._id.toString(),
+    readingTime: calculateReadingTime(post.content || ""),
   }));
 };
 

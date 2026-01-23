@@ -6,7 +6,6 @@ import {
   Tag,
   Clock,
   Link as LinkIcon,
-  Twitter,
   Linkedin,
   Facebook,
 } from "lucide-react";
@@ -24,7 +23,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
 import { useToast } from "./ui/use-toast";
 import {
   handleFacebookShare,
