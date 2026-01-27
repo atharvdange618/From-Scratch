@@ -42,6 +42,8 @@ import { MarkdownEditor } from "./editor-ui/markdown-editor";
 import { useToast } from "../ui/use-toast";
 import { useSlugGenerator } from "@/lib/hooks/use-slug-generator";
 import { useImageUpload } from "@/lib/hooks/use-image-upload";
+import { calculateReadingTime } from "@/lib/reading-time";
+import { calculateWordCount } from "@/lib/word-count";
 
 const postSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -749,6 +751,12 @@ export default function PostEditor() {
                 <h2 className="text-2xl font-bold dark:text-white">
                   Content *
                 </h2>
+
+                <div className="flex gap-4">
+                  <span>{calculateReadingTime(content)}</span>
+                  <span>{calculateWordCount(content)} words</span>
+                </div>
+
                 <Button
                   type="button"
                   onClick={() => setShowPreview(!showPreview)}
