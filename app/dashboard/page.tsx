@@ -10,10 +10,11 @@ import EventsOverTimeChart from "./components/EventsOverTimeChart";
 import EventTypeChart from "./components/EventTypeChart";
 import TopPagesChart from "./components/TopPagesChart";
 import DeviceChart from "./components/DeviceChart";
-import TopCountriesChart from "./components/TopCountriesChart";
-import TopCitiesChart from "./components/TopCitiesChart";
+import CountriesChart from "./components/CountriesChart";
+import CitiesChart from "./components/CitiesChart";
 import ScrollInsights from "./components/ScrollInsights";
 import RetentionIndicator from "./components/RetentionIndicator";
+import OperatingSystemChart from "./components/OperatingSystemChart";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -106,8 +107,9 @@ export default function DashboardPage() {
             />
             <TopPagesChart topPages={stats.topPages} />
             <DeviceChart deviceBreakdown={stats.deviceBreakdown} />
-            <TopCountriesChart topCountries={stats.topCountries} />
-            <TopCitiesChart topCities={stats.topCities} />
+            <OperatingSystemChart osBreakdown={stats.osBreakdown} />
+            <CountriesChart countries={stats.topCountries} />
+            <CitiesChart cities={stats.topCities} />
           </div>
         </>
       )}

@@ -125,7 +125,6 @@ export async function GET(request: NextRequest) {
           },
         },
         { $sort: { count: -1 } },
-        { $limit: 5 },
       ]),
 
       AnalyticsEvent.aggregate([
@@ -142,7 +141,6 @@ export async function GET(request: NextRequest) {
           },
         },
         { $sort: { count: -1 } },
-        { $limit: 10 },
       ]),
 
       AnalyticsEvent.aggregate([

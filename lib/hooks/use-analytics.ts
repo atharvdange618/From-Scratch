@@ -6,7 +6,6 @@ export const analyticsKeys = {
   events: () => [...analyticsKeys.all, "events"] as const,
 };
 
-// Types
 interface AnalyticsStats {
   totalEvents: number;
   uniqueSessions: number;
@@ -33,20 +32,6 @@ interface AnalyticsStats {
     totalDays: number;
     daysUntilDeletion: number;
   };
-}
-
-interface AnalyticsEvent {
-  _id: string;
-  eventType: string;
-  eventData: Record<string, any>;
-  sessionId: string;
-  timestamp: string;
-  ipAddress: string;
-  country: string;
-  city: string;
-  device: string;
-  browser: string;
-  os: string;
 }
 
 /**

@@ -11,14 +11,14 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-interface TopCountriesChartProps {
-  topCountries: Array<{ _id: string; count: number }>;
+interface CountriesChartProps {
+  countries: Array<{ _id: string; count: number }>;
 }
 
-export default function TopCountriesChart({
-  topCountries = [],
-}: TopCountriesChartProps) {
-  const chartData = topCountries.slice(0, 10).map((item) => ({
+export default function CountriesChart({
+  countries: topCountries = [],
+}: CountriesChartProps) {
+  const chartData = topCountries.map((item) => ({
     country: item._id || "Unknown",
     visits: item.count,
   }));
@@ -26,9 +26,9 @@ export default function TopCountriesChart({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Top Countries</CardTitle>
+        <CardTitle>Countries Breakdown</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Visitors by country (top 10)
+          Visitors by country
         </p>
       </CardHeader>
       <CardContent>

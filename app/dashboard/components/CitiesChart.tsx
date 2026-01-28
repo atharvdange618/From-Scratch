@@ -11,13 +11,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-interface TopCitiesChartProps {
-  topCities: Array<{ _id: string; count: number }>;
+interface CitiesChartProps {
+  cities: Array<{ _id: string; count: number }>;
 }
 
-export default function TopCitiesChart({
-  topCities = [],
-}: TopCitiesChartProps) {
+export default function CitiesChart({
+  cities: topCities = [],
+}: CitiesChartProps) {
   const chartData = topCities.map((item) => ({
     city: item._id || "Unknown",
     visits: item.count,
@@ -26,9 +26,9 @@ export default function TopCitiesChart({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Top Cities</CardTitle>
+        <CardTitle>Cities Breakdown</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Visitors by city (top 10)
+          Visitors by city
         </p>
       </CardHeader>
       <CardContent>
