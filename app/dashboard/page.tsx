@@ -5,16 +5,16 @@ import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
 import { useAnalyticsStatsQuery } from "@/lib/hooks/use-analytics";
-import StatsCards from "./components/StatsCards";
-import EventsOverTimeChart from "./components/EventsOverTimeChart";
-import EventTypeChart from "./components/EventTypeChart";
-import TopPagesChart from "./components/TopPagesChart";
-import DeviceChart from "./components/DeviceChart";
-import CountriesChart from "./components/CountriesChart";
-import CitiesChart from "./components/CitiesChart";
-import ScrollInsights from "./components/ScrollInsights";
-import RetentionIndicator from "./components/RetentionIndicator";
-import OperatingSystemChart from "./components/OperatingSystemChart";
+import StatsCards from "../../components/dashboard/StatsCards";
+import EventsOverTimeChart from "../../components/dashboard/EventsOverTimeChart";
+import EventTypeChart from "../../components/dashboard/EventTypeChart";
+import TopPagesChart from "../../components/dashboard/TopPagesChart";
+import DeviceChart from "../../components/dashboard/DeviceChart";
+import CountriesChart from "../../components/dashboard/CountriesChart";
+import CitiesChart from "../../components/dashboard/CitiesChart";
+import ScrollInsights from "../../components/dashboard/ScrollInsights";
+import RetentionIndicator from "../../components/dashboard/RetentionIndicator";
+import OperatingSystemChart from "../../components/dashboard/OperatingSystemChart";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();

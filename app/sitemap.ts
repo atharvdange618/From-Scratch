@@ -13,7 +13,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .select("slug updatedAt")
       .lean();
 
-    const projects = await Project.find().select("slug updatedAt").lean();
+    const projects = await Project.find({
+      status: { $in: ["Active", "Completed"] },
+    })
+      .select("slug updatedAt")
+      .lean();
 
     const staticPages: MetadataRoute.Sitemap = [
       {

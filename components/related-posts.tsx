@@ -1,4 +1,5 @@
 import Link from "next/link";
+import mongoose from "mongoose";
 import { Clock, Calendar } from "lucide-react";
 import {
   Card,
@@ -37,10 +38,6 @@ interface RelatedPostsProps {
   linkedProjectId?: string;
 }
 
-interface ScoredPost extends PostData {
-  score: number;
-}
-
 const getRelatedPostsFromDB = async (
   currentPostId: string,
   currentCategory: string,
@@ -48,75 +45,134 @@ const getRelatedPostsFromDB = async (
   linkedProjectId?: string,
 ): Promise<PostData[]> => {
   await connectDB();
-
   ensureModelsLoaded();
 
-  const allPosts = await Post.find({
-    isPublished: true,
-    _id: { $ne: currentPostId },
-  })
-    .select(
-      "title slug summary content category tags publishedDate linkedProject",
-    )
-    .populate("linkedProject", "_id name")
-    .lean();
+  const relatedPosts = await Post.aggregate([
+    {
+      $match: {
+        isPublished: true,
+        _id: { $ne: new mongoose.Types.ObjectId(currentPostId) },
+        $or: [
+          { category: currentCategory },
+          { tags: { $in: currentTags } },
+          ...(linkedProjectId
+            ? [{ linkedProject: new mongoose.Types.ObjectId(linkedProjectId) }]
+            : []),
+        ],
+      },
+    },
+    {
+      $addFields: {
+        score: {
+          $add: [
+            { $cond: [{ $eq: ["$category", currentCategory] }, 3, 0] },
+            {
+              $multiply: [
+                { $size: { $setIntersection: ["$tags", currentTags] } },
+                2,
+              ],
+            },
+            {
+              $cond: [
+                {
+                  $eq: [
+                    "$linkedProject",
+                    linkedProjectId
+                      ? new mongoose.Types.ObjectId(linkedProjectId)
+                      : null,
+                  ],
+                },
+                2,
+                0,
+              ],
+            },
+            {
+              $cond: [
+                {
+                  $gte: [
+                    "$publishedDate",
+                    new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
+                  ],
+                },
+                1,
+                0,
+              ],
+            },
+          ],
+        },
+      },
+    },
+    {
+      $match: {
+        score: { $gte: 2 },
+      },
+    },
+    {
+      $sort: {
+        score: -1,
+        publishedDate: -1,
+      },
+    },
+    {
+      $limit: 4,
+    },
+    {
+      $project: {
+        title: 1,
+        slug: 1,
+        summary: 1,
+        content: 1,
+        category: 1,
+        tags: 1,
+        publishedDate: 1,
+        linkedProject: 1,
+        score: 1,
+      },
+    },
+  ]);
 
-  const scoredPosts: ScoredPost[] = allPosts.map((post: any) => {
-    let score = 0;
+  await Post.populate(relatedPosts, {
+    path: "linkedProject",
+    select: "_id name",
+  });
 
-    if (post.category === currentCategory) {
-      score += 3;
-    }
+  if (relatedPosts.length === 0) {
+    const recentPosts = await Post.find({
+      isPublished: true,
+      _id: { $ne: new mongoose.Types.ObjectId(currentPostId) },
+    })
+      .sort({ publishedDate: -1 })
+      .limit(3)
+      .select(
+        "title slug summary content category tags publishedDate linkedProject",
+      )
+      .populate("linkedProject", "_id name")
+      .lean();
 
-    const sharedTags = post.tags.filter((tag: string) =>
-      currentTags.includes(tag),
-    );
-    score += sharedTags.length * 2;
-
-    if (
-      linkedProjectId &&
-      post.linkedProject?._id?.toString() === linkedProjectId
-    ) {
-      score += 2;
-    }
-
-    const daysDiff =
-      (new Date().getTime() - new Date(post.publishedDate).getTime()) /
-      (1000 * 60 * 60 * 24);
-    if (daysDiff <= 60) {
-      score += 1;
-    }
-
-    return {
+    return recentPosts.map((post: any) => ({
       ...post,
       _id: post._id.toString(),
+      publishedDate: post.publishedDate.toISOString(),
       linkedProject: post.linkedProject
         ? {
             _id: post.linkedProject._id.toString(),
             name: post.linkedProject.name,
           }
         : undefined,
-      score,
-    };
-  });
-
-  const topPosts = scoredPosts
-    .sort((a, b) => b.score - a.score)
-    .filter((p) => p.score >= 2)
-    .slice(0, 4);
-
-  if (topPosts.length === 0) {
-    const recentPosts = scoredPosts
-      .sort(
-        (a, b) =>
-          new Date(b.publishedDate).getTime() -
-          new Date(a.publishedDate).getTime(),
-      )
-      .slice(0, 3);
-    return recentPosts;
+    }));
   }
 
-  return topPosts;
+  return relatedPosts.map((post: any) => ({
+    ...post,
+    _id: post._id.toString(),
+    publishedDate: post.publishedDate.toISOString(),
+    linkedProject: post.linkedProject
+      ? {
+          _id: post.linkedProject._id.toString(),
+          name: post.linkedProject.name,
+        }
+      : undefined,
+  }));
 };
 
 export async function RelatedPosts({

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { trackScrollDepth } from "@/lib/analytics";
 
 interface ScrollTrackerProps {
@@ -20,9 +20,7 @@ export default function ScrollTracker({
   readingTime,
   children,
 }: ScrollTrackerProps) {
-  const [trackedMilestones, setTrackedMilestones] = useState<Set<number>>(
-    new Set()
-  );
+  const trackedMilestonesRef = useRef<Set<number>>(new Set());
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,7 +37,7 @@ export default function ScrollTracker({
       milestones.forEach((milestone) => {
         if (
           scrollPercentage >= milestone &&
-          !trackedMilestones.has(milestone)
+          !trackedMilestonesRef.current.has(milestone)
         ) {
           trackScrollDepth(milestone, {
             postTitle,
@@ -48,7 +46,7 @@ export default function ScrollTracker({
             scrollPercentage,
           });
 
-          setTrackedMilestones((prev) => new Set([...prev, milestone]));
+          trackedMilestonesRef.current.add(milestone);
         }
       });
     };
@@ -58,7 +56,7 @@ export default function ScrollTracker({
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [postTitle, category, readingTime, trackedMilestones]);
+  }, [postTitle, category, readingTime]);
 
   return <>{children}</>;
 }
