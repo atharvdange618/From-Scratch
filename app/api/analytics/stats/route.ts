@@ -52,10 +52,104 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const [
-      totalEvents,
-      uniqueSessions,
-      uniqueVisitors,
+    const [cardStatsResult, facetedDataResult, dailyEvents, oldestEvent] =
+      await Promise.all([
+        AnalyticsEvent.aggregate([
+          { $match: dateFilter },
+          {
+            $group: {
+              _id: null,
+              totalEvents: { $sum: 1 },
+              uniqueSessions: { $addToSet: "$sessionId" },
+              uniqueVisitors: { $addToSet: "$ipAddress" },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              totalEvents: 1,
+              uniqueSessions: { $size: "$uniqueSessions" },
+              uniqueVisitors: { $size: "$uniqueVisitors" },
+            },
+          },
+        ]),
+        AnalyticsEvent.aggregate([
+          { $match: dateFilter },
+          {
+            $facet: {
+              eventTypeDistribution: [
+                { $group: { _id: "$eventType", count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+              ],
+              topPages: [
+                {
+                  $match: {
+                    "eventData.path": { $exists: true, $nin: [null, ""] },
+                  },
+                },
+                { $group: { _id: "$eventData.path", count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+                { $limit: 10 },
+              ],
+              topCountries: [
+                { $match: { country: { $exists: true, $ne: null } } },
+                { $group: { _id: "$country", count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+              ],
+              topCities: [
+                { $match: { city: { $exists: true, $ne: null } } },
+                { $group: { _id: "$city", count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+              ],
+              deviceBreakdown: [
+                { $match: { device: { $exists: true, $ne: null } } },
+                { $group: { _id: "$device", count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+              ],
+              browserBreakdown: [
+                { $match: { browser: { $exists: true, $ne: null } } },
+                { $group: { _id: "$browser", count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+              ],
+              osBreakdown: [
+                { $match: { os: { $exists: true, $ne: null } } },
+                { $group: { _id: "$os", count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+              ],
+            },
+          },
+        ]),
+        AnalyticsEvent.aggregate([
+          {
+            $match: {
+              timestamp: {
+                $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          {
+            $group: {
+              _id: {
+                $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
+              },
+              count: { $sum: 1 },
+            },
+          },
+          { $sort: { _id: 1 } },
+        ]),
+        AnalyticsEvent.findOne({}, { timestamp: 1 })
+          .sort({ timestamp: 1 })
+          .lean(),
+      ]);
+
+    const { totalEvents, uniqueSessions, uniqueVisitors } =
+      cardStatsResult[0] || {
+        totalEvents: 0,
+        uniqueSessions: 0,
+        uniqueVisitors: 0,
+      };
+
+    const {
       eventTypeDistribution,
       topPages,
       topCountries,
@@ -63,163 +157,68 @@ export async function GET(request: NextRequest) {
       deviceBreakdown,
       browserBreakdown,
       osBreakdown,
-      dailyEvents,
-      oldestEvent,
-    ] = await Promise.all([
-      AnalyticsEvent.countDocuments(dateFilter),
+    } = facetedDataResult[0] || {
+      eventTypeDistribution: [],
+      topPages: [],
+      topCountries: [],
+      topCities: [],
+      deviceBreakdown: [],
+      browserBreakdown: [],
+      osBreakdown: [],
+    };
 
-      AnalyticsEvent.distinct("sessionId", dateFilter).then(
-        (sessions) => sessions.length,
-      ),
-
-      AnalyticsEvent.distinct("ipAddress", {
-        ...dateFilter,
-        ipAddress: { $exists: true, $ne: null },
-      }).then((ips) => ips.length),
-
-      AnalyticsEvent.aggregate([
-        { $match: dateFilter },
-        {
-          $group: {
-            _id: "$eventType",
-            count: { $sum: 1 },
-          },
-        },
-        { $sort: { count: -1 } },
-      ]),
-
-      AnalyticsEvent.aggregate([
-        {
-          $match: {
-            ...dateFilter,
-            "eventData.path": { $exists: true, $nin: [null, ""] },
-          },
-        },
-        {
-          $group: {
-            _id: "$eventData.path",
-            count: { $sum: 1 },
-          },
-        },
-        { $sort: { count: -1 } },
-        { $limit: 10 },
-        {
-          $project: {
-            _id: 1,
-            count: 1,
-          },
-        },
-      ]),
-
-      AnalyticsEvent.aggregate([
-        {
-          $match: {
-            ...dateFilter,
-            country: { $exists: true, $ne: null },
-          },
-        },
-        {
-          $group: {
-            _id: "$country",
-            count: { $sum: 1 },
-          },
-        },
-        { $sort: { count: -1 } },
-      ]),
-
-      AnalyticsEvent.aggregate([
-        {
-          $match: {
-            ...dateFilter,
-            city: { $exists: true, $ne: null },
-          },
-        },
-        {
-          $group: {
-            _id: "$city",
-            count: { $sum: 1 },
-          },
-        },
-        { $sort: { count: -1 } },
-      ]),
-
-      AnalyticsEvent.aggregate([
-        {
-          $match: {
-            ...dateFilter,
-            device: { $exists: true, $ne: null },
-          },
-        },
-        {
-          $group: {
-            _id: "$device",
-            count: { $sum: 1 },
-          },
-        },
-        { $sort: { count: -1 } },
-      ]),
-
-      AnalyticsEvent.aggregate([
-        {
-          $match: {
-            ...dateFilter,
-            browser: { $exists: true, $ne: null },
-          },
-        },
-        {
-          $group: {
-            _id: "$browser",
-            count: { $sum: 1 },
-          },
-        },
-        { $sort: { count: -1 } },
-      ]),
-
-      AnalyticsEvent.aggregate([
-        {
-          $match: {
-            ...dateFilter,
-            os: { $exists: true, $ne: null },
-          },
-        },
-        {
-          $group: {
-            _id: "$os",
-            count: { $sum: 1 },
-          },
-        },
-        { $sort: { count: -1 } },
-      ]),
-
-      AnalyticsEvent.aggregate([
-        {
-          $match: {
-            timestamp: {
-              $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+    const [scrollDepthEvents, sessionTimes, dailyUniqueVisitors] =
+      await Promise.all([
+        AnalyticsEvent.find({
+          ...dateFilter,
+          eventType: "scroll_depth",
+          "eventData.scrollPercentage": { $exists: true },
+        }).lean(),
+        AnalyticsEvent.aggregate([
+          { $match: dateFilter },
+          {
+            $group: {
+              _id: "$sessionId",
+              firstEvent: { $min: "$timestamp" },
+              lastEvent: { $max: "$timestamp" },
             },
           },
-        },
-        {
-          $group: {
-            _id: {
-              $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
+          {
+            $project: {
+              duration: {
+                $subtract: ["$lastEvent", "$firstEvent"],
+              },
             },
-            count: { $sum: 1 },
           },
-        },
-        { $sort: { _id: 1 } },
-      ]),
-
-      AnalyticsEvent.findOne({}, { timestamp: 1 })
-        .sort({ timestamp: 1 })
-        .lean(),
-    ]);
-
-    const scrollDepthEvents = await AnalyticsEvent.find({
-      ...dateFilter,
-      eventType: "scroll_depth",
-      "eventData.scrollPercentage": { $exists: true },
-    }).lean();
+        ]),
+        AnalyticsEvent.aggregate([
+          {
+            $match: {
+              timestamp: {
+                $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+              },
+              ipAddress: { $exists: true, $ne: null },
+            },
+          },
+          {
+            $group: {
+              _id: {
+                date: {
+                  $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
+                },
+                ip: "$ipAddress",
+              },
+            },
+          },
+          {
+            $group: {
+              _id: "$_id.date",
+              uniqueVisitors: { $sum: 1 },
+            },
+          },
+          { $sort: { _id: 1 } },
+        ]),
+      ]);
 
     const scrollInsights = {
       averageDepth: 0,
@@ -227,7 +226,6 @@ export async function GET(request: NextRequest) {
       completionRate: 0,
       deepReadRate: 0,
     };
-
     if (scrollDepthEvents.length > 0) {
       const depths = scrollDepthEvents.map(
         (e: any) => parseInt(e.eventData.scrollPercentage) || 0,
@@ -246,24 +244,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const sessionTimes = await AnalyticsEvent.aggregate([
-      { $match: dateFilter },
-      {
-        $group: {
-          _id: "$sessionId",
-          firstEvent: { $min: "$timestamp" },
-          lastEvent: { $max: "$timestamp" },
-        },
-      },
-      {
-        $project: {
-          duration: {
-            $subtract: ["$lastEvent", "$firstEvent"],
-          },
-        },
-      },
-    ]);
-
     const avgSessionDuration =
       sessionTimes.length > 0
         ? Math.round(
@@ -272,34 +252,6 @@ export async function GET(request: NextRequest) {
               1000,
           )
         : 0;
-
-    const dailyUniqueVisitors = await AnalyticsEvent.aggregate([
-      {
-        $match: {
-          timestamp: {
-            $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-          },
-          ipAddress: { $exists: true, $ne: null },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            date: {
-              $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
-            },
-            ip: "$ipAddress",
-          },
-        },
-      },
-      {
-        $group: {
-          _id: "$_id.date",
-          uniqueVisitors: { $sum: 1 },
-        },
-      },
-      { $sort: { _id: 1 } },
-    ]);
 
     let daysUntilDeletion = 90;
     let oldestEventDate = null;
