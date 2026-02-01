@@ -105,7 +105,7 @@ export function Footer() {
           </p>
           <p className="text-center font-serif text-sm md:text-right dark:text-gray-300">
             <a
-              href="https://atharvdange.vercel.app"
+              href="https://atharvdangedev.in"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#FF9149] dark:hover:text-secondary hover:underline hover:decoration-2 hover:underline-offset-2"

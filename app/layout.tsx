@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     "software engineering",
     "Atharv Dange",
   ],
-  authors: [{ name: "Atharv Dange", url: "https://atharvdange.vercel.app" }],
+  authors: [{ name: "Atharv Dange", url: "https://atharvdangedev.in" }],
   creator: "Atharv Dange",
   openGraph: {
     type: "website",
