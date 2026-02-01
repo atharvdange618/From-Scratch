@@ -27,7 +27,7 @@ jobs:
       - name: Fetch latest blog posts
         id: fetch-posts
         run: |
-          response=$(curl -s https://built-from-scratch.vercel.app/api/posts/latest)
+          response=$(curl -s https://blog.atharvdangedev.in/api/posts/latest)
           echo "$response" > posts.json
 
           success=$(echo "$response" | jq -r '.success')
@@ -55,10 +55,12 @@ jobs:
             
             # Get emoji based on category
             case "$category" in
-              "Active Projects") emoji="🚀" ;;
-              "Completed Projects") emoji="✅" ;;
-              "Learning Notes") emoji="📚" ;;
-              "Updates") emoji="📢" ;;
+              "JavaScript & Web APIs") emoji="📜" ;;
+              "Git & Version Control") emoji="🌿" ;;
+              "Web Development") emoji="💻" ;;
+              "Frameworks & Tools") emoji="🛠️" ;;
+              "Software Engineering") emoji="🏗️" ;;
+              "Project Logs") emoji="🚀" ;;
               *) emoji="📝" ;;
             esac
             
@@ -68,7 +70,7 @@ jobs:
 
           # Add footer
           echo "" >> latest-posts.md
-          echo "➡️ [**View all posts**](https://built-from-scratch.vercel.app/blogs)" >> latest-posts.md
+          echo "➡️ [**View all posts**](https://blog.atharvdangedev.in/blogs)" >> latest-posts.md
 
       - name: Update README
         run: |

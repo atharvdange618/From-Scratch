@@ -27,8 +27,7 @@ export async function GET() {
       bannerImage: post.bannerImage,
       readingTime: calculateReadingTime(post.content),
       url: `${
-        process.env.NEXT_PUBLIC_BASE_URL ||
-        "https://built-from-scratch.vercel.app"
+        process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in"
       }/posts/${post.slug}`,
     }));
 
