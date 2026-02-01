@@ -107,7 +107,8 @@ export async function generateMetadata({
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in";
   const ogImageUrl = `${baseUrl}/api/og?title=${encodeURIComponent(
     post.title,
   )}&description=${encodeURIComponent(post.summary)}&type=blog`;
@@ -117,10 +118,13 @@ export async function generateMetadata({
     description: post.seoDescription || post.summary,
     keywords: post.tags.join(", "),
     authors: [{ name: post.author || "Atharv Dange" }],
+    alternates: {
+      canonical: `/posts/${slug}`,
+    },
     openGraph: {
       title: post.seoTitle || post.title,
       description: post.seoDescription || post.summary,
-      url: `${baseUrl}/posts/${slug}`,
+      url: `/posts/${slug}`,
       siteName: "From Scratch",
       images: [
         {
@@ -161,7 +165,8 @@ export default async function PostPage({
 
   const headings = extractHeadings(post.content);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in";
 
   const jsonLd = {
     "@context": "https://schema.org",

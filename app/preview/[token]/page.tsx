@@ -39,10 +39,11 @@ interface PreviewData {
 }
 
 async function getPreview(
-  token: string
+  token: string,
 ): Promise<{ data?: PreviewData; error?: string }> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in";
     const res = await fetch(`${baseUrl}/api/preview/${token}`, {
       cache: "no-store",
     });

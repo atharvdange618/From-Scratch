@@ -13,7 +13,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+    process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in",
   ),
   title: {
     default: "From Scratch | Atharv Dange",
@@ -32,6 +32,9 @@ export const metadata: Metadata = {
     "software engineering",
     "Atharv Dange",
   ],
+  alternates: {
+    canonical: "/",
+  },
   authors: [{ name: "Atharv Dange", url: "https://atharvdangedev.in" }],
   creator: "Atharv Dange",
   openGraph: {
