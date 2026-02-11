@@ -36,7 +36,7 @@ export function usePostsQuery() {
   return useQuery({
     queryKey: postKeys.published(),
     queryFn: async (): Promise<Post[]> => {
-      const response = await fetch("/api/posts?listView=true");
+      const response = await fetch("/api/posts?listView=true&isPublished=true");
       if (!response.ok) {
         throw new Error("Failed to fetch posts");
       }
