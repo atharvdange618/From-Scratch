@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Project from "@/lib/models/Project";
+import { updateProjectSchema } from "@/lib/validations/api-schemas";
 
 type Params = Promise<{ slug: string }>;
 
 // GET /api/projects/[slug] - Get a single project by slug
 export async function GET(
   request: NextRequest,
-  segmentData: { params: Params }
+  segmentData: { params: Params },
 ) {
   try {
     await connectDB();
@@ -19,7 +20,7 @@ export async function GET(
     if (!project) {
       return NextResponse.json(
         { success: false, error: "Project not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -28,7 +29,7 @@ export async function GET(
     console.error("Error fetching project:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -36,7 +37,7 @@ export async function GET(
 // PUT /api/projects/[slug] - Update a project (protected)
 export async function PUT(
   request: NextRequest,
-  segmentData: { params: Params }
+  segmentData: { params: Params },
 ) {
   try {
     const { userId } = await auth();
@@ -44,7 +45,7 @@ export async function PUT(
     if (!userId) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -53,7 +54,9 @@ export async function PUT(
     const { slug } = await segmentData.params;
     const body = await request.json();
 
-    const project = await Project.findOneAndUpdate({ slug }, body, {
+    const validatedData = updateProjectSchema.parse(body);
+
+    const project = await Project.findOneAndUpdate({ slug }, validatedData, {
       new: true,
       runValidators: true,
     });
@@ -61,16 +64,27 @@ export async function PUT(
     if (!project) {
       return NextResponse.json(
         { success: false, error: "Project not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     return NextResponse.json({ success: true, data: project });
   } catch (error: any) {
+    if (error.name === "ZodError") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Validation failed",
+          details: error.errors,
+        },
+        { status: 400 },
+      );
+    }
+
     console.error("Error updating project:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -78,7 +92,7 @@ export async function PUT(
 // DELETE /api/projects/[slug] - Delete a project (protected)
 export async function DELETE(
   request: NextRequest,
-  segmentData: { params: Params }
+  segmentData: { params: Params },
 ) {
   try {
     const { userId } = await auth();
@@ -86,7 +100,7 @@ export async function DELETE(
     if (!userId) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -98,7 +112,7 @@ export async function DELETE(
     if (!project) {
       return NextResponse.json(
         { success: false, error: "Project not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -107,7 +121,7 @@ export async function DELETE(
     console.error("Error deleting project:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

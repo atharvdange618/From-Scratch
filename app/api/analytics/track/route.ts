@@ -4,6 +4,7 @@ import connectDB from "@/lib/mongodb";
 import AnalyticsEvent from "@/lib/models/AnalyticsEvent";
 import RateLimit from "@/lib/models/RateLimit";
 import { parseUserAgent } from "@/lib/analytics-server";
+import { trackEventSchema } from "@/lib/validations/api-schemas";
 
 const RATE_LIMIT_MAX = 100;
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000;
@@ -103,7 +104,7 @@ export async function POST(request: NextRequest) {
     if (process.env.NODE_ENV !== "production") {
       return NextResponse.json(
         { success: false, error: "Tracking disabled in development" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -113,22 +114,14 @@ export async function POST(request: NextRequest) {
     if (adminUserId && userId === adminUserId) {
       return NextResponse.json(
         { success: false, error: "Admin users are not tracked" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
     const body = await request.json();
-    const { eventType, eventData, sessionId } = body;
 
-    if (!eventType || !sessionId) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Missing required fields: eventType, sessionId",
-        },
-        { status: 400 }
-      );
-    }
+    const validatedData = trackEventSchema.parse(body);
+    const { eventType, eventData, sessionId } = validatedData;
 
     await connectDB();
 
@@ -140,7 +133,7 @@ export async function POST(request: NextRequest) {
           error:
             "Rate limit exceeded. Maximum 100 events per session per hour.",
         },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
@@ -189,16 +182,27 @@ export async function POST(request: NextRequest) {
         success: true,
         eventId: event._id,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: any) {
+    if (error.name === "ZodError") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Validation failed",
+          details: error.errors,
+        },
+        { status: 400 },
+      );
+    }
+
     console.error("[Analytics] Tracking error:", error);
     return NextResponse.json(
       {
         success: false,
         error: error.message || "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

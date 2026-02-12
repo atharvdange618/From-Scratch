@@ -3,6 +3,7 @@ import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 import { checkAdminAccess } from "@/lib/auth";
 import { randomBytes } from "crypto";
+import { generatePreviewTokenSchema } from "@/lib/validations/api-schemas";
 
 // Generate a preview token for unpublished posts
 export async function POST(request: NextRequest) {
@@ -15,14 +16,9 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     const body = await request.json();
-    const { postId } = body;
 
-    if (!postId) {
-      return NextResponse.json(
-        { success: false, message: "Post ID is required" },
-        { status: 400 },
-      );
-    }
+    const validatedData = generatePreviewTokenSchema.parse(body);
+    const { postId } = validatedData;
 
     const post = await Post.findById(postId);
 
@@ -70,7 +66,18 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 },
     );
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === "ZodError") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Validation failed",
+          details: error.errors,
+        },
+        { status: 400 },
+      );
+    }
+
     console.error("Error generating preview token:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },

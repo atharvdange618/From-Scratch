@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 import { revalidatePost, revalidatePosts } from "@/lib/cache";
+import { updatePostSchema } from "@/lib/validations/api-schemas";
 
 type Params = Promise<{ slug: string }>;
 
@@ -71,7 +72,9 @@ export async function PUT(
     const { slug } = await segmentData.params;
     const body = await request.json();
 
-    const post = await Post.findOneAndUpdate({ slug }, body, {
+    const validatedData = updatePostSchema.parse(body);
+
+    const post = await Post.findOneAndUpdate({ slug }, validatedData, {
       new: true,
       runValidators: true,
     });
@@ -87,6 +90,17 @@ export async function PUT(
 
     return NextResponse.json({ success: true, data: post });
   } catch (error: any) {
+    if (error.name === "ZodError") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Validation failed",
+          details: error.errors,
+        },
+        { status: 400 },
+      );
+    }
+
     console.error("Error updating post:", error);
     return NextResponse.json(
       { success: false, error: error.message },

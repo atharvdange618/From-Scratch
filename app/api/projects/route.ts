@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Project from "@/lib/models/Project";
 import { checkAdminAccess } from "@/lib/auth";
+import { createProjectSchema } from "@/lib/validations/api-schemas";
 
 // GET /api/projects - Get all projects (with optional filters)
 export async function GET(request: NextRequest) {
@@ -29,7 +30,7 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching projects:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -46,14 +47,28 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     const body = await request.json();
-    const project = await Project.create(body);
+
+    const validatedData = createProjectSchema.parse(body);
+
+    const project = await Project.create(validatedData);
 
     return NextResponse.json({ success: true, data: project }, { status: 201 });
   } catch (error: any) {
+    if (error.name === "ZodError") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Validation failed",
+          details: error.errors,
+        },
+        { status: 400 },
+      );
+    }
+
     console.error("Error creating project:", error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

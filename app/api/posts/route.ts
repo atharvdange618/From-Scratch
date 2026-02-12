@@ -5,6 +5,7 @@ import Project from "@/lib/models/Project";
 import { checkAdminAccess } from "@/lib/auth";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { revalidatePosts } from "@/lib/cache";
+import { createPostSchema } from "@/lib/validations/api-schemas";
 
 export const revalidate = 60;
 
@@ -101,12 +102,26 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     const body = await request.json();
-    const post = await Post.create(body);
+
+    const validatedData = createPostSchema.parse(body);
+
+    const post = await Post.create(validatedData);
 
     await revalidatePosts();
 
     return NextResponse.json({ success: true, data: post }, { status: 201 });
   } catch (error: any) {
+    if (error.name === "ZodError") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Validation failed",
+          details: error.errors,
+        },
+        { status: 400 },
+      );
+    }
+
     console.error("Error creating post:", error);
     return NextResponse.json(
       { success: false, error: error.message },
