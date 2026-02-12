@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import Project from "@/lib/models/Project";
 import connectDB from "@/lib/mongodb";
+import { logger } from "@/lib/logger";
 
 interface Project {
   _id: string;
@@ -75,7 +76,7 @@ async function getGithubStats(
       language: repoData.language || "Unknown",
     };
   } catch (err) {
-    console.error(`Failed to fetch GitHub stats for ${githubUrl}:`, err);
+    logger.error("Failed to fetch GitHub stats", err, { githubUrl });
     return null;
   }
 }

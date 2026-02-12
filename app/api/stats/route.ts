@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 import Project from "@/lib/models/Project";
+import { logger } from "@/lib/logger";
 
 export const revalidate = 60;
 
@@ -24,13 +25,13 @@ export async function GET() {
         headers: {
           "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
         },
-      }
+      },
     );
   } catch (error: any) {
-    console.error("Error fetching stats:", error);
+    logger.error("Error fetching stats", error, { context: "API /stats GET" });
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

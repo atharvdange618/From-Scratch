@@ -4,6 +4,7 @@ import Post from "@/lib/models/Post";
 import { checkAdminAccess } from "@/lib/auth";
 import { randomBytes } from "crypto";
 import { generatePreviewTokenSchema } from "@/lib/validations/api-schemas";
+import { logger } from "@/lib/logger";
 
 // Generate a preview token for unpublished posts
 export async function POST(request: NextRequest) {
@@ -78,7 +79,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.error("Error generating preview token:", error);
+    logger.error("Error generating preview token", error, {
+      context: "API /preview/generate POST",
+    });
     return NextResponse.json(
       { success: false, message: "Internal server error" },
       { status: 500 },

@@ -210,7 +210,8 @@ export default async function PreviewPage({
               width={1200}
               height={630}
               className="h-auto w-full object-cover"
-              priority
+              quality={75}
+              loading="lazy"
             />
           </div>
         )}

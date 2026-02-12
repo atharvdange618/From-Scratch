@@ -5,6 +5,7 @@ import AnalyticsEvent from "@/lib/models/AnalyticsEvent";
 import RateLimit from "@/lib/models/RateLimit";
 import { parseUserAgent } from "@/lib/analytics-server";
 import { trackEventSchema } from "@/lib/validations/api-schemas";
+import { logger } from "@/lib/logger";
 
 const RATE_LIMIT_MAX = 100;
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000;
@@ -90,7 +91,7 @@ async function checkRateLimit(sessionId: string): Promise<boolean> {
     await rateLimit.save();
     return true;
   } catch (error) {
-    console.error("[Analytics] Rate limit check error:", error);
+    logger.error("[Analytics] Rate limit check error", error);
     return true;
   }
 }
@@ -196,7 +197,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.error("[Analytics] Tracking error:", error);
+    logger.error("[Analytics] Tracking error", error, { context: "API /analytics/track POST" });
     return NextResponse.json(
       {
         success: false,

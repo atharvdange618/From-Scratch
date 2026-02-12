@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Project from "@/lib/models/Project";
 import { updateProjectSchema } from "@/lib/validations/api-schemas";
+import { logger } from "@/lib/logger";
+import { checkAdminAccess } from "@/lib/auth";
 
 type Params = Promise<{ slug: string }>;
 
@@ -26,7 +27,9 @@ export async function GET(
 
     return NextResponse.json({ success: true, project });
   } catch (error: any) {
-    console.error("Error fetching project:", error);
+    logger.error("Error fetching project", error, {
+      context: "API /projects/[slug] GET",
+    });
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 },
@@ -40,13 +43,10 @@ export async function PUT(
   segmentData: { params: Params },
 ) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 },
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     await connectDB();
@@ -81,7 +81,9 @@ export async function PUT(
       );
     }
 
-    console.error("Error updating project:", error);
+    logger.error("Error updating project", error, {
+      context: "API /projects/[slug] PUT",
+    });
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 },
@@ -95,13 +97,10 @@ export async function DELETE(
   segmentData: { params: Params },
 ) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 },
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     await connectDB();
@@ -118,7 +117,9 @@ export async function DELETE(
 
     return NextResponse.json({ success: true, data: project });
   } catch (error: any) {
-    console.error("Error deleting project:", error);
+    logger.error("Error deleting project", error, {
+      context: "API /projects/[slug] DELETE",
+    });
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 },

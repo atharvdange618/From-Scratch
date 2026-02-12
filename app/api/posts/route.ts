@@ -6,6 +6,7 @@ import { checkAdminAccess } from "@/lib/auth";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { revalidatePosts } from "@/lib/cache";
 import { createPostSchema } from "@/lib/validations/api-schemas";
+import { logger } from "@/lib/logger";
 
 export const revalidate = 60;
 
@@ -82,7 +83,7 @@ export async function GET(request: NextRequest) {
       },
     );
   } catch (error: any) {
-    console.error("Error fetching posts:", error);
+    logger.error("Error fetching posts", error, { context: "API /posts GET" });
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 },
@@ -122,7 +123,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.error("Error creating post:", error);
+    logger.error("Error creating post", error, { context: "API /posts POST" });
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 },

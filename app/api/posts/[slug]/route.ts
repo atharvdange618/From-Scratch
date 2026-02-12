@@ -4,6 +4,8 @@ import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 import { revalidatePost, revalidatePosts } from "@/lib/cache";
 import { updatePostSchema } from "@/lib/validations/api-schemas";
+import { logger } from "@/lib/logger";
+import { checkAdminAccess } from "@/lib/auth";
 
 type Params = Promise<{ slug: string }>;
 
@@ -44,7 +46,9 @@ export async function GET(
       },
     );
   } catch (error: any) {
-    console.error("Error fetching post:", error);
+    logger.error("Error fetching post", error, {
+      context: "API /posts/[slug] GET",
+    });
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 },
@@ -58,13 +62,10 @@ export async function PUT(
   segmentData: { params: Params },
 ) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 },
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     await connectDB();
@@ -101,7 +102,9 @@ export async function PUT(
       );
     }
 
-    console.error("Error updating post:", error);
+    logger.error("Error updating post", error, {
+      context: "API /posts/[slug] PUT",
+    });
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 },
@@ -115,13 +118,10 @@ export async function DELETE(
   segmentData: { params: Params },
 ) {
   try {
-    const { userId } = await auth();
+    const adminCheck = await checkAdminAccess();
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 },
-      );
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
     await connectDB();
@@ -140,7 +140,9 @@ export async function DELETE(
 
     return NextResponse.json({ success: true, data: post });
   } catch (error: any) {
-    console.error("Error deleting post:", error);
+    logger.error("Error deleting post", error, {
+      context: "API /posts/[slug] DELETE",
+    });
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 },
