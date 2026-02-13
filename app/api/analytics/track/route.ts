@@ -6,6 +6,7 @@ import RateLimit from "@/lib/models/RateLimit";
 import { parseUserAgent } from "@/lib/analytics-server";
 import { trackEventSchema } from "@/lib/validations/api-schemas";
 import { logger } from "@/lib/logger";
+import { env } from "@/lib/env";
 
 const RATE_LIMIT_MAX = 100;
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000;
@@ -102,7 +103,7 @@ async function checkRateLimit(sessionId: string): Promise<boolean> {
  */
 export async function POST(request: NextRequest) {
   try {
-    if (process.env.NODE_ENV !== "production") {
+    if (env.NODE_ENV !== "production") {
       return NextResponse.json(
         { success: false, error: "Tracking disabled in development" },
         { status: 400 },
@@ -110,7 +111,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { userId } = await auth();
-    const adminUserId = process.env.ADMIN_USER_ID;
+    const adminUserId = env.ADMIN_USER_ID;
 
     if (adminUserId && userId === adminUserId) {
       return NextResponse.json(
@@ -197,7 +198,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    logger.error("[Analytics] Tracking error", error, { context: "API /analytics/track POST" });
+    logger.error("[Analytics] Tracking error", error, {
+      context: "API /analytics/track POST",
+    });
     return NextResponse.json(
       {
         success: false,

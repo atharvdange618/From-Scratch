@@ -9,12 +9,11 @@ import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { env } from "@/lib/env";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in",
-  ),
+  metadataBase: new URL(env.NEXT_PUBLIC_BASE_URL),
   title: {
     default: "From Scratch | Atharv Dange",
     template: "%s | From Scratch",

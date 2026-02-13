@@ -42,13 +42,11 @@ export async function BlogEntries() {
       </div>
 
       <div className="grid gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => {
-          return (
-            <PrefetchLink key={post._id} href={`/posts/${post.slug}`}>
-              <BlogCard key={post._id} post={post} />
-            </PrefetchLink>
-          );
-        })}
+        {posts.map((post) => (
+          <PrefetchLink key={post._id} href={`/posts/${post.slug}`}>
+            <BlogCard post={post} />
+          </PrefetchLink>
+        ))}
       </div>
 
       {posts.length === 0 && (

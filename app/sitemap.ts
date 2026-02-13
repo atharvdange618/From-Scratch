@@ -2,10 +2,10 @@ import { MetadataRoute } from "next";
 import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 import Project from "@/lib/models/Project";
-import { logger } from "@/lib/logger";
+import { env } from "@/lib/env";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fromscratch.dev";
+  const baseUrl = env.NEXT_PUBLIC_BASE_URL;
 
   try {
     await connectDB();

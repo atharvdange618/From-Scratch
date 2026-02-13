@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { env } from "@/lib/env";
 
 /**
  * Check if the currently authenticated user is an admin
@@ -18,8 +19,8 @@ export async function checkAdminAccess() {
     };
   }
 
-  const adminUserId = process.env.ADMIN_USER_ID;
-  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminUserId = env.ADMIN_USER_ID;
+  const adminEmail = env.ADMIN_EMAIL;
   const userEmail = sessionClaims?.email as string | undefined;
 
   const isAdminById = adminUserId && userId === adminUserId;

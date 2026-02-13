@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 import { calculateReadingTime } from "@/lib/reading-time";
+import { env } from "@/lib/env";
 
 export const dynamic = "force-dynamic";
 
@@ -26,9 +27,7 @@ export async function GET() {
       tags: post.tags,
       bannerImage: post.bannerImage,
       readingTime: calculateReadingTime(post.content),
-      url: `${
-        process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in"
-      }/posts/${post.slug}`,
+      url: `${env.NEXT_PUBLIC_BASE_URL}/posts/${post.slug}`,
     }));
 
     return NextResponse.json(

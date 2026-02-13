@@ -27,6 +27,7 @@ import { BackButton } from "@/components/back-button";
 import connectDB from "@/lib/mongodb";
 import { Post as PostModel } from "@/lib/model-registry";
 import type { Post } from "@/lib/types";
+import { env } from "@/lib/env";
 
 // @ts-ignore - CSS import for syntax highlighting
 import "highlight.js/styles/atom-one-dark.css";
@@ -107,8 +108,7 @@ export async function generateMetadata({
     };
   }
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in";
+  const baseUrl = env.NEXT_PUBLIC_BASE_URL;
   const ogImageUrl = `${baseUrl}/api/og?title=${encodeURIComponent(
     post.title,
   )}&description=${encodeURIComponent(post.summary)}&type=blog`;
@@ -165,8 +165,7 @@ export default async function PostPage({
 
   const headings = extractHeadings(post.content);
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in";
+  const baseUrl = env.NEXT_PUBLIC_BASE_URL;
 
   const jsonLd = {
     "@context": "https://schema.org",

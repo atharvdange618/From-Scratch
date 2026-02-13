@@ -5,6 +5,7 @@ import { checkAdminAccess } from "@/lib/auth";
 import { randomBytes } from "crypto";
 import { generatePreviewTokenSchema } from "@/lib/validations/api-schemas";
 import { logger } from "@/lib/logger";
+import { env } from "@/lib/env";
 
 // Generate a preview token for unpublished posts
 export async function POST(request: NextRequest) {
@@ -52,8 +53,7 @@ export async function POST(request: NextRequest) {
 
     await post.save();
 
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in";
+    const baseUrl = env.NEXT_PUBLIC_BASE_URL;
     const previewUrl = `${baseUrl}/preview/${token}`;
 
     return NextResponse.json(

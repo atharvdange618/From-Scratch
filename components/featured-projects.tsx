@@ -12,6 +12,8 @@ import {
 import Project from "@/lib/models/Project";
 import connectDB from "@/lib/mongodb";
 import { logger } from "@/lib/logger";
+import { unstable_cache } from "next/cache";
+import { env } from "@/lib/env";
 
 interface Project {
   _id: string;
@@ -30,6 +32,7 @@ interface GitHubStats {
   stars: number;
   forks: number;
   language: string;
+  rateLimited?: boolean;
 }
 
 const statusColors = {
@@ -47,25 +50,30 @@ async function getFeaturedProjects() {
   }));
 }
 
-async function getGithubStats(
-  githubUrl: string | undefined,
+async function fetchGithubStatsFromAPI(
+  owner: string,
+  repo: string,
 ): Promise<GitHubStats | null> {
-  if (!githubUrl) return null;
-
-  const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
-  if (!match) return null;
-
-  const [, owner, repo] = match;
   try {
     const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
       headers: {
         Accept: "application/vnd.github.v3+json",
-        Authorization: `token ${process.env.GITHUB_API_KEY}`,
+        Authorization: `Bearer ${env.GITHUB_API_KEY}`,
       },
-      next: {
-        revalidate: 3600,
-      },
+      next: { revalidate: 86400 },
     });
+
+    if (res.status === 403) {
+      const remaining = res.headers.get("X-RateLimit-Remaining");
+      if (remaining === "0") {
+        return {
+          stars: 0,
+          forks: 0,
+          language: "Unknown",
+          rateLimited: true,
+        };
+      }
+    }
 
     if (!res.ok) return null;
 
@@ -76,9 +84,30 @@ async function getGithubStats(
       language: repoData.language || "Unknown",
     };
   } catch (err) {
-    logger.error("Failed to fetch GitHub stats", err, { githubUrl });
+    logger.error("Failed to fetch GitHub stats", err, { owner, repo });
     return null;
   }
+}
+
+const getCachedGithubStats = unstable_cache(
+  async (owner: string, repo: string) => fetchGithubStatsFromAPI(owner, repo),
+  ["github-stats"],
+  {
+    revalidate: 86400,
+    tags: ["github-stats"],
+  },
+);
+
+async function getGithubStats(
+  githubUrl: string | undefined,
+): Promise<GitHubStats | null> {
+  if (!githubUrl) return null;
+
+  const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
+  if (!match) return null;
+
+  const [, owner, repo] = match;
+  return getCachedGithubStats(owner, repo);
 }
 
 export async function FeaturedProjects() {

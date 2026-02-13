@@ -1,15 +1,6 @@
 "use client";
 
-import type React from "react";
-
-import {
-  Github,
-  Instagram,
-  Linkedin,
-  Mail,
-  MapPin,
-  Phone,
-} from "@deemlol/next-icons";
+import { Github, Linkedin, Mail, MapPin, Phone } from "@deemlol/next-icons";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import emailjs from "@emailjs/browser";
@@ -23,6 +14,7 @@ import { formatTimeIST } from "@/lib/dateandnumbers";
 import { trackEvent } from "@/lib/analytics";
 import { useToast } from "./ui/use-toast";
 import { X } from "lucide-react";
+import { env } from "@/lib/env";
 
 interface ContactFormData {
   name: string;
@@ -57,8 +49,8 @@ export function ContactContent() {
       const now = new Date();
 
       await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
         {
           name: data.name,
           email: data.email,
@@ -66,7 +58,7 @@ export function ContactContent() {
           message: data.message,
           time: formatTimeIST(now),
         },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!,
+        env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!,
       );
 
       await trackEvent("contact_form_submit", {
@@ -131,23 +123,6 @@ export function ContactContent() {
                 </h3>
                 <p className="font-serif text-sm md:text-base dark:text-gray-300 underline decoration-2 underline-offset-2 group-hover:decoration-[#60B5FF]">
                   atharvdange.dev@gmail.com
-                </p>
-              </div>
-            </a>
-
-            <a
-              href="tel:+917875273298"
-              className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
-            >
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-[#FF9149] transition-colors group-hover:bg-[#E87C35] dark:text-black">
-                <Phone className="h-4 w-4 md:h-5 md:w-5" />
-              </div>
-              <div>
-                <h3 className="font-bold text-sm md:text-base dark:text-gray-300">
-                  Phone
-                </h3>
-                <p className="font-serif text-sm md:text-base dark:text-gray-300 underline decoration-2 underline-offset-2 group-hover:decoration-[#FF9149]">
-                  +91 7875273298
                 </p>
               </div>
             </a>

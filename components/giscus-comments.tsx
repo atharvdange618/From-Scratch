@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
+import { env } from "@/lib/env";
 
 export function GiscusComments() {
   const ref = useRef<HTMLDivElement>(null);
@@ -12,18 +13,18 @@ export function GiscusComments() {
 
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
-    script.setAttribute("data-repo", process.env.NEXT_PUBLIC_GISCUS_REPO || "");
+    script.setAttribute("data-repo", env.NEXT_PUBLIC_GISCUS_REPO || "");
     script.setAttribute(
       "data-repo-id",
-      process.env.NEXT_PUBLIC_GISCUS_REPO_ID || ""
+      env.NEXT_PUBLIC_GISCUS_REPO_ID || ""
     );
     script.setAttribute(
       "data-category",
-      process.env.NEXT_PUBLIC_GISCUS_CATEGORY || ""
+      env.NEXT_PUBLIC_GISCUS_CATEGORY || ""
     );
     script.setAttribute(
       "data-category-id",
-      process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID || ""
+      env.NEXT_PUBLIC_GISCUS_CATEGORY_ID || ""
     );
     script.setAttribute("data-mapping", "pathname");
     script.setAttribute("data-strict", "0");

@@ -13,6 +13,7 @@ import { formatDate, formatTimeIST } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { getCategoryColor } from "@/lib/categories";
 import Image from "next/image";
+import { env } from "@/lib/env";
 
 interface PreviewData {
   post: {
@@ -42,8 +43,7 @@ async function getPreview(
   token: string,
 ): Promise<{ data?: PreviewData; error?: string }> {
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || "https://blog.atharvdangedev.in";
+    const baseUrl = env.NEXT_PUBLIC_BASE_URL;
     const res = await fetch(`${baseUrl}/api/preview/${token}`, {
       cache: "no-store",
     });

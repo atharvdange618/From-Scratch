@@ -1,9 +1,11 @@
+import { env } from "@/lib/env";
+
 interface LogContext {
   [key: string]: any;
 }
 
 class Logger {
-  private isDev = process.env.NODE_ENV !== "production";
+  private isDev = env.NODE_ENV !== "production";
 
   info(message: string, context?: LogContext) {
     if (this.isDev) {

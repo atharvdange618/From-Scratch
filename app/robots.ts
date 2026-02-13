@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
+import { env } from "@/lib/env";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fromscratch.dev";
+  const baseUrl = env.NEXT_PUBLIC_BASE_URL;
 
   return {
     rules: [

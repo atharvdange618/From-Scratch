@@ -62,12 +62,14 @@ export function getOrCreateSession(): string {
   }
 }
 
+import { env } from "@/lib/env";
+
 /**
  * Check if tracking should be enabled
  * Excludes admin users and development environment
  */
 export function shouldTrackEvent(): boolean {
-  if (process.env.NODE_ENV !== "production") {
+  if (env.NODE_ENV !== "production") {
     return false;
   }
 
