@@ -50,6 +50,8 @@ export function useProjectsQuery() {
       );
       return data.projects || [];
     },
+    staleTime: 1000 * 60 * 15,
+    gcTime: 1000 * 60 * 30,
   });
 }
 
@@ -68,6 +70,8 @@ export function useProjectQuery(slug: string) {
       return data.project;
     },
     enabled: !!slug,
+    staleTime: 1000 * 60 * 15,
+    gcTime: 1000 * 60 * 30,
   });
 }
 
@@ -85,6 +89,8 @@ export function useFeaturedProjectsQuery() {
       );
       return data.projects || [];
     },
+    staleTime: 1000 * 60 * 15,
+    gcTime: 1000 * 60 * 30,
   });
 }
 

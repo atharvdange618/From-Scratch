@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Post } from "@/lib/types";
-import { fetchWithErrorHandling, handleApiError } from "@/lib/api-error-handler";
+import { fetchWithErrorHandling } from "@/lib/api-error-handler";
 
 // Query Keys
 export const postKeys = {
@@ -40,11 +40,12 @@ export function usePostsQuery() {
       const data = await fetchWithErrorHandling<{ posts: Post[] }>(
         "/api/posts?listView=true&isPublished=true",
         {},
-        { action: "load posts", resourceType: "posts" }
+        { action: "load posts", resourceType: "posts" },
       );
       return data.posts || [];
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 15,
+    gcTime: 1000 * 60 * 30,
   });
 }
 
@@ -58,11 +59,13 @@ export function usePostQuery(slug: string) {
       const data = await fetchWithErrorHandling<{ data: Post }>(
         `/api/posts/${slug}`,
         {},
-        { action: "load this post", resourceType: "post" }
+        { action: "load this post", resourceType: "post" },
       );
       return data.data;
     },
     enabled: !!slug,
+    staleTime: 1000 * 60 * 15,
+    gcTime: 1000 * 60 * 30,
   });
 }
 
@@ -76,7 +79,7 @@ export function useDraftsQuery() {
       const data = await fetchWithErrorHandling<{ posts: Post[] }>(
         "/api/posts?isPublished=false",
         {},
-        { action: "load drafts", resourceType: "drafts" }
+        { action: "load drafts", resourceType: "drafts" },
       );
       return data.posts || [];
     },
@@ -101,7 +104,7 @@ export function useCreatePostMutation() {
           },
           body: JSON.stringify(data),
         },
-        { action: "create post", resourceType: "post" }
+        { action: "create post", resourceType: "post" },
       );
     },
     onSuccess: (data) => {
@@ -132,7 +135,7 @@ export function useUpdatePostMutation(slug: string) {
           },
           body: JSON.stringify(data),
         },
-        { action: "update post", resourceType: "post" }
+        { action: "update post", resourceType: "post" },
       );
     },
     onMutate: async (newData: UpdatePostData) => {
@@ -191,7 +194,7 @@ export function useDeletePostMutation() {
         {
           method: "DELETE",
         },
-        { action: "delete post", resourceType: "post" }
+        { action: "delete post", resourceType: "post" },
       );
     },
     onMutate: async (id: string) => {
@@ -243,7 +246,7 @@ export function usePublishPostMutation() {
           },
           body: JSON.stringify({ isPublished: true }),
         },
-        { action: "publish post", resourceType: "post" }
+        { action: "publish post", resourceType: "post" },
       );
     },
     onMutate: async (slug: string) => {

@@ -50,6 +50,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const router = useRouter();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -69,6 +70,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
     if (!query.trim() || query.trim().length < 2) {
       setResults([]);
       setIsSearching(false);
+      setIsTyping(false);
       return;
     }
 
@@ -80,6 +82,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
       clearTimeout(searchTimeoutRef.current);
     }
 
+    setIsTyping(true);
     setIsSearching(true);
 
     searchTimeoutRef.current = setTimeout(async () => {
@@ -98,6 +101,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
 
         const data = await response.json();
         setResults(data.results || []);
+        setIsTyping(false);
 
         trackEvent("search_query", {
           query: query.trim(),
@@ -107,6 +111,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
         if (error.name !== "AbortError") {
           console.error("Search error:", error);
           setResults([]);
+          setIsTyping(false);
         }
       } finally {
         setIsSearching(false);
@@ -205,8 +210,8 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] sm:rounded-none">
-        <DialogHeader className="border-b-4 border-black dark:border-gray-700 p-4">
+      <DialogContent className="max-w-2xl border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] sm:rounded-none [&>button]:top-[2.30rem]">
+        <DialogHeader className="border-b-4 border-black  dark:border-gray-700 p-4">
           <DialogTitle className="sr-only">Search</DialogTitle>
           <div className="relative">
             <Search
@@ -229,7 +234,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
         </DialogHeader>
 
         <div className="max-h-[60vh] overflow-y-auto">
-          {isSearching ? (
+          {isTyping || isSearching ? (
             <div className="flex items-center justify-center p-8 text-gray-500 dark:text-gray-400">
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
               Searching...
@@ -237,6 +242,12 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
           ) : query.trim() ? (
             results.length > 0 ? (
               <div className="p-2">
+                <div className="mb-3 px-2">
+                  <p className="text-sm font-bold text-gray-600 dark:text-gray-400">
+                    Found {results.length} result
+                    {results.length !== 1 ? "s" : ""}
+                  </p>
+                </div>
                 {results.map((result, index) => {
                   const isPost = result.type === "post";
                   const item = result.item;
@@ -273,7 +284,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                               : "bg-[#E0FFF1] text-black dark:text-gray-900"
                           }`}
                         >
-                          {isPost ? "POST" : "PROJECT"}
+                          {isPost ? "BLOG" : "PROJECT"}
                         </span>
                       </div>
                     </button>
@@ -291,6 +302,18 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                 <p className="text-sm">
                   Try a different search term or check your spelling
                 </p>
+                <div className="mt-4 rounded-none border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-3">
+                  <p className="text-xs font-bold text-gray-800 dark:text-gray-300">
+                    💡 Search Tips:
+                  </p>
+                  <ul className="mt-1 space-y-1 text-xs text-gray-700 dark:text-gray-400">
+                    <li>
+                      • Try tags like 'react', 'javascript', or 'database'
+                    </li>
+                    <li>• Search by post titles or project names</li>
+                    <li>• Use keywords from summaries</li>
+                  </ul>
+                </div>
                 {query.length < 2 && (
                   <p className="mt-2 text-xs font-medium text-gray-600 dark:text-gray-400">
                     Tip: Type at least 2 characters to search
@@ -337,7 +360,18 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                   <p className="text-sm">
                     Search across all posts and projects
                   </p>
-                  <div className="mt-4 flex gap-2 text-xs">
+                  <div className="mt-4 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-3">
+                    <p className="text-xs font-bold text-gray-800 dark:text-gray-300 mb-2">
+                      💡 What can you search?
+                    </p>
+                    <ul className="space-y-1 text-xs text-gray-700 dark:text-gray-400">
+                      <li>• Post titles and summaries</li>
+                      <li>• Project names and descriptions</li>
+                      <li>• Tags: react, javascript, database, etc.</li>
+                      <li>• Categories and tech stack</li>
+                    </ul>
+                  </div>
+                  <div className="mt-4 flex items-center gap-2 text-xs">
                     <kbd className="rounded border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 font-bold">
                       Ctrl
                     </kbd>

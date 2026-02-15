@@ -285,6 +285,22 @@ export function Header() {
                         </li>
                       ))}
                   </ul>
+
+                  <div className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
+                    <h3 className="mb-2 text-sm font-bold dark:text-white">
+                      ⌨️ Keyboard Shortcuts
+                    </h3>
+                    <div className="flex items-center gap-2 text-sm dark:text-gray-300">
+                      <kbd className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-2 py-1 font-bold text-xs">
+                        Ctrl
+                      </kbd>
+                      <span>+</span>
+                      <kbd className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-2 py-1 font-bold text-xs">
+                        K
+                      </kbd>
+                      <span className="text-xs">Quick Search</span>
+                    </div>
+                  </div>
                 </nav>
               </div>
             </SheetContent>

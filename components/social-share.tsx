@@ -44,7 +44,7 @@ export function SocialShare({ title, url, description }: SocialShareProps) {
         description:
           error instanceof Error
             ? error.message
-            : "Unable to copy. Try selecting the URL manually or use a different browser.",
+            : "Try copying manually with Cmd+C or Ctrl+C, or use a different browser.",
         action: (
           <ToastAction
             altText="Retry copying"

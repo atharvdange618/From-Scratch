@@ -86,7 +86,7 @@ export function BlogCard({
         description:
           error instanceof Error
             ? error.message
-            : "Unable to copy. Try selecting the URL manually.",
+            : "Try copying manually with Cmd+C or Ctrl+C",
         action: (
           <ToastAction
             altText="Retry copying"

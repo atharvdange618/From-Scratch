@@ -4,6 +4,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { BackToTop } from "@/components/back-to-top";
 import { SkipToContent } from "@/components/skip-to-content";
+import { OfflineIndicator } from "@/components/offline-indicator";
 import { Toaster } from "@/components/ui/toaster";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -97,6 +98,7 @@ export default function RootLayout({
             <QueryProvider>
               <SkipToContent />
               <Header />
+              <OfflineIndicator />
               <main id="main-content">{children}</main>
               <Footer />
               <BackToTop />
