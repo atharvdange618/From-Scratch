@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import { Copy, Check, Terminal } from "lucide-react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { Copy, Check, Terminal, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const SyntaxHighlighter = lazy(() =>
+  import("react-syntax-highlighter").then((mod) => ({
+    default: mod.Prism,
+  })),
+);
 
 interface MarkdownRendererProps {
   content: string;
@@ -78,32 +82,71 @@ function CodeBlock({ children, className }: CodeBlockProps) {
               <code>{code}</code>
             </pre>
           ) : (
-            <SyntaxHighlighter
-              language={language}
-              style={dracula}
-              showLineNumbers={true}
-              wrapLines={true}
-              customStyle={{
-                margin: 0,
-                borderRadius: 0,
-                background: "#18181b",
-                padding: "1.5rem",
-                fontSize: "0.875rem",
-                lineHeight: "1.6",
-              }}
-              lineNumberStyle={{
-                minWidth: "2em",
-                paddingRight: "1em",
-                color: "#52525b",
-                textAlign: "right",
-              }}
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center p-6 text-zinc-400">
+                  <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                  <span className="text-sm">Loading syntax highlighter...</span>
+                </div>
+              }
             >
-              {code}
-            </SyntaxHighlighter>
+              <LazyCodeHighlight code={code} language={language} />
+            </Suspense>
           )}
         </div>
       </div>
     </div>
+  );
+}
+
+function LazyCodeHighlight({
+  code,
+  language,
+}: {
+  code: string;
+  language: string;
+}) {
+  const [style, setStyle] = useState<any>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    import("react-syntax-highlighter/dist/esm/styles/prism").then((mod) => {
+      setStyle(mod.dracula);
+    });
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <pre className="overflow-x-auto p-6 text-sm leading-relaxed text-zinc-300 bg-zinc-950">
+        <code>{code}</code>
+      </pre>
+    );
+  }
+
+  return (
+    <SyntaxHighlighter
+      language={language}
+      style={style}
+      showLineNumbers={true}
+      wrapLines={true}
+      customStyle={{
+        margin: 0,
+        borderRadius: 0,
+        background: "#18181b",
+        padding: "1.5rem",
+        fontSize: "0.875rem",
+        lineHeight: "1.6",
+      }}
+      lineNumberStyle={{
+        minWidth: "2em",
+        paddingRight: "1em",
+        color: "#52525b",
+        textAlign: "right",
+      }}
+    >
+      {code}
+    </SyntaxHighlighter>
   );
 }
 

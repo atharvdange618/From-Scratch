@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { fetchWithErrorHandling } from "@/lib/api-error-handler";
 
 export const projectKeys = {
   all: ["projects"] as const,
@@ -42,11 +43,11 @@ export function useProjectsQuery() {
   return useQuery({
     queryKey: projectKeys.all,
     queryFn: async (): Promise<Project[]> => {
-      const response = await fetch("/api/projects");
-      if (!response.ok) {
-        throw new Error("Failed to fetch projects");
-      }
-      const data = await response.json();
+      const data = await fetchWithErrorHandling<{ projects: Project[] }>(
+        "/api/projects",
+        {},
+        { action: "load projects", resourceType: "projects" },
+      );
       return data.projects || [];
     },
   });
@@ -59,11 +60,11 @@ export function useProjectQuery(slug: string) {
   return useQuery({
     queryKey: projectKeys.detail(slug),
     queryFn: async (): Promise<Project> => {
-      const response = await fetch(`/api/projects/${slug}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch project");
-      }
-      const data = await response.json();
+      const data = await fetchWithErrorHandling<{ project: Project }>(
+        `/api/projects/${slug}`,
+        {},
+        { action: "load this project", resourceType: "project" },
+      );
       return data.project;
     },
     enabled: !!slug,
@@ -77,11 +78,11 @@ export function useFeaturedProjectsQuery() {
   return useQuery({
     queryKey: projectKeys.featured(),
     queryFn: async (): Promise<Project[]> => {
-      const response = await fetch("/api/projects?featured=true");
-      if (!response.ok) {
-        throw new Error("Failed to fetch featured projects");
-      }
-      const data = await response.json();
+      const data = await fetchWithErrorHandling<{ projects: Project[] }>(
+        "/api/projects?featured=true",
+        {},
+        { action: "load featured projects", resourceType: "projects" },
+      );
       return data.projects || [];
     },
   });
@@ -95,20 +96,17 @@ export function useCreateProjectMutation() {
 
   return useMutation({
     mutationFn: async (data: CreateProjectData): Promise<Project> => {
-      const response = await fetch("/api/projects", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      return await fetchWithErrorHandling<Project>(
+        "/api/projects",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to create project");
-      }
-
-      return response.json();
+        { action: "create project", resourceType: "project" },
+      );
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: projectKeys.all });
@@ -127,20 +125,17 @@ export function useUpdateProjectMutation(id: string) {
 
   return useMutation({
     mutationFn: async (data: UpdateProjectData): Promise<Project> => {
-      const response = await fetch(`/api/projects/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+      return await fetchWithErrorHandling<Project>(
+        `/api/projects/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to update project");
-      }
-
-      return response.json();
+        { action: "update project", resourceType: "project" },
+      );
     },
     onMutate: async (newData: UpdateProjectData) => {
       await queryClient.cancelQueries({ queryKey: projectKeys.all });
@@ -150,7 +145,7 @@ export function useUpdateProjectMutation(id: string) {
 
       const updateProject = (old: Project[] = []) =>
         old.map((project) =>
-          project._id === id ? { ...project, ...newData } : project
+          project._id === id ? { ...project, ...newData } : project,
         );
 
       queryClient.setQueryData(projectKeys.all, updateProject);
@@ -165,7 +160,7 @@ export function useUpdateProjectMutation(id: string) {
       if (context?.previousFeatured) {
         queryClient.setQueryData(
           projectKeys.featured(),
-          context.previousFeatured
+          context.previousFeatured,
         );
       }
     },
@@ -191,16 +186,13 @@ export function useDeleteProjectMutation() {
 
   return useMutation({
     mutationFn: async (id: string): Promise<{ message: string }> => {
-      const response = await fetch(`/api/projects/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to delete project");
-      }
-
-      return response.json();
+      return await fetchWithErrorHandling<{ message: string }>(
+        `/api/projects/${id}`,
+        {
+          method: "DELETE",
+        },
+        { action: "delete project", resourceType: "project" },
+      );
     },
     onMutate: async (id: string) => {
       await queryClient.cancelQueries({ queryKey: projectKeys.all });
@@ -209,10 +201,10 @@ export function useDeleteProjectMutation() {
       const previousFeatured = queryClient.getQueryData(projectKeys.featured());
 
       queryClient.setQueryData(projectKeys.all, (old: Project[] = []) =>
-        old.filter((project) => project._id !== id)
+        old.filter((project) => project._id !== id),
       );
       queryClient.setQueryData(projectKeys.featured(), (old: Project[] = []) =>
-        old.filter((project) => project._id !== id)
+        old.filter((project) => project._id !== id),
       );
 
       return { previousProjects, previousFeatured };
@@ -224,7 +216,7 @@ export function useDeleteProjectMutation() {
       if (context?.previousFeatured) {
         queryClient.setQueryData(
           projectKeys.featured(),
-          context.previousFeatured
+          context.previousFeatured,
         );
       }
     },

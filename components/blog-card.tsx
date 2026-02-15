@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "./ui/use-toast";
+import { ToastAction } from "./ui/toast";
 import {
   handleFacebookShare,
   handleLinkedInShare,
@@ -71,7 +72,7 @@ export function BlogCard({
 
       toast({
         title: "Link copied!",
-        description: "Post URL copied to clipboard",
+        description: `"${title}" URL is ready to share`,
       });
 
       trackEvent("share_post", {
@@ -80,9 +81,21 @@ export function BlogCard({
       });
     } catch (error) {
       toast({
-        title: "Failed to copy",
-        description: "Please try again",
         variant: "destructive",
+        title: "Clipboard access denied",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Unable to copy. Try selecting the URL manually.",
+        action: (
+          <ToastAction
+            altText="Retry copying"
+            onClick={() => handleCopyLink({ title })}
+            className="rounded-none border-2 border-black bg-white px-3 py-1 font-bold hover:bg-[#FF9149]"
+          >
+            Retry
+          </ToastAction>
+        ),
       });
     }
   };

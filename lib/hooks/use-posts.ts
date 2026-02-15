@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Post } from "@/lib/types";
+import { fetchWithErrorHandling, handleApiError } from "@/lib/api-error-handler";
 
 // Query Keys
 export const postKeys = {
@@ -36,11 +37,11 @@ export function usePostsQuery() {
   return useQuery({
     queryKey: postKeys.published(),
     queryFn: async (): Promise<Post[]> => {
-      const response = await fetch("/api/posts?listView=true&isPublished=true");
-      if (!response.ok) {
-        throw new Error("Failed to fetch posts");
-      }
-      const data = await response.json();
+      const data = await fetchWithErrorHandling<{ posts: Post[] }>(
+        "/api/posts?listView=true&isPublished=true",
+        {},
+        { action: "load posts", resourceType: "posts" }
+      );
       return data.posts || [];
     },
     staleTime: 1000 * 60 * 5,
@@ -54,11 +55,11 @@ export function usePostQuery(slug: string) {
   return useQuery({
     queryKey: postKeys.detail(slug),
     queryFn: async (): Promise<Post> => {
-      const response = await fetch(`/api/posts/${slug}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch post");
-      }
-      const data = await response.json();
+      const data = await fetchWithErrorHandling<{ data: Post }>(
+        `/api/posts/${slug}`,
+        {},
+        { action: "load this post", resourceType: "post" }
+      );
       return data.data;
     },
     enabled: !!slug,
@@ -72,11 +73,11 @@ export function useDraftsQuery() {
   return useQuery({
     queryKey: postKeys.drafts(),
     queryFn: async (): Promise<Post[]> => {
-      const response = await fetch("/api/posts?isPublished=false");
-      if (!response.ok) {
-        throw new Error("Failed to fetch drafts");
-      }
-      const data = await response.json();
+      const data = await fetchWithErrorHandling<{ posts: Post[] }>(
+        "/api/posts?isPublished=false",
+        {},
+        { action: "load drafts", resourceType: "drafts" }
+      );
       return data.posts || [];
     },
     staleTime: 1000 * 60 * 2,
@@ -91,20 +92,17 @@ export function useCreatePostMutation() {
 
   return useMutation({
     mutationFn: async (data: CreatePostData): Promise<Post> => {
-      const response = await fetch("/api/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      return await fetchWithErrorHandling<Post>(
+        "/api/posts",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to create post");
-      }
-
-      return response.json();
+        { action: "create post", resourceType: "post" }
+      );
     },
     onSuccess: (data) => {
       if (data.isPublished) {
@@ -125,20 +123,17 @@ export function useUpdatePostMutation(slug: string) {
 
   return useMutation({
     mutationFn: async (data: UpdatePostData): Promise<Post> => {
-      const response = await fetch(`/api/posts/${slug}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
+      return await fetchWithErrorHandling<Post>(
+        `/api/posts/${slug}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to update post");
-      }
-
-      return response.json();
+        { action: "update post", resourceType: "post" }
+      );
     },
     onMutate: async (newData: UpdatePostData) => {
       await queryClient.cancelQueries({ queryKey: postKeys.all });
@@ -191,16 +186,13 @@ export function useDeletePostMutation() {
 
   return useMutation({
     mutationFn: async (slug: string): Promise<{ message: string }> => {
-      const response = await fetch(`/api/posts/${slug}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to delete post");
-      }
-
-      return response.json();
+      return await fetchWithErrorHandling<{ message: string }>(
+        `/api/posts/${slug}`,
+        {
+          method: "DELETE",
+        },
+        { action: "delete post", resourceType: "post" }
+      );
     },
     onMutate: async (id: string) => {
       await queryClient.cancelQueries({ queryKey: postKeys.all });
@@ -242,20 +234,17 @@ export function usePublishPostMutation() {
 
   return useMutation({
     mutationFn: async (slug: string): Promise<Post> => {
-      const response = await fetch(`/api/posts/${slug}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
+      return await fetchWithErrorHandling<Post>(
+        `/api/posts/${slug}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ isPublished: true }),
         },
-        body: JSON.stringify({ isPublished: true }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to publish post");
-      }
-
-      return response.json();
+        { action: "publish post", resourceType: "post" }
+      );
     },
     onMutate: async (slug: string) => {
       await queryClient.cancelQueries({ queryKey: postKeys.all });

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 // import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
@@ -28,23 +28,43 @@ export function Header() {
   const { data: isAdmin } = useAdminCheckQuery();
   const { theme, setTheme } = useTheme();
 
-  const navLinks = [
-    { href: "/about", label: "About" },
-    { href: "/blogs", label: "Blog" },
-    { href: "/projects", label: "Projects" },
-    { href: "/contact", label: "Contact" },
-  ];
+  const navLinks = useMemo(
+    () => [
+      { href: "/about", label: "About" },
+      { href: "/blogs", label: "Blog" },
+      { href: "/projects", label: "Projects" },
+      { href: "/contact", label: "Contact" },
+    ],
+    [],
+  );
 
-  const adminLinks = [
-    { href: "/editor", label: "Editor" },
-    { href: "/drafts", label: "Drafts" },
-    { href: "/dashboard", label: "Dashboard" },
-  ];
+  const adminLinks = useMemo(
+    () => [
+      { href: "/editor", label: "Editor" },
+      { href: "/drafts", label: "Drafts" },
+      { href: "/dashboard", label: "Dashboard" },
+    ],
+    [],
+  );
 
-  const isActiveLink = (href: string) => {
-    if (href === "/") return pathname === "/";
-    return pathname.startsWith(href);
-  };
+  const isActiveLink = useCallback(
+    (href: string) => {
+      if (href === "/") return pathname === "/";
+      return pathname.startsWith(href);
+    },
+    [pathname],
+  );
+
+  const handleThemeToggle = useCallback(() => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    trackEvent("theme_toggled", { newTheme });
+  }, [theme, setTheme]);
+
+  const handleSearchOpen = useCallback(() => {
+    setIsSearchOpen(true);
+    trackEvent("search_opened", {});
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -114,12 +134,7 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Button
               size="icon"
-              onClick={() => {
-                setTheme(theme === "dark" ? "light" : "dark");
-                trackEvent("theme_toggled", {
-                  newTheme: theme === "dark" ? "light" : "dark",
-                });
-              }}
+              onClick={handleThemeToggle}
               className="group relative h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
               aria-label="Toggle theme"
             >
@@ -137,10 +152,7 @@ export function Header() {
 
             <Button
               size="icon"
-              onClick={() => {
-                setIsSearchOpen(true);
-                trackEvent("search_opened", {});
-              }}
+              onClick={handleSearchOpen}
               className="group relative h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
               aria-label="Search (Cmd+K)"
             >
@@ -178,12 +190,7 @@ export function Header() {
         <div className="flex items-center gap-2 md:hidden">
           <Button
             size="icon"
-            onClick={() => {
-              setTheme(theme === "dark" ? "light" : "dark");
-              trackEvent("theme_toggled", {
-                newTheme: theme === "dark" ? "light" : "dark",
-              });
-            }}
+            onClick={handleThemeToggle}
             className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
             aria-label="Toggle theme"
           >
@@ -198,10 +205,7 @@ export function Header() {
 
           <Button
             size="icon"
-            onClick={() => {
-              setIsSearchOpen(true);
-              trackEvent("search_opened", {});
-            }}
+            onClick={handleSearchOpen}
             className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
             aria-label="Search"
           >
