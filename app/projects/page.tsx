@@ -1,206 +1,57 @@
-"use client";
+import { Metadata } from "next";
+import { ProjectsContent } from "@/components/projects-content";
+import { env } from "@/lib/env";
 
-import { useState, useMemo } from "react";
-import Link from "next/link";
-import { useProjectsQuery } from "@/lib/hooks/use-projects";
-import { ExternalLink, Github, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { MarkdownRenderer } from "@/components/markdown-renderer";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ProjectCardSkeleton } from "@/components/skeletons";
-import { handleProjectHover } from "@/lib/prefetch";
-import { useQueryClient } from "@tanstack/react-query";
-
-const statusColors = {
-  Active: "#60B5FF",
-  Completed: "#E0FFF1",
-  Archived: "#FFECDB",
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Explore a collection of full-stack projects and applications built from scratch using modern web technologies. Browse through active developments, completed projects, and open-source software built with React, Next.js, TypeScript, Node.js, MongoDB, and more.",
+  keywords: [
+    "software projects",
+    "full stack projects",
+    "web development portfolio",
+    "react projects",
+    "next.js applications",
+    "typescript projects",
+    "node.js projects",
+    "mongodb applications",
+    "open source projects",
+    "developer portfolio",
+    "coding projects",
+    "tech stack",
+    "Atharv Dange projects",
+  ],
+  alternates: {
+    canonical: "/projects",
+  },
+  openGraph: {
+    title: "Projects - From Scratch",
+    description:
+      "A collection of full-stack projects and applications built from scratch, exploring different technologies and solving real-world problems.",
+    url: "/projects",
+    siteName: "From Scratch",
+    type: "website",
+    images: [
+      {
+        url: `${env.NEXT_PUBLIC_BASE_URL}/api/og?title=Projects&description=Built%20from%20scratch%20with%20modern%20tech&type=page`,
+        width: 1200,
+        height: 630,
+        alt: "From Scratch Projects - Full Stack Development Portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Projects - From Scratch",
+    description:
+      "A collection of full-stack projects built from scratch with modern technologies.",
+    creator: "@atharvdangedev",
+    images: [
+      `${env.NEXT_PUBLIC_BASE_URL}/api/og?title=Projects&description=Built%20from%20scratch%20with%20modern%20tech&type=page`,
+    ],
+  },
 };
 
 export default function ProjectsPage() {
-  const { data: projects = [], isLoading, isError, error } = useProjectsQuery();
-  const [selectedStatus, setSelectedStatus] = useState<string>("All");
-
-  const queryClient = useQueryClient();
-
-  const filteredProjects = useMemo(() => {
-    return selectedStatus === "All"
-      ? projects
-      : projects.filter((p) => p.status === selectedStatus);
-  }, [projects, selectedStatus]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen">
-        <div className="container mx-auto px-4">
-          <h1 className="mb-8 font-sans text-4xl font-bold md:text-5xl">
-            My Projects
-          </h1>
-          <div className="grid gap-6 md:grid-cols-2">
-            {[...Array(4)].map((_, i) => (
-              <ProjectCardSkeleton key={i} />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="min-h-screen">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-center rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-16">
-            <p className="text-xl font-bold">
-              Error loading projects:{" "}
-              {error?.message || "Failed to load projects"}
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-white dark:bg-neutral-900 py-12 md:py-20">
-      <div className="container mx-auto px-4">
-        <div className="mb-8 md:mb-12 text-center">
-          <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">
-            My Projects
-          </h1>
-          <p className="mx-auto max-w-2xl font-serif text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300">
-            A collection of projects I&apos;ve built from scratch, exploring
-            different technologies and solving real-world problems.
-          </p>
-        </div>
-
-        <div className="mb-6 md:mb-8 flex flex-wrap items-center justify-center gap-2 md:gap-3">
-          {["All", "Active", "Completed", "Archived"].map((status) => (
-            <Button
-              key={status}
-              onClick={() => setSelectedStatus(status)}
-              className={`rounded-none border-4 border-black dark:border-gray-700 px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] ${
-                selectedStatus === status
-                  ? "bg-black dark:bg-white text-white dark:text-black"
-                  : "bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
-              }`}
-            >
-              {status}
-            </Button>
-          ))}
-        </div>
-
-        <div className="grid gap-5 md:gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects.map((project) => (
-            <Card
-              key={project._id}
-              className="group flex flex-col overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
-            >
-              <CardHeader
-                className="border-b-4 border-black dark:border-gray-700 p-4 md:p-6"
-                style={{ backgroundColor: statusColors[project.status] }}
-              >
-                <div className="mb-3 flex items-start justify-between">
-                  <CardTitle className="text-2xl font-bold leading-tight dark:text-black">
-                    {project.name}
-                  </CardTitle>
-                  {project.featured && <Star className="h-6 w-6 fill-black" />}
-                </div>
-                <Badge className="w-fit rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-1 font-bold text-black dark:text-white hover:bg-white dark:hover:bg-gray-900">
-                  {project.status}
-                </Badge>
-              </CardHeader>
-
-              <CardContent className="flex-1 p-6">
-                <MarkdownRenderer
-                  content={project.description}
-                  className="mb-4 font-serif text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
-                  truncate={150}
-                />
-
-                <div className="mb-4">
-                  <h4 className="mb-2 text-sm font-bold uppercase">
-                    Tech Stack
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 text-black dark:text-white px-2 py-1 text-xs font-bold"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-
-              <CardFooter className="flex flex-col gap-3 border-t-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-700 p-6">
-                <Link
-                  href={`/projects/${project.slug}`}
-                  className="w-full"
-                  onMouseEnter={() =>
-                    handleProjectHover(queryClient, project.slug)
-                  }
-                >
-                  <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white px-6 py-3 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,1)]">
-                    View Details
-                  </Button>
-                </Link>
-
-                <div className="flex gap-2">
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1"
-                    >
-                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
-                        <Github className="mr-2 h-4 w-4" />
-                        GitHub
-                      </Button>
-                    </a>
-                  )}
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1"
-                    >
-                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
-                        <ExternalLink className="mr-2 h-4 w-4" />
-                        Live
-                      </Button>
-                    </a>
-                  )}
-                </div>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-
-        {filteredProjects.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-16">
-            <h3 className="mb-2 text-2xl font-bold">
-              No {selectedStatus !== "All" ? selectedStatus : ""} Projects
-            </h3>
-            <p className="font-serif text-lg">
-              {selectedStatus !== "All"
-                ? "Try selecting a different status filter."
-                : "Projects will appear here soon!"}
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <ProjectsContent />;
 }

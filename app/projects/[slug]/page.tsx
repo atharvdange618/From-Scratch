@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { Metadata } from "next";
 import { ArrowLeft, Github, ExternalLink, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
@@ -21,6 +22,7 @@ import {
   Post as PostModel,
 } from "@/lib/model-registry";
 import type { Project, PostListItem } from "@/lib/types";
+import { env } from "@/lib/env";
 
 async function getProject(slug: string): Promise<Project | null> {
   try {
@@ -78,7 +80,7 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
-}) {
+}): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProject(slug);
 
@@ -88,10 +90,54 @@ export async function generateMetadata({
     };
   }
 
+  const baseUrl = env.NEXT_PUBLIC_BASE_URL;
+  const truncatedDescription =
+    project.description.length > 160
+      ? project.description.substring(0, 157) + "..."
+      : project.description;
+
+  const ogImageUrl =
+    project.bannerImage ||
+    `${baseUrl}/api/og?title=${encodeURIComponent(project.name)}&description=${encodeURIComponent(truncatedDescription)}&type=project`;
+
   return {
-    title: `${project.name} - From Scratch`,
-    description: project.description,
-    keywords: project.techStack.join(", "),
+    title: `${project.name}`,
+    description: truncatedDescription,
+    keywords: [
+      ...project.techStack,
+      project.name,
+      project.status.toLowerCase(),
+      "project",
+      "portfolio",
+      "development",
+    ],
+    authors: [{ name: "Atharv Dange", url: `${baseUrl}/about` }],
+    alternates: {
+      canonical: `/projects/${slug}`,
+    },
+    openGraph: {
+      title: `${project.name} - From Scratch`,
+      description: truncatedDescription,
+      url: `/projects/${slug}`,
+      siteName: "From Scratch",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${project.name} - Project Screenshot`,
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.name} - From Scratch`,
+      description: truncatedDescription,
+      images: [ogImageUrl],
+      creator: "@atharvdangedev",
+    },
   };
 }
 
@@ -109,199 +155,235 @@ export default async function ProjectPage({
 
   const relatedPosts = await getRelatedPosts(project._id);
 
+  const baseUrl = env.NEXT_PUBLIC_BASE_URL;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": project.githubUrl ? "SoftwareApplication" : "CreativeWork",
+    name: project.name,
+    description: project.description,
+    url: `${baseUrl}/projects/${slug}`,
+    author: {
+      "@type": "Person",
+      name: "Atharv Dange",
+      url: `${baseUrl}/about`,
+    },
+    ...(project.githubUrl && {
+      codeRepository: project.githubUrl,
+    }),
+    ...(project.liveUrl && {
+      applicationCategory: "WebApplication",
+      url: project.liveUrl,
+    }),
+    ...(project.bannerImage && {
+      image: project.bannerImage,
+    }),
+    ...(project.techStack && {
+      programmingLanguage: project.techStack,
+    }),
+    dateCreated: project.createdAt,
+    dateModified: project.updatedAt,
+  };
+
   return (
-    <div className="min-h-screen bg-white py-20">
-      <div className="container mx-auto px-4">
-        <Link href="/projects">
-          <Button className="mb-8 rounded-none border-4 border-black bg-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Projects
-          </Button>
-        </Link>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="min-h-screen bg-white py-20">
+        <div className="container mx-auto px-4">
+          <Link href="/projects">
+            <Button className="mb-8 rounded-none border-4 border-black bg-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Projects
+            </Button>
+          </Link>
 
-        <BreadcrumbNav
-          items={[
-            { label: "Projects", href: "/projects" },
-            { label: project.name },
-          ]}
-        />
+          <BreadcrumbNav
+            items={[
+              { label: "Projects", href: "/projects" },
+              { label: project.name },
+            ]}
+          />
 
-        <div
-          className="mb-8 rounded-none border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
-          style={{ backgroundColor: statusColors[project.status] }}
-        >
-          <div className="mb-4 flex flex-col gap-4">
-            <div>
-              <h1 className="mb-2 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">
-                {project.name}
-              </h1>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-block rounded-lg border-2 border-black bg-white px-3 py-1 text-sm font-bold">
-                  {project.status}
-                </span>
-                {project.featured && (
-                  <span className="inline-block rounded-lg border-2 border-black bg-[#FF9149] px-3 py-1 text-sm font-bold">
-                    ⭐ Featured
+          <div
+            className="mb-8 rounded-none border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            style={{ backgroundColor: statusColors[project.status] }}
+          >
+            <div className="mb-4 flex flex-col gap-4">
+              <div>
+                <h1 className="mb-2 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">
+                  {project.name}
+                </h1>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-block rounded-lg border-2 border-black bg-white px-3 py-1 text-sm font-bold">
+                    {project.status}
                   </span>
+                  {project.featured && (
+                    <span className="inline-block rounded-lg border-2 border-black bg-[#FF9149] px-3 py-1 text-sm font-bold">
+                      ⭐ Featured
+                    </span>
+                  )}
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black bg-white px-3 py-1 text-sm font-bold">
+                    <Clock className="h-4 w-4" />
+                    {calculateReadingTime(project.description)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                {project.githubUrl && (
+                  <TrackableLink
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto"
+                    trackingData={{
+                      eventType: "external_link_click",
+                      eventData: {
+                        linkType: "github",
+                        projectName: project.name,
+                        projectSlug: project.slug,
+                        source: "project",
+                        status: project.status,
+                      },
+                    }}
+                  >
+                    <Button className="w-full rounded-none border-4 border-black bg-black px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
+                      <Github className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                      View on GitHub
+                    </Button>
+                  </TrackableLink>
                 )}
-                <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black bg-white px-3 py-1 text-sm font-bold">
-                  <Clock className="h-4 w-4" />
-                  {calculateReadingTime(project.description)}
-                </span>
+                {project.liveUrl && (
+                  <TrackableLink
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto"
+                    trackingData={{
+                      eventType: "external_link_click",
+                      eventData: {
+                        linkType: "live",
+                        projectName: project.name,
+                        projectSlug: project.slug,
+                        source: "project",
+                        status: project.status,
+                      },
+                    }}
+                  >
+                    <Button className="w-full rounded-none border-4 border-black bg-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                      <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                      Live Demo
+                    </Button>
+                  </TrackableLink>
+                )}
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-              {project.githubUrl && (
-                <TrackableLink
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto"
-                  trackingData={{
-                    eventType: "external_link_click",
-                    eventData: {
-                      linkType: "github",
-                      projectName: project.name,
-                      projectSlug: project.slug,
-                      source: "project",
-                      status: project.status,
-                    },
-                  }}
-                >
-                  <Button className="w-full rounded-none border-4 border-black bg-black px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
-                    <Github className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                    View on GitHub
-                  </Button>
-                </TrackableLink>
-              )}
-              {project.liveUrl && (
-                <TrackableLink
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto"
-                  trackingData={{
-                    eventType: "external_link_click",
-                    eventData: {
-                      linkType: "live",
-                      projectName: project.name,
-                      projectSlug: project.slug,
-                      source: "project",
-                      status: project.status,
-                    },
-                  }}
-                >
-                  <Button className="w-full rounded-none border-4 border-black bg-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                    <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                    Live Demo
-                  </Button>
-                </TrackableLink>
-              )}
+            <div className="mt-6">
+              <h3 className="mb-3 text-sm font-bold uppercase">Tech Stack</h3>
+              <div className="flex flex-wrap gap-2">
+                {project.techStack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="inline-block rounded-lg border-2 border-black bg-white px-4 py-2 text-sm font-bold"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="mt-6">
-            <h3 className="mb-3 text-sm font-bold uppercase">Tech Stack</h3>
-            <div className="flex flex-wrap gap-2">
-              {project.techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="inline-block rounded-lg border-2 border-black bg-white px-4 py-2 text-sm font-bold"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-8 rounded-none border-4 border-black bg-white p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <MarkdownRenderer
-            content={project.description}
-            className="prose-lg max-w-none font-serif"
-          />
-        </div>
-
-        {project.bannerImage && (
-          <div className="mb-8 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <Image
-              src={project.bannerImage}
-              alt={project.name}
-              width={1200}
-              height={630}
-              className="h-auto w-full object-cover"
-              quality={75}
-              loading="lazy"
+          <div className="mb-8 rounded-none border-4 border-black bg-white p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <MarkdownRenderer
+              content={project.description}
+              className="prose-lg max-w-none font-serif"
             />
           </div>
-        )}
 
-        {relatedPosts.length > 0 && (
-          <div className="mb-8">
-            <h2 className="mb-6 font-sans text-3xl font-bold">
-              Related Blog Posts
-            </h2>
-            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {relatedPosts.map((post) => (
-                <Link key={post._id} href={`/posts/${post.slug}`}>
-                  <Card className="group h-full overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                    <CardHeader className="border-b-4 border-black bg-[#AFDDFF] p-4">
-                      <div className="mb-2 flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <span className="text-sm font-bold">
-                          {formatDate(post.publishedDate)}
-                        </span>
-                      </div>
-                      <CardTitle className="text-xl font-bold leading-tight">
-                        {post.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4">
-                      <MarkdownRenderer
-                        content={post.summary}
-                        className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
-                        truncate={150}
-                      />
-                      <div className="flex flex-wrap gap-2">
-                        {post.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-1 text-xs font-bold"
-                          >
-                            {tag}
+          {project.bannerImage && (
+            <div className="mb-8 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+              <Image
+                src={project.bannerImage}
+                alt={project.name}
+                width={1200}
+                height={630}
+                className="h-auto w-full object-cover"
+                quality={75}
+                loading="lazy"
+              />
+            </div>
+          )}
+
+          {relatedPosts.length > 0 && (
+            <div className="mb-8">
+              <h2 className="mb-6 font-sans text-3xl font-bold">
+                Related Blog Posts
+              </h2>
+              <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {relatedPosts.map((post) => (
+                  <Link key={post._id} href={`/posts/${post.slug}`}>
+                    <Card className="group h-full overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                      <CardHeader className="border-b-4 border-black bg-[#AFDDFF] p-4">
+                        <div className="mb-2 flex items-center gap-2">
+                          <Calendar className="h-4 w-4" />
+                          <span className="text-sm font-bold">
+                            {formatDate(post.publishedDate)}
                           </span>
-                        ))}
-                      </div>
-                    </CardContent>
-                    <CardFooter className="border-t-4 border-black bg-[#AFDDFF] p-4">
-                      <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
-                        Read Post
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </Link>
-              ))}
+                        </div>
+                        <CardTitle className="text-xl font-bold leading-tight">
+                          {post.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-4">
+                        <MarkdownRenderer
+                          content={post.summary}
+                          className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                          truncate={150}
+                        />
+                        <div className="flex flex-wrap gap-2">
+                          {post.tags.slice(0, 3).map((tag) => (
+                            <span
+                              key={tag}
+                              className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-1 text-xs font-bold"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </CardContent>
+                      <CardFooter className="border-t-4 border-black bg-[#AFDDFF] p-4">
+                        <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]">
+                          Read Post
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="rounded-none border-4 border-black bg-[#FFECDB] p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="mb-4 font-sans text-2xl font-bold">
-            Project Timeline
-          </h2>
-          <div className="flex flex-col gap-4 font-serif">
-            <div className="flex items-center gap-4">
-              <span className="font-bold">Created:</span>
-              <span>{formatDate(project.createdAt)}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="font-bold">Last Updated:</span>
-              <span>{formatDate(project.updatedAt)}</span>
+          <div className="rounded-none border-4 border-black bg-[#FFECDB] p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="mb-4 font-sans text-2xl font-bold">
+              Project Timeline
+            </h2>
+            <div className="flex flex-col gap-4 font-serif">
+              <div className="flex items-center gap-4">
+                <span className="font-bold">Created:</span>
+                <span>{formatDate(project.createdAt)}</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="font-bold">Last Updated:</span>
+                <span>{formatDate(project.updatedAt)}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
