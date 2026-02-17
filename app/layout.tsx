@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer";
 import { BackToTop } from "@/components/back-to-top";
 import { SkipToContent } from "@/components/skip-to-content";
 import { Toaster } from "@/components/ui/toaster";
+import { FPSCounter } from "@/components/fps-counter";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
@@ -103,6 +104,7 @@ export default function RootLayout({
               <Analytics />
               <SpeedInsights />
               <Toaster />
+              <FPSCounter />
             </QueryProvider>
           </ThemeProvider>
         </body>
