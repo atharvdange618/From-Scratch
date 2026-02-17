@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
+import { useSearchQuery } from "@/lib/hooks/use-search";
 import {
   Dialog,
   DialogContent,
@@ -46,14 +47,20 @@ const MAX_RECENT_SEARCHES = 5;
 
 export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
-  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const abortControllerRef = useRef<AbortController | null>(null);
+
+  const {
+    data: results = [],
+    isLoading: isSearching,
+    isFetching,
+  } = useSearchQuery(query);
+
+  const validSelectedIndex = Math.min(
+    selectedIndex,
+    Math.max(0, results.length - 1),
+  );
 
   useEffect(() => {
     const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
@@ -67,70 +74,13 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   }, []);
 
   useEffect(() => {
-    if (!query.trim() || query.trim().length < 2) {
-      setResults([]);
-      setIsSearching(false);
-      setIsTyping(false);
-      return;
+    if (query.trim().length >= 2 && results.length > 0) {
+      trackEvent("search_query", {
+        query: query.trim(),
+        resultsCount: results.length,
+      });
     }
-
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-
-    setIsTyping(true);
-    setIsSearching(true);
-
-    searchTimeoutRef.current = setTimeout(async () => {
-      const controller = new AbortController();
-      abortControllerRef.current = controller;
-
-      try {
-        const response = await fetch(
-          `/api/search?q=${encodeURIComponent(query.trim())}`,
-          { signal: controller.signal },
-        );
-
-        if (!response.ok) {
-          throw new Error("Search failed");
-        }
-
-        const data = await response.json();
-        setResults(data.results || []);
-        setIsTyping(false);
-
-        trackEvent("search_query", {
-          query: query.trim(),
-          resultsCount: data.results?.length || 0,
-        });
-      } catch (error: any) {
-        if (error.name !== "AbortError") {
-          console.error("Search error:", error);
-          setResults([]);
-          setIsTyping(false);
-        }
-      } finally {
-        setIsSearching(false);
-      }
-    }, 300);
-
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
-  }, [query]);
-
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [results]);
+  }, [results.length, query]);
 
   const saveRecentSearch = useCallback((searchQuery: string) => {
     const trimmed = searchQuery.trim();
@@ -191,15 +141,15 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
         setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
-      } else if (e.key === "Enter" && results[selectedIndex]) {
+      } else if (e.key === "Enter" && results[validSelectedIndex]) {
         e.preventDefault();
-        handleSelect(results[selectedIndex]);
+        handleSelect(results[validSelectedIndex]);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open, results, selectedIndex, handleSelect]);
+  }, [open, results, validSelectedIndex, handleSelect]);
 
   useEffect(() => {
     if (!open) {
@@ -234,7 +184,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
         </DialogHeader>
 
         <div className="max-h-[60vh] overflow-y-auto">
-          {isTyping || isSearching ? (
+          {isFetching || isSearching ? (
             <div className="flex items-center justify-center p-8 text-gray-500 dark:text-gray-400">
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
               Searching...
@@ -263,7 +213,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                       key={`${result.type}-${item._id}`}
                       onClick={() => handleSelect(result)}
                       className={`w-full rounded-none border-4 border-black dark:border-gray-700 p-4 text-left transition-all ${
-                        index === selectedIndex
+                        index === validSelectedIndex
                           ? "bg-[#60B5FF] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
                           : "bg-white dark:bg-gray-800 hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
                       } ${index > 0 ? "mt-2" : ""}`}
@@ -337,9 +287,9 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                     </button>
                   </div>
                   <div className="space-y-2">
-                    {recentSearches.map((search, index) => (
+                    {recentSearches.map((search) => (
                       <button
-                        key={index}
+                        key={search}
                         onClick={() => handleRecentSearchClick(search)}
                         className="flex w-full items-center gap-3 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white p-3 text-left font-medium transition-all hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
                       >

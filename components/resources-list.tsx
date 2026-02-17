@@ -33,7 +33,7 @@ export function ResourcesList({
         </h3>
         <ul className="space-y-3">
           {resources.map((resource, index) => (
-            <li key={index}>
+            <li key={resource.url}>
               <TrackableLink
                 href={resource.url}
                 target="_blank"

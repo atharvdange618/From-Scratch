@@ -14,9 +14,9 @@ export function ClickableTags({ tags, postTitle }: ClickableTagsProps) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <Tag className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-      {tags.map((tag, index) => (
+      {tags.map((tag) => (
         <Link
-          key={index}
+          key={tag}
           href={`/blogs?tag=${encodeURIComponent(tag)}`}
           onClick={() => {
             trackEvent("tag_click", {

@@ -5,6 +5,7 @@ import { fetchWithErrorHandling } from "@/lib/api-error-handler";
 // Query Keys
 export const postKeys = {
   all: ["posts"] as const,
+  list: () => [...postKeys.all, "list"] as const,
   published: () => [...postKeys.all, { published: true }] as const,
   drafts: () => [...postKeys.all, "drafts"] as const,
   detail: (slug: string) => [...postKeys.all, slug] as const,
@@ -46,6 +47,41 @@ export function usePostsQuery() {
     },
     staleTime: 1000 * 60 * 15,
     gcTime: 1000 * 60 * 30,
+  });
+}
+
+/**
+ * Fetch posts list for editor (lightweight data)
+ */
+export function usePostsListQuery() {
+  return useQuery({
+    queryKey: postKeys.list(),
+    queryFn: async (): Promise<
+      Array<{
+        _id: string;
+        title: string;
+        slug: string;
+        isPublished: boolean;
+        createdAt: string;
+      }>
+    > => {
+      const data = await fetchWithErrorHandling<{
+        posts: Array<{
+          _id: string;
+          title: string;
+          slug: string;
+          isPublished: boolean;
+          createdAt: string;
+        }>;
+      }>(
+        "/api/posts/list",
+        {},
+        { action: "load posts list", resourceType: "posts" },
+      );
+      return data.posts || [];
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
   });
 }
 

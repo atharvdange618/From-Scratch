@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,6 +44,8 @@ import { useSlugGenerator } from "@/lib/hooks/use-slug-generator";
 import { useImageUpload } from "@/lib/hooks/use-image-upload";
 import { calculateReadingTime } from "@/lib/reading-time";
 import { calculateWordCount } from "@/lib/word-count";
+import { useProjectsQuery } from "@/lib/hooks/use-projects";
+import { usePostsListQuery } from "@/lib/hooks/use-posts";
 
 const postSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -73,8 +75,6 @@ type PostFormValues = z.infer<typeof postSchema>;
 
 export default function PostEditor() {
   const [showPreview, setShowPreview] = useState(false);
-  const [projects, setProjects] = useState<any[]>([]);
-  const [posts, setPosts] = useState<any[]>([]);
   const [selectedPostId, setSelectedPostId] = useState<string>("");
   const [selectedPostSlug, setSelectedPostSlug] = useState<string>("");
   const [isEditMode, setIsEditMode] = useState(false);
@@ -83,6 +83,9 @@ export default function PostEditor() {
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+
+  const { data: projects = [] } = useProjectsQuery();
+  const { data: posts = [] } = usePostsListQuery();
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
@@ -113,30 +116,6 @@ export default function PostEditor() {
     setValue,
     "bannerImage",
   );
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const [projectsRes, postsRes] = await Promise.all([
-          fetch("/api/projects"),
-          fetch("/api/posts/list"),
-        ]);
-
-        if (projectsRes.ok) {
-          const projectData = await projectsRes.json();
-          setProjects(projectData.projects || []);
-        }
-
-        if (postsRes.ok) {
-          const postData = await postsRes.json();
-          setPosts(postData.posts || []);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-    fetchData();
-  }, []);
 
   const loadPost = async (postId: string) => {
     try {
@@ -245,11 +224,6 @@ export default function PostEditor() {
           resetForm();
           router.push("/blogs");
         } else {
-          const postsResponse = await fetch("/api/posts");
-          if (postsResponse.ok) {
-            const data = await postsResponse.json();
-            setPosts(data.posts || []);
-          }
           router.push("/blogs");
         }
       } else {
@@ -535,7 +509,7 @@ export default function PostEditor() {
                       {field.value && field.value.length > 0 ? (
                         field.value.map((resource, index) => (
                           <div
-                            key={index}
+                            key={resource.url || `resource-${index}`}
                             className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
                           >
                             <div className="mb-2 flex items-center justify-between">

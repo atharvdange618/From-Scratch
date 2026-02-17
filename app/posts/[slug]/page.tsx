@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 import { Metadata } from "next";
 import { Calendar, ExternalLink, Clock } from "@deemlol/next-icons";
 import { Badge } from "@/components/ui/badge";
@@ -208,11 +208,12 @@ export default async function PostPage({
           publishedDate: post.publishedDate,
         }}
       />
-      <script
+      <Script
+        id={`post-jsonld-${post.slug}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        strategy="beforeInteractive"
       />
-
       <article className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <BackButton />

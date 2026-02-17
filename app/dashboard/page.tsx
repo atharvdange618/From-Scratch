@@ -2,19 +2,77 @@
 
 import { useUser } from "@clerk/nextjs";
 import { RefreshCw } from "lucide-react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
 import { useAnalyticsStatsQuery } from "@/lib/hooks/use-analytics";
 import StatsCards from "../../components/dashboard/StatsCards";
-import EventsOverTimeChart from "../../components/dashboard/EventsOverTimeChart";
-import EventTypeChart from "../../components/dashboard/EventTypeChart";
-import TopPagesChart from "../../components/dashboard/TopPagesChart";
-import DeviceChart from "../../components/dashboard/DeviceChart";
-import CountriesChart from "../../components/dashboard/CountriesChart";
-import CitiesChart from "../../components/dashboard/CitiesChart";
 import ScrollInsights from "../../components/dashboard/ScrollInsights";
 import RetentionIndicator from "../../components/dashboard/RetentionIndicator";
-import OperatingSystemChart from "../../components/dashboard/OperatingSystemChart";
+
+const EventsOverTimeChart = dynamic(
+  () => import("../../components/dashboard/EventsOverTimeChart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+    ),
+  },
+);
+const EventTypeChart = dynamic(
+  () => import("../../components/dashboard/EventTypeChart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+    ),
+  },
+);
+const TopPagesChart = dynamic(
+  () => import("../../components/dashboard/TopPagesChart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+    ),
+  },
+);
+const DeviceChart = dynamic(
+  () => import("../../components/dashboard/DeviceChart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+    ),
+  },
+);
+const CountriesChart = dynamic(
+  () => import("../../components/dashboard/CountriesChart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+    ),
+  },
+);
+const CitiesChart = dynamic(
+  () => import("../../components/dashboard/CitiesChart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+    ),
+  },
+);
+const OperatingSystemChart = dynamic(
+  () => import("../../components/dashboard/OperatingSystemChart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+    ),
+  },
+);
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();

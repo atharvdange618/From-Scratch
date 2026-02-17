@@ -7,23 +7,31 @@ export const searchKeys = {
 };
 
 // Types
-interface SearchResult {
-  posts: Array<{
-    _id: string;
-    slug: string;
-    title: string;
-    description: string;
-    category: string;
-    tags: string[];
-    publishedDate?: string;
-  }>;
-  projects: Array<{
-    _id: string;
-    slug: string;
-    title: string;
-    description: string;
-    tags: string[];
-  }>;
+interface Post {
+  _id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  tags: string[];
+  category: string;
+}
+
+interface Project {
+  _id: string;
+  name: string;
+  slug: string;
+  description: string;
+  techStack: string[];
+}
+
+export interface SearchResult {
+  type: "post" | "project";
+  item: Post | Project;
+  score: number;
+}
+
+interface SearchResponse {
+  results: SearchResult[];
 }
 
 /**
@@ -50,21 +58,22 @@ function useDebounce<T>(value: T, delay: number): T {
  * @param query - Search query string
  * @param debounceMs - Debounce delay in milliseconds (default: 500ms)
  */
-export function useSearchQuery(query: string, debounceMs: number = 500) {
+export function useSearchQuery(query: string, debounceMs: number = 300) {
   const debouncedQuery = useDebounce(query, debounceMs);
 
   return useQuery({
     queryKey: searchKeys.query(debouncedQuery),
-    queryFn: async (): Promise<SearchResult> => {
+    queryFn: async (): Promise<SearchResult[]> => {
       const response = await fetch(
         `/api/search?q=${encodeURIComponent(debouncedQuery)}`,
       );
       if (!response.ok) {
         throw new Error("Failed to search");
       }
-      return response.json();
+      const data: SearchResponse = await response.json();
+      return data.results || [];
     },
-    enabled: debouncedQuery.length > 0,
+    enabled: debouncedQuery.length >= 2,
     staleTime: 1000 * 60 * 2,
   });
 }

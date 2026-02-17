@@ -93,8 +93,9 @@ export function BlogsContent() {
     return filtered;
   }, [posts, searchQuery, selectedCategory, selectedTag, sortBy]);
 
-  useEffect(() => {
-    setCurrentPage(1);
+  // Reset to page 1 when filters change
+  const effectiveCurrentPage = useMemo(() => {
+    return 1;
   }, [searchQuery, selectedCategory, selectedTag, sortBy]);
 
   useEffect(() => {
@@ -123,9 +124,17 @@ export function BlogsContent() {
     setSelectedCategory("all");
     setSelectedTag("all");
     setSortBy("date-desc");
+    setCurrentPage(1);
   };
 
-  const indexOfLastPost = currentPage * postsPerPage;
+  const displayPage =
+    searchQuery ||
+    selectedCategory !== "all" ||
+    selectedTag !== "all" ||
+    sortBy !== "date-desc"
+      ? effectiveCurrentPage
+      : currentPage;
+  const indexOfLastPost = displayPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
@@ -145,7 +154,7 @@ export function BlogsContent() {
 
         <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(9)].map((_, i) => (
-            <BlogCardSkeleton key={i} />
+            <BlogCardSkeleton key={`skeleton-${i}`} />
           ))}
         </div>
       </div>

@@ -91,7 +91,7 @@ export default function Loading() {
         <div className="grid gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
             <Card
-              key={i}
+              key={`related-skeleton-${i}`}
               className="rounded-none border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
             >
               <CardContent className="p-6">

@@ -164,9 +164,9 @@ export default async function PreviewPage({
           </p>
 
           <div className="flex flex-wrap items-center gap-2">
-            {post.tags.map((tag, index) => (
+            {post.tags.map((tag) => (
               <Badge
-                key={index}
+                key={tag}
                 variant="outline"
                 className="rounded-none border-2 border-black bg-white px-3 py-1 font-serif"
               >

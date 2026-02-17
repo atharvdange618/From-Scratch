@@ -3,6 +3,7 @@ import { fetchWithErrorHandling } from "@/lib/api-error-handler";
 
 export const projectKeys = {
   all: ["projects"] as const,
+  list: () => [...projectKeys.all, "list"] as const,
   featured: () => [...projectKeys.all, { featured: true }] as const,
   detail: (slug: string) => [...projectKeys.all, slug] as const,
 };
@@ -52,6 +53,41 @@ export function useProjectsQuery() {
     },
     staleTime: 1000 * 60 * 15,
     gcTime: 1000 * 60 * 30,
+  });
+}
+
+/**
+ * Fetch projects list for editor (lightweight data)
+ */
+export function useProjectsListQuery() {
+  return useQuery({
+    queryKey: projectKeys.list(),
+    queryFn: async (): Promise<
+      Array<{
+        _id: string;
+        name: string;
+        slug: string;
+        status: string;
+        createdAt: string;
+      }>
+    > => {
+      const data = await fetchWithErrorHandling<{
+        projects: Array<{
+          _id: string;
+          name: string;
+          slug: string;
+          status: string;
+          createdAt: string;
+        }>;
+      }>(
+        "/api/projects/list",
+        {},
+        { action: "load projects list", resourceType: "projects" },
+      );
+      return data.projects || [];
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
   });
 }
 

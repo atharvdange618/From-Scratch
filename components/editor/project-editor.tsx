@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -31,6 +30,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { MarkdownEditor } from "@/components/editor/editor-ui/markdown-editor";
 import { useSlugGenerator } from "@/lib/hooks/use-slug-generator";
 import { useImageUpload } from "@/lib/hooks/use-image-upload";
+import { useProjectsListQuery } from "@/lib/hooks/use-projects";
 
 const projectSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -49,12 +49,13 @@ type ProjectFormValues = z.infer<typeof projectSchema>;
 export default function ProjectEditor() {
   const [saving, setSaving] = useState(false);
   const [techTags, setTechTags] = useState<string[]>([]);
-  const [projects, setProjects] = useState<any[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>("");
   const [selectedProjectSlug, setSelectedProjectSlug] = useState<string>("");
   const [isEditMode, setIsEditMode] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+
+  const { data: projects = [] } = useProjectsListQuery();
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
@@ -80,21 +81,6 @@ export default function ProjectEditor() {
     setValue,
     "bannerImage",
   );
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await fetch("/api/projects/list");
-        if (response.ok) {
-          const data = await response.json();
-          setProjects(data.projects || []);
-        }
-      } catch (error) {
-        console.error("Failed to fetch projects:", error);
-      }
-    };
-    fetchProjects();
-  }, []);
 
   const loadProject = async (projectId: string) => {
     try {
@@ -198,12 +184,6 @@ export default function ProjectEditor() {
 
         if (!isEditMode) {
           resetForm();
-        } else {
-          const projectsResponse = await fetch("/api/projects");
-          if (projectsResponse.ok) {
-            const data = await projectsResponse.json();
-            setProjects(data.projects || []);
-          }
         }
 
         router.push("/projects");

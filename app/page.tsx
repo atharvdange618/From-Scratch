@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/hero-section";
 import { FeaturedProjects } from "@/components/featured-projects";
 import { BlogEntries } from "@/components/blog-entries";
 import { env } from "@/lib/env";
+import Script from "next/script";
 
 export const revalidate = 60;
 
@@ -66,40 +67,42 @@ export const metadata: Metadata = {
   creator: "Atharv Dange",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "From Scratch",
+  description:
+    "Building frameworks, apps, and ideas from the ground up. Full-stack development, technical blogs, and build-in-public journey.",
+  url: env.NEXT_PUBLIC_BASE_URL,
+  author: {
+    "@type": "Person",
+    name: "Atharv Dange",
+    url: `${env.NEXT_PUBLIC_BASE_URL}/about`,
+    jobTitle: "Full Stack Engineer",
+    sameAs: [
+      "https://github.com/atharvdange618",
+      "https://twitter.com/atharvdangedev",
+      "https://www.linkedin.com/in/atharvdange",
+    ],
+  },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${env.NEXT_PUBLIC_BASE_URL}/blogs?search={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
 export default function Home() {
   return (
     <>
-      <script
+      <Script
+        id="home-jsonld-website"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "From Scratch",
-            description:
-              "Building frameworks, apps, and ideas from the ground up. Full-stack development, technical blogs, and build-in-public journey.",
-            url: env.NEXT_PUBLIC_BASE_URL,
-            author: {
-              "@type": "Person",
-              name: "Atharv Dange",
-              url: `${env.NEXT_PUBLIC_BASE_URL}/about`,
-              jobTitle: "Full Stack Engineer",
-              sameAs: [
-                "https://github.com/atharvdange618",
-                "https://twitter.com/atharvdangedev",
-                "https://www.linkedin.com/in/atharvdange",
-              ],
-            },
-            potentialAction: {
-              "@type": "SearchAction",
-              target: {
-                "@type": "EntryPoint",
-                urlTemplate: `${env.NEXT_PUBLIC_BASE_URL}/blogs?search={search_term_string}`,
-              },
-              "query-input": "required name=search_term_string",
-            },
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        strategy="beforeInteractive"
       />
       <div className="min-h-screen bg-white dark:bg-neutral-900">
         <div className="container mx-auto px-4 py-8">

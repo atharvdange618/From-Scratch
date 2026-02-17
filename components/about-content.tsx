@@ -187,9 +187,9 @@ export function AboutContent() {
           Featured Projects
         </h2>
         <div className="grid gap-5 md:gap-6 md:grid-cols-2">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <Card
-              key={index}
+              key={project.url}
               className="flex flex-col rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)]"
             >
               <CardHeader>
