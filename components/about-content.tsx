@@ -1,81 +1,54 @@
 import { Code, Database, Server } from "@deemlol/next-icons";
-
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
-export function AboutContent() {
+export async function AboutContent() {
   const skills = [
     {
-      category: "Frontend",
+      category: "The Core",
       items: [
-        "React",
-        "React Native",
-        "Next.js",
+        "Node.js",
+        "Express.js",
+        "PostgreSQL",
+        "React/Next.js",
         "TypeScript",
-        "Tailwind CSS",
-        "TanStack Query",
-        "Zustand",
-        "Expo",
+        "MongoDB",
       ],
-      icon: <Code className="h-full w-full" />,
+      icon: <Server className="h-full w-full" />,
       iconBg: "#AFDDFF",
     },
     {
-      category: "Backend",
-      items: ["Node.js", "Express", "RESTful APIs", "Git", "Postman"],
-      icon: <Server className="h-full w-full" />,
+      category: "Exploratory",
+      items: [
+        "Bun",
+        "Hono",
+        "Fastify",
+        "React Native/Expo",
+        "SQLite",
+        "Puppeteer",
+      ],
+      icon: <Code className="h-full w-full" />,
       iconBg: "#FFECDB",
     },
     {
-      category: "Database",
-      items: ["PostgreSQL", "MongoDB", "Redis", "Prisma", "Mongoose"],
-      icon: <Database className="h-full w-full" />,
+      category: "Frontend",
+      items: [
+        "React.js",
+        "Next.js",
+        "React Native (Expo)",
+        "TypeScript",
+        "Tailwind CSS",
+      ],
+      icon: <Code className="h-full w-full" />,
       iconBg: "#E0FFF1",
     },
-  ];
-
-  const projects = [
     {
-      name: "Reiatsu",
-      description:
-        "A minimal, type-safe HTTP server framework for Node.js, built from first principles using only Node.js core modules. Reiatsu is designed for simplicity, performance, and modern web development no dependencies, fully typed, and production-ready.",
-      url: "https://github.com/atharvdange618/Reiatsu",
-      tags: ["TypeScript", "Framework", "Backend", "Node.js"],
-      color: "#AFDDFF",
-    },
-    {
-      name: "Telemetry",
-      description:
-        "Privacy-first, self-hosted web analytics. No cookies, no tracking, just meaningful insights. Built with Fastify, React & TypeScript.",
-      url: "https://github.com/atharvdange618/Telemetry",
-      tags: ["Analytics", "Privacy", "React", "Fastify", "TypeScript"],
-      color: "#FFECDB",
-    },
-    {
-      name: "ArcHive",
-      description:
-        "A multi-platform digital capture tool designed to be your personal 'second brain.'",
-      url: "https://github.com/atharvdange618/ArcHive",
-      tags: ["React Native", "Mobile", "Bun", "Hono"],
-      color: "#E0FFF1",
-    },
-    {
-      name: "Recon",
-      description:
-        "Recon is a mobile app designed to empower software testers by providing a personal, undeniable log for every bug. It tracks defects, conversations, and decisions to eliminate the 'he said, she said' and ensure accountability.",
-      url: "https://github.com/atharvdange618/Recon",
-      tags: ["React Native", "Mobile", "TypeScript", "SQLite"],
-      color: "#AFDDFF",
+      category: "State & Data",
+      items: ["TanStack Query", "Zustand", "Prisma", "Mongoose"],
+      icon: <Database className="h-full w-full" />,
+      iconBg: "#FF9149",
     },
   ];
 
@@ -98,54 +71,53 @@ export function AboutContent() {
               <strong className="font-bold text-black dark:text-white">
                 Full Stack Engineer
               </strong>{" "}
-              from Pune, India, specializing in building high-performance,
-              scalable applications with the{" "}
+              from Pune, India, with a solid core in the{" "}
               <strong className="font-bold text-black dark:text-white">
-                MERN/PERN
+                Node.js/Express
               </strong>{" "}
-              stack and{" "}
+              ecosystem, complemented by a habit of deep-dive experimentation
+              into emerging technologies like{" "}
               <strong className="font-bold text-black dark:text-white">
-                React Native
+                Bun, Hono, and Fastify
               </strong>
-              . I'm passionate about backend development and understanding how
-              technology works from the ground up, which led me to architect and
-              build{" "}
+              . My approach is built on understanding{" "}
               <strong className="font-bold text-black dark:text-white">
-                Reiatsu
+                "how it works"{" "}
               </strong>{" "}
-              - a zero-dependency TypeScript web framework.
+              rather than just{" "}
+              <strong className="font-bold text-black dark:text-white">
+                "how to use it,"{" "}
+              </strong>{" "}
+              which has led me to architect solutions ranging from
+              zero-dependency HTTP frameworks to offline-first mobile tools.
             </p>
             <p className="text-gray-800 dark:text-gray-300">
-              Currently working at{" "}
+              Currently at{" "}
               <strong className="font-bold text-black dark:text-white">
-                SmartScripts Pvt. Ltd.
+                SmartScripts Pvt. Ltd.{" "}
+              </strong>{" "}
+              since March 2024, building production applications with the{" "}
+              <strong className="font-bold text-black dark:text-white">
+                {" "}
+                MERN/PERN{" "}
+              </strong>{" "}
+              stack and cross-platform mobile apps with{" "}
+              <strong className="font-bold text-black dark:text-white">
+                React Native/Expo
               </strong>
-              , I build production applications and mobile apps. I started my
-              coding journey in{" "}
+              . Started coding in{" "}
               <strong className="font-bold text-black dark:text-white">
-                January 2021
-              </strong>{" "}
-              and turned professional in{" "}
-              <strong className="font-bold text-black dark:text-white">
-                March 2024
-              </strong>{" "}
-              - 4+ years of hands-on experience building real-world
-              applications.
-            </p>
-            <p className="text-gray-800 dark:text-gray-300">
-              I believe in{" "}
-              <strong className="font-bold text-black dark:text-white">
-                building in public
-              </strong>{" "}
-              and sharing my learnings. My projects span from frameworks to
-              mobile apps, all built with the philosophy of understanding
-              fundamentals and creating from scratch.
+                {" "}
+                2020{" "}
+              </strong>
+              , which gives me over 6 years of hands-on experience transforming
+              ideas into real-world solutions.
             </p>
             <p className="text-gray-800 dark:text-gray-300">
               When I'm not coding, you can find me watching movies, diving into
               a new anime series, or exploring the world around me with my
-              girlfriend. I believe that diverse interests fuel creativity in
-              problem-solving.
+              girlfriend. I believe that my diverse interests fuel creativity in
+              my problem-solving skills.
             </p>
           </div>
 
@@ -182,50 +154,6 @@ export function AboutContent() {
         </div>
       </div>
 
-      <div className="mb-12 md:mb-16">
-        <h2 className="mb-6 md:mb-8 font-sans text-2xl md:text-3xl font-bold">
-          Featured Projects
-        </h2>
-        <div className="grid gap-5 md:gap-6 md:grid-cols-2">
-          {projects.map((project) => (
-            <Card
-              key={project.url}
-              className="flex flex-col rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)]"
-            >
-              <CardHeader>
-                <CardTitle className="font-sans text-xl md:text-2xl font-bold">
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-[#60B5FF] transition-colors"
-                  >
-                    {project.name}
-                  </a>
-                </CardTitle>
-                <CardDescription className="font-serif text-base dark:text-gray-300">
-                  {project.description}
-                </CardDescription>
-              </CardHeader>
-              <CardFooter className="mt-auto">
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag, tagIndex) => (
-                    <Badge
-                      key={tagIndex}
-                      variant="outline"
-                      className="rounded-none border-2 border-black dark:border-gray-700 px-3 py-1 font-serif text-black dark:text-gray-900"
-                      style={{ backgroundColor: project.color }}
-                    >
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      </div>
-
       <Separator className="my-12 md:my-16 border-2 border-black dark:border-gray-700" />
 
       <div className="mb-12 md:mb-16">
@@ -233,7 +161,7 @@ export function AboutContent() {
           My Skills & Expertise
         </h2>
 
-        <div className="grid gap-5 md:gap-6 md:grid-cols-3">
+        <div className="grid gap-5 md:gap-6 grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto">
           {skills.map((skill) => (
             <Card
               key={skill.category}
@@ -273,59 +201,6 @@ export function AboutContent() {
         </h2>
 
         <div className="relative ml-4 md:ml-6 border-l-4 border-black dark:border-gray-700 pl-6 md:pl-8 space-y-8 md:space-y-12">
-          <div className="relative">
-            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black dark:border-gray-700 dark:text-black bg-[#60B5FF]"></div>
-            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
-              Built Minty Expense Tracker
-            </h3>
-            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600 dark:text-gray-400">
-              Nov 2025
-            </p>
-            <p className="font-serif text-sm md:text-base dark:text-gray-300">
-              Smart SMS-based expense tracking for Android
-            </p>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:text-black"></div>
-            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
-              Built Telemetry Analytics Platform
-            </h3>
-            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600 dark:text-gray-400">
-              Jul 2025
-            </p>
-            <p className="font-serif text-sm md:text-base dark:text-gray-300">
-              Privacy-first, cookieless analytics with real-time dashboards
-            </p>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:text-black"></div>
-            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
-              Launched ArcHive Mobile App
-            </h3>
-            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600 dark:text-gray-400">
-              Jun 2025
-            </p>
-            <p className="font-serif text-sm md:text-base dark:text-gray-300">
-              Cross-platform digital sanctuary for Android
-            </p>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#AFDDFF] dark:text-black"></div>
-            <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
-              Released Reiatsu Framework v1.0
-            </h3>
-            <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600 dark:text-gray-400">
-              May 2025
-            </p>
-            <p className="font-serif text-sm md:text-base dark:text-gray-300">
-              Zero-dependency TypeScript web framework built from Node.js
-              internals
-            </p>
-          </div>
-
           <div className="relative">
             <div className="absolute -left-9 md:-left-12 top-0 h-6 w-6 md:h-8 md:w-8 rounded-full border-4 border-black bg-[#FFECDB] dark:text-black"></div>
             <h3 className="mb-1 md:mb-2 text-lg md:text-xl font-bold">
@@ -372,7 +247,7 @@ export function AboutContent() {
               Started Coding Journey
             </h3>
             <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600 dark:text-gray-400">
-              Jan 2021
+              2020
             </p>
             <p className="font-serif text-sm md:text-base dark:text-gray-300">
               Hello, World! Learned from YouTube, documentation, and programming

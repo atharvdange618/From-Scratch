@@ -1,10 +1,10 @@
 "use client";
 
-import { Github, Linkedin, Mail, MapPin, Phone } from "@deemlol/next-icons";
+import { Github, Linkedin, Mail, MapPin } from "@deemlol/next-icons";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import emailjs from "@emailjs/browser";
-
+import { FaXTwitter } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,7 +13,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { formatTimeIST } from "@/lib/dateandnumbers";
 import { trackEvent } from "@/lib/analytics";
 import { useToast } from "./ui/use-toast";
-import { X } from "lucide-react";
 import { env } from "@/lib/env";
 
 interface ContactFormData {
@@ -35,7 +34,6 @@ export function ContactContent() {
     defaultValues: {
       name: "",
       email: "",
-      subject: "",
       message: "",
     },
   });
@@ -54,7 +52,6 @@ export function ContactContent() {
         {
           name: data.name,
           email: data.email,
-          subject: data.subject,
           message: data.message,
           time: formatTimeIST(now),
         },
@@ -64,7 +61,6 @@ export function ContactContent() {
       await trackEvent("contact_form_submit", {
         hasName: !!data.name,
         hasEmail: !!data.email,
-        hasSubject: !!data.subject,
         messageLength: data.message.length,
         success: true,
       });
@@ -161,7 +157,7 @@ export function ContactContent() {
                 target="_blank"
                 referrerPolicy="no-referrer"
               >
-                <X className="h-5 w-5" />
+                <FaXTwitter />
                 <span className="sr-only">X</span>
               </a>
             </Button>
@@ -312,40 +308,6 @@ export function ContactContent() {
                     </p>
                   )}
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="subject" className="font-bold">
-                  Subject <span className="text-red-600">*</span>
-                </Label>
-                <Input
-                  id="subject"
-                  placeholder="What's this about?"
-                  {...register("subject", {
-                    required: "Subject is required",
-                    minLength: {
-                      value: 3,
-                      message: "Subject must be at least 3 characters",
-                    },
-                  })}
-                  className={`rounded-none border-4 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
-                    errors.subject
-                      ? "border-red-600"
-                      : "border-black dark:border-gray-700"
-                  }`}
-                  aria-invalid={!!errors.subject}
-                  aria-describedby={
-                    errors.subject ? "subject-error" : undefined
-                  }
-                />
-                {errors.subject && (
-                  <p
-                    id="subject-error"
-                    className="text-sm font-bold text-red-600"
-                  >
-                    {errors.subject.message}
-                  </p>
-                )}
               </div>
 
               <div className="space-y-2">

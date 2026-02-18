@@ -2,7 +2,7 @@
 
 import { Github, Instagram, Linkedin, Mail } from "@deemlol/next-icons";
 import { trackSocialClick } from "@/lib/analytics";
-import { X } from "lucide-react";
+import { FaXTwitter } from "react-icons/fa6";
 
 interface SocialLink {
   href: string;
@@ -21,7 +21,7 @@ const socialLinks: SocialLink[] = [
   {
     href: "https://x.com/atharvdangedev",
     platform: "x",
-    icon: X,
+    icon: FaXTwitter,
     label: "X",
   },
   {
