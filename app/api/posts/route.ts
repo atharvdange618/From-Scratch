@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     if (listView) {
       const rawPosts = await Post.find(query)
         .select(
-          "_id title slug summary content category tags bannerImage publishedDate isPublished createdAt updatedAt linkedProject",
+          "_id title slug summary category tags publishedDate isPublished createdAt updatedAt linkedProject readingTime",
         )
         .populate({
           path: "linkedProject",
@@ -54,14 +54,7 @@ export async function GET(request: NextRequest) {
         .limit(limit)
         .lean();
 
-      posts = rawPosts.map((post: any) => {
-        const readingTime = calculateReadingTime(post.content || "");
-        const { content, ...postWithoutContent } = post;
-        return {
-          ...postWithoutContent,
-          readingTime,
-        };
-      });
+      posts = rawPosts;
     } else {
       posts = await Post.find(query)
         .populate({
@@ -106,9 +99,20 @@ export async function POST(request: NextRequest) {
 
     const validatedData = createPostSchema.parse(body);
 
-    const post = await Post.create(validatedData);
+    const readingTime = calculateReadingTime(validatedData.content || "");
 
-    await revalidatePosts();
+    const postData: Record<string, any> = {
+      ...validatedData,
+      readingTime,
+    };
+
+    if (validatedData.isPublished && !validatedData.publishedDate) {
+      postData.publishedDate = new Date();
+    }
+
+    const post = await Post.create(postData);
+
+    revalidatePosts();
 
     return NextResponse.json({ success: true, data: post }, { status: 201 });
   } catch (error: any) {

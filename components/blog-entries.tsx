@@ -5,18 +5,17 @@ import { Button } from "@/components/ui/button";
 import connectDB from "@/lib/mongodb";
 import Post, { IPost } from "@/lib/models/Post";
 import { BlogCard } from "./blog-card";
-import { calculateReadingTime } from "@/lib/reading-time";
 
 const getRecentPostsFromDB = async () => {
   await connectDB();
   const posts = await Post.find({ isPublished: true })
-    .sort({ publishedDate: -1 })
+    .select("-bannerImage -content")
+    .sort({ publishedDate: -1, createdAt: -1 })
     .limit(3)
     .lean();
   return posts.map((post: IPost) => ({
     ...post,
     _id: post._id.toString(),
-    readingTime: calculateReadingTime(post.content || ""),
   }));
 };
 

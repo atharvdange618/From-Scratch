@@ -93,7 +93,6 @@ export function BlogsContent() {
     return filtered;
   }, [posts, searchQuery, selectedCategory, selectedTag, sortBy]);
 
-  // Reset to page 1 when filters change
   const effectiveCurrentPage = useMemo(() => {
     return 1;
   }, [searchQuery, selectedCategory, selectedTag, sortBy]);

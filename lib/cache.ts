@@ -2,26 +2,27 @@ import { revalidatePath } from "next/cache";
 
 /**
  * Revalidate all posts-related caches
+ * Called from API routes after creating/updating/deleting posts
  */
-export async function revalidatePosts() {
-  "use server";
+export function revalidatePosts() {
   revalidatePath("/", "layout");
-  revalidatePath("/blogs");
+  revalidatePath("/blogs", "page");
+  revalidatePath("/posts/[slug]", "page");
 }
 
 /**
  * Revalidate a specific post cache
+ * Called from API routes after updating a post
  */
-export async function revalidatePost(slug: string) {
-  "use server";
-  revalidatePath(`/posts/${slug}`);
+export function revalidatePost(slug: string) {
+  revalidatePath(`/posts/${slug}`, "page");
   revalidatePath("/", "layout");
+  revalidatePath("/blogs", "page");
 }
 
 /**
  * Revalidate all caches
  */
-export async function revalidateAll() {
-  "use server";
+export function revalidateAll() {
   revalidatePath("/", "layout");
 }

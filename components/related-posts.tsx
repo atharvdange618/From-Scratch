@@ -21,7 +21,8 @@ interface PostData {
   title: string;
   slug: string;
   summary: string;
-  content: string;
+  content?: string;
+  readingTime?: string;
   category: string;
   tags: string[];
   publishedDate: string;
@@ -121,7 +122,7 @@ const getRelatedPostsFromDB = async (
         title: 1,
         slug: 1,
         summary: 1,
-        content: 1,
+        readingTime: 1,
         category: 1,
         tags: 1,
         publishedDate: 1,
@@ -233,7 +234,7 @@ export async function RelatedPosts({
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 text-xs font-bold">
                     <Clock className="h-3 w-3" />
-                    {calculateReadingTime(post.content)}
+                    {post.readingTime || "N/A"}
                   </span>
                 </div>
 

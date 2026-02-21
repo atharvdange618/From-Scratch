@@ -11,6 +11,7 @@ export interface IPost extends Document {
   slug: string;
   summary: string;
   content: string;
+  readingTime?: string;
   category:
     | "JavaScript & Web APIs"
     | "Git & Version Control"
@@ -58,6 +59,10 @@ const PostSchema: Schema<IPost> = new Schema(
     content: {
       type: String,
       required: [true, "Content is required"],
+    },
+    readingTime: {
+      type: String,
+      trim: true,
     },
     category: {
       type: String,

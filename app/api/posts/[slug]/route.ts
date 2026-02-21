@@ -6,6 +6,7 @@ import { revalidatePost, revalidatePosts } from "@/lib/cache";
 import { updatePostSchema } from "@/lib/validations/api-schemas";
 import { logger } from "@/lib/logger";
 import { checkAdminAccess } from "@/lib/auth";
+import { calculateReadingTime } from "@/lib/reading-time";
 
 type Params = Promise<{ slug: string }>;
 
@@ -75,7 +76,20 @@ export async function PUT(
 
     const validatedData = updatePostSchema.parse(body);
 
-    const post = await Post.findOneAndUpdate({ slug }, validatedData, {
+    const updateData: Record<string, any> = { ...validatedData };
+
+    if (validatedData.content) {
+      updateData.readingTime = calculateReadingTime(validatedData.content);
+    }
+
+    if (validatedData.isPublished) {
+      const existingPost = await Post.findOne({ slug }).lean();
+      if (existingPost && !existingPost.publishedDate) {
+        updateData.publishedDate = new Date();
+      }
+    }
+
+    const post = await Post.findOneAndUpdate({ slug }, updateData, {
       new: true,
       runValidators: true,
     });
@@ -87,7 +101,8 @@ export async function PUT(
       );
     }
 
-    await revalidatePost(slug);
+    revalidatePost(slug);
+    revalidatePosts();
 
     return NextResponse.json({ success: true, data: post });
   } catch (error: any) {

@@ -187,9 +187,7 @@ export function BlogCard({
 
         <div className="mb-3 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           <Clock className="h-4 w-4" />
-          <span className="font-medium">
-            {post.readingTime || "5 min read"}
-          </span>
+          <span className="font-medium">{post.readingTime || "N/A"}</span>
         </div>
 
         <div className="mb-3">
