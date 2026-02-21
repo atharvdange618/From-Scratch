@@ -1,16 +1,19 @@
 "use client";
 
-import { BookOpen, Code2, Sparkles } from "lucide-react";
+import { Code2, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useStatsQuery } from "@/lib/hooks/use-stats";
 
 export function HeroSection() {
-  const router = useRouter();
   const { data, isLoading, isError } = useStatsQuery();
 
-  const projectCount = isError ? "5+" : isLoading ? "..." : data?.projects ?? "0";
-  const postCount = isError ? "12+" : isLoading ? "..." : data?.posts ?? "0";
+  const projectCount = isError
+    ? "5+"
+    : isLoading
+      ? "..."
+      : (data?.projects ?? "0");
+  const postCount = isError ? "12+" : isLoading ? "..." : (data?.posts ?? "0");
 
   return (
     <section className="mb-12 mt-4 md:mb-16 md:mt-8">
@@ -20,15 +23,15 @@ export function HeroSection() {
             <div className="inline-flex items-center gap-2 w-fit">
               <div className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-primary px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,145,73,0.3)]">
                 <span className="text-sm md:text-base font-bold dark:text-black">
-                  FULL STACK ENGINEER
+                  TECH BLOG & JOURNEY
                 </span>
               </div>
             </div>
 
             <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.1] dark:text-white">
-              Ship fast.{" "}
+              Writing code.{" "}
               <span className="relative inline-block">
-                <span className="relative z-10">Build better.</span>
+                <span className="relative z-10">Sharing ideas.</span>
                 <span className="absolute bottom-2 left-0 w-full h-4 bg-[#60B5FF] dark:bg-primary -rotate-1 -z-0"></span>
               </span>
             </h1>
@@ -46,7 +49,7 @@ export function HeroSection() {
                   {projectCount}
                 </div>
                 <div className="text-xs md:text-sm font-bold mt-1 dark:text-gray-300">
-                  PROJECTS
+                  EXPERIMENTS
                 </div>
               </div>
               <div className="border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(224,255,241,0.2)]">
@@ -62,28 +65,26 @@ export function HeroSection() {
                   24/7
                 </div>
                 <div className="text-xs md:text-sm font-bold mt-1 dark:text-gray-300">
-                  BUILDING
+                  LEARNING
                 </div>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-3 md:gap-4 pt-2">
               <Button
+                asChild
                 className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-primary px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-black dark:text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,145,73,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,145,73,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,145,73,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,145,73,0.3)]"
-                onClick={() => {
-                  document
-                    .getElementById("recent-posts")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
               >
-                <BookOpen className="mr-2 h-5 w-5" />
-                READ THE BLOG
+                <Link href="/contact">
+                  <Mail className="w-5 h-5 mr-2" />
+                  CONTACT ME
+                </Link>
               </Button>
               <Button
-                onClick={() => router.push("/about")}
+                asChild
                 className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-black dark:text-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] dark:hover:bg-gray-700 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(96,181,255,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
               >
-                ABOUT ME
+                <Link href="/about">ABOUT ME</Link>
               </Button>
             </div>
           </div>
@@ -128,10 +129,10 @@ export function HeroSection() {
                     </div>
                     <div className="flex gap-2">
                       <span className="text-[#0066CC] dark:text-[#60B5FF] font-bold">
-                        stack:
+                        focus:
                       </span>
                       <span className="text-[#00875A] dark:text-[#E0FFF1]">
-                        "MERN"
+                        "Full Stack"
                       </span>
                       <span className="text-gray-600 dark:text-gray-400">
                         ,
@@ -142,7 +143,7 @@ export function HeroSection() {
                         status:
                       </span>
                       <span className="text-[#00875A] dark:text-[#E0FFF1]">
-                        "shipping"
+                        "drafting post"
                       </span>
                     </div>
                   </div>
