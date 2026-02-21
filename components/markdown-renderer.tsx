@@ -28,9 +28,11 @@ interface CodeBlockProps {
 function CodeBlock({ children, className }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const code = String(children).replace(/\n$/, "");
-  const language = className?.replace("language-", "") || "bash";
+  const match = /language-(\w+)/.exec(className || "");
+  const language = match ? match[1] : "";
 
-  const isPlain = ["text", "plain", "ascii", "none"].includes(language);
+  const isPlainDiagram =
+    !language || ["text", "plain", "ascii", "none"].includes(language);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
@@ -38,6 +40,16 @@ function CodeBlock({ children, className }: CodeBlockProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Render plain ASCII diagrams without fancy wrapper
+  if (isPlainDiagram) {
+    return (
+      <pre className="my-6 overflow-x-auto rounded-md border border-zinc-200 dark:border-gray-700 bg-zinc-50 dark:bg-gray-900 p-4 text-sm leading-relaxed text-zinc-800 dark:text-zinc-300">
+        <code>{code}</code>
+      </pre>
+    );
+  }
+
+  // Render actual code with fancy UI
   return (
     <div className="group relative my-6 font-mono not-prose">
       <div className="overflow-hidden rounded-md border-2 border-black dark:border-gray-700 bg-zinc-950 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
@@ -77,22 +89,16 @@ function CodeBlock({ children, className }: CodeBlockProps) {
         </div>
 
         <div className="relative">
-          {isPlain ? (
-            <pre className="overflow-x-auto p-6 text-sm leading-relaxed text-zinc-300">
-              <code>{code}</code>
-            </pre>
-          ) : (
-            <Suspense
-              fallback={
-                <div className="flex items-center justify-center p-6 text-zinc-400">
-                  <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                  <span className="text-sm">Loading syntax highlighter...</span>
-                </div>
-              }
-            >
-              <LazyCodeHighlight code={code} language={language} />
-            </Suspense>
-          )}
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center p-6 text-zinc-400">
+                <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                <span className="text-sm">Loading syntax highlighter...</span>
+              </div>
+            }
+          >
+            <LazyCodeHighlight code={code} language={language} />
+          </Suspense>
         </div>
       </div>
     </div>
@@ -116,7 +122,9 @@ function LazyCodeHighlight({
     });
   }, []);
 
-  if (!isMounted) {
+  const safeLanguage = language || "javascript";
+
+  if (!isMounted || !style) {
     return (
       <pre className="overflow-x-auto p-6 text-sm leading-relaxed text-zinc-300 bg-zinc-950">
         <code>{code}</code>
@@ -126,7 +134,7 @@ function LazyCodeHighlight({
 
   return (
     <SyntaxHighlighter
-      language={language}
+      language={safeLanguage}
       style={style}
       showLineNumbers={true}
       wrapLines={true}
@@ -181,7 +189,9 @@ export function MarkdownRenderer({
         components={{
           code({ className, children, ...props }: any) {
             const match = /language-(\w+)/.exec(className || "");
-            const isInline = !match;
+            const hasNewline = String(children).includes("\n");
+
+            const isInline = !match && !hasNewline;
 
             if (isInline) {
               return (

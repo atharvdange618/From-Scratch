@@ -18,7 +18,6 @@ import { env } from "@/lib/env";
 interface ContactFormData {
   name: string;
   email: string;
-  subject: string;
   message: string;
 }
 
