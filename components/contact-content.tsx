@@ -1,6 +1,14 @@
 "use client";
 
-import { Github, Linkedin, Mail, MapPin } from "@deemlol/next-icons";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  Clock,
+  Zap,
+  Coffee,
+} from "@deemlol/next-icons";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import emailjs from "@emailjs/browser";
@@ -27,7 +35,6 @@ export function ContactContent() {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    watch,
   } = useForm<ContactFormData>({
     mode: "onBlur",
     defaultValues: {
@@ -39,7 +46,6 @@ export function ContactContent() {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
-  const messageLength = watch("message")?.length || 0;
 
   const onSubmit = async (data: ContactFormData) => {
     try {
@@ -86,6 +92,27 @@ export function ContactContent() {
     }
   };
 
+  const quickFacts = [
+    {
+      icon: <Clock className="h-5 w-5" />,
+      label: "Response Time",
+      value: "Usually within 24 hours",
+      bg: "bg-[#AFDDFF] dark:bg-blue-900/40",
+    },
+    {
+      icon: <Zap className="h-5 w-5" />,
+      label: "Open to",
+      value: "Collabs, freelance & OSS",
+      bg: "bg-[#FFECDB] dark:bg-orange-900/40",
+    },
+    {
+      icon: <Coffee className="h-5 w-5" />,
+      label: "Timezone",
+      value: "IST (UTC+5:30)",
+      bg: "bg-[#E0FFF1] dark:bg-green-900/40",
+    },
+  ];
+
   return (
     <section className="mb-12 md:mb-16">
       <div className="mb-8 md:mb-12 text-center">
@@ -98,8 +125,27 @@ export function ContactContent() {
         </p>
       </div>
 
+      <div className="mb-8 md:mb-12 grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+        {quickFacts.map((fact) => (
+          <div
+            key={fact.label}
+            className={`flex items-center gap-3 rounded-none border-4 border-black dark:border-gray-700 ${fact.bg} p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]`}
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shrink-0">
+              {fact.icon}
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400">
+                {fact.label}
+              </p>
+              <p className="text-sm font-bold dark:text-white">{fact.value}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="grid gap-6 md:gap-8 md:grid-cols-2">
-        <div>
+        <div className="flex flex-col">
           <h2 className="mb-5 md:mb-6 font-sans text-2xl md:text-3xl font-bold">
             Contact Information
           </h2>
@@ -145,7 +191,7 @@ export function ContactContent() {
           <h3 className="mb-3 md:mb-4 font-bold text-sm md:text-base dark:text-gray-300">
             Connect with me
           </h3>
-          <div className="flex gap-2 md:gap-4">
+          <div className="flex gap-2 md:gap-4 mb-6 md:mb-8">
             <Button
               asChild
               size="icon"
@@ -196,6 +242,32 @@ export function ContactContent() {
               </a>
             </Button>
           </div>
+
+          <Card className="mt-auto rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)]">
+            <CardContent className="p-4 md:p-5">
+              <h3 className="mb-3 font-sans text-lg font-bold dark:text-white">
+                💬 What I can help with
+              </h3>
+              <ul className="space-y-2 font-serif text-sm dark:text-gray-300">
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 text-[#60B5FF] font-bold">→</span>
+                  <span>Technical discussions</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 text-[#60B5FF] font-bold">→</span>
+                  <span>Open source collaboration opportunities</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 text-[#60B5FF] font-bold">→</span>
+                  <span>Freelance or project-based work</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 text-[#60B5FF] font-bold">→</span>
+                  <span>Just saying hello, I love meeting devs!</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
         </div>
 
         <div>
@@ -343,7 +415,7 @@ export function ContactContent() {
                   </p>
                 )}
                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                  {messageLength} / 10 minimum characters
+                  10 character minimum
                 </p>
               </div>
 

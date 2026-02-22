@@ -68,6 +68,22 @@ export async function POST(request: NextRequest) {
           {
             folder: "from-scratch",
             resource_type: "auto",
+            transformation: [{ quality: "auto:good", fetch_format: "auto" }],
+            eager: [
+              {
+                width: 1200,
+                quality: "auto:good",
+                fetch_format: "auto",
+                crop: "limit",
+              },
+              {
+                width: 800,
+                quality: "auto:good",
+                fetch_format: "auto",
+                crop: "limit",
+              },
+            ],
+            eager_async: true,
           },
           (error, result) => {
             if (error) reject(error);

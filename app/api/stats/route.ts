@@ -14,12 +14,16 @@ export async function GET() {
       isPublished: true,
     });
     const projectsCount = await Project.countDocuments({});
+    const categories = await Post.distinct("category", {
+      isPublished: true,
+    });
 
     return NextResponse.json(
       {
         success: true,
         posts: publishedPostsCount,
         projects: projectsCount,
+        categories: categories.length,
       },
       {
         headers: {

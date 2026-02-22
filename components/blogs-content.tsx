@@ -93,10 +93,6 @@ export function BlogsContent() {
     return filtered;
   }, [posts, searchQuery, selectedCategory, selectedTag, sortBy]);
 
-  const effectiveCurrentPage = useMemo(() => {
-    return 1;
-  }, [searchQuery, selectedCategory, selectedTag, sortBy]);
-
   useEffect(() => {
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
@@ -126,14 +122,7 @@ export function BlogsContent() {
     setCurrentPage(1);
   };
 
-  const displayPage =
-    searchQuery ||
-    selectedCategory !== "all" ||
-    selectedTag !== "all" ||
-    sortBy !== "date-desc"
-      ? effectiveCurrentPage
-      : currentPage;
-  const indexOfLastPost = displayPage * postsPerPage;
+  const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
@@ -208,6 +197,7 @@ export function BlogsContent() {
             value={selectedCategory}
             onValueChange={(value) => {
               setSelectedCategory(value);
+              setCurrentPage(1);
               trackEvent("blog_category_filter", {
                 category: value,
                 resultsCount: filteredPosts.length,
@@ -230,6 +220,7 @@ export function BlogsContent() {
             value={selectedTag}
             onValueChange={(value) => {
               setSelectedTag(value);
+              setCurrentPage(1);
               trackEvent("blog_tag_filter", {
                 tag: value,
                 resultsCount: filteredPosts.length,
@@ -252,6 +243,7 @@ export function BlogsContent() {
             value={sortBy}
             onValueChange={(value) => {
               setSortBy(value);
+              setCurrentPage(1);
               trackEvent("blog_sort_change", {
                 sortBy: value,
               });

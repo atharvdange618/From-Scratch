@@ -234,7 +234,7 @@ export async function RelatedPosts({
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 text-xs font-bold">
                     <Clock className="h-3 w-3" />
-                    {post.readingTime || "N/A"}
+                    {post.readingTime || "Quick read"}
                   </span>
                 </div>
 

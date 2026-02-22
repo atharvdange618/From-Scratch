@@ -86,12 +86,11 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b-4 border-black dark:border-gray-700 bg-white dark:bg-neutral-900 py-4">
       <div className="container mx-auto flex items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
-          <div className="relative h-10 w-10 rounded-full border-4 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-primary">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-xl font-bold dark:text-black">
-              FS
-            </div>
-          </div>
-          <span className="text-xl font-bold dark:text-white">
+          <img src="/from-scratch-logo.png" className="h-10 w-10" alt="" />
+          <span
+            className="text-2xl font-bold dark:text-white"
+            style={{ fontFamily: "'Hitchcut', sans-serif" }}
+          >
             From Scratch
           </span>
         </Link>
@@ -268,22 +267,34 @@ export function Header() {
                         </Link>
                       </li>
                     ))}
-                    {isAdmin &&
-                      adminLinks.map((link) => (
-                        <li key={link.href}>
-                          <Link
-                            href={link.href}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] ${
-                              isActiveLink(link.href)
-                                ? "bg-[#60B5FF] dark:bg-primary text-white dark:text-black"
-                                : "bg-gray-100 dark:bg-gray-800 dark:text-white hover:bg-[#60B5FF] dark:hover:bg-primary hover:text-white dark:hover:text-black"
-                            }`}
-                          >
-                            {link.label}
-                          </Link>
+                    {isAdmin && (
+                      <>
+                        <li className="pt-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="h-[2px] flex-1 bg-black dark:bg-gray-700" />
+                            <span className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+                              Admin
+                            </span>
+                            <div className="h-[2px] flex-1 bg-black dark:bg-gray-700" />
+                          </div>
                         </li>
-                      ))}
+                        {adminLinks.map((link) => (
+                          <li key={link.href}>
+                            <Link
+                              href={link.href}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] ${
+                                isActiveLink(link.href)
+                                  ? "bg-[#60B5FF] dark:bg-primary text-white dark:text-black"
+                                  : "bg-gray-100 dark:bg-gray-800 dark:text-white hover:bg-[#60B5FF] dark:hover:bg-primary hover:text-white dark:hover:text-black"
+                              }`}
+                            >
+                              {link.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </>
+                    )}
                   </ul>
 
                   <div className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">

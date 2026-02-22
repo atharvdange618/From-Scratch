@@ -38,21 +38,3 @@ export const handleLinkedInShare = ({
     postTitle: title,
   });
 };
-
-export const handleFacebookShare = ({
-  title,
-  url,
-}: {
-  title: string;
-  url: string;
-}) => {
-  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-    url,
-  )}`;
-  window.open(facebookUrl, "_blank", "noopener,noreferrer");
-
-  trackEvent("share_post", {
-    method: "facebook",
-    postTitle: title,
-  });
-};

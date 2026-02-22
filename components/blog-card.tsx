@@ -7,7 +7,7 @@ import {
   Clock,
   Link as LinkIcon,
   Linkedin,
-  Facebook,
+  Share2,
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { getCategoryColor } from "@/lib/categories";
@@ -23,13 +23,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useToast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
-import {
-  handleFacebookShare,
-  handleLinkedInShare,
-  handleXShare,
-} from "@/lib/share";
+import { handleLinkedInShare, handleXShare } from "@/lib/share";
 
 interface BlogPost {
   _id: string;
@@ -102,8 +103,7 @@ export function BlogCard({
 
   return (
     <Card
-      className="group cursor-pointer overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] h-full flex flex-col"
-      onClick={() => router.push(`/posts/${post.slug}`)}
+      className="group overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] h-full flex flex-col"
       onMouseEnter={handleHover}
     >
       <CardHeader className="border-b-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
@@ -130,64 +130,77 @@ export function BlogCard({
             </span>
           </div>
 
-          <div
-            className="flex items-center gap-1"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() =>
-                handleXShare({
-                  title: post.title,
-                  url: postUrl,
-                  description: post.summary,
-                })
-              }
-              className="rounded-none border-2 border-black dark:border-gray-700 bg-black dark:bg-gray-700 p-1.5 text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              aria-label="Share on X"
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                className="rounded-none border-2 border-black dark:border-gray-700 bg-gray-200 dark:bg-gray-700 p-1.5 text-black dark:text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:text-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                aria-label="Share this post"
+              >
+                <Share2 className="h-4 w-4" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent
+              align="end"
+              sideOffset={8}
+              className="w-auto rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
             >
-              <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-            </button>
-            <button
-              onClick={() =>
-                handleLinkedInShare({ title: post.title, url: postUrl })
-              }
-              className="rounded-none border-2 border-black dark:border-gray-700 bg-[#0A66C2] p-1.5 text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              aria-label="Share on LinkedIn"
-            >
-              <Linkedin className="h-3 w-3" />
-            </button>
-            <button
-              onClick={() =>
-                handleFacebookShare({ title: post.title, url: postUrl })
-              }
-              className="rounded-none border-2 border-black dark:border-gray-700 bg-[#1877F2] p-1.5 text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              aria-label="Share on Facebook"
-            >
-              <Facebook className="h-3 w-3" />
-            </button>
-            <button
-              onClick={() => handleCopyLink({ title: post.title })}
-              className="rounded-none border-2 border-black dark:border-gray-700 bg-gray-200 dark:bg-gray-700 p-1.5 text-black dark:text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              aria-label="Copy link"
-            >
-              <LinkIcon className="h-3 w-3" />
-            </button>
-          </div>
+              <div className="flex flex-col gap-1.5">
+                <button
+                  onClick={() =>
+                    handleXShare({
+                      title: post.title,
+                      url: postUrl,
+                      description: post.summary,
+                    })
+                  }
+                  className="flex items-center gap-2 rounded-none border-2 border-black dark:border-gray-700 bg-black dark:bg-gray-700 px-3 py-2 text-xs font-bold text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  aria-label="Share on X"
+                >
+                  <svg
+                    className="h-3.5 w-3.5"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                  Share on X
+                </button>
+                <button
+                  onClick={() =>
+                    handleLinkedInShare({ title: post.title, url: postUrl })
+                  }
+                  className="flex items-center gap-2 rounded-none border-2 border-black dark:border-gray-700 bg-[#0A66C2] px-3 py-2 text-xs font-bold text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  aria-label="Share on LinkedIn"
+                >
+                  <Linkedin className="h-3.5 w-3.5" />
+                  Share on LinkedIn
+                </button>
+                <button
+                  onClick={() => handleCopyLink({ title: post.title })}
+                  className="flex items-center gap-2 rounded-none border-2 border-black dark:border-gray-700 bg-gray-200 dark:bg-gray-700 px-3 py-2 text-xs font-bold text-black dark:text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  aria-label="Copy link"
+                >
+                  <LinkIcon className="h-3.5 w-3.5" />
+                  Copy Link
+                </button>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
         <CardTitle className="text-xl font-bold leading-tight">
           {post.title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-4 flex-1">
+      <CardContent className="p-4 flex-1 flex flex-col">
         <p className="mb-4 line-clamp-3 font-serif dark:text-gray-300">
           {post.summary}
         </p>
 
         <div className="mb-3 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           <Clock className="h-4 w-4" />
-          <span className="font-medium">{post.readingTime || "N/A"}</span>
+          <span className="font-medium">
+            {post.readingTime || "Quick read"}
+          </span>
         </div>
 
         <div className="mb-3">
@@ -233,11 +246,23 @@ export function BlogCard({
             </span>
           )}
         </div>
+
+        <div className="mt-auto pt-4 flex items-center gap-2">
+          <div className="h-7 w-7 rounded-full border-2 border-black dark:border-gray-700 bg-[#FF9149] flex items-center justify-center">
+            <span className="text-[10px] font-bold text-white">AD</span>
+          </div>
+          <span
+            className="text-base font-semibold dark:text-gray-300"
+            style={{ fontFamily: "'Muslyne Lettavella', regular" }}
+          >
+            Atharv Dange
+          </span>
+        </div>
       </CardContent>
       <CardFooter className="border-t-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
         <Button
           onClick={() => router.push(`/posts/${post.slug}`)}
-          className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] px-4 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:group-hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
+          className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] px-4 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
         >
           Read More
         </Button>

@@ -223,6 +223,20 @@ export default async function PostPage({
           items={[{ label: "Blog", href: "/blogs" }, { label: post.title }]}
         />
 
+        {post.bannerImage && (
+          <div className="mb-8 overflow-hidden rounded-none border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+            <Image
+              src={post.bannerImage}
+              alt={post.title}
+              width={1200}
+              height={630}
+              className="h-auto w-full object-cover"
+              quality={75}
+              priority
+            />
+          </div>
+        )}
+
         <header className="mb-12">
           <div className="mb-4 flex flex-wrap items-center gap-3">
             <Badge
@@ -300,20 +314,6 @@ export default async function PostPage({
             </Card>
           )}
         </header>
-
-        {post.bannerImage && (
-          <div className="mb-12 overflow-hidden rounded-none border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
-            <Image
-              src={post.bannerImage}
-              alt={post.title}
-              width={1200}
-              height={630}
-              className="h-auto w-full object-cover"
-              quality={75}
-              loading="lazy"
-            />
-          </div>
-        )}
 
         <Separator className="my-4 border-2 border-black dark:border-gray-700" />
 

@@ -2,6 +2,7 @@ import { Code, Database, Server } from "@deemlol/next-icons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 import Link from "next/link";
 
 export async function AboutContent() {
@@ -144,9 +145,11 @@ export async function AboutContent() {
           <div className="relative w-full">
             <div className="absolute -left-3 -top-3 md:-left-4 md:-top-4 h-full w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149]"></div>
             <div className="relative aspect-square overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
-              <img
-                src="/about-pic.jpg?height=400&width=400"
+              <Image
+                src="/about-pic.jpg"
                 alt="Atharv Dange - Full Stack Engineer"
+                width={400}
+                height={400}
                 className="h-full w-full object-cover"
               />
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Code2, Mail, Sparkles } from "lucide-react";
+import { Code2, BookOpen, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useStatsQuery } from "@/lib/hooks/use-stats";
@@ -14,6 +14,11 @@ export function HeroSection() {
       ? "..."
       : (data?.projects ?? "0");
   const postCount = isError ? "12+" : isLoading ? "..." : (data?.posts ?? "0");
+  const categoryCount = isError
+    ? "5+"
+    : isLoading
+      ? "..."
+      : (data?.categories ?? "0");
 
   return (
     <section className="mb-12 mt-4 md:mb-16 md:mt-8">
@@ -62,10 +67,10 @@ export function HeroSection() {
               </div>
               <div className="border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(175,221,255,0.2)]">
                 <div className="text-2xl md:text-3xl font-black dark:text-white">
-                  24/7
+                  {categoryCount}
                 </div>
                 <div className="text-xs md:text-sm font-bold mt-1 dark:text-gray-300">
-                  LEARNING
+                  CATEGORIES
                 </div>
               </div>
             </div>
@@ -75,16 +80,18 @@ export function HeroSection() {
                 asChild
                 className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-primary px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-black dark:text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,145,73,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,145,73,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,145,73,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,145,73,0.3)]"
               >
-                <Link href="/contact">
-                  <Mail className="w-5 h-5 mr-2" />
-                  CONTACT ME
+                <Link href="/blogs" prefetch>
+                  <BookOpen className="w-5 h-5 mr-2" />
+                  READ THE BLOG
                 </Link>
               </Button>
               <Button
                 asChild
                 className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-black dark:text-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] dark:hover:bg-gray-700 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(96,181,255,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
               >
-                <Link href="/about">ABOUT ME</Link>
+                <Link href="/about" prefetch>
+                  ABOUT ME
+                </Link>
               </Button>
             </div>
           </div>

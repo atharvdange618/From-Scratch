@@ -9,6 +9,7 @@ export const statsKeys = {
 interface StatsData {
   posts: number;
   projects: number;
+  categories: number;
 }
 
 /**
