@@ -38,7 +38,14 @@ async function getIpGeolocation(ip: string): Promise<{
   timezone?: string;
 }> {
   try {
-    const response = await fetch(`https://ip-api.com/json/${ip}`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch(`https://ip-api.com/json/${ip}`, {
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+
     const data: IpApiResponse = await response.json();
 
     if (data.status === "success") {
@@ -50,7 +57,10 @@ async function getIpGeolocation(ip: string): Promise<{
       };
     }
   } catch (error) {
-    console.error("[Analytics] IP geolocation error:", error);
+    console.warn(
+      "[Analytics] IP geolocation failed (non-fatal):",
+      error instanceof Error ? error.message : error,
+    );
   }
 
   return {};

@@ -100,6 +100,7 @@ export async function GET(request: NextRequest) {
                 { $match: { city: { $exists: true, $ne: null } } },
                 { $group: { _id: "$city", count: { $sum: 1 } } },
                 { $sort: { count: -1 } },
+                { $limit: 10 },
               ],
               deviceBreakdown: [
                 { $match: { device: { $exists: true, $ne: null } } },
@@ -121,11 +122,14 @@ export async function GET(request: NextRequest) {
         ]),
         AnalyticsEvent.aggregate([
           {
-            $match: {
-              timestamp: {
-                $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-              },
-            },
+            $match:
+              Object.keys(dateFilter).length > 0
+                ? dateFilter
+                : {
+                    timestamp: {
+                      $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                    },
+                  },
           },
           {
             $group: {
@@ -194,9 +198,13 @@ export async function GET(request: NextRequest) {
         AnalyticsEvent.aggregate([
           {
             $match: {
-              timestamp: {
-                $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-              },
+              ...(Object.keys(dateFilter).length > 0
+                ? dateFilter
+                : {
+                    timestamp: {
+                      $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                    },
+                  }),
               ipAddress: { $exists: true, $ne: null },
             },
           },
