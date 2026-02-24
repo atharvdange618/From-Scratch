@@ -69,7 +69,7 @@ import { env } from "@/lib/env";
  * Excludes admin users and development environment
  */
 export function shouldTrackEvent(): boolean {
-  if (env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== "production") {
     return false;
   }
 
@@ -129,7 +129,7 @@ export function parseUserAgent(userAgent: string): {
  */
 export async function trackEvent(
   eventType: string,
-  eventData: Record<string, any> = {}
+  eventData: Record<string, any> = {},
 ): Promise<void> {
   if (!shouldTrackEvent()) {
     console.log("[Analytics] Tracking disabled (not in production)");
@@ -186,7 +186,7 @@ export function trackPageView(path: string, referrer?: string): void {
 export function trackExternalLink(
   url: string,
   linkType: string,
-  metadata: Record<string, any> = {}
+  metadata: Record<string, any> = {},
 ): void {
   trackEvent("external_link_click", {
     url,
@@ -210,7 +210,7 @@ export function trackSearch(query: string, resultsCount: number): void {
  */
 export function trackScrollDepth(
   milestone: number,
-  metadata: Record<string, any> = {}
+  metadata: Record<string, any> = {},
 ): void {
   trackEvent("scroll_depth", {
     milestone,
