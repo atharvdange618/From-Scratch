@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface IRateLimit extends Document {
+interface IRateLimit extends Document {
   sessionId: string;
   eventCount: number;
   windowStart: Date;

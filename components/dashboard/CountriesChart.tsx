@@ -15,8 +15,10 @@ interface CountriesChartProps {
   countries: Array<{ _id: string; count: number }>;
 }
 
+const EMPTY_ARRAY: any[] = [];
+
 export default function CountriesChart({
-  countries: topCountries = [],
+  countries: topCountries = EMPTY_ARRAY,
 }: CountriesChartProps) {
   const chartData = topCountries.map((item) => ({
     country: item._id || "Unknown",
@@ -27,9 +29,7 @@ export default function CountriesChart({
     <Card>
       <CardHeader>
         <CardTitle>Countries Breakdown</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Visitors by country
-        </p>
+        <p className="text-sm text-muted-foreground">Visitors by country</p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>

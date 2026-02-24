@@ -1,35 +1,13 @@
+import { SearchResult } from "@/app/api/search/route";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 
-export const searchKeys = {
+const searchKeys = {
   all: ["search"] as const,
   query: (query: string) => [...searchKeys.all, query] as const,
 };
 
 // Types
-interface Post {
-  _id: string;
-  title: string;
-  slug: string;
-  summary: string;
-  tags: string[];
-  category: string;
-}
-
-interface Project {
-  _id: string;
-  name: string;
-  slug: string;
-  description: string;
-  techStack: string[];
-}
-
-export interface SearchResult {
-  type: "post" | "project";
-  item: Post | Project;
-  score: number;
-}
-
 interface SearchResponse {
   results: SearchResult[];
 }

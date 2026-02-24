@@ -141,8 +141,8 @@ export function BlogsContent() {
         </div>
 
         <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {[...Array(9)].map((_, i) => (
-            <BlogCardSkeleton key={`skeleton-${i}`} />
+          {Array.from({ length: 9 }).map((_, i) => (
+            <BlogCardSkeleton key={`blog-skeleton-${i}`} />
           ))}
         </div>
       </div>

@@ -97,8 +97,8 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="md:col-span-5 flex items-center justify-center">
-          <div className="relative w-full max-w-md">
+        <div className="md:col-span-5 flex items-center justify-center mt-12 md:mt-0">
+          <div className="relative w-[85%] sm:w-[90%] md:w-full max-w-md mx-auto">
             <div className="relative">
               <div className="absolute -rotate-6 top-4 left-4 w-full h-72 md:h-80 border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(175,221,255,0.2)]"></div>
 

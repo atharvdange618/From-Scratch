@@ -15,7 +15,11 @@ interface DeviceChartProps {
   deviceBreakdown: Array<{ _id: string; count: number }>;
 }
 
-export default function DeviceChart({ deviceBreakdown = [] }: DeviceChartProps) {
+const EMPTY_ARRAY: any[] = [];
+
+export default function DeviceChart({
+  deviceBreakdown = EMPTY_ARRAY,
+}: DeviceChartProps) {
   const chartData = deviceBreakdown.map((item) => ({
     device: item._id || "Unknown",
     count: item.count,

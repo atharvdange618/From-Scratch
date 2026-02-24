@@ -34,8 +34,21 @@ export default function TrackableLink({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLAnchorElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleClick(e as unknown as React.MouseEvent<HTMLAnchorElement>);
+    }
+  };
+
   return (
-    <a onClick={handleClick} {...props}>
+    <a
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="link"
+      {...props}
+    >
       {children}
     </a>
   );

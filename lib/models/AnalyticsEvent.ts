@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface IAnalyticsEvent extends Document {
+interface IAnalyticsEvent extends Document {
   eventType: string;
   eventData: {
     [key: string]: any;

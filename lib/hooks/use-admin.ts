@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 
 // Query Keys
-export const adminKeys = {
+const adminKeys = {
   all: ["admin"] as const,
   check: () => [...adminKeys.all, "check"] as const,
 };

@@ -34,7 +34,7 @@ export function addToRecentlyViewed(post: Omit<RecentPost, "viewedAt">) {
   localStorage.setItem(RECENT_POSTS_KEY, JSON.stringify(updated));
 }
 
-export function getRecentlyViewed(): RecentPost[] {
+function getRecentlyViewed(): RecentPost[] {
   if (typeof window === "undefined") return [];
 
   try {

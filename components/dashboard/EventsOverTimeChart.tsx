@@ -17,9 +17,11 @@ interface EventsOverTimeChartProps {
   dailyUniqueVisitors: Array<{ _id: string; uniqueVisitors: number }>;
 }
 
+const EMPTY_ARRAY: any[] = [];
+
 export default function EventsOverTimeChart({
-  dailyEvents = [],
-  dailyUniqueVisitors = [],
+  dailyEvents = EMPTY_ARRAY,
+  dailyUniqueVisitors = EMPTY_ARRAY,
 }: EventsOverTimeChartProps) {
   const visitorsMap = new Map(
     dailyUniqueVisitors.map((item) => [item._id, item.uniqueVisitors]),

@@ -15,8 +15,10 @@ interface CitiesChartProps {
   cities: Array<{ _id: string; count: number }>;
 }
 
+const EMPTY_ARRAY: any[] = [];
+
 export default function CitiesChart({
-  cities: topCities = [],
+  cities: topCities = EMPTY_ARRAY,
 }: CitiesChartProps) {
   const chartData = topCities.map((item) => ({
     city: item._id || "Unknown",
@@ -27,9 +29,7 @@ export default function CitiesChart({
     <Card>
       <CardHeader>
         <CardTitle>Cities Breakdown</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Visitors by city
-        </p>
+        <p className="text-sm text-muted-foreground">Visitors by city</p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>

@@ -15,8 +15,10 @@ interface OperatingSystemChartProps {
   osBreakdown: Array<{ _id: string; count: number }>;
 }
 
+const EMPTY_ARRAY: any[] = [];
+
 export default function OperatingSystemChart({
-  osBreakdown = [],
+  osBreakdown = EMPTY_ARRAY,
 }: OperatingSystemChartProps) {
   const chartData = osBreakdown.map((item) => ({
     os: item._id || "Unknown",

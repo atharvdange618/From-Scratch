@@ -29,7 +29,7 @@ export default function ScrollTracker({
       const scrollTop = window.scrollY;
 
       const scrollPercentage = Math.round(
-        ((scrollTop + windowHeight) / documentHeight) * 100
+        ((scrollTop + windowHeight) / documentHeight) * 100,
       );
 
       const milestones = [25, 50, 75, 100];
@@ -51,7 +51,7 @@ export default function ScrollTracker({
       });
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);

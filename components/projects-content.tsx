@@ -44,8 +44,8 @@ export function ProjectsContent() {
             My Projects
           </h1>
           <div className="grid gap-6 md:grid-cols-2">
-            {[...Array(4)].map((_, i) => (
-              <ProjectCardSkeleton key={`skeleton-${i}`} />
+            {Array.from({ length: 4 }).map((_, i) => (
+              <ProjectCardSkeleton key={`project-skeleton-${i}`} />
             ))}
           </div>
         </div>

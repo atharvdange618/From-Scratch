@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface IProject extends Document {
+interface IProject extends Document {
   name: string;
   slug: string;
   description: string;

@@ -1,22 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useMemo, useCallback } from "react";
 // import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
 import { useTheme } from "next-themes";
-
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
-import { Search, Menu, X, Sun, Moon } from "@deemlol/next-icons";
+import { Search, Sun, Moon } from "@deemlol/next-icons";
+import { MobileMenu } from "./mobile-menu";
 import { GlobalSearch } from "./global-search";
 
 export function Header() {
@@ -83,10 +77,19 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b-4 border-black dark:border-gray-700 bg-white dark:bg-neutral-900 py-4">
+    <header
+      suppressHydrationWarning
+      className="sticky top-0 z-50 w-full border-b-4 border-black dark:border-gray-700 bg-white dark:bg-neutral-900 py-4"
+    >
       <div className="container mx-auto flex items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/from-scratch-logo.png" className="h-10 w-10" alt="" />
+          <Image
+            src="/from-scratch-logo.png"
+            width={40}
+            height={40}
+            className="h-10 w-10"
+            alt="From Scratch Logo"
+          />
           <span
             className="text-2xl font-bold dark:text-white"
             style={{ fontFamily: "'Hitchcut', sans-serif" }}
@@ -94,7 +97,6 @@ export function Header() {
             From Scratch
           </span>
         </Link>
-
         <div className="hidden items-center gap-6 md:flex">
           <nav>
             <ul className="flex gap-6">
@@ -185,7 +187,6 @@ export function Header() {
             )} */}
           </div>
         </div>
-
         <div className="flex items-center gap-2 md:hidden">
           <Button
             size="icon"
@@ -212,110 +213,14 @@ export function Header() {
             <span className="sr-only">Search</span>
           </Button>
 
-          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button
-                size="icon"
-                className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
-                aria-label="Open menu"
-              >
-                <Menu className="h-5 w-5 text-black dark:text-white" />
-                <span className="sr-only">Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-[300px] border-l-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 [&>button]:hidden"
-            >
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <SheetDescription className="sr-only">
-                Main navigation links to different sections of the website
-              </SheetDescription>
-
-              <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between border-b-4 border-black dark:border-gray-700 p-6">
-                  <span
-                    className="text-xl font-bold dark:text-white"
-                    aria-hidden="true"
-                  >
-                    Menu
-                  </span>
-                  <Button
-                    size="icon"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149]/80 dark:hover:bg-secondary/80 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
-                    aria-label="Close menu"
-                  >
-                    <X className="h-5 w-5 text-white" />
-                  </Button>
-                </div>
-
-                <nav className="flex-1 p-6">
-                  <ul className="space-y-4">
-                    {navLinks.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] ${
-                            isActiveLink(link.href)
-                              ? "bg-[#FF9149] dark:bg-secondary text-white dark:text-black"
-                              : "bg-white dark:bg-gray-800 dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
-                          }`}
-                        >
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                    {isAdmin && (
-                      <>
-                        <li className="pt-4">
-                          <div className="flex items-center gap-2 mb-2">
-                            <div className="h-[2px] flex-1 bg-black dark:bg-gray-700" />
-                            <span className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
-                              Admin
-                            </span>
-                            <div className="h-[2px] flex-1 bg-black dark:bg-gray-700" />
-                          </div>
-                        </li>
-                        {adminLinks.map((link) => (
-                          <li key={link.href}>
-                            <Link
-                              href={link.href}
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] ${
-                                isActiveLink(link.href)
-                                  ? "bg-[#60B5FF] dark:bg-primary text-white dark:text-black"
-                                  : "bg-gray-100 dark:bg-gray-800 dark:text-white hover:bg-[#60B5FF] dark:hover:bg-primary hover:text-white dark:hover:text-black"
-                              }`}
-                            >
-                              {link.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </>
-                    )}
-                  </ul>
-
-                  <div className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
-                    <h3 className="mb-2 text-sm font-bold dark:text-white">
-                      ⌨️ Keyboard Shortcuts
-                    </h3>
-                    <div className="flex items-center gap-2 text-sm dark:text-gray-300">
-                      <kbd className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-2 py-1 font-bold text-xs">
-                        Ctrl
-                      </kbd>
-                      <span>+</span>
-                      <kbd className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-2 py-1 font-bold text-xs">
-                        K
-                      </kbd>
-                      <span className="text-xs">Quick Search</span>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <MobileMenu
+            isOpen={isMobileMenuOpen}
+            setIsOpen={setIsMobileMenuOpen}
+            navLinks={navLinks}
+            adminLinks={adminLinks}
+            isAdmin={!!isAdmin}
+            isActiveLink={isActiveLink}
+          />
         </div>
       </div>
 

@@ -2,9 +2,8 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
 import Project from "@/lib/models/Project";
-import { logger } from "@/lib/logger";
 
-interface SearchResult {
+export interface SearchResult {
   type: "post" | "project";
   item: any;
   score: number;

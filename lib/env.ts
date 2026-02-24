@@ -1,6 +1,6 @@
 /**
  * Environment variables configuration
-*/
+ */
 
 // Server-side environment variables
 const getServerEnv = () => ({
@@ -34,5 +34,3 @@ export const env = {
   ...getClientEnv(),
   ...(typeof window === "undefined" ? getServerEnv() : {}),
 } as ReturnType<typeof getClientEnv> & Partial<ReturnType<typeof getServerEnv>>;
-
-export type Env = typeof env;

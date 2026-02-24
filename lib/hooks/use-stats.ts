@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 // Query Keys
-export const statsKeys = {
+const statsKeys = {
   all: ["stats"] as const,
 };
 

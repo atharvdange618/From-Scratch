@@ -15,7 +15,11 @@ interface TopPagesChartProps {
   topPages: Array<{ _id: string; count: number }>;
 }
 
-export default function TopPagesChart({ topPages = [] }: TopPagesChartProps) {
+const EMPTY_ARRAY: any[] = [];
+
+export default function TopPagesChart({
+  topPages = EMPTY_ARRAY,
+}: TopPagesChartProps) {
   const chartData = topPages.slice(0, 10).map((item) => ({
     page: item._id.length > 30 ? item._id.substring(0, 30) + "..." : item._id,
     views: item.count,

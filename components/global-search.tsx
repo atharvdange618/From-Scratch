@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Search, Clock, Loader2 } from "lucide-react";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { SearchResult } from "@/app/api/search/route";
 
 interface Post {
   _id: string;
@@ -29,12 +30,6 @@ interface Project {
   slug: string;
   description: string;
   techStack: string[];
-}
-
-interface SearchResult {
-  type: "post" | "project";
-  item: Post | Project;
-  score: number;
 }
 
 interface GlobalSearchProps {

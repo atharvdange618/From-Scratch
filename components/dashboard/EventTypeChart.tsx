@@ -54,8 +54,10 @@ const renderCustomLabel = ({
   );
 };
 
+const EMPTY_ARRAY: any[] = [];
+
 export default function EventTypeChart({
-  eventTypeDistribution = [],
+  eventTypeDistribution = EMPTY_ARRAY,
 }: EventTypeChartProps) {
   const chartData = eventTypeDistribution.map((item) => ({
     name: item._id.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
@@ -82,7 +84,9 @@ export default function EventTypeChart({
               outerRadius={80}
               fill="#8884d8"
               dataKey="value"
-            >              {chartData.map((entry, index) => (
+            >
+              {" "}
+              {chartData.map((entry, index) => (
                 <Cell
                   key={`cell-${entry.name}`}
                   fill={COLORS[index % COLORS.length]}
