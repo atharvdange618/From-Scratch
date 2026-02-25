@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -81,6 +81,8 @@ export default function PostEditor() {
   const [previewTokens, setPreviewTokens] = useState<any[]>([]);
   const [generatingPreview, setGeneratingPreview] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+  const [isRestoringData, setIsRestoringData] = useState(true);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -109,8 +111,72 @@ export default function PostEditor() {
   const { watch, setValue } = form;
   const title = watch("title");
   const content = watch("content");
+  const formValues = watch();
 
   useSlugGenerator(title, isEditMode, setValue);
+
+  useEffect(() => {
+    const loadDraft = () => {
+      const draft = localStorage.getItem("post-editor-draft");
+      if (draft) {
+        try {
+          const parsedDraft = JSON.parse(draft);
+          form.reset(parsedDraft.formValues);
+          setIsEditMode(parsedDraft.isEditMode);
+          setSelectedPostId(parsedDraft.selectedPostId);
+          setSelectedPostSlug(parsedDraft.selectedPostSlug);
+          setPreviewTokens(parsedDraft.previewTokens || []);
+          setLastSavedAt(new Date(parsedDraft.timestamp));
+
+          toast({
+            title: "📝 Draft Restored",
+            description:
+              "Your previous progress has been automatically restored.",
+          });
+        } catch (e) {
+          console.error("Failed to parse draft", e);
+          localStorage.removeItem("post-editor-draft");
+        }
+      }
+      setTimeout(() => setIsRestoringData(false), 500);
+    };
+
+    setTimeout(loadDraft, 100);
+  }, [form.reset, toast]);
+
+  useEffect(() => {
+    if (isRestoringData) return;
+
+    if (
+      !formValues.title &&
+      !formValues.content &&
+      !formValues.summary &&
+      !formValues.category
+    )
+      return;
+
+    const timer = setTimeout(() => {
+      const draftData = {
+        formValues,
+        isEditMode,
+        selectedPostId,
+        selectedPostSlug,
+        previewTokens,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem("post-editor-draft", JSON.stringify(draftData));
+      setLastSavedAt(new Date());
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [
+    formValues,
+    isEditMode,
+    selectedPostId,
+    selectedPostSlug,
+    previewTokens,
+    isRestoringData,
+  ]);
 
   const { uploading, handleImageUpload } = useImageUpload(
     setValue,
@@ -154,6 +220,7 @@ export default function PostEditor() {
       setSelectedPostSlug(post.slug);
       setIsEditMode(true);
       setPreviewTokens(post.previewTokens || []);
+      setLastSavedAt(null);
     } catch (error) {
       console.error("Error loading post:", error);
       toast({
@@ -184,6 +251,8 @@ export default function PostEditor() {
     setSelectedPostSlug("");
     setIsEditMode(false);
     setPreviewTokens([]);
+    setLastSavedAt(null);
+    localStorage.removeItem("post-editor-draft");
   };
 
   const onSubmit = async (data: PostFormValues) => {
@@ -220,6 +289,8 @@ export default function PostEditor() {
             : `Post ${data.isPublished ? "published" : "saved as draft"}`,
         });
 
+        localStorage.removeItem("post-editor-draft");
+        setLastSavedAt(null);
         if (!isEditMode) {
           resetForm();
           router.push("/blogs");
@@ -876,31 +947,42 @@ export default function PostEditor() {
               )}
             />
 
-            <div className="flex gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => form.reset()}
-                className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
-              >
-                Reset
-              </Button>
-              <Button
-                type="submit"
-                disabled={saving}
-                className="rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]"
-              >
-                {saving ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Save className="mr-2 h-4 w-4" />
-                )}
-                {isEditMode
-                  ? "Update Post"
-                  : form.watch("isPublished")
-                    ? "Publish Post"
-                    : "Save Draft"}
-              </Button>
+            <div className="flex items-center gap-4">
+              {lastSavedAt && (
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  Last saved at{" "}
+                  {lastSavedAt.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              )}
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={resetForm}
+                  className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
+                >
+                  Reset
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={saving}
+                  className="rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]"
+                >
+                  {saving ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="mr-2 h-4 w-4" />
+                  )}
+                  {isEditMode
+                    ? "Update Post"
+                    : form.watch("isPublished")
+                      ? "Publish Post"
+                      : "Save Draft"}
+                </Button>
+              </div>
             </div>
           </div>
         </Card>
