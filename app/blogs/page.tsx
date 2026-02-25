@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { BlogsContent } from "@/components/blogs-content";
 import { env } from "@/lib/env";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "Blog",
   description:

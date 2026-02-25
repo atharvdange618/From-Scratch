@@ -4,7 +4,7 @@ import { BlogEntries } from "@/components/blog-entries";
 import { env } from "@/lib/env";
 import Script from "next/script";
 
-export const revalidate = 60;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "From Scratch - Building Tools, Apps & Ideas | Atharv Dange",

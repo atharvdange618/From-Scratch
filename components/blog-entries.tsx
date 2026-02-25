@@ -20,7 +20,7 @@ const getRecentPostsFromDB = async () => {
 };
 
 const getRecentPosts = unstable_cache(getRecentPostsFromDB, ["recent-posts"], {
-  revalidate: 60,
+  revalidate: 86400,
   tags: ["posts"],
 });
 

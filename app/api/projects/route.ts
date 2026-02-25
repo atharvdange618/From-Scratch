@@ -5,6 +5,8 @@ import { checkAdminAccess } from "@/lib/auth";
 import { createProjectSchema } from "@/lib/validations/api-schemas";
 import { logger } from "@/lib/logger";
 
+export const revalidate = 86400;
+
 // GET /api/projects - Get all projects (with optional filters)
 export async function GET(request: NextRequest) {
   try {

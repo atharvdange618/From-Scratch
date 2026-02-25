@@ -8,7 +8,7 @@ import { revalidatePosts } from "@/lib/cache";
 import { createPostSchema } from "@/lib/validations/api-schemas";
 import { logger } from "@/lib/logger";
 
-export const revalidate = 60;
+export const revalidate = 86400;
 
 // GET /api/posts - Get all posts (with optional filters)
 export async function GET(request: NextRequest) {
@@ -71,7 +71,8 @@ export async function GET(request: NextRequest) {
       { success: true, posts },
       {
         headers: {
-          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
+          "Cache-Control":
+            "public, s-maxage=86400, stale-while-revalidate=86400",
         },
       },
     );

@@ -4,7 +4,7 @@ import Post from "@/lib/models/Post";
 import Project from "@/lib/models/Project";
 import { logger } from "@/lib/logger";
 
-export const revalidate = 60;
+export const revalidate = 86400;
 
 export async function GET() {
   try {
@@ -27,7 +27,8 @@ export async function GET() {
       },
       {
         headers: {
-          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
+          "Cache-Control":
+            "public, s-maxage=86400, stale-while-revalidate=86400",
         },
       },
     );

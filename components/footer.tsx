@@ -29,7 +29,7 @@ const getRecentProjects = unstable_cache(
   getRecentProjectsFromDB,
   ["footer-projects"],
   {
-    revalidate: 300,
+    revalidate: 86400,
     tags: ["projects"],
   },
 );

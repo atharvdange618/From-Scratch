@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { ProjectsContent } from "@/components/projects-content";
 import { env } from "@/lib/env";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "Projects",
   description:

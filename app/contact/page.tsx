@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { ContactContent } from "@/components/contact-content";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "Contact",
   description:

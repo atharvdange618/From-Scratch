@@ -32,7 +32,7 @@ import { env } from "@/lib/env";
 // @ts-ignore - CSS import for syntax highlighting
 import "highlight.js/styles/atom-one-dark.css";
 
-export const revalidate = 60;
+export const revalidate = 86400;
 export const dynamicParams = true;
 
 async function getPost(slug: string): Promise<Post | null> {

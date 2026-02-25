@@ -10,7 +10,7 @@ import { calculateReadingTime } from "@/lib/reading-time";
 
 type Params = Promise<{ slug: string }>;
 
-export const revalidate = 60;
+export const revalidate = 86400;
 
 // GET /api/posts/[slug] - Get a single post by slug
 export async function GET(
@@ -42,7 +42,8 @@ export async function GET(
       { success: true, data: post },
       {
         headers: {
-          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
+          "Cache-Control":
+            "public, s-maxage=86400, stale-while-revalidate=86400",
         },
       },
     );

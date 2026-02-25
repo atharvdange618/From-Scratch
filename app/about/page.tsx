@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { AboutContent } from "@/components/about-content";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "About",
   description:
