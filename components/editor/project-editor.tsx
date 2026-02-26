@@ -91,7 +91,12 @@ export default function ProjectEditor() {
 
       const response = await fetch(`/api/projects/${selectedProject.slug}`);
       if (!response.ok) {
-        throw new Error("Failed to load project");
+        let errorMsg = "Failed to load project";
+        try {
+          const errData = await response.json();
+          errorMsg = errData.error || errData.message || errorMsg;
+        } catch (e) {}
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();
@@ -115,11 +120,11 @@ export default function ProjectEditor() {
       setSelectedProjectId(projectId);
       setSelectedProjectSlug(project.slug);
       setIsEditMode(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error loading project:", error);
       toast({
         title: "❌ Error",
-        description: "Failed to load project",
+        description: error.message || "Failed to load project",
         variant: "destructive",
       });
     }
@@ -188,12 +193,25 @@ export default function ProjectEditor() {
 
         router.push("/projects");
       } else {
-        throw new Error("Failed to save project");
+        let errorMessage = "Failed to save project";
+        try {
+          const errorData = await response.json();
+          if (errorData.details && Array.isArray(errorData.details)) {
+            errorMessage = `${errorData.error || "Validation error"}: ${errorData.details.map((d: any) => d.message).join(", ")}`;
+          } else if (errorData.error) {
+            errorMessage = errorData.error;
+          } else if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+        } catch (e) {
+          // Keep default error
+        }
+        throw new Error(errorMessage);
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "❌ Error",
-        description: "Failed to save project",
+        description: error.message || "Failed to save project",
         variant: "destructive",
       });
     } finally {

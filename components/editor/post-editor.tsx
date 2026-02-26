@@ -192,7 +192,12 @@ export default function PostEditor() {
 
       const response = await fetch(`/api/posts/${selectedPost.slug}`);
       if (!response.ok) {
-        throw new Error("Failed to load post");
+        let errorMsg = "Failed to load post";
+        try {
+          const errData = await response.json();
+          errorMsg = errData.error || errData.message || errorMsg;
+        } catch (e) {}
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();
@@ -221,11 +226,11 @@ export default function PostEditor() {
       setIsEditMode(true);
       setPreviewTokens(post.previewTokens || []);
       setLastSavedAt(null);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error loading post:", error);
       toast({
         title: "❌ Error",
-        description: "Failed to load post",
+        description: error.message || "Failed to load post",
         variant: "destructive",
       });
     }
@@ -298,12 +303,23 @@ export default function PostEditor() {
           router.push("/blogs");
         }
       } else {
-        throw new Error("Failed to save post");
+        let errorMessage = "Failed to save post";
+        try {
+          const errorData = await response.json();
+          if (errorData.details && Array.isArray(errorData.details)) {
+            errorMessage = `${errorData.error || "Validation error"}: ${errorData.details.map((d: any) => d.message).join(", ")}`;
+          } else if (errorData.error) {
+            errorMessage = errorData.error;
+          } else if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+        } catch (e) {}
+        throw new Error(errorMessage);
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "❌ Error",
-        description: "Failed to save post",
+        description: error.message || "Failed to save post",
         variant: "destructive",
       });
     } finally {
@@ -383,12 +399,17 @@ export default function PostEditor() {
           description: "Preview link has been revoked",
         });
       } else {
-        throw new Error("Failed to revoke token");
+        let errorMsg = "Failed to revoke token";
+        try {
+          const errData = await response.json();
+          errorMsg = errData.error || errData.message || errorMsg;
+        } catch (e) {}
+        throw new Error(errorMsg);
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "❌ Error",
-        description: "Failed to revoke preview link",
+        description: error.message || "Failed to revoke preview link",
         variant: "destructive",
       });
     }
