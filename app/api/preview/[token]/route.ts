@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
-import { logger } from "@/lib/logger";
 
 // Get post by preview token (with auto-cleanup of expired tokens)
 export async function GET(

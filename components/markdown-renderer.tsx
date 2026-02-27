@@ -40,7 +40,6 @@ function CodeBlock({ children, className }: CodeBlockProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Render plain ASCII diagrams without fancy wrapper
   if (isPlainDiagram) {
     return (
       <pre className="my-6 overflow-x-auto rounded-md border border-zinc-200 dark:border-gray-700 bg-zinc-50 dark:bg-gray-900 p-4 text-sm leading-relaxed text-zinc-800 dark:text-zinc-300">
@@ -49,7 +48,6 @@ function CodeBlock({ children, className }: CodeBlockProps) {
     );
   }
 
-  // Render actual code with fancy UI
   return (
     <div className="group relative my-6 font-mono not-prose">
       <div className="overflow-hidden rounded-md border-2 border-black dark:border-gray-700 bg-zinc-950 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { POST_CATEGORIES } from "@/lib/categories";
@@ -46,6 +46,38 @@ import { calculateReadingTime } from "@/lib/reading-time";
 import { calculateWordCount } from "@/lib/word-count";
 import { useProjectsQuery } from "@/lib/hooks/use-projects";
 import { usePostsListQuery } from "@/lib/hooks/use-posts";
+
+function ContentStats({ control }: { control: any }) {
+  const content = useWatch({ control, name: "content", defaultValue: "" });
+  return (
+    <div className="flex gap-4">
+      <span>{calculateReadingTime(content)}</span>
+      <span>{calculateWordCount(content)} words</span>
+    </div>
+  );
+}
+
+function ContentPreview({
+  control,
+  showPreview,
+}: {
+  control: any;
+  showPreview: boolean;
+}) {
+  const content = useWatch({ control, name: "content", defaultValue: "" });
+  if (!showPreview || !content) return null;
+  return (
+    <div className="mt-4 rounded-none border-4 border-black dark:border-gray-700 p-6">
+      <h3 className="mb-4 text-xl font-bold dark:text-white">Preview</h3>
+      <div className="prose dark:prose-invert max-w-none max-h-[600px] overflow-y-auto">
+        <MarkdownRenderer
+          content={content}
+          className="mb-4 font-serif text-sm md:text-base text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
+        />
+      </div>
+    </div>
+  );
+}
 
 const postSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -108,10 +140,8 @@ export default function PostEditor() {
     },
   });
 
-  const { watch, setValue } = form;
+  const { watch, setValue, getValues, control } = form;
   const title = watch("title");
-  const content = watch("content");
-  const formValues = watch();
 
   useSlugGenerator(title, isEditMode, setValue);
 
@@ -147,30 +177,40 @@ export default function PostEditor() {
   useEffect(() => {
     if (isRestoringData) return;
 
-    if (
-      !formValues.title &&
-      !formValues.content &&
-      !formValues.summary &&
-      !formValues.category
-    )
-      return;
+    let timeoutId: NodeJS.Timeout;
 
-    const timer = setTimeout(() => {
-      const draftData = {
-        formValues,
-        isEditMode,
-        selectedPostId,
-        selectedPostSlug,
-        previewTokens,
-        timestamp: new Date().toISOString(),
-      };
-      localStorage.setItem("post-editor-draft", JSON.stringify(draftData));
-      setLastSavedAt(new Date());
-    }, 1000);
+    const subscription = watch(() => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const currentValues = getValues();
+        if (
+          !currentValues.title &&
+          !currentValues.content &&
+          !currentValues.summary &&
+          !currentValues.category
+        )
+          return;
 
-    return () => clearTimeout(timer);
+        const draftData = {
+          formValues: currentValues,
+          isEditMode,
+          selectedPostId,
+          selectedPostSlug,
+          previewTokens,
+          timestamp: new Date().toISOString(),
+        };
+        localStorage.setItem("post-editor-draft", JSON.stringify(draftData));
+        setLastSavedAt(new Date());
+      }, 1000);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeoutId);
+    };
   }, [
-    formValues,
+    watch,
+    getValues,
     isEditMode,
     selectedPostId,
     selectedPostSlug,
@@ -818,10 +858,7 @@ export default function PostEditor() {
                   Content *
                 </h2>
 
-                <div className="flex gap-4">
-                  <span>{calculateReadingTime(content)}</span>
-                  <span>{calculateWordCount(content)} words</span>
-                </div>
+                <ContentStats control={control} />
 
                 <Button
                   type="button"
@@ -857,19 +894,7 @@ export default function PostEditor() {
                 )}
               />
 
-              {showPreview && content && (
-                <div className="mt-4 rounded-none border-4 border-black dark:border-gray-700 p-6">
-                  <h3 className="mb-4 text-xl font-bold dark:text-white">
-                    Preview
-                  </h3>
-                  <div className="prose dark:prose-invert max-w-none max-h-[600px] overflow-y-auto">
-                    <MarkdownRenderer
-                      content={content}
-                      className="mb-4 font-serif text-sm md:text-base text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
-                    />
-                  </div>
-                </div>
-              )}
+              <ContentPreview control={control} showPreview={showPreview} />
             </Card>
           </div>
         </div>
