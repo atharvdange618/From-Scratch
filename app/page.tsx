@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { HeroSection } from "@/components/hero-section";
 import { BlogEntries } from "@/components/blog-entries";
+import { PopularPosts } from "@/components/popular-posts";
 import { env } from "@/lib/env";
 import Script from "next/script";
 
@@ -106,6 +107,9 @@ export default function Home() {
       <div className="min-h-screen bg-white dark:bg-neutral-900">
         <div className="container mx-auto px-4 py-8">
           <HeroSection />
+          <div className="my-8 md:my-12">
+            <PopularPosts />
+          </div>
           <BlogEntries />
         </div>
       </div>

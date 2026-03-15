@@ -33,6 +33,7 @@ export interface IPost extends Document {
     title: string;
     url: string;
   }>;
+  views?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -152,6 +153,10 @@ const PostSchema: Schema<IPost> = new Schema(
           message: "Resources cannot exceed 10 items",
         },
       ],
+    },
+    views: {
+      type: Number,
+      default: 0,
     },
   },
   {

@@ -24,6 +24,7 @@ import { PostTracker } from "@/components/post-tracker";
 import { TableOfContents } from "@/components/table-of-contents";
 import { extractHeadings } from "@/lib/toc-generator";
 import { BackButton } from "@/components/back-button";
+import { PostViewCount } from "@/components/post-view-count";
 import connectDB from "@/lib/mongodb";
 import { Post as PostModel } from "@/lib/model-registry";
 import type { Post } from "@/lib/types";
@@ -261,6 +262,7 @@ export default async function PostPage({
               <Clock className="h-4 w-4" />
               {calculateReadingTime(post.content)}
             </Badge>
+            <PostViewCount slug={slug} />
           </div>
 
           <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl lg:text-6xl">

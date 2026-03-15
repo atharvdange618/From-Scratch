@@ -17,7 +17,7 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  // const { isSignedIn } = useUser();
+  // const { isSignedIn } = useUser();z
   const pathname = usePathname();
   const { data: isAdmin } = useAdminCheckQuery();
   const { theme, setTheme } = useTheme();
