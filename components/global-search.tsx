@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { useSearchQuery } from "@/lib/hooks/use-search";
@@ -44,7 +44,19 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   const [query, setQuery] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+
+  const handleOpenChange = useCallback(
+    (nextOpen: boolean) => {
+      if (!nextOpen) {
+        setQuery("");
+        setSelectedIndex(0);
+      }
+      onOpenChange(nextOpen);
+    },
+    [onOpenChange],
+  );
 
   const {
     data: results = [],
@@ -146,16 +158,15 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, results, validSelectedIndex, handleSelect]);
 
-  useEffect(() => {
-    if (!open) {
-      setQuery("");
-      setSelectedIndex(0);
-    }
-  }, [open]);
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] sm:rounded-none [&>button]:top-[2.30rem]">
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent
+        className="max-w-2xl border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] sm:rounded-none [&>button]:top-[2.30rem]"
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+          inputRef.current?.focus();
+        }}
+      >
         <DialogHeader className="border-b-4 border-black  dark:border-gray-700 p-4">
           <DialogTitle className="sr-only">Search</DialogTitle>
           <div className="relative">
@@ -165,11 +176,11 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
               }`}
             />
             <Input
+              ref={inputRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search posts and projects..."
               className="h-12 rounded-none border-none bg-transparent dark:text-white pl-12 pr-4 text-lg font-medium focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:placeholder:text-gray-500"
-              autoFocus
               aria-label="Search posts and projects"
             />
             {isSearching && (

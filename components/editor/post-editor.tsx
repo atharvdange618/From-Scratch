@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -115,6 +115,7 @@ export default function PostEditor() {
   const [saving, setSaving] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
   const [isRestoringData, setIsRestoringData] = useState(true);
+  const didRestoreRef = useRef(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -146,33 +147,34 @@ export default function PostEditor() {
   useSlugGenerator(title, isEditMode, setValue);
 
   useEffect(() => {
-    const loadDraft = () => {
-      const draft = localStorage.getItem("post-editor-draft");
-      if (draft) {
-        try {
-          const parsedDraft = JSON.parse(draft);
-          form.reset(parsedDraft.formValues);
-          setIsEditMode(parsedDraft.isEditMode);
-          setSelectedPostId(parsedDraft.selectedPostId);
-          setSelectedPostSlug(parsedDraft.selectedPostSlug);
-          setPreviewTokens(parsedDraft.previewTokens || []);
-          setLastSavedAt(new Date(parsedDraft.timestamp));
+    if (didRestoreRef.current) return;
+    didRestoreRef.current = true;
 
-          toast({
-            title: "📝 Draft Restored",
-            description:
-              "Your previous progress has been automatically restored.",
-          });
-        } catch (e) {
-          console.error("Failed to parse draft", e);
-          localStorage.removeItem("post-editor-draft");
-        }
+    const draft = localStorage.getItem("post-editor-draft");
+    if (draft) {
+      try {
+        const parsedDraft = JSON.parse(draft);
+        form.reset(parsedDraft.formValues);
+        setIsEditMode(parsedDraft.isEditMode);
+        setSelectedPostId(parsedDraft.selectedPostId);
+        setSelectedPostSlug(parsedDraft.selectedPostSlug);
+        setPreviewTokens(parsedDraft.previewTokens || []);
+        setLastSavedAt(new Date(parsedDraft.timestamp));
+
+        toast({
+          title: "📝 Draft Restored",
+          description:
+            "Your previous progress has been automatically restored.",
+        });
+      } catch (e) {
+        console.error("Failed to parse draft", e);
+        localStorage.removeItem("post-editor-draft");
       }
-      setTimeout(() => setIsRestoringData(false), 500);
-    };
+    }
 
-    setTimeout(loadDraft, 100);
-  }, [form.reset, toast]);
+    const timer = setTimeout(() => setIsRestoringData(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (isRestoringData) return;

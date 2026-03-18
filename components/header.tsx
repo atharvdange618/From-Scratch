@@ -16,7 +16,6 @@ import { GlobalSearch } from "./global-search";
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   // const { isSignedIn } = useUser();z
   const pathname = usePathname();
   const { data: isAdmin } = useAdminCheckQuery();
@@ -58,10 +57,6 @@ export function Header() {
   const handleSearchOpen = useCallback(() => {
     setIsSearchOpen(true);
     trackEvent("search_opened", {});
-  }, []);
-
-  useEffect(() => {
-    setMounted(true);
   }, []);
 
   useEffect(() => {
@@ -139,12 +134,8 @@ export function Header() {
               className="group relative h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
               aria-label="Toggle theme"
             >
-              {mounted &&
-                (theme === "dark" ? (
-                  <Sun className="h-5 w-5 text-black dark:text-white" />
-                ) : (
-                  <Moon className="h-5 w-5 text-black dark:text-white" />
-                ))}
+              <Sun className="h-5 w-5 text-black dark:text-white hidden dark:block" />
+              <Moon className="h-5 w-5 text-black dark:text-white block dark:hidden" />
               <span className="sr-only">Toggle theme</span>
               <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black bg-black px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100">
                 Toggle theme
@@ -194,12 +185,8 @@ export function Header() {
             className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
             aria-label="Toggle theme"
           >
-            {mounted &&
-              (theme === "dark" ? (
-                <Sun className="h-5 w-5 text-black dark:text-white" />
-              ) : (
-                <Moon className="h-5 w-5 text-black dark:text-white" />
-              ))}
+            <Sun className="h-5 w-5 text-black dark:text-white hidden dark:block" />
+            <Moon className="h-5 w-5 text-black dark:text-white block dark:hidden" />
             <span className="sr-only">Toggle theme</span>
           </Button>
 

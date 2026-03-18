@@ -110,19 +110,27 @@ function LazyCodeHighlight({
   code: string;
   language: string;
 }) {
-  const [style, setStyle] = useState<any>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const [highlightState, setHighlightState] = useState<{
+    mounted: boolean;
+    style: any;
+  }>({
+    mounted: false,
+    style: null,
+  });
 
   useEffect(() => {
-    setIsMounted(true);
+    let ignore = false;
     import("react-syntax-highlighter/dist/esm/styles/prism").then((mod) => {
-      setStyle(mod.dracula);
+      if (!ignore) setHighlightState({ mounted: true, style: mod.dracula });
     });
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const safeLanguage = language || "javascript";
 
-  if (!isMounted || !style) {
+  if (!highlightState.mounted || !highlightState.style) {
     return (
       <pre className="overflow-x-auto p-6 text-sm leading-relaxed text-zinc-300 bg-zinc-950">
         <code>{code}</code>
@@ -133,7 +141,7 @@ function LazyCodeHighlight({
   return (
     <SyntaxHighlighter
       language={safeLanguage}
-      style={style}
+      style={highlightState.style}
       showLineNumbers={true}
       wrapLines={true}
       customStyle={{

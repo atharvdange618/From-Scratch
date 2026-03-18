@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { getCategoriesWithAll } from "@/lib/categories";
 import type { Post } from "@/lib/types";
@@ -8,21 +8,29 @@ const POSTS_PER_PAGE = 6;
 
 export function useBlogFilters(posts: Post[]) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedTag, setSelectedTag] = useState("all");
   const [sortBy, setSortBy] = useState("date-desc");
   const [currentPage, setCurrentPage] = useState(1);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const categories = getCategoriesWithAll();
 
-  useEffect(() => {
-    const tagFromUrl = searchParams.get("tag");
-    if (tagFromUrl) {
-      setSelectedTag(tagFromUrl);
-    }
-  }, [searchParams]);
+  const selectedTag = searchParams.get("tag") ?? "all";
+
+  const setSelectedTag = useCallback(
+    (tag: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (tag === "all") {
+        params.delete("tag");
+      } else {
+        params.set("tag", tag);
+      }
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams],
+  );
 
   const allTags = useMemo(() => {
     return [
@@ -104,7 +112,7 @@ export function useBlogFilters(posts: Post[]) {
     setSelectedTag("all");
     setSortBy("date-desc");
     setCurrentPage(1);
-  }, []);
+  }, [setSelectedTag]);
 
   const handleCategoryChange = useCallback(
     (value: string) => {
@@ -127,7 +135,7 @@ export function useBlogFilters(posts: Post[]) {
         resultsCount: filteredPosts.length,
       });
     },
-    [filteredPosts.length],
+    [setSelectedTag, filteredPosts.length],
   );
 
   const handleSortChange = useCallback((value: string) => {

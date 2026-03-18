@@ -10,9 +10,6 @@ import { formatDate } from "@/lib/dateandnumbers";
 export function PopularPosts() {
   const { data, isLoading, error } = usePopularPosts(7);
 
-  console.log(error);
-  console.log(data);
-
   if (isLoading) {
     return (
       <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)]">
