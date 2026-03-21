@@ -147,28 +147,29 @@ export default function PostEditor() {
   useSlugGenerator(title, isEditMode, setValue);
 
   useEffect(() => {
-    if (didRestoreRef.current) return;
-    didRestoreRef.current = true;
+    if (!didRestoreRef.current) {
+      didRestoreRef.current = true;
 
-    const draft = localStorage.getItem("post-editor-draft");
-    if (draft) {
-      try {
-        const parsedDraft = JSON.parse(draft);
-        form.reset(parsedDraft.formValues);
-        setIsEditMode(parsedDraft.isEditMode);
-        setSelectedPostId(parsedDraft.selectedPostId);
-        setSelectedPostSlug(parsedDraft.selectedPostSlug);
-        setPreviewTokens(parsedDraft.previewTokens || []);
-        setLastSavedAt(new Date(parsedDraft.timestamp));
+      const draft = localStorage.getItem("post-editor-draft");
+      if (draft) {
+        try {
+          const parsedDraft = JSON.parse(draft);
+          form.reset(parsedDraft.formValues);
+          setIsEditMode(parsedDraft.isEditMode);
+          setSelectedPostId(parsedDraft.selectedPostId);
+          setSelectedPostSlug(parsedDraft.selectedPostSlug);
+          setPreviewTokens(parsedDraft.previewTokens || []);
+          setLastSavedAt(new Date(parsedDraft.timestamp));
 
-        toast({
-          title: "📝 Draft Restored",
-          description:
-            "Your previous progress has been automatically restored.",
-        });
-      } catch (e) {
-        console.error("Failed to parse draft", e);
-        localStorage.removeItem("post-editor-draft");
+          toast({
+            title: "📝 Draft Restored",
+            description:
+              "Your previous progress has been automatically restored.",
+          });
+        } catch (e) {
+          console.error("Failed to parse draft", e);
+          localStorage.removeItem("post-editor-draft");
+        }
       }
     }
 
