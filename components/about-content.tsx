@@ -150,6 +150,7 @@ export async function AboutContent() {
                 alt="Atharv Dange - Full Stack Engineer"
                 width={400}
                 height={400}
+                unoptimized
                 className="h-full w-full object-cover"
               />
             </div>

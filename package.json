@@ -63,7 +63,7 @@
     "mermaid": "^11.12.2",
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.2",
-    "next": "16.1.1",
+    "next": "^16.2.1",
     "next-cloudinary": "^6.17.5",
     "next-themes": "^0.4.4",
     "react": "^19.2.3",
@@ -98,5 +98,6 @@
     "tailwindcss": "^3.4.17",
     "tsx": "^4.21.0",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be"
 }

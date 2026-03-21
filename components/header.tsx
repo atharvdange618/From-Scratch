@@ -82,6 +82,7 @@ export function Header() {
             src="/from-scratch-logo.png"
             width={40}
             height={40}
+            unoptimized
             className="h-10 w-10"
             alt="From Scratch Logo"
           />
