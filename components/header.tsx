@@ -16,7 +16,7 @@ import { GlobalSearch } from "./global-search";
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // const { isSignedIn } = useUser();z
+  // const { isSignedIn } = useUser();
   const pathname = usePathname();
   const { data: isAdmin } = useAdminCheckQuery();
   const { theme, setTheme } = useTheme();

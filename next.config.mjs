@@ -4,6 +4,7 @@ const nextConfig = {
     loader: "custom",
     loaderFile: "./lib/cloudinary-loader.ts",
   },
+  typedRoutes: true,
 };
 
 export default nextConfig;
