@@ -198,7 +198,7 @@ export function BlogCard({
 
         <div className="mb-3 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           <Clock className="h-4 w-4" />
-          <span className="font-medium">
+          <span className="font-medium tabular-nums">
             {post.readingTime || "Quick read"}
           </span>
         </div>

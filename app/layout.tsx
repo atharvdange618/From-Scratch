@@ -87,7 +87,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning className="antialiased">
         <body>
           <ThemeProvider
             attribute="class"

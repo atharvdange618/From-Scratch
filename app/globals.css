@@ -91,19 +91,19 @@
 }
 
 .prose h1 {
-  @apply text-4xl font-bold font-sans mb-4 mt-8 dark:text-white;
+  @apply text-4xl font-bold font-sans mb-4 mt-8 dark:text-white text-balance;
 }
 
 .prose h2 {
-  @apply text-3xl font-bold font-sans mb-3 mt-6 dark:text-white;
+  @apply text-3xl font-bold font-sans mb-3 mt-6 dark:text-white text-balance;
 }
 
 .prose h3 {
-  @apply text-2xl font-bold font-sans mb-3 mt-5 dark:text-white;
+  @apply text-2xl font-bold font-sans mb-3 mt-5 dark:text-white text-balance;
 }
 
 .prose h4 {
-  @apply text-xl font-bold font-sans mb-2 mt-4 dark:text-white;
+  @apply text-xl font-bold font-sans mb-2 mt-4 dark:text-white text-balance;
 }
 
 .prose .heading-anchor {
@@ -229,7 +229,7 @@ select,
 button,
 a,
 [role="button"] {
-  @apply transition-all duration-200 ease-out;
+  @apply transition-[transform,box-shadow,background-color,color,opacity] duration-200 ease-out;
 }
 
 *:focus-visible {
@@ -238,7 +238,7 @@ a,
 }
 
 .hover-lift {
-  @apply transition-all duration-300 ease-out;
+  @apply transition-transform duration-300 ease-out;
 }
 
 .hover-lift:hover {
@@ -246,7 +246,7 @@ a,
 }
 
 .press-effect:active {
-  @apply scale-95 transition-transform duration-75;
+  @apply scale-[0.96] transition-transform duration-75;
 }
 
 @keyframes stagger-fade-in {
