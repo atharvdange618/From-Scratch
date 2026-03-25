@@ -16,7 +16,7 @@ export function PrefetchLink({
   const router = useRouter();
 
   const handleMouseEnter = () => {
-    router.prefetch(href);
+    router.prefetch(href as any);
     onMouseEnter?.();
   };
 

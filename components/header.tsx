@@ -99,7 +99,7 @@ export function Header() {
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
-                    href={link.href}
+                    href={link.href as any}
                     className={`font-bold hover:text-[#FF9149] dark:hover:text-secondary hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors dark:text-gray-200 ${
                       isActiveLink(link.href)
                         ? "text-[#FF9149] dark:text-secondary underline decoration-4 underline-offset-4"
@@ -114,7 +114,7 @@ export function Header() {
                 adminLinks.map((link) => (
                   <li key={link.href}>
                     <Link
-                      href={link.href}
+                      href={link.href as any}
                       className={`font-bold hover:text-[#60B5FF] dark:hover:text-primary hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors ${
                         isActiveLink(link.href)
                           ? "text-[#60B5FF] dark:text-primary underline decoration-4 underline-offset-4"

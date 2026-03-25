@@ -58,7 +58,7 @@ export function SocialLinks({ location = "footer" }: { location?: string }) {
         return (
           <a
             key={link.platform}
-            href={link.href}
+            href={link.href as any}
             {...(!isEmail && {
               target: "_blank",
               rel: "noopener noreferrer",

@@ -70,7 +70,7 @@ export function MobileMenu({
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
-                    href={link.href}
+                    href={link.href as any}
                     onClick={() => setIsOpen(false)}
                     className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] ${
                       isActiveLink(link.href)
@@ -96,7 +96,7 @@ export function MobileMenu({
                   {adminLinks.map((link) => (
                     <li key={link.href}>
                       <Link
-                        href={link.href}
+                        href={link.href as any}
                         onClick={() => setIsOpen(false)}
                         className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] ${
                           isActiveLink(link.href)
