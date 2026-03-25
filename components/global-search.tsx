@@ -199,7 +199,12 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
             results.length > 0 ? (
               <div className="p-2">
                 <div className="mb-3 px-2">
-                  <p className="text-sm font-bold text-gray-600 dark:text-gray-400">
+                  <p
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    className="text-sm font-bold text-gray-600 dark:text-gray-400"
+                  >
                     Found {results.length} result
                     {results.length !== 1 ? "s" : ""}
                   </p>
@@ -236,7 +241,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                         <span
                           className={`shrink-0 rounded-none border-2 border-black dark:border-gray-700 px-2 py-1 text-xs font-bold ${
                             isPost
-                              ? "bg-[#FF9149] text-white"
+                              ? "bg-[#FF9149] text-black"
                               : "bg-[#E0FFF1] text-black dark:text-gray-900"
                           }`}
                         >

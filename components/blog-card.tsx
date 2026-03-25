@@ -241,7 +241,10 @@ export function BlogCard({
             ),
           )}
           {post.tags && post.tags.length > 3 && (
-            <span className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-gray-200 dark:bg-gray-700 dark:text-white px-2 py-1 text-xs font-bold">
+            <span
+              className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-gray-200 dark:bg-gray-700 dark:text-white px-2 py-1 text-xs font-bold"
+              title={post.tags.slice(3).join(", ")}
+            >
               +{post.tags.length - 3}
             </span>
           )}
@@ -253,7 +256,7 @@ export function BlogCard({
           </div>
           <span
             className="text-base font-semibold dark:text-gray-300"
-            style={{ fontFamily: "'Muslyne Lettavella', regular" }}
+            style={{ fontFamily: "'Muslyne Lettavella', cursive" }}
           >
             Atharv Dange
           </span>

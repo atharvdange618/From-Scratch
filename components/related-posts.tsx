@@ -11,7 +11,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/dateandnumbers";
-import { calculateReadingTime } from "@/lib/reading-time";
 import { getCategoryColor } from "@/lib/categories";
 import connectDB from "@/lib/mongodb";
 import { Post, ensureModelsLoaded } from "@/lib/model-registry";

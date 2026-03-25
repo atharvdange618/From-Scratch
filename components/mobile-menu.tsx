@@ -32,10 +32,10 @@ export function MobileMenu({
         <Button
           size="icon"
           className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
-          aria-label="Open menu"
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
         >
           <Menu className="h-5 w-5 text-black dark:text-white" />
-          <span className="sr-only">Menu</span>
+          <span className="sr-only">{isOpen ? "Close" : "Menu"}</span>
         </Button>
       </SheetTrigger>
       <SheetContent
@@ -59,9 +59,9 @@ export function MobileMenu({
               size="icon"
               onClick={() => setIsOpen(false)}
               className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149]/80 dark:hover:bg-secondary/80 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
-              aria-label="Close menu"
+              aria-label="Close navigation menu"
             >
-              <X className="h-5 w-5 text-white" />
+              <X className="h-5 w-5 text-black" />
             </Button>
           </div>
 
@@ -74,7 +74,7 @@ export function MobileMenu({
                     onClick={() => setIsOpen(false)}
                     className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] ${
                       isActiveLink(link.href)
-                        ? "bg-[#FF9149] dark:bg-secondary text-white dark:text-black"
+                        ? "bg-[#FF9149] dark:bg-secondary text-black"
                         : "bg-white dark:bg-gray-800 dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
                     }`}
                   >
