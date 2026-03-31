@@ -93,14 +93,14 @@ export async function AboutContent() {
               zero-dependency HTTP frameworks to offline-first mobile tools.
             </p>
             <p className="text-gray-800 dark:text-gray-300">
-              Currently at{" "}
+              Recently completed my role at{" "}
               <strong className="font-bold text-black dark:text-white">
-                SmartScripts Pvt. Ltd.{" "}
+                SmartScripts Pvt. Ltd.
               </strong>{" "}
-              since March 2024, building production applications with the{" "}
+              (March 2024 - March 2026), where I built production applications
+              with the{" "}
               <strong className="font-bold text-black dark:text-white">
-                {" "}
-                MERN/PERN{" "}
+                MERN/PERN
               </strong>{" "}
               stack and cross-platform mobile apps with{" "}
               <strong className="font-bold text-black dark:text-white">
@@ -108,11 +108,14 @@ export async function AboutContent() {
               </strong>
               . Started coding in{" "}
               <strong className="font-bold text-black dark:text-white">
-                {" "}
-                2020{" "}
+                2020
               </strong>
               , which gives me over 6 years of hands-on experience transforming
-              ideas into real-world solutions.
+              ideas into real-world solutions. I'm currently{" "}
+              <strong className="font-bold text-black dark:text-white">
+                open to new opportunities
+              </strong>{" "}
+              and excited to bring my expertise to challenging projects.
             </p>
             <p className="text-gray-800 dark:text-gray-300">
               When I'm not coding, you can find me watching movies, diving into
@@ -211,7 +214,7 @@ export async function AboutContent() {
               Software Engineer
             </h3>
             <p className="mb-1 md:mb-2 font-serif text-xs md:text-sm text-gray-600 dark:text-gray-400">
-              SmartScripts Pvt. Ltd. • March 2024 - Present
+              SmartScripts Pvt. Ltd. • March 2024 - March 2026
             </p>
             <p className="font-serif text-sm md:text-base dark:text-gray-300">
               Full-stack development with MERN/PERN stack, React Native/Expo
@@ -263,11 +266,12 @@ export async function AboutContent() {
 
       <div className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
         <h2 className="mb-3 md:mb-4 text-center font-sans text-2xl md:text-3xl font-bold">
-          Let's Connect!
+          Open to Opportunities!
         </h2>
         <p className="mb-5 md:mb-6 text-center font-serif text-sm md:text-base dark:text-gray-300">
-          I'm always open to interesting conversations, collaboration
-          opportunities, or just saying hello.
+          I'm currently exploring new opportunities and open to interesting
+          conversations, collaboration projects, or full-time positions. Let's
+          build something amazing together!
         </p>
         <div className="flex justify-center">
           <Button className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
