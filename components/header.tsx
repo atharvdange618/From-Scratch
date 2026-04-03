@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Search, Sun, Moon } from "@deemlol/next-icons";
 import { MobileMenu } from "./mobile-menu";
 import { GlobalSearch } from "./global-search";
+import { SoundToggle } from "./sound-toggle";
 
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -129,10 +130,12 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
+            <SoundToggle />
+
             <Button
               size="icon"
               onClick={handleThemeToggle}
-              className="group relative h-10 w-10 rzzounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
+              className="group relative h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
               aria-label="Toggle theme"
             >
               <Sun className="h-5 w-5 text-black dark:text-white hidden dark:block" />

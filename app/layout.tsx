@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { FPSCounter } from "@/components/fps-counter";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SoundProvider } from "@/components/providers/sound-provider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { env } from "@/lib/env";
@@ -95,17 +96,19 @@ export default function RootLayout({
             enableSystem
             storageKey="from-scratch-theme"
           >
-            <QueryProvider>
-              <SkipToContent />
-              <Header />
-              <main id="main-content">{children}</main>
-              <Footer />
-              <BackToTop />
-              <Analytics />
-              <SpeedInsights />
-              <Toaster />
-              <FPSCounter />
-            </QueryProvider>
+            <SoundProvider>
+              <QueryProvider>
+                <SkipToContent />
+                <Header />
+                <main id="main-content">{children}</main>
+                <Footer />
+                <BackToTop />
+                <Analytics />
+                <SpeedInsights />
+                <Toaster />
+                <FPSCounter />
+              </QueryProvider>
+            </SoundProvider>
           </ThemeProvider>
         </body>
       </html>

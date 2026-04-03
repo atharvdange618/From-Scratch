@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Search, Clock, Loader2 } from "lucide-react";
@@ -161,7 +162,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
-        className="max-w-2xl border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] sm:rounded-none [&>button]:top-[2.30rem]"
+        className="max-w-2xl border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] sm:rounded-none [&>button]:top-9 [&>button]:right-6"
         onOpenAutoFocus={(e) => {
           e.preventDefault();
           inputRef.current?.focus();
@@ -169,6 +170,10 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
       >
         <DialogHeader className="border-b-4 border-black  dark:border-gray-700 p-4">
           <DialogTitle className="sr-only">Search</DialogTitle>
+          <DialogDescription className="sr-only">
+            Search through blog posts and projects. Use arrow keys to navigate
+            results and press Enter to select.
+          </DialogDescription>
           <div className="relative">
             <Search
               className={`absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transition-colors dark:text-gray-400 ${
