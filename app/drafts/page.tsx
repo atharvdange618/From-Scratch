@@ -196,7 +196,7 @@ export default function DraftsPage() {
       <div className="mb-12 space-y-6">
         <div className="flex items-center gap-4">
           <div className="rounded-none border-4 border-black bg-[#FFE5B4] p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <FileText className="h-10 w-10" />
+            <FileText className="h-10 w-10 text-black" />
           </div>
           <div className="flex-1">
             <h1 className="text-5xl font-black leading-tight">Draft Posts</h1>
@@ -221,7 +221,7 @@ export default function DraftsPage() {
           </Button>
           <Button
             onClick={() => router.push("/editor")}
-            className="rounded-none border-4 border-black bg-black px-6 py-2 font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-black hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]"
+            className="rounded-none border-4 border-black bg-black px-6 py-2 font-bold text-white shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-black hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)]"
           >
             + New Post
           </Button>
@@ -242,7 +242,7 @@ export default function DraftsPage() {
             </p>
             <Button
               onClick={() => router.push("/editor")}
-              className="rounded-none border-4 border-black bg-black font-bold text-white shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]"
+              className="rounded-none border-4 border-black bg-black font-bold text-white shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)]"
             >
               Create Your First Draft
             </Button>

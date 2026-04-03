@@ -194,7 +194,7 @@ export async function RelatedPosts({
 
   return (
     <section className="my-16">
-      <div className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)]">
+      <div className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)]">
         <h2 className="font-sans text-2xl font-bold md:text-3xl dark:text-white">
           You Might Also Like
         </h2>
@@ -206,7 +206,7 @@ export async function RelatedPosts({
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {relatedPosts.map((post) => (
           <Link key={post._id} href={`/posts/${post.slug}`}>
-            <Card className="group h-full overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(96,181,255,0.3)]">
+            <Card className="group h-full overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)]">
               <CardHeader
                 className="border-b-4 border-black dark:border-gray-700 p-4"
                 style={{ backgroundColor: getCategoryColor(post.category) }}
@@ -255,7 +255,7 @@ export async function RelatedPosts({
               </CardContent>
 
               <CardFooter className="border-t-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
-                <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-primary px-4 py-2 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,145,73,0.5)] transition-all group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)] dark:group-hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,0.5)]">
+                <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-primary px-4 py-2 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] dark:shadow-[4px_4px_0px_0px_rgba(214,116,56,0.5)] transition-all group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)] dark:group-hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,0.5)]">
                   Read More
                 </Button>
               </CardFooter>

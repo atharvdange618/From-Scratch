@@ -12,7 +12,7 @@ export function PopularPosts() {
 
   if (isLoading) {
     return (
-      <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)]">
+      <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)]">
         <CardHeader className="border-b-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800">
           <CardTitle className="flex items-center gap-2 font-sans text-xl font-bold">
             <TrendingUp className="h-5 w-5" />
@@ -40,7 +40,7 @@ export function PopularPosts() {
 
   if (!posts || posts.length === 0) {
     return (
-      <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)]">
+      <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)]">
         <CardHeader className="border-b-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800">
           <CardTitle className="flex items-center gap-2 font-sans text-xl font-bold">
             <TrendingUp className="h-5 w-5" />
@@ -57,7 +57,7 @@ export function PopularPosts() {
   }
 
   return (
-    <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)]">
+    <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)]">
       <CardHeader className="border-b-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800">
         <CardTitle className="flex items-center gap-2 font-sans text-xl font-bold">
           <TrendingUp className="h-5 w-5" />

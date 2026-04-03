@@ -461,13 +461,13 @@ export default function PostEditor() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+        <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
           <h2 className="mb-4 text-xl font-bold dark:text-white">
             {isEditMode ? "Editing Post" : "Load Existing Post"}
           </h2>
           <div className="flex gap-3">
             <Select value={selectedPostId} onValueChange={loadPost}>
-              <SelectTrigger className="rounded-none border-4 border-black dark:border-neutral-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
+              <SelectTrigger className="rounded-none border-4 border-black dark:border-neutral-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
                 <SelectValue placeholder="Select a post to edit..." />
               </SelectTrigger>
               <SelectContent>
@@ -505,7 +505,7 @@ export default function PostEditor() {
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                         placeholder="Enter post title..."
                       />
                     </FormControl>
@@ -525,7 +525,7 @@ export default function PostEditor() {
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                         placeholder="post-url-slug"
                       />
                     </FormControl>
@@ -546,7 +546,7 @@ export default function PostEditor() {
                       <Textarea
                         {...field}
                         rows={3}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                         placeholder="Brief description of the post..."
                       />
                     </FormControl>
@@ -565,7 +565,7 @@ export default function PostEditor() {
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
+                        <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                       </FormControl>
@@ -593,7 +593,7 @@ export default function PostEditor() {
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                         placeholder="TypeScript, React, Next.js"
                       />
                     </FormControl>
@@ -615,7 +615,7 @@ export default function PostEditor() {
                       value={field.value || undefined}
                     >
                       <FormControl>
-                        <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]">
+                        <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
                           <SelectValue placeholder="Select project (optional)" />
                         </SelectTrigger>
                       </FormControl>
@@ -645,7 +645,7 @@ export default function PostEditor() {
                         field.value.map((resource, index) => (
                           <div
                             key={resource.url || `resource-${index}`}
-                            className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
+                            className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
                           >
                             <div className="mb-2 flex items-center justify-between">
                               <span className="text-sm font-bold dark:text-white">
@@ -661,7 +661,7 @@ export default function PostEditor() {
                                   );
                                   field.onChange(newResources);
                                 }}
-                                className="h-7 rounded-none border-2 border-black dark:border-gray-700 px-2 font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
+                                className="h-7 rounded-none border-2 border-black dark:border-gray-700 px-2 font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
                               >
                                 <Trash2 className="h-3 w-3" />
                               </Button>
@@ -674,7 +674,7 @@ export default function PostEditor() {
                                 field.onChange(newResources);
                               }}
                               placeholder="Resource title..."
-                              className="mb-2 rounded-none border-2 border-black dark:border-gray-700 dark:bg-gray-700 dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
+                              className="mb-2 rounded-none border-2 border-black dark:border-gray-700 dark:bg-gray-700 dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
                             />
                             <Input
                               value={resource.url}
@@ -684,7 +684,7 @@ export default function PostEditor() {
                                 field.onChange(newResources);
                               }}
                               placeholder="https://..."
-                              className="rounded-none border-2 border-black dark:border-gray-700 dark:bg-gray-700 dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
+                              className="rounded-none border-2 border-black dark:border-gray-700 dark:bg-gray-700 dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
                             />
                           </div>
                         ))
@@ -705,7 +705,7 @@ export default function PostEditor() {
                           }
                         }}
                         disabled={field.value && field.value.length >= 10}
-                        className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] disabled:opacity-50"
+                        className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)] disabled:opacity-50"
                       >
                         + Add Resource
                         {field.value && field.value.length > 0 && (
@@ -734,7 +734,7 @@ export default function PostEditor() {
                           <img
                             src={field.value}
                             alt="Cover preview"
-                            className="h-48 w-full rounded-none border-4 border-black dark:border-gray-700 object-cover shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                            className="h-48 w-full rounded-none border-4 border-black dark:border-gray-700 object-cover shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                           />
                           <div className="mt-2 flex items-center gap-2 rounded-none border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-[#2D5F4D] p-2">
                             <span className="text-sm font-bold dark:text-white">
@@ -757,7 +757,7 @@ export default function PostEditor() {
                             document.getElementById("cover-upload")?.click()
                           }
                           disabled={uploading}
-                          className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
+                          className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
                         >
                           {uploading ? (
                             <>
@@ -776,7 +776,7 @@ export default function PostEditor() {
                             type="button"
                             variant="outline"
                             onClick={() => field.onChange("")}
-                            className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                            className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                           >
                             Remove
                           </Button>
@@ -789,7 +789,7 @@ export default function PostEditor() {
               />
             </Card>
 
-            <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+            <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
               <h2 className="mb-4 text-2xl font-bold dark:text-white">
                 SEO Settings
               </h2>
@@ -805,7 +805,7 @@ export default function PostEditor() {
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                         placeholder="Custom title for search engines"
                       />
                     </FormControl>
@@ -825,7 +825,7 @@ export default function PostEditor() {
                       <Textarea
                         {...field}
                         rows={2}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                         placeholder="Meta description..."
                       />
                     </FormControl>
@@ -844,7 +844,7 @@ export default function PostEditor() {
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                         placeholder="keyword1, keyword2, keyword3"
                       />
                     </FormControl>
@@ -855,7 +855,7 @@ export default function PostEditor() {
           </div>
 
           <div className="space-y-6">
-            <Card className="rounded-none border-4 border-black dark:border-gray-700 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+            <Card className="rounded-none border-4 border-black dark:border-gray-700 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-2xl font-bold dark:text-white">
                   Content *
@@ -868,7 +868,7 @@ export default function PostEditor() {
                   onClick={() => setShowPreview(!showPreview)}
                   variant="outline"
                   size="sm"
-                  className="rounded-none border-4 border-black dark:border-gray-700 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                  className="rounded-none border-4 border-black dark:border-gray-700 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                 >
                   {showPreview ? (
                     <EyeOff className="mr-2 h-4 w-4" />
@@ -903,7 +903,7 @@ export default function PostEditor() {
         </div>
 
         {isEditMode && !form.watch("isPublished") && (
-          <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+          <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold dark:text-white">
@@ -917,7 +917,7 @@ export default function PostEditor() {
                 type="button"
                 onClick={generatePreviewLink}
                 disabled={generatingPreview}
-                className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-[#4A90CC] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
+                className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-[#4A90CC] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
               >
                 {generatingPreview ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -933,7 +933,7 @@ export default function PostEditor() {
                 {previewTokens.map((tokenData) => (
                   <Card
                     key={tokenData.token}
-                    className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)]"
+                    className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
@@ -949,7 +949,7 @@ export default function PostEditor() {
                           type="button"
                           size="sm"
                           onClick={() => copyPreviewLink(tokenData.previewUrl)}
-                          className="rounded-none border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-[#2D5F4D] dark:text-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(96,181,255,0.3)]"
+                          className="rounded-none border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-[#2D5F4D] dark:text-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(74,144,204,0.3)]"
                         >
                           <Copy className="h-4 w-4" />
                         </Button>
@@ -958,7 +958,7 @@ export default function PostEditor() {
                           size="sm"
                           onClick={() => revokePreviewToken(tokenData.token)}
                           variant="destructive"
-                          className="rounded-none border-2 border-black dark:border-gray-700 font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(96,181,255,0.3)]"
+                          className="rounded-none border-2 border-black dark:border-gray-700 font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(74,144,204,0.3)]"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -975,7 +975,7 @@ export default function PostEditor() {
           </Card>
         )}
 
-        <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+        <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <FormField
               control={form.control}
@@ -1011,14 +1011,14 @@ export default function PostEditor() {
                   type="button"
                   variant="outline"
                   onClick={resetForm}
-                  className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,0.3)]"
+                  className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
                 >
                   Reset
                 </Button>
                 <Button
                   type="submit"
                   disabled={saving}
-                  className="rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)]"
+                  className="rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] dark:shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)]"
                 >
                   {saving ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

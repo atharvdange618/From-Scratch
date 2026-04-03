@@ -252,7 +252,7 @@ export function BlogCard({
 
         <div className="mt-auto pt-4 flex items-center gap-2">
           <div className="h-7 w-7 rounded-full border-2 border-black dark:border-gray-700 bg-[#FF9149] flex items-center justify-center">
-            <span className="text-[10px] font-bold text-white">AD</span>
+            <span className="text-[10px] font-bold text-black">AD</span>
           </div>
           <span
             className="text-base font-semibold dark:text-gray-300"

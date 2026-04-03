@@ -25,7 +25,7 @@ export function ResourcesList({
   }
 
   return (
-    <Card className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(96,181,255,0.3)]">
+    <Card className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)]">
       <CardContent className="p-6">
         <h3 className="mb-4 flex items-center gap-2 font-sans text-xl font-bold dark:text-white">
           <BookOpen className="h-5 w-5" />

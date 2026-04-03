@@ -18,7 +18,7 @@ export default function Error({
   return (
     <div className="flex min-h-screen items-center justify-center bg-white dark:bg-neutral-900 px-4">
       <div className="max-w-md text-center">
-        <div className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)]">
+        <div className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
           <div className="mb-4 text-6xl">⚠️</div>
           <h2 className="mb-2 text-2xl font-bold dark:text-black">
             Oops! Something went wrong
@@ -36,7 +36,7 @@ export default function Error({
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Button
             onClick={reset}
-            className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Try Again
           </Button>
@@ -44,7 +44,7 @@ export default function Error({
           <Link href="/">
             <Button
               variant="outline"
-              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               Go Home
             </Button>

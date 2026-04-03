@@ -150,7 +150,7 @@ export function ProjectsContent() {
                     handleProjectHover(queryClient, project.slug)
                   }
                 >
-                  <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white px-6 py-3 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(255,145,73,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(255,145,73,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(96,181,255,1)]">
+                  <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white px-6 py-3 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,1)]">
                     View Details
                   </Button>
                 </Link>

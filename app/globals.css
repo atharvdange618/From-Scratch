@@ -50,10 +50,10 @@
   --card-foreground: 0 0% 98%;
   --popover: 0 0% 10%;
   --popover-foreground: 0 0% 98%;
-  --primary: 196 100% 69%;
-  --primary-foreground: 0 0% 0%;
-  --secondary: 28 100% 64%;
-  --secondary-foreground: 0 0% 0%;
+  --primary: 208 56% 55%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 23 66% 53%;
+  --secondary-foreground: 0 0% 98%;
   --muted: 0 0% 15%;
   --muted-foreground: 0 0% 65%;
   --accent: 0 0% 15%;
@@ -62,7 +62,7 @@
   --destructive-foreground: 0 0% 98%;
   --border: 0 0% 20%;
   --input: 0 0% 20%;
-  --ring: 196 100% 69%;
+  --ring: 208 56% 55%;
 }
 
 @layer base {
@@ -148,7 +148,7 @@
 }
 
 .prose pre {
-  @apply bg-black dark:bg-gray-950 text-white border-4 border-black dark:border-gray-700 p-4 rounded-none overflow-x-auto mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)];
+  @apply bg-black dark:bg-gray-950 text-white border-4 border-black dark:border-gray-700 p-4 rounded-none overflow-x-auto mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)];
 }
 
 .prose pre code {
@@ -156,11 +156,11 @@
 }
 
 .prose a {
-  @apply text-black dark:text-white font-bold underline decoration-4 decoration-[#60B5FF] hover:decoration-[#FF9149] transition-colors;
+  @apply text-black dark:text-white font-bold underline decoration-4 decoration-[#60B5FF] dark:decoration-primary hover:decoration-[#FF9149] dark:hover:decoration-secondary transition-colors;
 }
 
 .prose blockquote {
-  @apply border-l-4 border-black dark:border-primary pl-4 italic bg-[#AFDDFF] dark:bg-gray-800 p-4 mb-4 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(96,181,255,0.3)];
+  @apply border-l-4 border-black dark:border-primary pl-4 italic bg-[#AFDDFF] dark:bg-gray-800 p-4 mb-4 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] text-gray-800 dark:text-gray-200;
 }
 
 .prose hr {
@@ -168,7 +168,7 @@
 }
 
 .prose img {
-  @apply border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(96,181,255,0.3)] rounded-none;
+  @apply border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)] rounded-none;
 }
 
 .prose table {
@@ -176,7 +176,7 @@
 }
 
 .prose th {
-  @apply border-2 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-primary/80 p-2 font-bold dark:text-black;
+  @apply border-2 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-primary/80 p-2 font-bold dark:text-white;
 }
 
 .prose td {

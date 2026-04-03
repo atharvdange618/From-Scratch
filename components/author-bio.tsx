@@ -26,7 +26,8 @@ export function AuthorBio({
               <Image
                 src={authorImage}
                 alt={authorName}
-                fill
+                width={64}
+                height={64}
                 className="object-cover"
                 onError={() => setImageError(true)}
               />
