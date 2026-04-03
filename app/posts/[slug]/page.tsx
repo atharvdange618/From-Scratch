@@ -25,6 +25,7 @@ import { TableOfContents } from "@/components/table-of-contents";
 import { extractHeadings } from "@/lib/toc-generator";
 import { BackButton } from "@/components/back-button";
 import { PostViewCount } from "@/components/post-view-count";
+import { AuthorBio } from "@/components/author-bio";
 import connectDB from "@/lib/mongodb";
 import { Post as PostModel } from "@/lib/model-registry";
 import type { Post } from "@/lib/types";
@@ -346,6 +347,11 @@ export default async function PostPage({
               resources={post.resources || []}
               postTitle={post.title}
               category={post.category}
+            />
+
+            <AuthorBio
+              authorName={post.author || "Atharv Dange"}
+              authorImage="/atharv-avatar.jpeg"
             />
           </div>
 
