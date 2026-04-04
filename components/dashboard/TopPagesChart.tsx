@@ -22,8 +22,38 @@ export default function TopPagesChart({
 }: TopPagesChartProps) {
   const chartData = topPages.slice(0, 10).map((item) => ({
     page: item._id.length > 30 ? item._id.substring(0, 30) + "..." : item._id,
+    fullPage: item._id,
     views: item.count,
   }));
+
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            borderRadius: "6px",
+            color: "#ffffff",
+            padding: "8px 12px",
+            maxWidth: "400px",
+          }}
+        >
+          <p
+            style={{
+              fontWeight: 500,
+              marginBottom: "4px",
+              wordBreak: "break-all",
+            }}
+          >
+            {payload[0].payload.fullPage}
+          </p>
+          <p style={{ color: "#60a5fa" }}>views: {payload[0].value}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Card>
@@ -44,7 +74,10 @@ export default function TopPagesChart({
               width={150}
               tick={{ fontSize: 10 }}
             />
-            <Tooltip />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ fill: "rgba(59, 130, 246, 0.1)" }}
+            />
             <Bar dataKey="views" fill="#2563eb" />
           </BarChart>
         </ResponsiveContainer>

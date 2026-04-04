@@ -150,6 +150,7 @@ export default function DashboardPage() {
             totalEvents={stats.totalEvents}
             uniqueSessions={stats.uniqueSessions}
             uniqueVisitors={stats.uniqueVisitors}
+            totalPageViews={stats.totalPageViews}
             avgSessionDuration={stats.avgSessionDuration}
           />
 

@@ -10,6 +10,7 @@ interface AnalyticsStats {
   totalEvents: number;
   uniqueSessions: number;
   uniqueVisitors: number;
+  totalPageViews: number;
   avgSessionDuration: number;
   eventTypeDistribution: Array<{ _id: string; count: number }>;
   topPages: Array<{ _id: string; count: number }>;

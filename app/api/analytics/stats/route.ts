@@ -52,99 +52,123 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const [cardStatsResult, facetedDataResult, dailyEvents, oldestEvent] =
-      await Promise.all([
-        AnalyticsEvent.aggregate([
-          { $match: dateFilter },
-          {
-            $group: {
-              _id: null,
-              totalEvents: { $sum: 1 },
-              uniqueSessions: { $addToSet: "$sessionId" },
-              uniqueVisitors: { $addToSet: "$ipAddress" },
-            },
+    const [
+      cardStatsResult,
+      facetedDataResult,
+      dailyEvents,
+      oldestEvent,
+      pageViewsResult,
+    ] = await Promise.all([
+      AnalyticsEvent.aggregate([
+        { $match: dateFilter },
+        {
+          $group: {
+            _id: null,
+            totalEvents: { $sum: 1 },
+            uniqueSessions: { $addToSet: "$sessionId" },
+            uniqueVisitors: { $addToSet: "$ipAddress" },
           },
-          {
-            $project: {
-              _id: 0,
-              totalEvents: 1,
-              uniqueSessions: { $size: "$uniqueSessions" },
-              uniqueVisitors: { $size: "$uniqueVisitors" },
-            },
+        },
+        {
+          $project: {
+            _id: 0,
+            totalEvents: 1,
+            uniqueSessions: { $size: "$uniqueSessions" },
+            uniqueVisitors: { $size: "$uniqueVisitors" },
           },
-        ]),
-        AnalyticsEvent.aggregate([
-          { $match: dateFilter },
-          {
-            $facet: {
-              eventTypeDistribution: [
-                { $group: { _id: "$eventType", count: { $sum: 1 } } },
-                { $sort: { count: -1 } },
-              ],
-              topPages: [
-                {
-                  $match: {
-                    "eventData.path": { $exists: true, $nin: [null, ""] },
+        },
+      ]),
+      AnalyticsEvent.aggregate([
+        { $match: dateFilter },
+        {
+          $facet: {
+            eventTypeDistribution: [
+              { $group: { _id: "$eventType", count: { $sum: 1 } } },
+              { $sort: { count: -1 } },
+            ],
+            topPages: [
+              {
+                $match: {
+                  "eventData.path": { $exists: true, $nin: [null, ""] },
+                },
+              },
+              { $group: { _id: "$eventData.path", count: { $sum: 1 } } },
+              { $sort: { count: -1 } },
+              { $limit: 10 },
+            ],
+            topCountries: [
+              { $match: { country: { $exists: true, $ne: null } } },
+              { $group: { _id: "$country", count: { $sum: 1 } } },
+              { $sort: { count: -1 } },
+            ],
+            topCities: [
+              { $match: { city: { $exists: true, $ne: null } } },
+              { $group: { _id: "$city", count: { $sum: 1 } } },
+              { $sort: { count: -1 } },
+              { $limit: 10 },
+            ],
+            deviceBreakdown: [
+              { $match: { device: { $exists: true, $ne: null } } },
+              { $group: { _id: "$device", count: { $sum: 1 } } },
+              { $sort: { count: -1 } },
+            ],
+            browserBreakdown: [
+              { $match: { browser: { $exists: true, $ne: null } } },
+              { $group: { _id: "$browser", count: { $sum: 1 } } },
+              { $sort: { count: -1 } },
+            ],
+            osBreakdown: [
+              { $match: { os: { $exists: true, $ne: null } } },
+              { $group: { _id: "$os", count: { $sum: 1 } } },
+              { $sort: { count: -1 } },
+            ],
+          },
+        },
+      ]),
+      AnalyticsEvent.aggregate([
+        {
+          $match:
+            Object.keys(dateFilter).length > 0
+              ? dateFilter
+              : {
+                  timestamp: {
+                    $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
                   },
                 },
-                { $group: { _id: "$eventData.path", count: { $sum: 1 } } },
-                { $sort: { count: -1 } },
-                { $limit: 10 },
-              ],
-              topCountries: [
-                { $match: { country: { $exists: true, $ne: null } } },
-                { $group: { _id: "$country", count: { $sum: 1 } } },
-                { $sort: { count: -1 } },
-              ],
-              topCities: [
-                { $match: { city: { $exists: true, $ne: null } } },
-                { $group: { _id: "$city", count: { $sum: 1 } } },
-                { $sort: { count: -1 } },
-                { $limit: 10 },
-              ],
-              deviceBreakdown: [
-                { $match: { device: { $exists: true, $ne: null } } },
-                { $group: { _id: "$device", count: { $sum: 1 } } },
-                { $sort: { count: -1 } },
-              ],
-              browserBreakdown: [
-                { $match: { browser: { $exists: true, $ne: null } } },
-                { $group: { _id: "$browser", count: { $sum: 1 } } },
-                { $sort: { count: -1 } },
-              ],
-              osBreakdown: [
-                { $match: { os: { $exists: true, $ne: null } } },
-                { $group: { _id: "$os", count: { $sum: 1 } } },
-                { $sort: { count: -1 } },
-              ],
+        },
+        {
+          $group: {
+            _id: {
+              $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
+            },
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]),
+      AnalyticsEvent.findOne({}, { timestamp: 1 })
+        .sort({ timestamp: 1 })
+        .lean(),
+      AnalyticsEvent.aggregate([
+        {
+          $match: {
+            ...dateFilter,
+            "eventData.path": { $exists: true, $nin: [null, ""] },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              sessionId: "$sessionId",
+              path: "$eventData.path",
             },
           },
-        ]),
-        AnalyticsEvent.aggregate([
-          {
-            $match:
-              Object.keys(dateFilter).length > 0
-                ? dateFilter
-                : {
-                    timestamp: {
-                      $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-                    },
-                  },
-          },
-          {
-            $group: {
-              _id: {
-                $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
-              },
-              count: { $sum: 1 },
-            },
-          },
-          { $sort: { _id: 1 } },
-        ]),
-        AnalyticsEvent.findOne({}, { timestamp: 1 })
-          .sort({ timestamp: 1 })
-          .lean(),
-      ]);
+        },
+        {
+          $count: "totalPageViews",
+        },
+      ]),
+    ]);
 
     const { totalEvents, uniqueSessions, uniqueVisitors } =
       cardStatsResult[0] || {
@@ -276,6 +300,7 @@ export async function GET(request: NextRequest) {
       totalEvents,
       uniqueSessions,
       uniqueVisitors,
+      totalPageViews: pageViewsResult[0]?.totalPageViews || 0,
       avgSessionDuration,
       eventTypeDistribution,
       topPages,
