@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/lib/dateandnumbers";
 
 export function PopularPosts() {
-  const { data, isLoading, error } = usePopularPosts(7);
+  const { data, isLoading } = usePopularPosts(30);
 
   if (isLoading) {
     return (
