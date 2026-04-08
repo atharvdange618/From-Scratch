@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Search, Sun, Moon } from "@deemlol/next-icons";
 import { MobileMenu } from "./mobile-menu";
 import { GlobalSearch } from "./global-search";
-import { SoundToggle } from "./sound-toggle";
 
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -130,8 +129,6 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <SoundToggle />
-
             <Button
               size="icon"
               onClick={handleThemeToggle}

@@ -94,14 +94,7 @@ export function useSound(
 export function useClickSound(
   variant: "default" | "success" | "error" | "soft" = "default",
 ) {
-  const [soundEnabled, setSoundEnabled] = useState(true);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const enabled = localStorage.getItem("soundEffectsEnabled");
-      setSoundEnabled(enabled !== "false");
-    }
-  }, []);
+  const soundEnabled = true;
 
   const soundPaths = {
     default: "/sounds/click.mp3",
