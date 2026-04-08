@@ -18,10 +18,17 @@ import { ProjectCardSkeleton } from "@/components/skeletons";
 import { handleProjectHover } from "@/lib/prefetch";
 import { useQueryClient } from "@tanstack/react-query";
 
-const statusColors = {
-  Active: "#60B5FF",
-  Completed: "#E0FFF1",
-  Archived: "#FFECDB",
+const getStatusColorClass = (status: string) => {
+  switch (status) {
+    case "Active":
+      return "bg-[#60B5FF] dark:bg-[#1e3a5f]";
+    case "Completed":
+      return "bg-[#E0FFF1] dark:bg-[#1a4d3a]";
+    case "Archived":
+      return "bg-[#FFECDB] dark:bg-[#4a3626]";
+    default:
+      return "bg-gray-200 dark:bg-gray-800";
+  }
 };
 
 export function ProjectsContent() {
@@ -104,14 +111,15 @@ export function ProjectsContent() {
               className="group flex flex-col overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
             >
               <CardHeader
-                className="border-b-4 border-black dark:border-gray-700 p-4 md:p-6"
-                style={{ backgroundColor: statusColors[project.status] }}
+                className={`border-b-4 border-black dark:border-gray-700 p-4 md:p-6 ${getStatusColorClass(project.status)}`}
               >
                 <div className="mb-3 flex items-start justify-between">
-                  <CardTitle className="text-2xl font-bold leading-tight dark:text-black">
+                  <CardTitle className="text-2xl font-bold leading-tight text-black dark:text-white">
                     {project.name}
                   </CardTitle>
-                  {project.featured && <Star className="h-6 w-6 fill-black" />}
+                  {project.featured && (
+                    <Star className="h-6 w-6 fill-black dark:fill-yellow-400 text-black dark:text-yellow-400" />
+                  )}
                 </div>
                 <Badge className="w-fit rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-1 font-bold text-black dark:text-white hover:bg-white dark:hover:bg-gray-900">
                   {project.status}
@@ -133,7 +141,7 @@ export function ProjectsContent() {
                     {project.techStack.map((tech) => (
                       <span
                         key={tech}
-                        className="inline-block rounded-lg border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 text-black dark:text-white px-2 py-1 text-xs font-bold"
+                        className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-[#AFDDFF] dark:bg-gray-700 text-black dark:text-gray-200 px-2 py-1 text-xs font-bold"
                       >
                         {tech}
                       </span>
@@ -142,7 +150,7 @@ export function ProjectsContent() {
                 </div>
               </CardContent>
 
-              <CardFooter className="flex flex-col gap-3 border-t-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-700 p-6">
+              <CardFooter className="flex flex-col gap-3 border-t-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-6">
                 <Link
                   href={`/projects/${project.slug}`}
                   className="w-full"
@@ -163,7 +171,7 @@ export function ProjectsContent() {
                       rel="noopener noreferrer"
                       className="flex-1"
                     >
-                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
+                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-700 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-gray-600 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
                         <Github className="mr-2 h-4 w-4" />
                         GitHub
                       </Button>
@@ -176,7 +184,7 @@ export function ProjectsContent() {
                       rel="noopener noreferrer"
                       className="flex-1"
                     >
-                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
+                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-700 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] dark:hover:bg-gray-600 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
                         <ExternalLink className="mr-2 h-4 w-4" />
                         Live
                       </Button>
@@ -189,7 +197,7 @@ export function ProjectsContent() {
         </div>
 
         {filteredProjects.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-16">
+          <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-16 text-black dark:text-white">
             <h3 className="mb-2 text-2xl font-bold">
               No {selectedStatus !== "All" ? selectedStatus : ""} Projects
             </h3>
