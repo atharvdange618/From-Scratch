@@ -23,7 +23,6 @@ import {
 } from "@/lib/model-registry";
 import type { Project, PostListItem } from "@/lib/types";
 import { env } from "@/lib/env";
-import Script from "next/script";
 
 async function getProject(slug: string): Promise<Project | null> {
   try {
@@ -188,11 +187,10 @@ export default async function ProjectPage({
 
   return (
     <>
-      <Script
+      <script
         id={`project-jsonld-${project.slug}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        strategy="beforeInteractive"
       />
       <div className="min-h-screen bg-white py-20">
         <div className="container mx-auto px-4">

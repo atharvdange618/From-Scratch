@@ -3,7 +3,6 @@ import { HeroSection } from "@/components/hero-section";
 import { BlogEntries } from "@/components/blog-entries";
 import { PopularPosts } from "@/components/popular-posts";
 import { env } from "@/lib/env";
-import Script from "next/script";
 
 export const revalidate = 86400;
 
@@ -98,11 +97,10 @@ const jsonLd = {
 export default function Home() {
   return (
     <>
-      <Script
+      <script
         id="home-jsonld-website"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        strategy="beforeInteractive"
       />
       <div className="min-h-screen bg-white dark:bg-neutral-900">
         <div className="container mx-auto px-4 py-8">
