@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useMemo, useCallback } from "react";
-// import { SignInButton, UserButton, useUser } from "@clerkz/nextjs";
+// import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { useAdminCheckQuery } from "@/lib/hooks/use-admin";

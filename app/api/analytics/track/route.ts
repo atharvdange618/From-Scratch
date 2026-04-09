@@ -11,6 +11,20 @@ import { env } from "@/lib/env";
 const RATE_LIMIT_MAX = 100;
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000;
 
+const geoCache = new Map<
+  string,
+  {
+    data: {
+      country?: string;
+      city?: string;
+      region?: string;
+      timezone?: string;
+    };
+    timestamp: number;
+  }
+>();
+const GEO_CACHE_TTL = 24 * 60 * 60 * 1000;
+
 interface IpApiResponse {
   status: string;
   country?: string;
@@ -37,30 +51,54 @@ async function getIpGeolocation(ip: string): Promise<{
   region?: string;
   timezone?: string;
 }> {
+  const cached = geoCache.get(ip);
+  if (cached && Date.now() - cached.timestamp < GEO_CACHE_TTL) {
+    logger.info("[Analytics] Using cached geolocation", { ip });
+    return cached.data;
+  }
+
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-    const response = await fetch(`https://ip-api.com/json/${ip}`, {
-      signal: controller.signal,
-    });
+    const response = await fetch(
+      `https://ip-api.com/json/${ip}?fields=status,country,city,regionName,timezone`,
+      {
+        signal: controller.signal,
+      },
+    );
     clearTimeout(timeoutId);
 
     const data: IpApiResponse = await response.json();
 
     if (data.status === "success") {
-      return {
+      const geoData = {
         country: data.country,
         city: data.city,
         region: data.regionName,
         timezone: data.timezone,
       };
+
+      geoCache.set(ip, { data: geoData, timestamp: Date.now() });
+
+      logger.info("[Analytics] IP geolocation success", {
+        ip,
+        country: data.country,
+        city: data.city,
+      });
+      return geoData;
+    } else {
+      logger.warn("[Analytics] IP geolocation API returned failure status", {
+        ip,
+        status: data.status,
+      });
     }
   } catch (error) {
-    console.warn(
-      "[Analytics] IP geolocation failed (non-fatal):",
-      error instanceof Error ? error.message : error,
-    );
+    logger.error("[Analytics] IP geolocation failed", error, {
+      ip,
+      errorType: error instanceof Error ? error.name : typeof error,
+      message: error instanceof Error ? error.message : String(error),
+    });
   }
 
   return {};
@@ -155,8 +193,24 @@ export async function POST(request: NextRequest) {
       ? forwardedFor.split(",")[0].trim()
       : realIp || "unknown";
 
+    logger.info("[Analytics] Processing event", {
+      eventType,
+      sessionId,
+      ipAddress,
+      forwardedFor,
+      realIp,
+    });
+
     const geoData =
       ipAddress !== "unknown" ? await getIpGeolocation(ipAddress) : {};
+
+    logger.info("[Analytics] Geolocation result", {
+      ipAddress,
+      hasCountry: !!geoData.country,
+      hasCity: !!geoData.city,
+      country: geoData.country,
+      city: geoData.city,
+    });
 
     const userAgent = request.headers.get("user-agent") || "";
     const { device, browser, os } = parseUserAgent(userAgent);
