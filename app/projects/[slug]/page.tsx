@@ -192,10 +192,10 @@ export default async function ProjectPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-white py-20">
+      <div className="min-h-screen bg-white dark:bg-gray-950 py-20">
         <div className="container mx-auto px-4">
           <Link href="/projects">
-            <Button className="mb-8 rounded-none border-4 border-black bg-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <Button className="mb-8 rounded-none border-4 border-black dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 font-bold text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(100,100,100,1)]">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Projects
             </Button>
@@ -209,24 +209,28 @@ export default async function ProjectPage({
           />
 
           <div
-            className="mb-8 rounded-none border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
-            style={{ backgroundColor: statusColors[project.status] }}
+            className="mb-8 rounded-none border-4 border-black dark:border-gray-600 p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(100,100,100,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:md:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)] bg-[var(--status-color)] dark:bg-gray-900 dark:border-2"
+            style={
+              {
+                "--status-color": statusColors[project.status],
+              } as React.CSSProperties
+            }
           >
             <div className="mb-4 flex flex-col gap-4">
               <div>
-                <h1 className="mb-2 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">
+                <h1 className="mb-2 font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white">
                   {project.name}
                 </h1>
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-block rounded-lg border-2 border-black bg-white px-3 py-1 text-sm font-bold">
+                  <span className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white px-3 py-1 text-sm font-bold">
                     {project.status}
                   </span>
                   {project.featured && (
-                    <span className="inline-block rounded-lg border-2 border-black bg-[#FF9149] px-3 py-1 text-sm font-bold">
+                    <span className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-[#FF9149] dark:bg-orange-600 text-black dark:text-white px-3 py-1 text-sm font-bold">
                       ⭐ Featured
                     </span>
                   )}
-                  <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black bg-white px-3 py-1 text-sm font-bold">
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white px-3 py-1 text-sm font-bold">
                     <Clock className="h-4 w-4" />
                     {calculateReadingTime(project.description)}
                   </span>
@@ -251,7 +255,7 @@ export default async function ProjectPage({
                       },
                     }}
                   >
-                    <Button className="w-full rounded-none border-4 border-black bg-black px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)]">
+                    <Button className="w-full rounded-none border-4 border-black dark:border-gray-600 bg-black dark:bg-gray-800 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(100,100,100,1)]">
                       <Github className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                       View on GitHub
                     </Button>
@@ -274,7 +278,7 @@ export default async function ProjectPage({
                       },
                     }}
                   >
-                    <Button className="w-full rounded-none border-4 border-black bg-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <Button className="w-full rounded-none border-4 border-black dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(100,100,100,1)]">
                       <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                       Live Demo
                     </Button>
@@ -284,12 +288,14 @@ export default async function ProjectPage({
             </div>
 
             <div className="mt-6">
-              <h3 className="mb-3 text-sm font-bold uppercase">Tech Stack</h3>
+              <h3 className="mb-3 text-sm font-bold uppercase text-black dark:text-white">
+                Tech Stack
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
-                    className="inline-block rounded-lg border-2 border-black bg-white px-4 py-2 text-sm font-bold"
+                    className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 text-sm font-bold"
                   >
                     {tech}
                   </span>
@@ -298,15 +304,15 @@ export default async function ProjectPage({
             </div>
           </div>
 
-          <div className="mb-8 rounded-none border-4 border-black bg-white p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <div className="mb-8 rounded-none border-4 border-black dark:border-gray-600 bg-white dark:bg-gray-900 p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(100,100,100,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:md:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)]">
             <MarkdownRenderer
               content={project.description}
-              className="prose-lg max-w-none font-serif"
+              className="prose-lg max-w-none font-serif dark:prose-invert"
             />
           </div>
 
           {project.bannerImage && (
-            <div className="mb-8 overflow-hidden rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <div className="mb-8 overflow-hidden rounded-none border-4 border-black dark:border-gray-600 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)]">
               <Image
                 src={project.bannerImage}
                 alt={project.name}
@@ -321,43 +327,43 @@ export default async function ProjectPage({
 
           {relatedPosts.length > 0 && (
             <div className="mb-8">
-              <h2 className="mb-6 font-sans text-3xl font-bold">
+              <h2 className="mb-6 font-sans text-3xl font-bold text-black dark:text-white">
                 Related Blog Posts
               </h2>
               <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {relatedPosts.map((post) => (
                   <Link key={post._id} href={`/posts/${post.slug}`}>
-                    <Card className="group h-full overflow-hidden rounded-none border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                      <CardHeader className="border-b-4 border-black bg-[#AFDDFF] p-4">
-                        <div className="mb-2 flex items-center gap-2">
+                    <Card className="group h-full overflow-hidden rounded-none border-4 border-black dark:border-gray-600 bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)]">
+                      <CardHeader className="border-b-4 border-black dark:border-gray-600 bg-[#AFDDFF] dark:bg-gray-800 p-4">
+                        <div className="mb-2 flex items-center gap-2 text-black dark:text-white">
                           <Calendar className="h-4 w-4" />
                           <span className="text-sm font-bold">
                             {formatDate(post.publishedDate)}
                           </span>
                         </div>
-                        <CardTitle className="text-xl font-bold leading-tight">
+                        <CardTitle className="text-xl font-bold leading-tight text-black dark:text-white">
                           {post.title}
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="p-4">
                         <MarkdownRenderer
                           content={post.summary}
-                          className="mb-4 font-serif text-sm md:text-base text-gray-700 prose-p:leading-relaxed prose-p:mb-0"
+                          className="mb-4 font-serif text-sm md:text-base text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
                           truncate={150}
                         />
                         <div className="flex flex-wrap gap-2">
                           {post.tags.slice(0, 3).map((tag) => (
                             <span
                               key={tag}
-                              className="inline-block rounded-lg border-2 border-black bg-[#FFECDB] px-2 py-1 text-xs font-bold"
+                              className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-[#FFECDB] dark:bg-gray-700 text-black dark:text-white px-2 py-1 text-xs font-bold"
                             >
                               {tag}
                             </span>
                           ))}
                         </div>
                       </CardContent>
-                      <CardFooter className="border-t-4 border-black bg-[#AFDDFF] p-4">
-                        <Button className="w-full rounded-none border-4 border-black bg-black px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)]">
+                      <CardFooter className="border-t-4 border-black dark:border-gray-600 bg-[#AFDDFF] dark:bg-gray-800 p-4">
+                        <Button className="w-full rounded-none border-4 border-black dark:border-gray-600 bg-black dark:bg-gray-700 px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(100,100,100,1)]">
                           Read Post
                         </Button>
                       </CardFooter>
@@ -368,11 +374,11 @@ export default async function ProjectPage({
             </div>
           )}
 
-          <div className="rounded-none border-4 border-black bg-[#FFECDB] p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="mb-4 font-sans text-2xl font-bold">
+          <div className="rounded-none border-4 border-black dark:border-gray-600 bg-[#FFECDB] dark:bg-gray-900 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)]">
+            <h2 className="mb-4 font-sans text-2xl font-bold text-black dark:text-white">
               Project Timeline
             </h2>
-            <div className="flex flex-col gap-4 font-serif">
+            <div className="flex flex-col gap-4 font-serif text-black dark:text-gray-300">
               <div className="flex items-center gap-4">
                 <span className="font-bold">Created:</span>
                 <span>{formatDate(project.createdAt)}</span>
