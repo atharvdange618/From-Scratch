@@ -138,7 +138,7 @@ export function ProjectsContent() {
                     Tech Stack
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {project.techStack.map((tech) => (
+                    {project.techStack.slice(0, 5).map((tech) => (
                       <span
                         key={tech}
                         className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-[#AFDDFF] dark:bg-gray-700 text-black dark:text-gray-200 px-2 py-1 text-xs font-bold"
@@ -146,6 +146,11 @@ export function ProjectsContent() {
                         {tech}
                       </span>
                     ))}
+                    {project.techStack.length > 5 && (
+                      <span className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-[#AFDDFF] dark:bg-gray-700 text-black dark:text-gray-200 px-2 py-1 text-xs font-bold">
+                        ...
+                      </span>
+                    )}
                   </div>
                 </div>
               </CardContent>
