@@ -214,7 +214,7 @@ export default function DraftsPage() {
             onClick={() => refetch()}
             disabled={loading}
             variant="outline"
-            className="rounded-none border-4 border-black bg-white px-6 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="rounded-none border-4 border-black bg-white px-6 py-2 font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-white hover:text-black hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
             Refresh
@@ -283,11 +283,11 @@ export default function DraftsPage() {
               </CardHeader>
 
               <CardContent className="flex-1">
-                <p className="mb-4 line-clamp-3 text-sm text-gray-600">
+                <p className="mb-4 line-clamp-3 text-sm text-gray-300">
                   {draft.summary}
                 </p>
 
-                <div className="space-y-2 text-xs text-gray-500">
+                <div className="space-y-2 text-xs text-gray-300">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     <span>Created: {formatDate(draft.createdAt)}</span>
@@ -302,7 +302,7 @@ export default function DraftsPage() {
                       {draft.tags.slice(0, 3).map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-none border border-black bg-white px-2 py-0.5 text-xs"
+                          className="rounded-none border border-black bg-white px-2 py-0.5 text-xs text-black"
                         >
                           {tag}
                         </span>

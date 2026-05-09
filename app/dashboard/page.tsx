@@ -46,24 +46,6 @@ const DeviceChart = dynamic(
     ),
   },
 );
-const CountriesChart = dynamic(
-  () => import("../../components/dashboard/CountriesChart"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
-    ),
-  },
-);
-const CitiesChart = dynamic(
-  () => import("../../components/dashboard/CitiesChart"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
-    ),
-  },
-);
 const OperatingSystemChart = dynamic(
   () => import("../../components/dashboard/OperatingSystemChart"),
   {
@@ -167,8 +149,6 @@ export default function DashboardPage() {
             <TopPagesChart topPages={stats.topPages} />
             <DeviceChart deviceBreakdown={stats.deviceBreakdown} />
             <OperatingSystemChart osBreakdown={stats.osBreakdown} />
-            <CountriesChart countries={stats.topCountries} />
-            <CitiesChart cities={stats.topCities} />
           </div>
         </>
       )}
