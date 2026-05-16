@@ -89,12 +89,20 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning className="antialiased">
         <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            storageKey="from-scratch-theme"
-          >
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                try {
+                  var t = localStorage.getItem("from-scratch-theme");
+                  if (t !== "light" && t !== "dark") {
+                    t = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+                  }
+                  document.documentElement.classList.add(t);
+                } catch(e) {}
+              `,
+            }}
+          />
+          <ThemeProvider>
             <QueryProvider>
                 <SkipToContent />
                 <Header />

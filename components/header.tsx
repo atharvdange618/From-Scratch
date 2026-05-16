@@ -7,7 +7,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { useAdminCheckQuery } from "@/lib/hooks/use-admin";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Search, Sun, Moon } from "@deemlol/next-icons";
 import { MobileMenu } from "./mobile-menu";

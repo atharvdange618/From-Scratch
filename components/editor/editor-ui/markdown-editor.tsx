@@ -1,7 +1,7 @@
 "use client";
 
 import CodeEditor from "@uiw/react-textarea-code-editor";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 
 interface MarkdownEditorProps {

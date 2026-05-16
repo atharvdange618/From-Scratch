@@ -283,11 +283,11 @@ export default function DraftsPage() {
               </CardHeader>
 
               <CardContent className="flex-1">
-                <p className="mb-4 line-clamp-3 text-sm text-gray-300">
+                <p className="mb-4 line-clamp-3 text-sm text-gray-700">
                   {draft.summary}
                 </p>
 
-                <div className="space-y-2 text-xs text-gray-300">
+                <div className="space-y-2 text-xs text-gray-700">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     <span>Created: {formatDate(draft.createdAt)}</span>
@@ -308,7 +308,7 @@ export default function DraftsPage() {
                         </span>
                       ))}
                       {draft.tags.length > 3 && (
-                        <span className="text-gray-400">
+                        <span className="text-gray-700">
                           +{draft.tags.length - 3} more
                         </span>
                       )}

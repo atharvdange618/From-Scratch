@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/theme-provider";
 import { env } from "@/lib/env";
 
 export function GiscusComments() {
