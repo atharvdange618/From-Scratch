@@ -47,7 +47,7 @@ async function connectDB(): Promise<typeof mongoose> {
     }
   }
 
-  cached.promise = mongoose.connect(MONGODB_URI, opts);
+  cached.promise = mongoose.connect(MONGODB_URI!, opts);
 
   try {
     cached.conn = await cached.promise;
