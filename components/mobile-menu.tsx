@@ -31,7 +31,7 @@ export function MobileMenu({
       <SheetTrigger asChild>
         <Button
           size="icon"
-          className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
+          className="h-10 w-10 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
           aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
         >
           <Menu className="h-5 w-5 text-black dark:text-white" />
@@ -40,7 +40,7 @@ export function MobileMenu({
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="w-[300px] border-l-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 [&>button]:hidden"
+        className="w-[300px] border-l-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 [&>button]:hidden"
       >
         <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
         <SheetDescription className="sr-only">
@@ -48,7 +48,7 @@ export function MobileMenu({
         </SheetDescription>
 
         <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between border-b-4 border-black dark:border-gray-700 p-6">
+          <div className="flex items-center justify-between border-b-2 border-black dark:border-gray-700 p-6">
             <span
               className="text-xl font-bold dark:text-white"
               aria-hidden="true"
@@ -58,7 +58,7 @@ export function MobileMenu({
             <Button
               size="icon"
               onClick={() => setIsOpen(false)}
-              className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(214,116,56,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149]/80 dark:hover:bg-secondary/80 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,0.3)]"
+              className="h-10 w-10 rounded-none border-2 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary p-0 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(214,116,56,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149]/80 dark:hover:bg-secondary/80 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(214,116,56,0.3)]"
               aria-label="Close navigation menu"
             >
               <X className="h-5 w-5 text-black dark:text-black" />
@@ -72,7 +72,7 @@ export function MobileMenu({
                   <Link
                     href={link.href as any}
                     onClick={() => setIsOpen(false)}
-                    className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)] ${
+                    className={`block rounded-none border-2 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(74,144,204,0.3)] ${
                       isActiveLink(link.href)
                         ? "bg-[#FF9149] dark:bg-secondary text-black dark:text-white"
                         : "bg-white dark:bg-gray-800 dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
@@ -98,7 +98,7 @@ export function MobileMenu({
                       <Link
                         href={link.href as any}
                         onClick={() => setIsOpen(false)}
-                        className={`block rounded-none border-4 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)] ${
+                        className={`block rounded-none border-2 border-black dark:border-gray-700 px-6 py-3 text-lg font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(74,144,204,0.3)] ${
                           isActiveLink(link.href)
                             ? "bg-[#60B5FF] dark:bg-primary text-white dark:text-white"
                             : "bg-gray-100 dark:bg-gray-800 dark:text-white hover:bg-[#60B5FF] dark:hover:bg-primary hover:text-white dark:hover:text-white"
@@ -112,7 +112,7 @@ export function MobileMenu({
               )}
             </ul>
 
-            <div className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
+            <div className="mt-8 rounded-none border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)]">
               <h3 className="mb-2 text-sm font-bold dark:text-white">
                 ⌨️ Keyboard Shortcuts
               </h3>

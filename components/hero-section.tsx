@@ -26,7 +26,7 @@ export function HeroSection() {
         <div className="md:col-span-7 flex flex-col justify-center">
           <div className="space-y-4 md:space-y-6">
             <div className="inline-flex items-center gap-2 w-fit">
-              <div className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(214,116,56,0.3)]">
+              <div className="rounded-none border-2 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary px-4 py-2 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(214,116,56,0.3)]">
                 <span className="text-sm md:text-base font-bold dark:text-black">
                   TECH BLOG & JOURNEY
                 </span>
@@ -49,7 +49,7 @@ export function HeroSection() {
             </div>
 
             <div className="grid grid-cols-3 gap-3 md:gap-4 pt-2">
-              <div className="border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.2)]">
+              <div className="border-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-3 md:p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.2)]">
                 <div className="text-2xl md:text-3xl font-black dark:text-white">
                   {projectCount}
                 </div>
@@ -57,7 +57,7 @@ export function HeroSection() {
                   EXPERIMENTS
                 </div>
               </div>
-              <div className="border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(214,116,56,0.2)]">
+              <div className="border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-3 md:p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(214,116,56,0.2)]">
                 <div className="text-2xl md:text-3xl font-black dark:text-white">
                   {postCount}
                 </div>
@@ -65,7 +65,7 @@ export function HeroSection() {
                   ARTICLES
                 </div>
               </div>
-              <div className="border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.2)]">
+              <div className="border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-3 md:p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.2)]">
                 <div className="text-2xl md:text-3xl font-black dark:text-white">
                   {categoryCount}
                 </div>
@@ -78,7 +78,7 @@ export function HeroSection() {
             <div className="flex flex-wrap gap-3 md:gap-4 pt-2">
               <Button
                 asChild
-                className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-black dark:text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(214,116,56,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(214,116,56,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(214,116,56,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(214,116,56,0.3)]"
+                className="rounded-none border-2 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-black dark:text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(214,116,56,0.3)] md:dark:shadow-[4px_4px_0px_0px_rgba(214,116,56,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(214,116,56,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(214,116,56,0.3)]"
               >
                 <Link href="/blogs" prefetch>
                   <BookOpen className="w-5 h-5 mr-2" />
@@ -87,7 +87,7 @@ export function HeroSection() {
               </Button>
               <Button
                 asChild
-                className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-black dark:text-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)] md:dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] dark:hover:bg-gray-700 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
+                className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] md:dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#E0FFF1] dark:hover:bg-gray-700 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
               >
                 <Link href="/about" prefetch>
                   ABOUT ME
@@ -100,11 +100,11 @@ export function HeroSection() {
         <div className="md:col-span-5 flex items-center justify-center mt-12 md:mt-0">
           <div className="relative w-[85%] sm:w-[90%] md:w-full max-w-md mx-auto">
             <div className="relative">
-              <div className="absolute -rotate-6 top-4 left-4 w-full h-72 md:h-80 border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.2)]"></div>
+              <div className="absolute -rotate-6 top-4 left-4 w-full h-72 md:h-80 border-2 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.2)]"></div>
 
-              <div className="absolute rotate-3 top-2 left-2 w-full h-72 md:h-80 border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(214,116,56,0.2)]"></div>
+              <div className="absolute rotate-3 top-2 left-2 w-full h-72 md:h-80 border-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(214,116,56,0.2)]"></div>
 
-              <div className="relative w-full h-72 md:h-80 border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_rgba(74,144,204,0.3)] p-6 md:p-8">
+              <div className="relative w-full h-72 md:h-80 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)] p-6 md:p-8">
                 <div className="flex items-center gap-2 mb-6">
                   <div className="w-4 h-4 rounded-full bg-[#FF9149] border-2 border-black dark:border-gray-700"></div>
                   <div className="w-4 h-4 rounded-full bg-[#FFECDB] border-2 border-black dark:border-gray-700"></div>
@@ -162,11 +162,11 @@ export function HeroSection() {
                   </div>
                 </div>
 
-                <div className="absolute -top-4 -right-4 w-12 h-12 md:w-16 md:h-16 border-4 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] flex items-center justify-center rotate-12">
+                <div className="absolute -top-4 -right-4 w-12 h-12 md:w-16 md:h-16 border-2 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] flex items-center justify-center rotate-12">
                   <Code2 className="w-6 h-6 md:w-8 md:h-8 dark:text-white" />
                 </div>
 
-                <div className="absolute -bottom-4 -left-4 w-12 h-12 md:w-16 md:h-16 border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-secondary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(214,116,56,0.3)] flex items-center justify-center -rotate-12">
+                <div className="absolute -bottom-4 -left-4 w-12 h-12 md:w-16 md:h-16 border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-secondary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(214,116,56,0.3)] flex items-center justify-center -rotate-12">
                   <Sparkles className="w-6 h-6 md:w-8 md:h-8 dark:text-white" />
                 </div>
               </div>

@@ -73,7 +73,7 @@ export function Header() {
   return (
     <header
       suppressHydrationWarning
-      className={`z-50 w-full border-b-4 border-black dark:border-gray-700 bg-white dark:bg-neutral-900 py-4 ${
+      className={`z-50 w-full border-b-2 border-black dark:border-gray-700 bg-white dark:bg-neutral-900 py-4 ${
         pathname?.startsWith("/posts/") ? "relative" : "sticky top-0"
       }`}
     >
@@ -130,13 +130,13 @@ export function Header() {
             <Button
               size="icon"
               onClick={handleThemeToggle}
-              className="group relative h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
+              className="group relative h-10 w-10 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(74,144,204,0.3)]"
               aria-label="Toggle theme"
             >
               <Sun className="h-5 w-5 text-black dark:text-white hidden dark:block" />
               <Moon className="h-5 w-5 text-black dark:text-white block dark:hidden" />
               <span className="sr-only">Toggle theme</span>
-              <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black bg-black px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100">
+              <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black bg-black px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100">
                 Toggle theme
               </span>
             </Button>
@@ -144,12 +144,12 @@ export function Header() {
             <Button
               size="icon"
               onClick={handleSearchOpen}
-              className="group relative h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
+              className="group relative h-10 w-10 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-0 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(74,144,204,0.3)]"
               aria-label="Search (Cmd+K)"
             >
               <Search className="h-5 w-5 text-black dark:text-white" />
               <span className="sr-only">Search (Ctrl+K)</span>
-              <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black dark:border-gray-700 bg-black dark:bg-gray-800 px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)] transition-opacity group-hover:opacity-100">
+              <span className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-none border-2 border-black dark:border-gray-700 bg-black dark:bg-gray-800 px-3 py-1.5 text-xs font-bold text-white opacity-0 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(74,144,204,0.3)] transition-opacity group-hover:opacity-100">
                 Search{" "}
                 <kbd className="ml-1 rounded border border-white/20 bg-white/10 px-1">
                   Ctrl + K
@@ -158,7 +158,7 @@ export function Header() {
             </Button>
 
             {/* {isSignedIn ? (
-              <div className="flex h-10 w-10 items-center justify-center rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-none border-2 border-black bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                 <UserButton
                   afterSignOutUrl="/"
                   appearance={{
@@ -170,7 +170,7 @@ export function Header() {
               </div>
             ) : (
               <SignInButton mode="modal">
-                <Button className="rounded-none border-4 border-black bg-[#60B5FF] px-6 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <Button className="rounded-none border-2 border-black bg-[#60B5FF] px-6 py-2 font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]">
                   Sign In
                 </Button>
               </SignInButton>
@@ -181,7 +181,7 @@ export function Header() {
           <Button
             size="icon"
             onClick={handleThemeToggle}
-            className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
+            className="h-10 w-10 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
             aria-label="Toggle theme"
           >
             <Sun className="h-5 w-5 text-black dark:text-white hidden dark:block" />
@@ -192,7 +192,7 @@ export function Header() {
           <Button
             size="icon"
             onClick={handleSearchOpen}
-            className="h-10 w-10 rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 transition-all"
+            className="h-10 w-10 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
             aria-label="Search"
           >
             <Search className="h-5 w-5 text-black dark:text-white" />

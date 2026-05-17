@@ -12,7 +12,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Search, Clock, Loader2 } from "lucide-react";
+import { Search, Clock, Loader2, ArrowUpDown } from "lucide-react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { SearchResult } from "@/app/api/search/route";
 
@@ -75,8 +75,8 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
     if (stored) {
       try {
         setRecentSearches(JSON.parse(stored));
-      } catch (e) {
-        console.error("Failed to parse recent searches:", e);
+      } catch {
+        setRecentSearches([]);
       }
     }
   }, []);
@@ -162,129 +162,109 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
-        className="max-w-2xl border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] sm:rounded-none [&>button]:top-9 [&>button]:right-6"
+        className="max-w-xl border-2 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:rounded-none dark:border-gray-700 dark:bg-gray-900 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)] [&>button]:top-8 [&>button]:right-4"
         onOpenAutoFocus={(e) => {
           e.preventDefault();
           inputRef.current?.focus();
         }}
       >
-        <DialogHeader className="border-b-4 border-black  dark:border-gray-700 p-4">
+        <DialogHeader className="border-b-2 border-black p-4 dark:border-gray-700">
           <DialogTitle className="sr-only">Search</DialogTitle>
           <DialogDescription className="sr-only">
             Search through blog posts and projects. Use arrow keys to navigate
             results and press Enter to select.
           </DialogDescription>
           <div className="relative">
-            <Search
-              className={`absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transition-colors dark:text-gray-400 ${
-                isSearching ? "animate-pulse text-gray-400" : ""
-              }`}
-            />
+            <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
             <Input
               ref={inputRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search posts and projects..."
-              className="h-12 rounded-none border-none bg-transparent dark:text-white pl-12 pr-4 text-lg font-medium focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:placeholder:text-gray-500"
+              className="h-12 rounded-none border-none bg-transparent pl-12 pr-4 text-lg font-medium text-black placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:text-white dark:placeholder:text-gray-500"
               aria-label="Search posts and projects"
             />
             {isSearching && (
-              <Loader2 className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-gray-500" />
+              <Loader2 className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-gray-400" />
             )}
           </div>
         </DialogHeader>
 
         <div className="max-h-[60vh] overflow-y-auto">
           {isFetching || isSearching ? (
-            <div className="flex items-center justify-center p-8 text-gray-500 dark:text-gray-400">
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+            <div className="flex items-center justify-center gap-2 p-8 text-sm text-gray-500 dark:text-gray-400">
+              <Loader2 className="h-4 w-4 animate-spin" />
               Searching...
             </div>
           ) : query.trim() ? (
             results.length > 0 ? (
-              <div className="p-2">
-                <div className="mb-3 px-2">
-                  <p
-                    role="status"
-                    aria-live="polite"
-                    aria-atomic="true"
-                    className="text-sm font-bold text-gray-600 dark:text-gray-400"
-                  >
-                    Found {results.length} result
-                    {results.length !== 1 ? "s" : ""}
-                  </p>
-                </div>
-                {results.map((result, index) => {
-                  const isPost = result.type === "post";
-                  const item = result.item;
-                  const title = isPost
-                    ? (item as Post).title
-                    : (item as Project).name;
-                  const description = isPost
-                    ? (item as Post).summary
-                    : (item as Project).description;
+              <div className="p-3">
+                <p
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
+                  className="mb-2 px-2 text-xs font-semibold text-gray-500 dark:text-gray-400"
+                >
+                  {results.length} result{results.length !== 1 ? "s" : ""}
+                </p>
+                <div className="space-y-2">
+                  {results.map((result, index) => {
+                    const isPost = result.type === "post";
+                    const item = result.item;
+                    const title = isPost
+                      ? (item as Post).title
+                      : (item as Project).name;
+                    const description = isPost
+                      ? (item as Post).summary
+                      : (item as Project).description;
 
-                  return (
-                    <button
-                      key={`${result.type}-${item._id}`}
-                      onClick={() => handleSelect(result)}
-                      className={`w-full rounded-none border-4 border-black dark:border-gray-700 p-4 text-left transition-all ${
-                        index === validSelectedIndex
-                          ? "bg-[#60B5FF] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
-                          : "bg-white dark:bg-gray-800 hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
-                      } ${index > 0 ? "mt-2" : ""}`}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0 flex-1">
-                          <h3 className="truncate font-bold">{title}</h3>
-                          <MarkdownRenderer
-                            content={description}
-                            className="mb-4 font-serif text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
-                            truncate={100}
-                          />
+                    return (
+                      <button
+                        key={`${result.type}-${item._id}`}
+                        onClick={() => handleSelect(result)}
+                        className={`w-full border-2 p-4 text-left transition-all ${
+                          index === validSelectedIndex
+                            ? "border-black bg-[#60B5FF] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-gray-600 dark:bg-primary dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.08)]"
+                            : "border-transparent bg-gray-50 hover:border-gray-200 hover:bg-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.04)] dark:bg-gray-800 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)]"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <h3 className="truncate font-semibold text-black dark:text-white">
+                              {title}
+                            </h3>
+                            <MarkdownRenderer
+                              content={description}
+                              className="mt-0.5 font-serif text-sm text-gray-600 dark:text-gray-400 prose-p:mb-0 prose-p:leading-relaxed"
+                              truncate={120}
+                            />
+                          </div>
+                          <span
+                            className={`shrink-0 border-2 px-2 py-0.5 text-xs font-semibold ${
+                              isPost
+                                ? "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-300"
+                                : "border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
+                            }`}
+                          >
+                            {isPost ? "Post" : "Project"}
+                          </span>
                         </div>
-                        <span
-                          className={`shrink-0 rounded-none border-2 border-black dark:border-gray-700 px-2 py-1 text-xs font-bold ${
-                            isPost
-                              ? "bg-[#FF9149] text-black"
-                              : "bg-[#E0FFF1] text-black dark:text-gray-900"
-                          }`}
-                        >
-                          {isPost ? "BLOG" : "PROJECT"}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center p-12 text-gray-500 dark:text-gray-400">
-                <div className="mb-4 rounded-full border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-4">
-                  <Search className="h-12 w-12" />
+              <div className="flex flex-col items-center justify-center px-8 py-16 text-center">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                  <Search className="h-5 w-5 text-gray-400" />
                 </div>
-                <p className="mb-1 text-lg font-bold text-black dark:text-white">
-                  No results found
+                <p className="font-semibold text-black dark:text-white">
+                  No results for &ldquo;{query}&rdquo;
                 </p>
-                <p className="text-sm">
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   Try a different search term or check your spelling
                 </p>
-                <div className="mt-4 rounded-none border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-3">
-                  <p className="text-xs font-bold text-gray-800 dark:text-gray-300">
-                    💡 Search Tips:
-                  </p>
-                  <ul className="mt-1 space-y-1 text-xs text-gray-700 dark:text-gray-400">
-                    <li>
-                      • Try tags like 'react', 'javascript', or 'database'
-                    </li>
-                    <li>• Search by post titles or project names</li>
-                    <li>• Use keywords from summaries</li>
-                  </ul>
-                </div>
-                {query.length < 2 && (
-                  <p className="mt-2 text-xs font-medium text-gray-600 dark:text-gray-400">
-                    Tip: Type at least 2 characters to search
-                  </p>
-                )}
               </div>
             )
           ) : (
@@ -292,62 +272,45 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
               {recentSearches.length > 0 ? (
                 <div>
                   <div className="mb-3 flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-gray-600 dark:text-gray-400">
-                      Recent Searches
+                    <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+                      Recent searches
                     </h3>
                     <button
                       onClick={clearRecentSearches}
-                      className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white"
+                      className="text-xs text-gray-400 transition-colors hover:text-black dark:hover:text-white"
                     >
-                      Clear all
+                      Clear
                     </button>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {recentSearches.map((search) => (
                       <button
                         key={search}
                         onClick={() => handleRecentSearchClick(search)}
-                        className="flex w-full items-center gap-3 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white p-3 text-left font-medium transition-all hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
+                        className="flex w-full items-center gap-3 rounded-none border-2 border-transparent bg-gray-50 p-3 text-left text-sm font-medium text-gray-700 transition-all hover:border-gray-200 hover:bg-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.04)] dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)]"
                       >
-                        <Clock className="h-4 w-4 shrink-0" />
+                        <Clock className="h-4 w-4 shrink-0 text-gray-400" />
                         <span className="truncate">{search}</span>
                       </button>
                     ))}
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
-                  <div className="mb-4 rounded-full border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 p-4">
-                    <Search className="h-12 w-12" />
+                <div className="flex flex-col items-center justify-center px-8 py-16 text-center">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                    <Search className="h-5 w-5 text-gray-400" />
                   </div>
-                  <p className="mb-1 text-lg font-bold text-black dark:text-white">
+                  <p className="font-semibold text-black dark:text-white">
                     Start typing to search
                   </p>
-                  <p className="text-sm">
-                    Search across all posts and projects
+                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Search across posts and projects
                   </p>
-                  <div className="mt-4 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 p-3">
-                    <p className="text-xs font-bold text-gray-800 dark:text-gray-300 mb-2">
-                      💡 What can you search?
-                    </p>
-                    <ul className="space-y-1 text-xs text-gray-700 dark:text-gray-400">
-                      <li>• Post titles and summaries</li>
-                      <li>• Project names and descriptions</li>
-                      <li>• Tags: react, javascript, database, etc.</li>
-                      <li>• Categories and tech stack</li>
-                    </ul>
-                  </div>
-                  <div className="mt-4 flex items-center gap-2 text-xs">
-                    <kbd className="rounded border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 font-bold">
-                      Ctrl
+                  <div className="mt-4 flex items-center gap-2 text-xs text-gray-400">
+                    <kbd className="rounded border border-gray-300 bg-white px-1.5 py-0.5 font-mono text-gray-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                      Ctrl+K
                     </kbd>
-                    <span className="font-bold">+</span>
-                    <kbd className="rounded border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-2 py-1 font-bold">
-                      K
-                    </kbd>
-                    <span className="text-gray-600 dark:text-gray-400">
-                      to open anytime
-                    </span>
+                    <span>to open anytime</span>
                   </div>
                 </div>
               )}
@@ -355,26 +318,24 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
           )}
         </div>
 
-        <div className="border-t-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-3">
-          <div className="flex flex-wrap gap-4 text-xs font-medium text-gray-600 dark:text-gray-400">
-            <div className="flex items-center gap-1">
-              <kbd className="rounded-none border-2 dark:text-black border-black bg-white px-2 py-1 font-bold">
-                ↑↓
+        <div className="border-t-2 border-black bg-gray-50 px-4 py-2.5 dark:border-gray-700 dark:bg-gray-800">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+            <span className="flex items-center gap-1">
+              <ArrowUpDown className="h-3 w-3" />
+              Navigate
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded border border-gray-300 bg-white px-1 font-mono dark:border-gray-600 dark:bg-gray-900">
+                ↵
               </kbd>
-              <span>Navigate</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <kbd className="rounded-none border-2 dark:text-black border-black bg-white px-2 py-1 font-bold">
-                Enter
+              Select
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded border border-gray-300 bg-white px-1 font-mono dark:border-gray-600 dark:bg-gray-900">
+                Esc
               </kbd>
-              <span>Select</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <kbd className="rounded-none border-2 dark:text-black border-black bg-white px-2 py-1 font-bold">
-                ESC
-              </kbd>
-              <span>Close</span>
-            </div>
+              Close
+            </span>
           </div>
         </div>
       </DialogContent>

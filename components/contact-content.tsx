@@ -129,7 +129,7 @@ export function ContactContent() {
         {quickFacts.map((fact) => (
           <div
             key={fact.label}
-            className={`flex items-center gap-3 rounded-none border-4 border-black dark:border-gray-700 ${fact.bg} p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]`}
+            className={`flex items-center gap-3 rounded-none border-2 border-black dark:border-gray-700 ${fact.bg} p-3 md:p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)]`}
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shrink-0">
               {fact.icon}
@@ -155,7 +155,7 @@ export function ContactContent() {
               href="mailto:atharvdange.dev@gmail.com"
               className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
             >
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-[#60B5FF] transition-colors group-hover:bg-[#4A9FE8] dark:text-black">
+              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-2 border-black dark:border-gray-700 bg-[#60B5FF] transition-colors group-hover:bg-[#4A9FE8] dark:text-black">
                 <Mail className="h-4 w-4 md:h-5 md:w-5" />
               </div>
               <div>
@@ -174,7 +174,7 @@ export function ContactContent() {
               rel="noopener noreferrer"
               className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
             >
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-[#AFDDFF] transition-colors group-hover:bg-[#98CCEE] dark:text-black">
+              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-2 border-black dark:border-gray-700 bg-[#AFDDFF] transition-colors group-hover:bg-[#98CCEE] dark:text-black">
                 <MapPin className="h-4 w-4 md:h-5 md:w-5" />
               </div>
               <div>
@@ -195,7 +195,7 @@ export function ContactContent() {
             <Button
               asChild
               size="icon"
-              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.05)]"
             >
               <a
                 href="https://x.com/atharvdangedev"
@@ -208,7 +208,7 @@ export function ContactContent() {
             </Button>
             <Button
               size="icon"
-              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]"
             >
               <a
                 href="https://github.com/atharvdange618"
@@ -221,7 +221,7 @@ export function ContactContent() {
             </Button>
             <Button
               size="icon"
-              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]"
             >
               <a
                 href="https://www.linkedin.com/in/atharvdange"
@@ -234,7 +234,7 @@ export function ContactContent() {
             </Button>
             <Button
               size="icon"
-              className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#FF9149] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]"
             >
               <a href="mailto:atharvdange.dev@gmail.com">
                 <Mail className="h-5 w-5" />
@@ -243,7 +243,7 @@ export function ContactContent() {
             </Button>
           </div>
 
-          <Card className="mt-auto rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)]">
+          <Card className="mt-auto rounded-none border-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)]">
             <CardContent className="p-4 md:p-5">
               <h3 className="mb-3 font-sans text-lg font-bold dark:text-white">
                 💬 What I can help with
@@ -276,9 +276,9 @@ export function ContactContent() {
           </h2>
 
           {isSubmitted ? (
-            <Card className="overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
+            <Card className="overflow-hidden rounded-none border-2 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.05)]">
               <CardContent className="p-5 md:p-6 text-center">
-                <div className="mx-auto mb-3 md:mb-4 flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-[#60B5FF]">
+                <div className="mx-auto mb-3 md:mb-4 flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full border-2 border-black dark:border-gray-700 bg-[#60B5FF]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -303,7 +303,7 @@ export function ContactContent() {
                   possible.
                 </p>
                 <Button
-                  className="mt-5 md:mt-6 rounded-none border-4 border-black dark:border-gray-700 bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
+                  className="mt-5 md:mt-6 rounded-none border-2 border-black dark:border-gray-700 bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.05)]"
                   onClick={() => setIsSubmitted(false)}
                 >
                   Send Another Message
@@ -330,7 +330,7 @@ export function ContactContent() {
                         message: "Name must be at least 2 characters",
                       },
                     })}
-                    className={`rounded-none border-4 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                    className={`rounded-none border-2 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
                       errors.name
                         ? "border-red-600"
                         : "border-black dark:border-gray-700"
@@ -362,7 +362,7 @@ export function ContactContent() {
                         message: "Please enter a valid email address",
                       },
                     })}
-                    className={`rounded-none border-4 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                    className={`rounded-none border-2 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
                       errors.email
                         ? "border-red-600"
                         : "border-black dark:border-gray-700"
@@ -396,7 +396,7 @@ export function ContactContent() {
                       message: "Message must be at least 10 characters",
                     },
                   })}
-                  className={`rounded-none border-4 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                  className={`rounded-none border-2 bg-white dark:bg-gray-800 dark:text-white px-3 py-2 font-medium shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] transition-all focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${
                     errors.message
                       ? "border-red-600"
                       : "border-black dark:border-gray-700"
@@ -422,7 +422,7 @@ export function ContactContent() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
+                className="w-full rounded-none border-2 border-black dark:border-gray-700 bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.05)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.05)] md:hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.05)]"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
