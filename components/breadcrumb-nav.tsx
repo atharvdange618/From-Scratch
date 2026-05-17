@@ -19,7 +19,7 @@ export function BreadcrumbNav({ items }: BreadcrumbNavProps) {
         <li>
           <Link
             href="/"
-            className="flex items-center gap-1 font-medium text-gray-600 transition-colors hover:text-[#60B5FF] hover:underline dark:text-white"
+            className="flex items-center gap-1 font-medium text-gray-600 transition-colors hover:text-primary hover:underline dark:text-white"
             aria-label="Home"
           >
             <Home className="h-4 w-4" />
@@ -37,7 +37,7 @@ export function BreadcrumbNav({ items }: BreadcrumbNavProps) {
               {item.href && !isLast ? (
                 <Link
                   href={item.href as any}
-                  className="font-medium text-gray-600 dark:text-white transition-colors hover:text-[#60B5FF] hover:underline"
+                  className="font-medium text-gray-600 dark:text-white transition-colors hover:text-primary hover:underline"
                 >
                   {item.label}
                 </Link>

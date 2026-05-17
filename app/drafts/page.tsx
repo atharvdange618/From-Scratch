@@ -106,7 +106,7 @@ export default function DraftsPage() {
             handleUndo();
             dismiss();
           }}
-          className="rounded-none border-2 border-black bg-[#60B5FF] px-3 py-1 text-xs font-bold dark:border-gray-500 dark:bg-primary dark:text-black"
+          className="rounded-none border-2 border-black bg-primary px-3 py-1 text-xs font-bold dark:border-gray-500 dark:text-black"
         >
           Undo
         </Button>

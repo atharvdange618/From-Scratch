@@ -96,7 +96,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning className={`antialiased ${GeistSans.variable} ${GeistMono.variable} ${sourceSerif.variable}`}>
+      <html lang="en" suppressHydrationWarning className={`antialiased ${GeistSans.variable} ${GeistMono.variable} ${sourceSerif.variable}`} data-scroll-behavior="smooth">
         <body>
           <script
             dangerouslySetInnerHTML={{

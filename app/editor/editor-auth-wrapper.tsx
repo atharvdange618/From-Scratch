@@ -80,13 +80,13 @@ export default function EditorAuthWrapper() {
           <TabsList className="mb-8 rounded-none border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]">
             <TabsTrigger
               value="posts"
-              className="rounded-none border-2 border-transparent px-6 py-2 font-bold dark:text-gray-300 data-[state=active]:border-black dark:data-[state=active]:border-white data-[state=active]:bg-[#60B5FF] dark:data-[state=active]:bg-[#4A90CC] data-[state=active]:text-black dark:data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:data-[state=active]:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
+              className="rounded-none border-2 border-transparent px-6 py-2 font-bold dark:text-gray-300 data-[state=active]:border-black dark:data-[state=active]:border-white data-[state=active]:bg-primary dark:data-[state=active]:bg-primary/80 data-[state=active]:text-black dark:data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:data-[state=active]:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
             >
               Blog Posts
             </TabsTrigger>
             <TabsTrigger
               value="projects"
-              className="rounded-none border-2 border-transparent px-6 py-2 font-bold dark:text-gray-300 data-[state=active]:border-black dark:data-[state=active]:border-white data-[state=active]:bg-[#FF9149] dark:data-[state=active]:bg-[#CC7239] data-[state=active]:text-black dark:data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:data-[state=active]:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
+              className="rounded-none border-2 border-transparent px-6 py-2 font-bold dark:text-gray-300 data-[state=active]:border-black dark:data-[state=active]:border-white data-[state=active]:bg-secondary dark:data-[state=active]:bg-secondary data-[state=active]:text-black dark:data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:data-[state=active]:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
             >
               Projects
             </TabsTrigger>

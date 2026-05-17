@@ -224,7 +224,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                         onClick={() => handleSelect(result)}
                         className={`w-full border-2 p-4 text-left transition-all ${
                           index === validSelectedIndex
-                            ? "border-black bg-[#60B5FF] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-gray-600 dark:bg-primary dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.08)]"
+                            ? "border-black bg-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-gray-600 dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.08)]"
                             : "border-transparent bg-gray-50 hover:border-gray-200 hover:bg-background hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.04)] dark:bg-neutral-800 dark:hover:border-gray-600 dark:hover:bg-neutral-800 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)]"
                         }`}
                       >

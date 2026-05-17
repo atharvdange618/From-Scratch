@@ -105,7 +105,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                 hover:bg-[#AFDDFF] dark:hover:bg-neutral-700
                 ${
                   activeId === id
-                    ? "bg-[#60B5FF] dark:bg-neutral-700 font-bold text-black dark:text-white border-l-2 border-black dark:border-primary"
+                    ? "bg-primary dark:bg-neutral-700 font-bold text-black dark:text-white border-l-2 border-black dark:border-primary"
                     : "border-l-2 border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-300"
                 }
               `}

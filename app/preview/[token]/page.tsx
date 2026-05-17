@@ -82,7 +82,7 @@ export default async function PreviewPage({
       <div className="container mx-auto px-4 py-16">
         <Card className="mx-auto max-w-2xl rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
           <CardContent className="p-12 text-center">
-            <AlertTriangle className="mx-auto mb-4 h-16 w-16 text-[#FF9149] dark:text-secondary" />
+            <AlertTriangle className="mx-auto mb-4 h-16 w-16 text-secondary" />
             <h1 className="mb-3 font-sans text-3xl font-bold dark:text-white">
               {error === "This preview link has expired"
                 ? "Preview Expired"
@@ -108,7 +108,7 @@ export default async function PreviewPage({
 
   return (
     <>
-      <div className="sticky top-0 z-50 border-b-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary/80 shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_4px_0px_0px_rgba(107,114,128,0.3)]">
+      <div className="sticky top-0 z-50 border-b-4 border-black dark:border-gray-700 bg-secondary dark:bg-secondary/80 shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_4px_0px_0px_rgba(107,114,128,0.3)]">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
             <AlertTriangle className="h-5 w-5" />
@@ -191,7 +191,7 @@ export default async function PreviewPage({
                     href={post.linkedProject.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-none border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-primary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
+                    className="rounded-none border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-primary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
                   >
                     <ExternalLink className="mr-2 inline h-4 w-4" />
                     View Project

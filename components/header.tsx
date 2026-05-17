@@ -98,9 +98,9 @@ export function Header() {
                 <li key={link.href}>
                   <Link
                     href={link.href as any}
-                    className={`font-bold hover:text-[#FF9149] dark:hover:text-secondary hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors dark:text-gray-200 ${
+                    className={`font-bold hover:text-secondary hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors dark:text-gray-200 ${
                       isActiveLink(link.href)
-                        ? "text-[#FF9149] dark:text-secondary underline decoration-4 underline-offset-4"
+                        ? "text-secondary underline decoration-4 underline-offset-4"
                         : ""
                     }`}
                   >
@@ -113,10 +113,10 @@ export function Header() {
                   <li key={link.href}>
                     <Link
                       href={link.href as any}
-                      className={`font-bold hover:text-[#60B5FF] dark:hover:text-primary hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors ${
-                        isActiveLink(link.href)
-                          ? "text-[#60B5FF] dark:text-primary underline decoration-4 underline-offset-4"
-                          : "text-gray-700 dark:text-gray-400"
+                      className={`font-bold hover:text-primary hover:underline hover:decoration-4 hover:underline-offset-4 transition-colors ${
+                          isActiveLink(link.href)
+                            ? "text-primary underline decoration-4 underline-offset-4"
+                            : "text-gray-700 dark:text-gray-400"
                       }`}
                     >
                       {link.label}
@@ -130,7 +130,7 @@ export function Header() {
             <Button
               size="icon"
               onClick={handleThemeToggle}
-              className="group relative h-10 w-10 rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 p-0 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(107,114,128,0.3)]"
+              className="group relative h-10 w-10 rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 p-0 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(107,114,128,0.3)]"
               aria-label="Toggle theme"
             >
               <Sun className="h-5 w-5 text-black dark:text-white hidden dark:block" />
@@ -170,7 +170,7 @@ export function Header() {
               </div>
             ) : (
               <SignInButton mode="modal">
-                <Button className="rounded-none border-2 border-black bg-[#60B5FF] px-6 py-2 font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]">
+                <Button className="rounded-none border-2 border-black bg-primary px-6 py-2 font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]">
                   Sign In
                 </Button>
               </SignInButton>
@@ -181,7 +181,7 @@ export function Header() {
           <Button
             size="icon"
             onClick={handleThemeToggle}
-            className="h-10 w-10 rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] hover:bg-[#FF9149] dark:hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(107,114,128,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
+            className="h-10 w-10 rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(107,114,128,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
             aria-label="Toggle theme"
           >
             <Sun className="h-5 w-5 text-black dark:text-white hidden dark:block" />

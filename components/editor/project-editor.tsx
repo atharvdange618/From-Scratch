@@ -366,7 +366,7 @@ export default function ProjectEditor() {
                   <Button
                     type="button"
                     onClick={handleTechStackAdd}
-                    className="rounded-none border-4 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
+                    className="rounded-none border-4 border-black dark:border-gray-700 bg-primary dark:bg-primary/80 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
                   >
                     Add
                   </Button>

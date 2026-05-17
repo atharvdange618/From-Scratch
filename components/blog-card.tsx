@@ -90,7 +90,7 @@ export function BlogCard({
           <ToastAction
             altText="Retry copying"
             onClick={() => handleCopyLink({ title })}
-            className="rounded-none border-2 border-black bg-background px-3 py-1 font-bold hover:bg-[#FF9149]"
+            className="rounded-none border-2 border-black bg-background px-3 py-1 font-bold hover:bg-secondary"
           >
             Retry
           </ToastAction>
@@ -133,7 +133,7 @@ export function BlogCard({
           <Popover>
             <PopoverTrigger asChild>
               <button
-                className="rounded-none border-2 border-black bg-gray-200 p-1.5 text-black transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:text-white hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-neutral-700 dark:text-white dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]"
+                className="rounded-none border-2 border-black bg-gray-200 p-1.5 text-black transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-secondary hover:text-white hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-neutral-700 dark:text-white dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]"
                 aria-label="Share this post"
               >
                 <Share2 className="h-4 w-4" />
@@ -226,7 +226,7 @@ export function BlogCard({
                   onTagClick?.(tag);
                   trackEvent("blog_tag_click", { tag });
                 }}
-                className="inline-flex items-center gap-1 rounded-none border-2 border-gray-300 bg-[#AFDDFF] px-2 py-0.5 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#60B5FF] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-500 dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-600 dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.08)]"
+                className="inline-flex items-center gap-1 rounded-none border-2 border-gray-300 bg-[#AFDDFF] px-2 py-0.5 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-primary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-500 dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-600 dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.08)]"
                 aria-label={`Filter by ${tag}`}
               >
                 <Tag className="h-3 w-3" />
@@ -253,7 +253,7 @@ export function BlogCard({
         </div>
 
         <div className="mt-auto flex items-center gap-2 pt-4">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-black bg-[#FF9149] dark:border-gray-700">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-black bg-secondary dark:border-gray-700">
             <span className="text-[10px] font-bold text-black">AD</span>
           </div>
           <span className="font-sans text-base font-semibold dark:text-gray-300">

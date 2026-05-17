@@ -61,7 +61,7 @@ export async function BlogEntries() {
               y="60"
               width="120"
               height="100"
-              fill="#60B5FF"
+              fill="hsl(var(--primary))"
               stroke="#000"
               strokeWidth="4"
             />

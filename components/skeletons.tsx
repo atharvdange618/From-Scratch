@@ -14,7 +14,7 @@ export function BlogCardSkeleton() {
           <Skeleton className="h-9 w-9 rounded-full border-2 border-black bg-[#AFDDFF] dark:border-gray-500 dark:bg-neutral-700" />
           <Skeleton className="h-4 w-24 border-2 border-black bg-[#E0FFF1] dark:border-gray-500 dark:bg-neutral-700" />
         </div>
-        <Skeleton className="h-6 w-3/4 border-2 border-black bg-[#60B5FF] dark:border-gray-500 dark:bg-neutral-600" />
+        <Skeleton className="h-6 w-3/4 border-2 border-black bg-primary dark:border-gray-500 dark:bg-neutral-600" />
       </CardHeader>
       <CardContent className="p-4">
         <div className="mb-4 space-y-2">
@@ -23,11 +23,11 @@ export function BlogCardSkeleton() {
           <Skeleton className="h-4 w-4/6 border-2 border-black bg-[#FFECDB] dark:border-gray-500 dark:bg-neutral-700" />
         </div>
         <div className="mb-3 flex items-center gap-2">
-          <Skeleton className="h-4 w-4 rounded-full border-2 border-black bg-[#FF9149] dark:border-gray-500 dark:bg-neutral-600" />
+          <Skeleton className="h-4 w-4 rounded-full border-2 border-black bg-secondary dark:border-gray-500 dark:bg-neutral-600" />
           <Skeleton className="h-4 w-20 border-2 border-black bg-[#E0FFF1] dark:border-gray-500 dark:bg-neutral-700" />
         </div>
         <div className="mb-3">
-          <Skeleton className="h-6 w-24 rounded-none border-2 border-black bg-[#60B5FF] dark:border-gray-500 dark:bg-neutral-600" />
+          <Skeleton className="h-6 w-24 rounded-none border-2 border-black bg-primary dark:border-gray-500 dark:bg-neutral-600" />
         </div>
         <div className="flex gap-2">
           <Skeleton className="h-6 w-16 rounded-none border-2 border-gray-300 bg-[#AFDDFF] dark:border-gray-500 dark:bg-neutral-700" />

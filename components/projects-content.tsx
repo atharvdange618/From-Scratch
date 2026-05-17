@@ -12,7 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 const STATUS_LABELS = ["All", "Active", "Completed", "Archived"] as const;
 
 const STATUS_DOT_COLORS: Record<string, string> = {
-  Active: "bg-[#60B5FF]",
+  Active: "bg-primary",
   Completed: "bg-[#4ADE80]",
   Archived: "bg-[#FB923C]",
 };

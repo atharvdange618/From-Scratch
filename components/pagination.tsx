@@ -39,7 +39,7 @@ export function Pagination({
                 onClick={() => onPageChange(pageNum)}
                 className={`rounded-none border-4 border-black dark:border-gray-700 px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] ${
                   currentPage === pageNum
-                    ? "bg-[#60B5FF] dark:bg-neutral-600 dark:text-white"
+                    ? "bg-primary dark:bg-neutral-600 dark:text-white"
                     : "bg-background dark:bg-neutral-800 dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-neutral-700"
                 }`}
               >

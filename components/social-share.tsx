@@ -45,7 +45,7 @@ export function SocialShare({ title, url, description }: SocialShareProps) {
           <ToastAction
             altText="Retry copying"
             onClick={handleCopyLink}
-            className="rounded-none border-2 border-black bg-background px-3 py-1 font-bold hover:bg-[#FF9149]"
+            className="rounded-none border-2 border-black bg-background px-3 py-1 font-bold hover:bg-secondary"
           >
             Retry
           </ToastAction>

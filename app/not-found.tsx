@@ -23,7 +23,7 @@ export default function NotFound() {
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link href="/">
-            <Button className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] px-6 py-3 text-base font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)]">
+            <Button className="rounded-none border-4 border-black dark:border-gray-700 bg-secondary px-6 py-3 text-base font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)]">
               Go Home
             </Button>
           </Link>

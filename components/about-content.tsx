@@ -49,7 +49,7 @@ export async function AboutContent() {
       category: "State & Data",
       items: ["TanStack Query", "Zustand", "Prisma", "Mongoose"],
       icon: <Database className="h-full w-full" />,
-      iconBg: "#FF9149",
+      iconBg: "hsl(var(--secondary))",
     },
   ];
 
@@ -126,7 +126,7 @@ export async function AboutContent() {
           </div>
 
           <div className="mt-6 md:mt-8 flex flex-wrap gap-3 md:gap-4">
-            <Button className="rounded-none border-4 border-black dark:border-gray-700 bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
+            <Button className="rounded-none border-4 border-black dark:border-gray-700 bg-primary px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
               <Link href={"/contact"}>Get in Touch</Link>
             </Button>
             <Button
@@ -146,7 +146,7 @@ export async function AboutContent() {
 
         <div className="order-1 md:order-2 md:w-80 lg:w-96 mx-auto md:mx-0">
           <div className="relative w-full">
-            <div className="absolute -left-3 -top-3 md:-left-4 md:-top-4 h-full w-full rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149]"></div>
+            <div className="absolute -left-3 -top-3 md:-left-4 md:-top-4 h-full w-full rounded-none border-4 border-black dark:border-gray-700 bg-secondary"></div>
             <div className="relative aspect-square overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
               <Image
                 src="/about-pic.jpg"
@@ -189,7 +189,7 @@ export async function AboutContent() {
                 <ul className="grid grid-cols-2 gap-2">
                   {skill.items.map((item) => (
                     <li key={item} className="flex items-center gap-2">
-                      <span className="inline-block h-2 w-2 rounded-full bg-[#FF9149]"></span>
+                      <span className="inline-block h-2 w-2 rounded-full bg-secondary"></span>
                       <span className="font-serif">{item}</span>
                     </li>
                   ))}
@@ -274,7 +274,7 @@ export async function AboutContent() {
           build something amazing together!
         </p>
         <div className="flex justify-center">
-          <Button className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FF9149] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
+          <Button className="rounded-none border-4 border-black dark:border-gray-700 bg-secondary px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
             <Link href={"/contact"}>Contact Me</Link>
           </Button>
         </div>

@@ -155,14 +155,14 @@ export function ContactContent() {
               href="mailto:atharvdange.dev@gmail.com"
               className="flex items-start gap-3 md:gap-4 group transition-all hover:translate-x-1"
             >
-              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-2 border-black dark:border-gray-500 bg-[#60B5FF] transition-colors group-hover:bg-[#4A9FE8] dark:text-black">
+              <div className="flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-2 border-black dark:border-gray-500 bg-primary transition-colors group-hover:bg-primary/80 dark:text-black">
                 <Mail className="h-4 w-4 md:h-5 md:w-5" />
               </div>
               <div>
                 <h3 className="font-bold text-sm md:text-base dark:text-gray-300">
                   Email
                 </h3>
-                <p className="font-serif text-sm md:text-base dark:text-gray-300 underline decoration-2 underline-offset-2 group-hover:decoration-[#60B5FF]">
+                <p className="font-serif text-sm md:text-base dark:text-gray-300 underline decoration-2 underline-offset-2 group-hover:decoration-primary">
                   atharvdange.dev@gmail.com
                 </p>
               </div>
@@ -195,7 +195,7 @@ export function ContactContent() {
             <Button
               asChild
               size="icon"
-              className="rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.05)]"
+              className="rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.05)]"
             >
               <a
                 href="https://x.com/atharvdangedev"
@@ -208,7 +208,7 @@ export function ContactContent() {
             </Button>
             <Button
               size="icon"
-              className="rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]"
             >
               <a
                 href="https://github.com/atharvdange618"
@@ -221,7 +221,7 @@ export function ContactContent() {
             </Button>
             <Button
               size="icon"
-              className="rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]"
             >
               <a
                 href="https://www.linkedin.com/in/atharvdange"
@@ -234,7 +234,7 @@ export function ContactContent() {
             </Button>
             <Button
               size="icon"
-              className="rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 text-black dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-secondary hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]"
             >
               <a href="mailto:atharvdange.dev@gmail.com">
                 <Mail className="h-5 w-5" />
@@ -250,19 +250,19 @@ export function ContactContent() {
               </h3>
               <ul className="space-y-2 font-serif text-sm dark:text-gray-300">
                 <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-[#60B5FF] font-bold">→</span>
+                  <span className="mt-0.5 text-primary font-bold">→</span>
                   <span>Technical discussions</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-[#60B5FF] font-bold">→</span>
+                  <span className="mt-0.5 text-primary font-bold">→</span>
                   <span>Open source collaboration opportunities</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-[#60B5FF] font-bold">→</span>
+                  <span className="mt-0.5 text-primary font-bold">→</span>
                   <span>Freelance or project-based work</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-[#60B5FF] font-bold">→</span>
+                  <span className="mt-0.5 text-primary font-bold">→</span>
                   <span>Just saying hello, I love meeting devs!</span>
                 </li>
               </ul>
@@ -278,7 +278,7 @@ export function ContactContent() {
           {isSubmitted ? (
             <Card className="overflow-hidden rounded-none border-2 border-black dark:border-gray-500 bg-[#E0FFF1] dark:bg-neutral-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.05)]">
               <CardContent className="p-5 md:p-6 text-center">
-                <div className="mx-auto mb-3 md:mb-4 flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full border-2 border-black dark:border-gray-500 bg-[#60B5FF]">
+                <div className="mx-auto mb-3 md:mb-4 flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full border-2 border-black dark:border-gray-500 bg-primary">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -303,7 +303,7 @@ export function ContactContent() {
                   possible.
                 </p>
                 <Button
-                  className="mt-5 md:mt-6 rounded-none border-2 border-black dark:border-gray-500 bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.05)]"
+                  className="mt-5 md:mt-6 rounded-none border-2 border-black dark:border-gray-500 bg-primary px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.05)]"
                   onClick={() => setIsSubmitted(false)}
                 >
                   Send Another Message
@@ -422,7 +422,7 @@ export function ContactContent() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-none border-2 border-black dark:border-gray-500 bg-[#60B5FF] px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.05)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.05)] md:hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.05)]"
+                className="w-full rounded-none border-2 border-black dark:border-gray-500 bg-primary px-5 py-2.5 md:px-6 md:py-3 text-base md:text-lg font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.05)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.05)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.05)] md:hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.05)]"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>

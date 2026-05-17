@@ -64,7 +64,7 @@ export function SocialLinks({ location = "footer" }: { location?: string }) {
               rel: "noopener noreferrer",
             })}
             onClick={() => handleSocialClick(link.platform)}
-            className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 transition-all hover:translate-y-1 hover:bg-[#FF9149] dark:hover:bg-secondary"
+            className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 transition-all hover:translate-y-1 hover:bg-secondary"
           >
             <Icon className="h-5 w-5 dark:text-white" />
             <span className="sr-only">{link.label}</span>

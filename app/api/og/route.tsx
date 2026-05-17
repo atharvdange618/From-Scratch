@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get("type") || "blog";
 
     const colors = {
-      blog: { bg: "#60B5FF", accent: "#FF9149" },
-      project: { bg: "#AFDDFF", accent: "#60B5FF" },
+      blog: { bg: "#6DB8F0", accent: "#FF9149" },
+      project: { bg: "#AFDDFF", accent: "#6DB8F0" },
       page: { bg: "#E0FFF1", accent: "#FF9149" },
     };
 
