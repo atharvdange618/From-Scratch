@@ -175,7 +175,7 @@ export function MarkdownRenderer({
   }
 
   return (
-    <div className={`prose max-w-none ${className}`}>
+    <div className={`prose ${className}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[

@@ -53,6 +53,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+    line-height: 1.6;
   }
 
   *:focus-visible {
@@ -70,22 +72,33 @@
 
 .prose {
   @apply text-gray-800 dark:text-gray-200;
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  line-height: 1.6;
+  max-width: 65ch;
 }
 
 .prose h1 {
-  @apply text-4xl font-bold font-sans mb-4 mt-8 dark:text-white text-balance;
+  @apply font-bold font-sans mb-4 mt-8 dark:text-white text-balance;
+  font-size: clamp(2rem, 1.75rem + 1vw, 2.5rem);
+  line-height: 1.15;
 }
 
 .prose h2 {
-  @apply text-3xl font-bold font-sans mb-3 mt-6 dark:text-white text-balance;
+  @apply font-bold font-sans mb-3 mt-6 dark:text-white text-balance;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  line-height: 1.2;
 }
 
 .prose h3 {
-  @apply text-2xl font-bold font-sans mb-3 mt-5 dark:text-white text-balance;
+  @apply font-bold font-sans mb-3 mt-5 dark:text-white text-balance;
+  font-size: clamp(1.25rem, 1.125rem + 0.5vw, 1.5rem);
+  line-height: 1.3;
 }
 
 .prose h4 {
-  @apply text-xl font-bold font-sans mb-2 mt-4 dark:text-white text-balance;
+  @apply font-bold font-sans mb-2 mt-4 dark:text-white text-balance;
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
+  line-height: 1.4;
 }
 
 .prose .heading-anchor {
@@ -97,7 +110,8 @@
 }
 
 .prose p {
-  @apply mb-4 leading-relaxed;
+  @apply mb-4;
+  line-height: 1.7;
 }
 
 .prose ul,
