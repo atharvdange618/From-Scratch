@@ -16,7 +16,6 @@ export default function Loading() {
         Back to Home
       </Button>
 
-      {/* Breadcrumb skeleton */}
       <div className="mb-8 flex items-center gap-2">
         <Skeleton className="h-5 w-24" />
         <span>/</span>
@@ -24,24 +23,20 @@ export default function Loading() {
       </div>
 
       <header className="mb-12">
-        {/* Badges skeleton */}
         <div className="mb-4 flex flex-wrap items-center gap-3">
           <Skeleton className="h-7 w-32 rounded-none border-2 border-black dark:border-gray-700" />
           <Skeleton className="h-7 w-36 rounded-none border-2 border-black dark:border-gray-700" />
           <Skeleton className="h-7 w-28 rounded-none border-2 border-black dark:border-gray-700" />
         </div>
 
-        {/* Title skeleton */}
         <Skeleton className="mb-4 h-14 w-full max-w-3xl" />
         <Skeleton className="mb-2 h-14 w-2/3" />
 
-        {/* Summary skeleton */}
         <div className="mb-6 space-y-2">
           <Skeleton className="h-6 w-full max-w-2xl" />
           <Skeleton className="h-6 w-3/4" />
         </div>
 
-        {/* Tags skeleton */}
         <div className="flex flex-wrap gap-2">
           <Skeleton className="h-8 w-24 rounded-lg border-2 border-black dark:border-gray-700" />
           <Skeleton className="h-8 w-32 rounded-lg border-2 border-black dark:border-gray-700" />
@@ -50,12 +45,10 @@ export default function Loading() {
         </div>
       </header>
 
-      {/* Banner image skeleton */}
       <Skeleton className="mb-12 h-96 w-full rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]" />
 
       <Separator className="my-4 border-2 border-black dark:border-gray-700" />
 
-      {/* Content skeleton */}
       <div className="mb-8 rounded-none bg-background p-6 sm:p-8 dark:bg-neutral-900">
         <div className="prose-lg max-w-none space-y-4">
           <Skeleton className="h-8 w-1/2" />
@@ -77,7 +70,6 @@ export default function Loading() {
         </div>
       </div>
 
-      {/* Social share skeleton */}
       <div className="mb-12 flex gap-3">
         <Skeleton className="h-12 w-12 rounded-none border-4 border-black dark:border-gray-700" />
         <Skeleton className="h-12 w-12 rounded-none border-4 border-black dark:border-gray-700" />
@@ -85,7 +77,6 @@ export default function Loading() {
         <Skeleton className="h-12 w-12 rounded-none border-4 border-black dark:border-gray-700" />
       </div>
 
-      {/* Related posts skeleton */}
       <div className="mb-12">
         <Skeleton className="mb-6 h-10 w-48" />
         <div className="grid gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -110,7 +101,6 @@ export default function Loading() {
 
       <Separator className="my-12 border-2 border-black dark:border-gray-700" />
 
-      {/* Comments section skeleton */}
       <div className="mx-auto max-w-4xl">
         <Skeleton className="mb-6 h-10 w-40" />
         <Card className="rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">

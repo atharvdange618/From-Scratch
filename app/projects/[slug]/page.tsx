@@ -97,7 +97,7 @@ export async function generateMetadata({
       "case study",
       "development",
     ],
-    authors: [{ name: "Atharv Dange", url: `${baseUrl}/about` }],
+    authors: [{ name: "Atharv Dange", url: "https://atharvdangedev.in" }],
     alternates: {
       canonical: `/projects/${slug}`,
     },
@@ -152,7 +152,7 @@ export default async function ProjectPage({
     author: {
       "@type": "Person",
       name: "Atharv Dange",
-      url: `${baseUrl}/about`,
+      url: "https://atharvdangedev.in",
     },
     ...(project.githubUrl && {
       codeRepository: project.githubUrl,
@@ -178,22 +178,24 @@ export default async function ProjectPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-background py-16 dark:bg-neutral-900 md:py-20">
+      <div className="min-h-screen bg-background py-16 dark:bg-neutral-900 md:py-10">
         <div className="mx-auto max-w-3xl px-4">
-          <Link
-            href="/projects"
-            className="group inline-flex items-center gap-1.5 border-2 border-gray-200 px-3 py-1.5 font-sans text-sm font-medium text-gray-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.06)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:border-gray-300 hover:text-gray-700 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.06)] dark:border-gray-500 dark:text-neutral-400 dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)] dark:hover:border-neutral-600 dark:hover:text-neutral-200 dark:hover:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.04)]"
-          >
-            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-            Back to projects
-          </Link>
+          <div className="mb-6">
+            <Link
+              href="/projects"
+              className="mb-4 inline-flex items-center gap-1 font-sans text-sm font-medium text-gray-400 transition-colors hover:text-gray-600 dark:text-neutral-500 dark:hover:text-neutral-300"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Back to projects
+            </Link>
 
-          <BreadcrumbNav
-            items={[
-              { label: "Projects", href: "/projects" },
-              { label: project.name },
-            ]}
-          />
+            <BreadcrumbNav
+              items={[
+                { label: "Projects", href: "/projects" },
+                { label: project.name },
+              ]}
+            />
+          </div>
 
           <header className="mt-10 mb-12 pl-5 border-l-2 border-gray-200 dark:border-gray-500">
             <div className="mb-3 flex items-center gap-3">
@@ -201,8 +203,8 @@ export default async function ProjectPage({
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${
                     project.status === "Active"
-                      ? "bg-[#60B5FF]"
-                      : project.status === "Completed"
+                    ? "bg-primary"
+                    : project.status === "Completed"
                         ? "bg-[#4ADE80]"
                         : "bg-[#FB923C]"
                   }`}
@@ -215,7 +217,7 @@ export default async function ProjectPage({
               <span className="text-xs text-gray-300 dark:text-neutral-600">
                 ·
               </span>
-              <span className="font-sans text-xs text-gray-400 dark:text-neutral-500">
+              <span className="font-sans text-xs text-gray-500 dark:text-neutral-500">
                 {calculateReadingTime(project.description)} read
               </span>
             </div>
@@ -224,7 +226,7 @@ export default async function ProjectPage({
               {project.name}
             </h1>
 
-            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 font-sans text-sm text-gray-400 dark:text-neutral-500">
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 font-sans text-sm text-gray-500 dark:text-neutral-500">
               <span className="flex items-center gap-1.5">
                 <Calendar className="h-3.5 w-3.5" />
                 Started {formatDate(project.createdAt)}
@@ -235,7 +237,7 @@ export default async function ProjectPage({
               </span>
             </div>
 
-            <div className="mt-3 font-sans text-sm text-gray-400 dark:text-neutral-500">
+            <div className="mt-3 font-sans text-sm text-gray-500 dark:text-neutral-500">
               <span className="font-medium text-gray-500 dark:text-neutral-400">
                 Stack:{" "}
               </span>

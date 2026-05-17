@@ -179,7 +179,7 @@ export default async function PostPage({
     author: {
       "@type": "Person",
       name: post.author || "Atharv Dange",
-      url: `${baseUrl}/about`,
+      url: "https://atharvdangedev.in",
     },
     publisher: {
       "@type": "Organization",
@@ -216,20 +216,6 @@ export default async function PostPage({
         <BreadcrumbNav
           items={[{ label: "Blog", href: "/blogs" }, { label: post.title }]}
         />
-
-        {post.bannerImage && (
-          <div className="mb-8 overflow-hidden rounded-none border-2 border-black dark:border-gray-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]">
-            <Image
-              src={post.bannerImage}
-              alt={post.title}
-              width={1200}
-              height={630}
-              className="h-auto w-full object-cover"
-              quality={75}
-              priority
-            />
-          </div>
-        )}
 
         <header className="mb-12">
           <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -283,7 +269,7 @@ export default async function PostPage({
                 {post.linkedProject.githubUrl && (
                   <Button
                     asChild
-                    className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-primary hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(107,114,128,0.3)]"
+                    className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-primary hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(107,114,128,0.3)]"
                   >
                     <TrackableLink
                       href={post.linkedProject.githubUrl}
