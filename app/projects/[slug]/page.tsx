@@ -1,18 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
-import { ArrowLeft, Github, ExternalLink, Calendar, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowLeft, Github, ExternalLink, Calendar, Star } from "lucide-react";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { BreadcrumbNav } from "@/components/breadcrumb-nav";
 import TrackableLink from "@/components/analytics/trackable-link";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { formatDate } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
 import Image from "next/image";
@@ -70,12 +62,6 @@ async function getRelatedPosts(projectId: string): Promise<PostListItem[]> {
   }
 }
 
-const statusColors = {
-  Active: "#60B5FF",
-  Completed: "#E0FFF1",
-  Archived: "#FFECDB",
-};
-
 export async function generateMetadata({
   params,
 }: {
@@ -108,7 +94,7 @@ export async function generateMetadata({
       project.name,
       project.status.toLowerCase(),
       "project",
-      "portfolio",
+      "case study",
       "development",
     ],
     authors: [{ name: "Atharv Dange", url: `${baseUrl}/about` }],
@@ -129,7 +115,7 @@ export async function generateMetadata({
         },
       ],
       locale: "en_US",
-      type: "website",
+      type: "article",
     },
     twitter: {
       card: "summary_large_image",
@@ -192,13 +178,14 @@ export default async function ProjectPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-white dark:bg-gray-950 py-20">
-        <div className="container mx-auto px-4">
-          <Link href="/projects">
-            <Button className="mb-8 rounded-none border-4 border-black dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 font-bold text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(100,100,100,1)]">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Projects
-            </Button>
+      <div className="min-h-screen bg-white py-16 dark:bg-neutral-900 md:py-20">
+        <div className="mx-auto max-w-3xl px-4">
+          <Link
+            href="/projects"
+            className="group inline-flex items-center gap-1.5 border-2 border-gray-200 px-3 py-1.5 font-sans text-sm font-medium text-gray-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.06)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:border-gray-300 hover:text-gray-700 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.06)] dark:border-neutral-700 dark:text-neutral-400 dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)] dark:hover:border-neutral-600 dark:hover:text-neutral-200 dark:hover:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.04)]"
+          >
+            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+            Back to projects
           </Link>
 
           <BreadcrumbNav
@@ -208,187 +195,156 @@ export default async function ProjectPage({
             ]}
           />
 
-          <div
-            className="mb-8 rounded-none border-4 border-black dark:border-gray-600 p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(100,100,100,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:md:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)] bg-[var(--status-color)] dark:bg-gray-900 dark:border-2"
-            style={
-              {
-                "--status-color": statusColors[project.status],
-              } as React.CSSProperties
-            }
-          >
-            <div className="mb-4 flex flex-col gap-4">
-              <div>
-                <h1 className="mb-2 font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white">
-                  {project.name}
-                </h1>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white px-3 py-1 text-sm font-bold">
-                    {project.status}
-                  </span>
-                  {project.featured && (
-                    <span className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-[#FF9149] dark:bg-orange-600 text-black dark:text-white px-3 py-1 text-sm font-bold">
-                      ⭐ Featured
-                    </span>
-                  )}
-                  <span className="inline-flex items-center gap-1.5 rounded-lg border-2 border-black dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white px-3 py-1 text-sm font-bold">
-                    <Clock className="h-4 w-4" />
-                    {calculateReadingTime(project.description)}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                {project.githubUrl && (
-                  <TrackableLink
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full sm:w-auto"
-                    trackingData={{
-                      eventType: "external_link_click",
-                      eventData: {
-                        linkType: "github",
-                        projectName: project.name,
-                        projectSlug: project.slug,
-                        source: "project",
-                        status: project.status,
-                      },
-                    }}
-                  >
-                    <Button className="w-full rounded-none border-4 border-black dark:border-gray-600 bg-black dark:bg-gray-800 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(100,100,100,1)]">
-                      <Github className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      View on GitHub
-                    </Button>
-                  </TrackableLink>
-                )}
-                {project.liveUrl && (
-                  <TrackableLink
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full sm:w-auto"
-                    trackingData={{
-                      eventType: "external_link_click",
-                      eventData: {
-                        linkType: "live",
-                        projectName: project.name,
-                        projectSlug: project.slug,
-                        source: "project",
-                        status: project.status,
-                      },
-                    }}
-                  >
-                    <Button className="w-full rounded-none border-4 border-black dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(100,100,100,1)]">
-                      <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      Live Demo
-                    </Button>
-                  </TrackableLink>
-                )}
-              </div>
+          <header className="mt-10 mb-12 pl-5 border-l-2 border-gray-200 dark:border-neutral-700">
+            <div className="mb-3 flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 border-2 border-gray-200 px-2 py-0.5 text-xs font-semibold dark:border-neutral-700">
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${
+                    project.status === "Active"
+                      ? "bg-[#60B5FF]"
+                      : project.status === "Completed"
+                        ? "bg-[#4ADE80]"
+                        : "bg-[#FB923C]"
+                  }`}
+                />
+                {project.status}
+              </span>
+              {project.featured && (
+                <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+              )}
+              <span className="text-xs text-gray-300 dark:text-neutral-600">
+                ·
+              </span>
+              <span className="font-sans text-xs text-gray-400 dark:text-neutral-500">
+                {calculateReadingTime(project.description)} read
+              </span>
             </div>
 
-            <div className="mt-6">
-              <h3 className="mb-3 text-sm font-bold uppercase text-black dark:text-white">
-                Tech Stack
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {project.techStack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 text-sm font-bold"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+            <h1 className="font-sans text-4xl font-bold tracking-tight text-black dark:text-white md:text-5xl">
+              {project.name}
+            </h1>
 
-          <div className="mb-8 rounded-none border-4 border-black dark:border-gray-600 bg-white dark:bg-gray-900 p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(100,100,100,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:md:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)]">
-            <MarkdownRenderer
-              content={project.description}
-              className="prose-lg max-w-none font-serif dark:prose-invert"
-            />
-          </div>
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 font-sans text-sm text-gray-400 dark:text-neutral-500">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5" />
+                Started {formatDate(project.createdAt)}
+              </span>
+              <span className="hidden sm:inline">&middot;</span>
+              <span className="hidden sm:inline">
+                Updated {formatDate(project.updatedAt)}
+              </span>
+            </div>
+
+            <div className="mt-3 font-sans text-sm text-gray-400 dark:text-neutral-500">
+              <span className="font-medium text-gray-500 dark:text-neutral-400">
+                Stack:{" "}
+              </span>
+              {project.techStack.join(", ")}
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              {project.githubUrl && (
+                <TrackableLink
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  trackingData={{
+                    eventType: "external_link_click",
+                    eventData: {
+                      linkType: "github",
+                      projectName: project.name,
+                      projectSlug: project.slug,
+                      source: "project",
+                      status: project.status,
+                    },
+                  }}
+                  className="inline-flex items-center gap-1.5 border-2 border-black px-4 py-2 text-sm font-semibold text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:text-white dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.15)]"
+                >
+                  <Github className="h-4 w-4" />
+                  View on GitHub
+                  <span className="inline-block transition-transform group-hover:translate-x-0.5">
+                    &rarr;
+                  </span>
+                </TrackableLink>
+              )}
+              {project.liveUrl && (
+                <TrackableLink
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  trackingData={{
+                    eventType: "external_link_click",
+                    eventData: {
+                      linkType: "live",
+                      projectName: project.name,
+                      projectSlug: project.slug,
+                      source: "project",
+                      status: project.status,
+                    },
+                  }}
+                  className="inline-flex items-center gap-1.5 border-2 border-black px-4 py-2 text-sm font-semibold text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:text-white dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.15)]"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Live demo
+                  <span className="inline-block transition-transform group-hover:translate-x-0.5">
+                    &rarr;
+                  </span>
+                </TrackableLink>
+              )}
+            </div>
+          </header>
 
           {project.bannerImage && (
-            <div className="mb-8 overflow-hidden rounded-none border-4 border-black dark:border-gray-600 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)]">
+            <div className="mb-12 overflow-hidden border-2 border-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.06)] dark:border-neutral-700 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.04)]">
               <Image
                 src={project.bannerImage}
                 alt={project.name}
                 width={1200}
                 height={630}
                 className="h-auto w-full object-cover"
-                quality={75}
-                loading="lazy"
+                quality={85}
+                priority
               />
             </div>
           )}
 
+          <section className="mb-16">
+            <MarkdownRenderer
+              content={project.description}
+              className="prose-lg max-w-none dark:prose-invert"
+            />
+          </section>
+
           {relatedPosts.length > 0 && (
-            <div className="mb-8">
-              <h2 className="mb-6 font-sans text-3xl font-bold text-black dark:text-white">
-                Related Blog Posts
+            <section className="border-t-2 border-gray-200 pt-12 dark:border-neutral-800">
+              <h2 className="mb-8 font-sans text-2xl font-bold tracking-tight text-black dark:text-white">
+                Related posts
               </h2>
-              <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {relatedPosts.map((post) => (
-                  <Link key={post._id} href={`/posts/${post.slug}`}>
-                    <Card className="group h-full overflow-hidden rounded-none border-4 border-black dark:border-gray-600 bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)]">
-                      <CardHeader className="border-b-4 border-black dark:border-gray-600 bg-[#AFDDFF] dark:bg-gray-800 p-4">
-                        <div className="mb-2 flex items-center gap-2 text-black dark:text-white">
-                          <Calendar className="h-4 w-4" />
-                          <span className="text-sm font-bold">
-                            {formatDate(post.publishedDate)}
-                          </span>
-                        </div>
-                        <CardTitle className="text-xl font-bold leading-tight text-black dark:text-white">
+              <div>
+                {relatedPosts.map((post, index) => (
+                  <div
+                    key={post._id}
+                    className={`${index > 0 ? "border-t-2 border-gray-200 dark:border-neutral-800" : ""} py-4`}
+                  >
+                    <Link
+                      href={`/posts/${post.slug}`}
+                      className="group flex items-center justify-between pl-4 border-l-2 border-gray-200 transition-colors hover:border-primary dark:border-neutral-700 dark:hover:border-primary"
+                    >
+                      <div>
+                        <h3 className="font-sans font-semibold text-black transition-colors group-hover:text-primary dark:text-white dark:group-hover:text-primary">
                           {post.title}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-4">
-                        <MarkdownRenderer
-                          content={post.summary}
-                          className="mb-4 font-serif text-sm md:text-base text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
-                          truncate={150}
-                        />
-                        <div className="flex flex-wrap gap-2">
-                          {post.tags.slice(0, 3).map((tag) => (
-                            <span
-                              key={tag}
-                              className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-[#FFECDB] dark:bg-gray-700 text-black dark:text-white px-2 py-1 text-xs font-bold"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </CardContent>
-                      <CardFooter className="border-t-4 border-black dark:border-gray-600 bg-[#AFDDFF] dark:bg-gray-800 p-4">
-                        <Button className="w-full rounded-none border-4 border-black dark:border-gray-600 bg-black dark:bg-gray-700 px-6 py-3 font-bold text-white shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(100,100,100,1)]">
-                          Read Post
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </Link>
+                        </h3>
+                        <p className="mt-0.5 font-serif text-sm text-gray-500 dark:text-neutral-400">
+                          {formatDate(post.publishedDate)}
+                        </p>
+                      </div>
+                      <ArrowLeft className="h-4 w-4 -rotate-180 text-gray-300 transition-all group-hover:translate-x-1 group-hover:text-gray-500 dark:text-neutral-600 dark:group-hover:text-neutral-400" />
+                    </Link>
+                  </div>
                 ))}
               </div>
-            </div>
+            </section>
           )}
-
-          <div className="rounded-none border-4 border-black dark:border-gray-600 bg-[#FFECDB] dark:bg-gray-900 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(100,100,100,1)]">
-            <h2 className="mb-4 font-sans text-2xl font-bold text-black dark:text-white">
-              Project Timeline
-            </h2>
-            <div className="flex flex-col gap-4 font-serif text-black dark:text-gray-300">
-              <div className="flex items-center gap-4">
-                <span className="font-bold">Created:</span>
-                <span>{formatDate(project.createdAt)}</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="font-bold">Last Updated:</span>
-                <span>{formatDate(project.updatedAt)}</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </>

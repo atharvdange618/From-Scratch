@@ -7,18 +7,17 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Explore a collection of full-stack projects and applications built from scratch using modern web technologies. Browse through active developments, completed projects, and open-source software built with React, Next.js, TypeScript, Node.js, MongoDB, and more.",
+    "In-depth explorations of the projects I've built - from architecture decisions and trade-offs to lessons learned along the way.",
   keywords: [
     "software projects",
-    "full stack projects",
-    "web development portfolio",
+    "case studies",
+    "web development",
     "react projects",
     "next.js applications",
     "typescript projects",
     "node.js projects",
-    "mongodb applications",
-    "open source projects",
-    "developer portfolio",
+    "full stack development",
+    "open source",
     "coding projects",
     "tech stack",
     "Atharv Dange projects",
@@ -29,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Projects - From Scratch",
     description:
-      "A collection of full-stack projects and applications built from scratch, exploring different technologies and solving real-world problems.",
+      "In-depth explorations of the projects I've built - architecture decisions, trade-offs, and lessons learned.",
     url: "/projects",
     siteName: "From Scratch",
     type: "website",
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
         url: `${env.NEXT_PUBLIC_BASE_URL}/api/og?title=Projects&description=Built%20from%20scratch%20with%20modern%20tech&type=page`,
         width: 1200,
         height: 630,
-        alt: "From Scratch Projects - Full Stack Development Portfolio",
+        alt: "From Scratch Projects - Build Journal",
       },
     ],
   },
@@ -46,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Projects - From Scratch",
     description:
-      "A collection of full-stack projects built from scratch with modern technologies.",
+      "In-depth explorations of the projects I've built - architecture decisions, trade-offs, and lessons learned.",
     creator: "@atharvdangedev",
     images: [
       `${env.NEXT_PUBLIC_BASE_URL}/api/og?title=Projects&description=Built%20from%20scratch%20with%20modern%20tech&type=page`,

@@ -3,38 +3,23 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { useProjectsQuery } from "@/lib/hooks/use-projects";
-import { ExternalLink, Github, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Github, ExternalLink, Star } from "lucide-react";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ProjectCardSkeleton } from "@/components/skeletons";
 import { handleProjectHover } from "@/lib/prefetch";
 import { useQueryClient } from "@tanstack/react-query";
 
-const getStatusColorClass = (status: string) => {
-  switch (status) {
-    case "Active":
-      return "bg-[#60B5FF] dark:bg-[#1e3a5f]";
-    case "Completed":
-      return "bg-[#E0FFF1] dark:bg-[#1a4d3a]";
-    case "Archived":
-      return "bg-[#FFECDB] dark:bg-[#4a3626]";
-    default:
-      return "bg-gray-200 dark:bg-gray-800";
-  }
+const STATUS_LABELS = ["All", "Active", "Completed", "Archived"] as const;
+
+const STATUS_DOT_COLORS: Record<string, string> = {
+  Active: "bg-[#60B5FF]",
+  Completed: "bg-[#4ADE80]",
+  Archived: "bg-[#FB923C]",
 };
 
 export function ProjectsContent() {
   const { data: projects = [], isLoading, isError, error } = useProjectsQuery();
   const [selectedStatus, setSelectedStatus] = useState<string>("All");
-
   const queryClient = useQueryClient();
 
   const filteredProjects = useMemo(() => {
@@ -46,11 +31,14 @@ export function ProjectsContent() {
   if (isLoading) {
     return (
       <div className="min-h-screen">
-        <div className="container mx-auto px-4">
-          <h1 className="mb-8 font-sans text-4xl font-bold md:text-5xl">
-            My Projects
+        <div className="mx-auto max-w-3xl px-4">
+          <h1 className="mb-2 font-sans text-4xl font-bold md:text-5xl">
+            Projects
           </h1>
-          <div className="grid gap-6 md:grid-cols-2">
+          <p className="mb-12 font-serif text-lg text-gray-600 dark:text-gray-400">
+            Loading...
+          </p>
+          <div className="space-y-12">
             {Array.from({ length: 4 }).map((_, i) => (
               <ProjectCardSkeleton key={`project-skeleton-${i}`} />
             ))}
@@ -63,11 +51,11 @@ export function ProjectsContent() {
   if (isError) {
     return (
       <div className="min-h-screen">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-center rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-16">
-            <p className="text-xl font-bold">
-              Error loading projects:{" "}
-              {error?.message || "Failed to load projects"}
+        <div className="mx-auto max-w-3xl px-4">
+          <div className="border-2 border-red-300 bg-red-50 p-6 dark:border-red-800 dark:bg-red-950">
+            <p className="font-serif text-red-600 dark:text-red-400">
+              Something went wrong loading projects.{" "}
+              {error?.message || "Please try again later."}
             </p>
           </div>
         </div>
@@ -76,139 +64,132 @@ export function ProjectsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-900 py-12 md:py-20">
-      <div className="container mx-auto px-4">
-        <div className="mb-8 md:mb-12 text-center">
-          <h1 className="mb-3 md:mb-4 font-sans text-3xl md:text-4xl lg:text-5xl font-bold">
-            My Projects
+    <div className="min-h-screen bg-white py-16 dark:bg-neutral-900 md:py-24">
+      <div className="mx-auto max-w-3xl px-4">
+        <header className="mb-16">
+          <h1 className="mb-3 font-sans text-4xl font-bold tracking-tight md:text-5xl">
+            Projects
           </h1>
-          <p className="mx-auto max-w-2xl font-serif text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300">
-            A collection of projects I&apos;ve built from scratch, exploring
-            different technologies and solving real-world problems.
+          <p className="font-serif text-lg leading-relaxed text-gray-600 dark:text-gray-400">
+            I write in-depth about the projects I build - the decisions,
+            trade-offs, and lessons learned along the way.
           </p>
-        </div>
+        </header>
 
-        <div className="mb-6 md:mb-8 flex flex-wrap items-center justify-center gap-2 md:gap-3">
-          {["All", "Active", "Completed", "Archived"].map((status) => (
-            <Button
+        <div className="mb-12 flex items-center gap-6 border-b-2 border-gray-200 pb-4 dark:border-neutral-700">
+          {STATUS_LABELS.map((status) => (
+            <button
               key={status}
               onClick={() => setSelectedStatus(status)}
-              className={`rounded-none border-4 border-black dark:border-gray-700 px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] ${
+              className={`relative font-sans text-sm font-medium transition-colors ${
                 selectedStatus === status
-                  ? "bg-black dark:bg-white text-white dark:text-black"
-                  : "bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
+                  ? "text-black dark:text-white"
+                  : "text-gray-400 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-neutral-300"
               }`}
             >
               {status}
-            </Button>
+              {selectedStatus === status && (
+                <span className="absolute -bottom-4 left-0 right-0 h-0.5 bg-black dark:bg-white" />
+              )}
+            </button>
           ))}
         </div>
 
-        <div className="grid gap-5 md:gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects.map((project) => (
-            <Card
+        <div>
+          {filteredProjects.map((project, index) => (
+            <article
               key={project._id}
-              className="group flex flex-col overflow-hidden rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
+              className={`${index > 0 ? "border-t-2 border-gray-200 dark:border-neutral-800" : ""} py-8`}
             >
-              <CardHeader
-                className={`border-b-4 border-black dark:border-gray-700 p-4 md:p-6 ${getStatusColorClass(project.status)}`}
-              >
-                <div className="mb-3 flex items-start justify-between">
-                  <CardTitle className="text-2xl font-bold leading-tight text-black dark:text-white">
-                    {project.name}
-                  </CardTitle>
+              <div className="group pl-5 border-l-2 border-gray-200 transition-colors hover:border-primary dark:border-neutral-700 dark:hover:border-primary">
+                <div className="mb-3 flex items-center gap-3">
+                  <span
+                    className={`inline-flex items-center gap-1.5 border-2 border-gray-200 px-2 py-0.5 text-xs font-semibold dark:border-neutral-700 ${STATUS_DOT_COLORS[project.status] ? "border-current/20" : ""}`}
+                  >
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT_COLORS[project.status] || "bg-gray-400"}`}
+                    />
+                    {project.status}
+                  </span>
                   {project.featured && (
-                    <Star className="h-6 w-6 fill-black dark:fill-yellow-400 text-black dark:text-yellow-400" />
+                    <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
                   )}
                 </div>
-                <Badge className="w-fit rounded-lg border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-1 font-bold text-black dark:text-white hover:bg-white dark:hover:bg-gray-900">
-                  {project.status}
-                </Badge>
-              </CardHeader>
 
-              <CardContent className="flex-1 p-6">
-                <MarkdownRenderer
-                  content={project.description}
-                  className="mb-4 font-serif text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-p:mb-0"
-                  truncate={150}
-                />
-
-                <div className="mb-4">
-                  <h4 className="mb-2 text-sm font-bold uppercase">
-                    Tech Stack
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.techStack.slice(0, 5).map((tech) => (
-                      <span
-                        key={tech}
-                        className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-[#AFDDFF] dark:bg-gray-700 text-black dark:text-gray-200 px-2 py-1 text-xs font-bold"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.techStack.length > 5 && (
-                      <span className="inline-block rounded-lg border-2 border-black dark:border-gray-600 bg-[#AFDDFF] dark:bg-gray-700 text-black dark:text-gray-200 px-2 py-1 text-xs font-bold">
-                        ...
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-
-              <CardFooter className="flex flex-col gap-3 border-t-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 p-6">
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="w-full"
                   onMouseEnter={() =>
                     handleProjectHover(queryClient, project.slug)
                   }
                 >
-                  <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white px-6 py-3 font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,1)]">
-                    View Details
-                  </Button>
+                  <h2 className="font-sans text-2xl font-bold tracking-tight text-black transition-colors hover:text-primary dark:text-white dark:hover:text-primary md:text-3xl">
+                    {project.name}
+                  </h2>
                 </Link>
 
-                <div className="flex gap-2">
+                <div className="mt-3 font-serif leading-relaxed text-gray-600 dark:text-gray-400">
+                  <MarkdownRenderer
+                    content={project.description}
+                    className="prose-p:mb-0 prose-p:leading-relaxed"
+                    truncate={250}
+                  />
+                </div>
+
+                <div className="mt-4 font-sans text-sm text-gray-500 dark:text-neutral-500">
+                  <span className="font-medium text-gray-500 dark:text-neutral-400">
+                    Stack:{" "}
+                  </span>
+                  {project.techStack.join(", ")}
+                </div>
+
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    onMouseEnter={() =>
+                      handleProjectHover(queryClient, project.slug)
+                    }
+                    className="inline-flex items-center gap-1.5 border-2 border-black px-4 py-2 text-sm font-semibold text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:text-white dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.15)]"
+                  >
+                    Read the story
+                    <span className="inline-block transition-transform group-hover:translate-x-1">
+                      &rarr;
+                    </span>
+                  </Link>
+
                   {project.githubUrl && (
                     <a
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1"
+                      className="inline-flex items-center gap-1.5 border-2 border-gray-300 px-3 py-2 text-sm text-gray-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.06)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:border-gray-400 hover:text-gray-700 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.06)] dark:border-neutral-600 dark:text-neutral-400 dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)] dark:hover:border-neutral-500 dark:hover:text-neutral-200 dark:hover:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.04)]"
                     >
-                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-700 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-gray-600 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
-                        <Github className="mr-2 h-4 w-4" />
-                        GitHub
-                      </Button>
+                      <Github className="h-4 w-4" />
+                      Source
                     </a>
                   )}
+
                   {project.liveUrl && (
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1"
+                      className="inline-flex items-center gap-1.5 border-2 border-gray-300 px-3 py-2 text-sm text-gray-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.06)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:border-gray-400 hover:text-gray-700 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.06)] dark:border-neutral-600 dark:text-neutral-400 dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)] dark:hover:border-neutral-500 dark:hover:text-neutral-200 dark:hover:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.04)]"
                     >
-                      <Button className="w-full rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-700 text-black dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#E0FFF1] dark:hover:bg-gray-600 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]">
-                        <ExternalLink className="mr-2 h-4 w-4" />
-                        Live
-                      </Button>
+                      <ExternalLink className="h-4 w-4" />
+                      Live
                     </a>
                   )}
                 </div>
-              </CardFooter>
-            </Card>
+              </div>
+            </article>
           ))}
         </div>
 
         {filteredProjects.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-16 text-black dark:text-white">
-            <h3 className="mb-2 text-2xl font-bold">
-              No {selectedStatus !== "All" ? selectedStatus : ""} Projects
-            </h3>
-            <p className="font-serif text-lg">
+          <div className="border-2 border-dashed border-gray-300 p-12 text-center dark:border-neutral-700">
+            <p className="font-serif text-lg text-gray-400 dark:text-neutral-500">
               {selectedStatus !== "All"
-                ? "Try selecting a different status filter."
+                ? `No ${selectedStatus.toLowerCase()} projects yet.`
                 : "Projects will appear here soon!"}
             </p>
           </div>
