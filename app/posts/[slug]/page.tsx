@@ -5,7 +5,6 @@ import { Calendar, ExternalLink, Clock } from "@deemlol/next-icons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { GiscusComments } from "@/components/giscus-comments";
 import { RelatedPosts } from "@/components/related-posts";
 import { ResourcesList } from "@/components/resources-list";
@@ -22,7 +21,6 @@ import { getCategoryColor } from "@/lib/categories";
 import { PostTracker } from "@/components/post-tracker";
 import { TableOfContents } from "@/components/table-of-contents";
 import { extractHeadings } from "@/lib/toc-generator";
-import { BackButton } from "@/components/back-button";
 import { PostViewCount } from "@/components/post-view-count";
 import { AuthorBio } from "@/components/author-bio";
 import connectDB from "@/lib/mongodb";
@@ -215,16 +213,12 @@ export default async function PostPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <article className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <BackButton />
-        </div>
-
         <BreadcrumbNav
           items={[{ label: "Blog", href: "/blogs" }, { label: post.title }]}
         />
 
         {post.bannerImage && (
-          <div className="mb-8 overflow-hidden rounded-none border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
+          <div className="mb-8 overflow-hidden rounded-none border-2 border-black dark:border-gray-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
             <Image
               src={post.bannerImage}
               alt={post.title}
@@ -276,7 +270,7 @@ export default async function PostPage({
           <ClickableTags tags={post.tags} postTitle={post.title} />
 
           {post.linkedProject && (
-            <Card className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)]">
+            <Card className="mt-8 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
               <CardContent className="flex items-center justify-between p-6">
                 <div>
                   <p className="mb-1 font-serif text-sm font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400">
@@ -289,7 +283,7 @@ export default async function PostPage({
                 {post.linkedProject.githubUrl && (
                   <Button
                     asChild
-                    className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-primary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
+                    className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-primary hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(74,144,204,0.3)]"
                   >
                     <TrackableLink
                       href={post.linkedProject.githubUrl}
@@ -316,16 +310,14 @@ export default async function PostPage({
           )}
         </header>
 
-        <Separator className="my-4 border-2 border-black dark:border-gray-700" />
-
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
-          <div>
+        <div className="flex flex-col xl:flex-row xl:gap-12 items-start justify-center">
+          <div className="flex-1 min-w-0 w-full max-w-9xl relative mx-auto">
             <ScrollTracker
               postTitle={post.title}
               category={post.category}
               readingTime={calculateReadingTime(post.content)}
             >
-              <div className="mb-8 rounded-none bg-white dark:bg-gray-900 p-6 sm:p-8">
+              <div className="mb-8 rounded-none bg-white dark:bg-gray-900">
                 <MarkdownRenderer
                   content={post.content}
                   className="prose-lg max-w-none font-serif"
@@ -334,11 +326,32 @@ export default async function PostPage({
             </ScrollTracker>
 
             <div className="mb-12">
-              <SocialShare
-                title={post.title}
-                url={`${baseUrl}/posts/${post.slug}`}
-                description={post.summary}
-              />
+              <div className="flex flex-col md:flex-row gap-8 md:gap-16 justify-between items-start">
+                <div className="flex-1 w-full">
+                  <AuthorBio
+                    authorName={post.author || "Atharv Dange"}
+                    authorImage="/atharv-avatar.jpeg"
+                  />
+                </div>
+                <div className="flex-shrink-0">
+                  <SocialShare
+                    title={post.title}
+                    url={`${baseUrl}/posts/${post.slug}`}
+                    description={post.summary}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="mb-12">
+              <h2 className="mb-6 font-sans text-3xl font-bold dark:text-white">
+                Comments
+              </h2>
+              <div className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900">
+                <div className="p-6">
+                  <GiscusComments />
+                </div>
+              </div>
             </div>
 
             <ResourcesList
@@ -347,37 +360,19 @@ export default async function PostPage({
               category={post.category}
             />
 
-            <AuthorBio
-              authorName={post.author || "Atharv Dange"}
-              authorImage="/atharv-avatar.jpeg"
+            <RelatedPosts
+              currentPostId={post._id}
+              currentCategory={post.category}
+              currentTags={post.tags}
+              linkedProjectId={post.linkedProject?._id}
             />
           </div>
 
           {headings.length > 0 && (
-            <aside className="hidden lg:block">
+            <aside className="hidden xl:block w-[280px] shrink-0 sticky top-8">
               <TableOfContents headings={headings} />
             </aside>
           )}
-        </div>
-
-        <RelatedPosts
-          currentPostId={post._id}
-          currentCategory={post.category}
-          currentTags={post.tags}
-          linkedProjectId={post.linkedProject?._id}
-        />
-
-        <Separator className="my-12 border-2 border-black dark:border-gray-700" />
-
-        <div className="mx-auto max-w-4xl">
-          <h2 className="mb-6 font-sans text-3xl font-bold dark:text-white">
-            Comments
-          </h2>
-          <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
-            <CardContent className="p-6">
-              <GiscusComments />
-            </CardContent>
-          </Card>
         </div>
       </article>
     </>
