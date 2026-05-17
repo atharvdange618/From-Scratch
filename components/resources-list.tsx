@@ -1,7 +1,6 @@
 "use client";
 
 import { BookOpen, ExternalLink } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import TrackableLink from "@/components/analytics/trackable-link";
 
 interface Resource {
@@ -25,8 +24,8 @@ export function ResourcesList({
   }
 
   return (
-    <Card className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)]">
-      <CardContent className="p-6">
+    <div className="mt-8 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900">
+      <div className="p-6">
         <h3 className="mb-4 flex items-center gap-2 font-sans text-xl font-bold dark:text-white">
           <BookOpen className="h-5 w-5" />
           Resources
@@ -60,7 +59,7 @@ export function ResourcesList({
             </li>
           ))}
         </ul>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

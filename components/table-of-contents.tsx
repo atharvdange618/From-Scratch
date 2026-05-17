@@ -84,10 +84,10 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
   return (
     <nav
       ref={navRef}
-      className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
+      className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-6"
       aria-label="Table of contents"
     >
-      <h2 className="mb-4 text-lg font-bold border-b-4 border-black dark:border-gray-700 pb-3">
+      <h2 className="mb-4 text-lg font-bold border-b-2 border-black dark:border-gray-700 pb-3">
         On This Page
       </h2>
       <ul className="space-y-1 text-sm">
@@ -105,7 +105,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                 hover:bg-[#AFDDFF] dark:hover:bg-gray-700
                 ${
                   activeId === id
-                    ? "bg-[#60B5FF] dark:bg-gray-700 font-bold text-black dark:text-white border-l-4 border-black dark:border-primary"
+                    ? "bg-[#60B5FF] dark:bg-gray-700 font-bold text-black dark:text-white border-l-2 border-black dark:border-primary"
                     : "border-l-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
                 }
               `}
