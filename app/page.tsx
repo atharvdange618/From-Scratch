@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { HeroSection } from "@/components/hero-section";
-import { BlogEntries } from "@/components/blog-entries";
-import { PopularPosts } from "@/components/popular-posts";
+import { LandingBento } from "@/components/landing-bento";
 import { env } from "@/lib/env";
 
 export const revalidate = 86400;
@@ -76,7 +75,7 @@ const jsonLd = {
   author: {
     "@type": "Person",
     name: "Atharv Dange",
-    url: `${env.NEXT_PUBLIC_BASE_URL}/about`,
+    url: "https://atharvdangedev.in",
     jobTitle: "Full Stack Engineer",
     sameAs: [
       "https://github.com/atharvdange618",
@@ -102,13 +101,10 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-background dark:bg-neutral-900">
+      <div className="min-h-[100dvh] bg-background dark:bg-neutral-900">
         <div className="container mx-auto px-4 py-8">
           <HeroSection />
-          <div className="my-8 md:my-12">
-            <PopularPosts />
-          </div>
-          <BlogEntries />
+          <LandingBento />
         </div>
       </div>
     </>

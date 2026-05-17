@@ -1,46 +1,21 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight, Eye, TrendingUp } from "lucide-react";
-import { usePopularPosts } from "@/lib/hooks/use-popular-posts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/lib/dateandnumbers";
 
-export function PopularPosts() {
-  const { data, isLoading } = usePopularPosts(30);
+interface PopularPost {
+  slug: string;
+  title: string;
+  summary: string;
+  publishedDate?: string;
+  views: number;
+  totalViews: number;
+}
 
-  if (isLoading) {
-    return (
-      <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)]">
-        <CardHeader className="border-b-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800">
-          <CardTitle className="flex items-center gap-2 font-sans text-xl font-bold">
-            <TrendingUp className="h-5 w-5" />
-            Trending Posts
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pt-6">
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex gap-4">
-                <Skeleton className="h-4 w-4 rounded-full" />
-                <div className="flex-1 space-y-2">
-                  <Skeleton className="h-4 w-3/4" />
-                  <Skeleton className="h-3 w-1/2" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  const posts = data?.popularPosts;
-
+export function PopularPosts({ posts }: { posts: PopularPost[] }) {
   if (!posts || posts.length === 0) {
     return (
-      <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)]">
+      <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] h-full">
         <CardHeader className="border-b-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800">
           <CardTitle className="flex items-center gap-2 font-sans text-xl font-bold">
             <TrendingUp className="h-5 w-5" />
@@ -57,7 +32,7 @@ export function PopularPosts() {
   }
 
   return (
-    <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)]">
+    <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] h-full">
       <CardHeader className="border-b-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800">
         <CardTitle className="flex items-center gap-2 font-sans text-xl font-bold">
           <TrendingUp className="h-5 w-5" />

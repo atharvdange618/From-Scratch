@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 interface PrefetchLinkProps {
   href: string;
   children: React.ReactNode;
+  className?: string;
   onMouseEnter?: () => void;
 }
 
 export function PrefetchLink({
   href,
   children,
+  className,
   onMouseEnter,
 }: PrefetchLinkProps) {
   const router = useRouter();
@@ -20,5 +22,9 @@ export function PrefetchLink({
     onMouseEnter?.();
   };
 
-  return <div onMouseEnter={handleMouseEnter}>{children}</div>;
+  return (
+    <div className={className} onMouseEnter={handleMouseEnter}>
+      {children}
+    </div>
+  );
 }
