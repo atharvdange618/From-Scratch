@@ -74,7 +74,9 @@ export function Header() {
   return (
     <header
       suppressHydrationWarning
-      className="sticky top-0 z-50 w-full border-b-4 border-black dark:border-gray-700 bg-white dark:bg-neutral-900 py-4"
+      className={`z-50 w-full border-b-4 border-black dark:border-gray-700 bg-white dark:bg-neutral-900 py-4 ${
+        pathname?.startsWith("/posts/") ? "relative" : "sticky top-0"
+      }`}
     >
       <div className="container mx-auto flex items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
@@ -86,10 +88,7 @@ export function Header() {
             className="h-10 w-10"
             alt="From Scratch Logo"
           />
-          <span
-            className="text-2xl font-bold dark:text-white"
-            style={{ fontFamily: "'Hitchcut', sans-serif" }}
-          >
+          <span className="text-2xl font-bold dark:text-white">
             From Scratch
           </span>
         </Link>
