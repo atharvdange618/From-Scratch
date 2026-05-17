@@ -1,21 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap");
-
-@font-face {
-  font-family: "Muslyne Lettavella";
-  src: url("/fonts/Muslyne Lettavella.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Hitchcut";
-  src: url("/fonts/Hitchcut-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -143,6 +143,9 @@ importers:
       fuse.js:
         specifier: ^7.1.0
         version: 7.1.0
+      geist:
+        specifier: ^1.7.0
+        version: 1.7.0(next@16.2.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5))
       github-slugger:
         specifier: ^2.0.0
         version: 2.0.0
@@ -2270,6 +2273,11 @@ packages:
   fuse.js@7.1.0:
     resolution: {integrity: sha512-trLf4SzuuUxfusZADLINj+dE8clK1frKdmqiJNb1Es75fmI5oY6X2mxLVUciLLjxqw/xr72Dhy+lER6dGd02FQ==}
     engines: {node: '>=10'}
+
+  geist@1.7.0:
+    resolution: {integrity: sha512-ZaoiZwkSf0DwwB1ncdLKp+ggAldqxl5L1+SXaNIBGkPAqcu+xjVJLxlf3/S8vLt9UHx1xu5fz3lbzKCj5iOVdQ==}
+    peerDependencies:
+      next: '>=13.2.0'
 
   get-nonce@1.0.1:
     resolution: {integrity: sha512-FJhYRoDaiatfEkUK8HKlicmu/3SGFD51q3itKDGoSTysQJBnfOcxU5GxnhE1E6soB76MbT0MBtnKJuXyAx+96Q==}
@@ -5396,6 +5404,10 @@ snapshots:
   function-bind@1.1.2: {}
 
   fuse.js@7.1.0: {}
+
+  geist@1.7.0(next@16.2.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)):
+    dependencies:
+      next: 16.2.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
   get-nonce@1.0.1: {}
 
