@@ -40,14 +40,6 @@ function CodeBlock({ children, className }: CodeBlockProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  if (isPlainDiagram) {
-    return (
-      <pre className="my-6 overflow-x-auto rounded-md border border-zinc-200 dark:border-gray-700 bg-zinc-50 dark:bg-neutral-900 p-4 text-sm leading-relaxed text-zinc-800 dark:text-zinc-300">
-        <code>{code}</code>
-      </pre>
-    );
-  }
-
   return (
     <div className="group relative my-6 font-mono not-prose">
       <div className="overflow-hidden rounded border border-zinc-200 dark:border-zinc-800 bg-[#18181b]">
@@ -65,23 +57,25 @@ function CodeBlock({ children, className }: CodeBlockProps) {
             </div>
           </div>
 
-          <Button
-            type="button"
-            onClick={handleCopy}
-            variant="ghost"
-            size="sm"
-            className="h-7 px-2 text-xs font-medium text-zinc-200 dark:text-gray-300 hover:bg-zinc-700 dark:hover:bg-neutral-700 hover:text-white dark:hover:text-white"
-          >
-            {copied ? (
-              <span className="flex items-center text-green-600">
-                <Check className="mr-1 h-3.5 w-3.5" />
-              </span>
-            ) : (
-              <span className="flex items-center">
-                <Copy className="mr-1 h-3.5 w-3.5" />
-              </span>
-            )}
-          </Button>
+          {!isPlainDiagram && (
+            <Button
+              type="button"
+              onClick={handleCopy}
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2 text-xs font-medium text-zinc-200 dark:text-gray-300 hover:bg-zinc-700 dark:hover:bg-neutral-700 hover:text-white dark:hover:text-white"
+            >
+              {copied ? (
+                <span className="flex items-center text-green-600">
+                  <Check className="mr-1 h-3.5 w-3.5" />
+                </span>
+              ) : (
+                <span className="flex items-center">
+                  <Copy className="mr-1 h-3.5 w-3.5" />
+                </span>
+              )}
+            </Button>
+          )}
         </div>
 
         <div className="relative">
@@ -140,7 +134,6 @@ function LazyCodeHighlight({
     <SyntaxHighlighter
       language={safeLanguage}
       style={highlightState.style}
-      showLineNumbers={true}
       wrapLines={true}
       customStyle={{
         margin: 0,

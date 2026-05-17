@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { Metadata } from "next";
 import { Calendar, ExternalLink, Clock } from "@deemlol/next-icons";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +21,7 @@ import { PostTracker } from "@/components/post-tracker";
 import { TableOfContents } from "@/components/table-of-contents";
 import { extractHeadings } from "@/lib/toc-generator";
 import { PostViewCount } from "@/components/post-view-count";
+import { FadeInView } from "@/components/fade-in-view";
 import { AuthorBio } from "@/components/author-bio";
 import connectDB from "@/lib/mongodb";
 import { Post as PostModel } from "@/lib/model-registry";
@@ -244,19 +244,19 @@ export default async function PostPage({
             <PostViewCount slug={slug} />
           </div>
 
-          <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl lg:text-6xl">
+          <h1 className="mb-4 font-sans text-4xl font-bold md:text-5xl lg:text-6xl tracking-tighter leading-none">
             {post.title}
           </h1>
 
           <MarkdownRenderer
             content={post.summary}
-            className="prose-lg max-w-none font-serif"
+            className="prose-lg max-w-none font-serif lg:max-w-5xl "
           />
 
           <ClickableTags tags={post.tags} postTitle={post.title} />
 
           {post.linkedProject && (
-            <Card className="mt-8 rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]">
+            <Card className="mt-8 rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.85)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.25)]">
               <CardContent className="flex items-center justify-between p-6">
                 <div>
                   <p className="mb-1 font-serif text-sm font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400">
@@ -269,7 +269,7 @@ export default async function PostPage({
                 {post.linkedProject.githubUrl && (
                   <Button
                     asChild
-                    className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-primary hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(107,114,128,0.3)]"
+                    className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-primary hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(107,114,128,0.3)] active:scale-[0.98]"
                   >
                     <TrackableLink
                       href={post.linkedProject.githubUrl}
@@ -298,60 +298,72 @@ export default async function PostPage({
 
         <div className="flex flex-col xl:flex-row xl:gap-8 items-start justify-center">
           <div className="flex-1 min-w-0 w-full relative">
-            <ScrollTracker
-              postTitle={post.title}
-              category={post.category}
-              readingTime={calculateReadingTime(post.content)}
-            >
-              <div className="mb-8 rounded-none bg-background dark:bg-black">
-                <MarkdownRenderer
-                  content={post.content}
-                  className="prose-lg max-w-none font-serif"
-                />
-              </div>
-            </ScrollTracker>
-
-            <div className="mb-12">
-              <div className="flex flex-col md:flex-row gap-8 md:gap-16 justify-between items-start">
-                <div className="flex-1 w-full">
-                  <AuthorBio
-                    authorName={post.author || "Atharv Dange"}
-                    authorImage="/atharv-avatar.jpeg"
-                  />
+            <FadeInView>
+              <ScrollTracker
+                postTitle={post.title}
+                category={post.category}
+                readingTime={calculateReadingTime(post.content)}
+              >
+                <div className="mb-8 rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]">
+                  <div className="p-6 md:p-8">
+                    <MarkdownRenderer
+                      content={post.content}
+                      className="prose-lg max-w-none font-serif"
+                    />
+                  </div>
                 </div>
-                <div className="flex-shrink-0">
-                  <SocialShare
-                    title={post.title}
-                    url={`${baseUrl}/posts/${post.slug}`}
-                    description={post.summary}
-                  />
-                </div>
-              </div>
-            </div>
+              </ScrollTracker>
+            </FadeInView>
 
-            <div className="mb-12">
-              <h2 className="mb-6 font-sans text-3xl font-bold dark:text-white">
-                Comments
-              </h2>
-              <div className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900">
-                <div className="p-6">
-                  <GiscusComments />
+            <FadeInView delay={0.1}>
+              <div className="mb-12">
+                <div className="flex flex-col md:flex-row gap-8 md:gap-16 justify-between items-start">
+                  <div className="flex-1 w-full">
+                    <AuthorBio
+                      authorName={post.author || "Atharv Dange"}
+                      authorImage="/atharv-avatar.jpeg"
+                    />
+                  </div>
+                  <div className="flex-shrink-0">
+                    <SocialShare
+                      title={post.title}
+                      url={`${baseUrl}/posts/${post.slug}`}
+                      description={post.summary}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            </FadeInView>
 
-            <ResourcesList
-              resources={post.resources || []}
-              postTitle={post.title}
-              category={post.category}
-            />
+            <FadeInView delay={0.2}>
+              <div className="mb-12">
+                <h2 className="mb-6 font-sans text-3xl font-bold dark:text-white">
+                  Comments
+                </h2>
+                <div className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]">
+                  <div className="p-6">
+                    <GiscusComments />
+                  </div>
+                </div>
+              </div>
+            </FadeInView>
 
-            <RelatedPosts
-              currentPostId={post._id}
-              currentCategory={post.category}
-              currentTags={post.tags}
-              linkedProjectId={post.linkedProject?._id}
-            />
+            <FadeInView delay={0.3}>
+              <ResourcesList
+                resources={post.resources || []}
+                postTitle={post.title}
+                category={post.category}
+              />
+            </FadeInView>
+
+            <FadeInView delay={0.35}>
+              <RelatedPosts
+                currentPostId={post._id}
+                currentCategory={post.category}
+                currentTags={post.tags}
+                linkedProjectId={post.linkedProject?._id}
+              />
+            </FadeInView>
           </div>
 
           {headings.length > 0 && (

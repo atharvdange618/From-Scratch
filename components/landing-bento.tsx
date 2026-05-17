@@ -265,14 +265,13 @@ function ProjectTile({ project }: { project: ProjectData }) {
           </div>
         )}
 
-        {/* CTA buttons — 2-col grid */}
         <div className="mt-auto grid grid-cols-2 gap-2">
           <Link
             href={`/projects/${project.slug}`}
             className="flex items-center justify-center gap-2 rounded-none border-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800 px-4 py-2.5 text-xs font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(107,114,128,0.3)]"
           >
             <BookOpen className="h-3.5 w-3.5" />
-            Read the Story
+            Read More
           </Link>
           {project.githubUrl && (
             <a
@@ -282,7 +281,7 @@ function ProjectTile({ project }: { project: ProjectData }) {
               className="flex items-center justify-center gap-2 rounded-none border-2 border-black dark:border-gray-700 bg-black dark:bg-neutral-800 px-4 py-2.5 text-xs font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(107,114,128,0.3)]"
             >
               <Github className="h-3.5 w-3.5" />
-              View Source on GitHub
+              View on GitHub
             </a>
           )}
           {project.liveUrl && (
