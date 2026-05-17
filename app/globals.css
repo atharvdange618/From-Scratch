@@ -24,20 +24,20 @@
   --ring: 0 0% 3.9%;
   --radius: 0.5rem;
 
-  --cat-js: #60B5FF;
-  --cat-git: #FF9149;
-  --cat-web: #AFDDFF;
-  --cat-fw: #E0FFF1;
-  --cat-se: #FFECDB;
-  --cat-logs: #60B5FF;
+  --cat-js: #60b5ff;
+  --cat-git: #ff9149;
+  --cat-web: #afddff;
+  --cat-fw: #e0fff1;
+  --cat-se: #ffecdb;
+  --cat-logs: #60b5ff;
 }
 
 .dark {
-  --background: 0 0% 2%;
+  --background: 0 0% 5%;
   --foreground: 0 0% 95%;
-  --card: 0 0% 6%;
+  --card: 0 0% 8%;
   --card-foreground: 0 0% 95%;
-  --popover: 0 0% 6%;
+  --popover: 0 0% 8%;
   --popover-foreground: 0 0% 95%;
   --primary: 207 100% 65%;
   --primary-foreground: 0 0% 0%;
@@ -53,12 +53,12 @@
   --input: 0 0% 22%;
   --ring: 207 100% 65%;
 
-  --cat-js: #4A90CC;
-  --cat-git: #D47438;
-  --cat-web: #3B82C4;
-  --cat-fw: #2D8B6E;
-  --cat-se: #C4824A;
-  --cat-logs: #4A90CC;
+  --cat-js: #4a90cc;
+  --cat-git: #d47438;
+  --cat-web: #3b82c4;
+  --cat-fw: #2d8b6e;
+  --cat-se: #c4824a;
+  --cat-logs: #4a90cc;
 }
 
 @layer base {
@@ -77,7 +77,7 @@
   }
 
   *:focus-visible {
-    @apply outline-4 outline-offset-2 outline-[#60B5FF] dark:outline-primary;
+    @apply outline-4 outline-offset-2 outline-primary;
   }
 
   button:focus-visible,
@@ -85,7 +85,7 @@
   input:focus-visible,
   textarea:focus-visible,
   select:focus-visible {
-    @apply outline-4 outline-offset-2 outline-[#60B5FF] dark:outline-primary;
+    @apply outline-4 outline-offset-2 outline-primary;
   }
 }
 
@@ -192,7 +192,7 @@
 }
 
 .prose a {
-  @apply text-black dark:text-white font-bold underline decoration-4 decoration-[#60B5FF] dark:decoration-primary hover:decoration-[#FF9149] dark:hover:decoration-secondary transition-colors;
+  @apply text-black dark:text-white font-bold underline decoration-4 decoration-primary hover:decoration-secondary transition-colors;
 }
 
 .prose blockquote {
@@ -214,7 +214,7 @@
 }
 
 .prose th {
-  @apply border border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-primary/80 p-2 font-bold dark:text-white;
+  @apply border border-black dark:border-gray-700 bg-primary dark:bg-primary/80 p-2 font-bold dark:text-white;
 }
 
 .prose td {
@@ -271,7 +271,7 @@ a,
 }
 
 *:focus-visible {
-  @apply outline-4 outline-offset-2 outline-[#60B5FF] dark:outline-primary;
+  @apply outline-4 outline-offset-2 outline-primary;
   animation: subtle-pulse 1.5s ease-in-out infinite;
 }
 
@@ -307,6 +307,64 @@ a,
     transform: scale(4);
     opacity: 0;
   }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(var(--tw-rotate, 0deg));
+  }
+  50% {
+    transform: translateY(-8px) rotate(var(--tw-rotate, 0deg));
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+.animation-delay-150 {
+  animation-delay: 0.15s;
+}
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+.animation-delay-500 {
+  animation-delay: 0.5s;
+}
+.animation-delay-700 {
+  animation-delay: 0.7s;
+}
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+.animation-delay-1500 {
+  animation-delay: 1.5s;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @media (prefers-reduced-motion: reduce) {
