@@ -79,7 +79,6 @@
   @apply text-gray-800 dark:text-gray-200;
   font-size: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
   line-height: 1.6;
-  max-width: 65ch;
 }
 
 .prose h1 {

@@ -310,8 +310,8 @@ export default async function PostPage({
           )}
         </header>
 
-        <div className="flex flex-col xl:flex-row xl:gap-12 items-start justify-center">
-          <div className="flex-1 min-w-0 w-full max-w-9xl relative mx-auto">
+        <div className="flex flex-col xl:flex-row xl:gap-8 items-start justify-center">
+          <div className="flex-1 min-w-0 w-full relative">
             <ScrollTracker
               postTitle={post.title}
               category={post.category}
