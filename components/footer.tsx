@@ -42,10 +42,7 @@ export async function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:gap-12">
           <div>
-            <h3
-              className="mb-3 md:mb-4 text-2xl md:text-3xl font-bold dark:text-white"
-              style={{ fontFamily: "'Hitchcut', sans-serif" }}
-            >
+            <h3 className="mb-3 md:mb-4 text-2xl md:text-3xl font-bold font-sans dark:text-white">
               From Scratch
             </h3>
             <p className="mb-5 md:mb-6 font-serif text-sm md:text-base leading-relaxed dark:text-gray-300">

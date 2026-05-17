@@ -6,10 +6,7 @@ export default function NotFound() {
     <div className="flex min-h-screen items-center justify-center bg-white dark:bg-neutral-900 px-4">
       <div className="max-w-lg text-center">
         <div className="mb-8 inline-block rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
-          <div
-            className="text-8xl md:text-9xl font-black leading-none dark:text-white"
-            style={{ fontFamily: "'Hitchcut', sans-serif" }}
-          >
+          <div className="text-8xl md:text-9xl font-black font-sans leading-none dark:text-white">
             404
           </div>
         </div>

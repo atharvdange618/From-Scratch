@@ -254,10 +254,7 @@ export function BlogCard({
           <div className="h-7 w-7 rounded-full border-2 border-black dark:border-gray-700 bg-[#FF9149] flex items-center justify-center">
             <span className="text-[10px] font-bold text-black">AD</span>
           </div>
-          <span
-            className="text-base font-semibold dark:text-gray-300"
-            style={{ fontFamily: "'Muslyne Lettavella', cursive" }}
-          >
+          <span className="text-base font-sans font-semibold dark:text-gray-300">
             Atharv Dange
           </span>
         </div>

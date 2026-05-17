@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
           justifyContent: "space-between",
           backgroundColor: "#fff",
           padding: "80px",
-          fontFamily: "Inter, sans-serif",
+          fontFamily: "Geist, sans-serif",
         }}
       >
         <div
