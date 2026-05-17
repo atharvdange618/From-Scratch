@@ -71,7 +71,7 @@ export async function handleApiError(
 
     case 500:
       throw new Error(
-        `Server error. We're working on it—please try again in a moment.`,
+        `Server error. We're working on it-please try again in a moment.`,
       );
 
     case 502:
