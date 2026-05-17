@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { AboutContent } from "@/components/about-content";
+import { redirect } from "next/navigation";
 
 export const revalidate = 86400;
 
@@ -16,11 +16,5 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  return (
-    <div className="min-h-screen bg-white dark:bg-neutral-900">
-      <div className="container mx-auto px-4 py-8">
-        <AboutContent />
-      </div>
-    </div>
-  );
+  redirect("https://www.atharvdangedev.in");
 }
