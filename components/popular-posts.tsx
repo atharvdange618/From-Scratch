@@ -12,8 +12,8 @@ export function PopularPosts() {
 
   if (isLoading) {
     return (
-      <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)]">
-        <CardHeader className="border-b-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800">
+      <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)]">
+        <CardHeader className="border-b-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800">
           <CardTitle className="flex items-center gap-2 font-sans text-xl font-bold">
             <TrendingUp className="h-5 w-5" />
             Trending Posts
@@ -40,8 +40,8 @@ export function PopularPosts() {
 
   if (!posts || posts.length === 0) {
     return (
-      <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)]">
-        <CardHeader className="border-b-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800">
+      <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)]">
+        <CardHeader className="border-b-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800">
           <CardTitle className="flex items-center gap-2 font-sans text-xl font-bold">
             <TrendingUp className="h-5 w-5" />
             Trending Posts
@@ -57,8 +57,8 @@ export function PopularPosts() {
   }
 
   return (
-    <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)]">
-      <CardHeader className="border-b-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800">
+    <Card className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)]">
+      <CardHeader className="border-b-2 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800">
         <CardTitle className="flex items-center gap-2 font-sans text-xl font-bold">
           <TrendingUp className="h-5 w-5" />
           Trending Posts

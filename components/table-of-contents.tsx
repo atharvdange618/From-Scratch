@@ -84,7 +84,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
   return (
     <nav
       ref={navRef}
-      className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 p-6"
+      className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-800 p-6"
       aria-label="Table of contents"
     >
       <h2 className="mb-4 text-lg font-bold border-b-2 border-black dark:border-gray-700 pb-3">
@@ -102,11 +102,11 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
               onClick={(e) => handleClick(e, id)}
               className={`
                 flex items-center justify-between text-left w-full py-2 px-3 rounded-sm transition-all
-                hover:bg-[#AFDDFF] dark:hover:bg-gray-700
+                hover:bg-[#AFDDFF] dark:hover:bg-neutral-700
                 ${
                   activeId === id
-                    ? "bg-[#60B5FF] dark:bg-gray-700 font-bold text-black dark:text-white border-l-2 border-black dark:border-primary"
-                    : "border-l-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+                    ? "bg-[#60B5FF] dark:bg-neutral-700 font-bold text-black dark:text-white border-l-2 border-black dark:border-primary"
+                    : "border-l-2 border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-300"
                 }
               `}
             >
@@ -117,7 +117,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                   e.stopPropagation();
                   handleCopyLink(id);
                 }}
-                className="opacity-0 group-hover:opacity-100 transition-opacity ml-2 p-1 hover:bg-white/50 dark:hover:bg-gray-900/50 rounded"
+                className="opacity-0 group-hover:opacity-100 transition-opacity ml-2 p-1 hover:bg-background/50 dark:hover:bg-neutral-900/50 rounded"
                 aria-label="Copy link to section"
                 title="Copy link to section"
               >

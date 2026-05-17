@@ -15,7 +15,7 @@ const EventsOverTimeChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-neutral-800 rounded"></div>
     ),
   },
 );
@@ -24,7 +24,7 @@ const EventTypeChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-neutral-800 rounded"></div>
     ),
   },
 );
@@ -33,7 +33,7 @@ const TopPagesChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-neutral-800 rounded"></div>
     ),
   },
 );
@@ -42,7 +42,7 @@ const DeviceChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-neutral-800 rounded"></div>
     ),
   },
 );
@@ -51,7 +51,7 @@ const OperatingSystemChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-64 animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+      <div className="h-64 animate-pulse bg-gray-100 dark:bg-neutral-800 rounded"></div>
     ),
   },
 );

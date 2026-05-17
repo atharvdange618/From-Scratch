@@ -15,8 +15,7 @@ export const POST_CATEGORIES = [
 export type PostCategory = (typeof POST_CATEGORIES)[number];
 
 /**
- * Category color mapping for UI elements
- * Colors follow the neobrutalism design system
+ * Category color mapping for UI elements (light mode)
  */
 export const CATEGORY_COLORS: Record<PostCategory, string> = {
   "JavaScript & Web APIs": "#60B5FF",
@@ -28,17 +27,46 @@ export const CATEGORY_COLORS: Record<PostCategory, string> = {
 };
 
 /**
+ * Category color mapping for dark mode
+ */
+export const CATEGORY_COLORS_DARK: Record<PostCategory, string> = {
+  "JavaScript & Web APIs": "#4A90CC",
+  "Git & Version Control": "#D47438",
+  "Web Development": "#3B82C4",
+  "Frameworks & Tools": "#2D8B6E",
+  "Software Engineering": "#C4824A",
+  "Project Logs": "#4A90CC",
+};
+
+/**
+ * CSS variable names for each category (used for automatic dark mode switching)
+ */
+export const CATEGORY_CSS_VARS: Record<PostCategory, string> = {
+  "JavaScript & Web APIs": "--cat-js",
+  "Git & Version Control": "--cat-git",
+  "Web Development": "--cat-web",
+  "Frameworks & Tools": "--cat-fw",
+  "Software Engineering": "--cat-se",
+  "Project Logs": "--cat-logs",
+};
+
+/**
  * Get the color for a given category
- * @param category - The post category
- * @returns The hex color code for the category
  */
 export function getCategoryColor(category: string): string {
   return CATEGORY_COLORS[category as PostCategory] || "#AFDDFF";
 }
 
 /**
+ * Get the CSS variable reference for a category (auto-adapts to dark mode)
+ */
+export function getCategoryColorVar(category: string): string {
+  const varName = CATEGORY_CSS_VARS[category as PostCategory] || "--cat-web";
+  return `var(${varName})`;
+}
+
+/**
  * Get all categories including "all" option for filters
- * @returns Array of categories with "all" prepended
  */
 export function getCategoriesWithAll(): string[] {
   return ["all", ...POST_CATEGORIES];

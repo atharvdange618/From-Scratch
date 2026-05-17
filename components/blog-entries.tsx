@@ -34,7 +34,7 @@ export async function BlogEntries() {
           Recent Posts
         </h2>
         <Link href="/blogs">
-          <Button className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]">
+          <Button className="rounded-none border-4 border-black dark:border-gray-500 bg-background dark:bg-neutral-900 dark:text-white px-4 md:px-6 py-2 text-sm md:text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-neutral-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]">
             View All Posts
           </Button>
         </Link>
@@ -49,7 +49,7 @@ export async function BlogEntries() {
       </div>
 
       {posts.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 p-16">
+        <div className="flex flex-col items-center justify-center rounded-none border-4 border-dashed border-black dark:border-gray-500 bg-[#AFDDFF] dark:bg-neutral-800 p-16">
           <svg
             className="mb-6 h-48 w-48"
             viewBox="0 0 200 200"

@@ -9,37 +9,21 @@ export default function GlobalError({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="dark:bg-background dark:text-foreground">
         <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: "100vh",
-            fontFamily: "system-ui, sans-serif",
-            textAlign: "center",
-            padding: "20px",
-          }}
+          className="flex min-h-screen flex-col items-center justify-center gap-4 p-5 text-center"
+          style={{ fontFamily: "system-ui, sans-serif" }}
         >
-          <h1 style={{ fontSize: "4rem", margin: 0 }}>⚠️</h1>
-          <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
+          <h1 className="m-0 text-6xl">⚠️</h1>
+          <h2 className="mb-4 text-3xl font-bold dark:text-white">
             Critical Error
           </h2>
-          <p style={{ marginBottom: "2rem", color: "#666" }}>
+          <p className="mb-8 text-gray-600 dark:text-gray-400">
             {error.message || "Something went wrong"}
           </p>
           <button
             onClick={reset}
-            style={{
-              padding: "12px 24px",
-              fontSize: "1rem",
-              fontWeight: "bold",
-              border: "3px solid black",
-              background: "white",
-              cursor: "pointer",
-              boxShadow: "4px 4px 0px 0px rgba(0,0,0,1)",
-            }}
+            className="rounded-none border-4 border-black bg-background px-6 py-3 text-base font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-gray-500 dark:bg-neutral-800 dark:text-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)] dark:hover:bg-neutral-700 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.08)]"
           >
             Try Again
           </button>

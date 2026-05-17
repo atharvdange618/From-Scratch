@@ -102,7 +102,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-white dark:bg-neutral-900">
+      <div className="min-h-screen bg-background dark:bg-neutral-900">
         <div className="container mx-auto px-4 py-8">
           <HeroSection />
           <div className="my-8 md:my-12">

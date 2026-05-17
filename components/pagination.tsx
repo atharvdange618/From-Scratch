@@ -21,7 +21,7 @@ export function Pagination({
         <Button
           onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
           disabled={currentPage === 1}
-          className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] disabled:opacity-50"
+          className="rounded-none border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-800 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-neutral-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] disabled:opacity-50"
         >
           Previous
         </Button>
@@ -39,8 +39,8 @@ export function Pagination({
                 onClick={() => onPageChange(pageNum)}
                 className={`rounded-none border-4 border-black dark:border-gray-700 px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] ${
                   currentPage === pageNum
-                    ? "bg-[#60B5FF] dark:bg-gray-600 dark:text-white"
-                    : "bg-white dark:bg-gray-800 dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-gray-700"
+                    ? "bg-[#60B5FF] dark:bg-neutral-600 dark:text-white"
+                    : "bg-background dark:bg-neutral-800 dark:text-white hover:bg-[#AFDDFF] dark:hover:bg-neutral-700"
                 }`}
               >
                 {pageNum}
@@ -62,7 +62,7 @@ export function Pagination({
         <Button
           onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
           disabled={currentPage === totalPages}
-          className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-gray-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] disabled:opacity-50"
+          className="rounded-none border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-800 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#AFDDFF] dark:hover:bg-neutral-700 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] disabled:opacity-50"
         >
           Next
         </Button>

@@ -11,6 +11,7 @@ export function GiscusComments() {
   useEffect(() => {
     if (!ref.current || ref.current.hasChildNodes()) return;
 
+    const theme = resolvedTheme === "dark" ? "dark" : "light";
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
     script.setAttribute("data-repo", env.NEXT_PUBLIC_GISCUS_REPO || "");
@@ -31,13 +32,26 @@ export function GiscusComments() {
     script.setAttribute("data-reactions-enabled", "1");
     script.setAttribute("data-emit-metadata", "0");
     script.setAttribute("data-input-position", "top");
-    script.setAttribute("data-theme", resolvedTheme === "dark" ? "dark" : "light");
+    script.setAttribute("data-theme", theme);
     script.setAttribute("data-lang", "en");
     script.setAttribute("data-loading", "lazy");
     script.crossOrigin = "anonymous";
     script.async = true;
 
     ref.current.appendChild(script);
+  }, []);
+
+  useEffect(() => {
+    const theme = resolvedTheme === "dark" ? "dark" : "light";
+    const iframe = ref.current?.querySelector<HTMLIFrameElement>(
+      "iframe.giscus-frame"
+    );
+    if (iframe?.contentWindow) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme } } },
+        "https://giscus.app"
+      );
+    }
   }, [resolvedTheme]);
 
   return <div ref={ref} />;

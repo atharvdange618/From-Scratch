@@ -28,7 +28,7 @@ export function ClickableTags({ tags, postTitle }: ClickableTagsProps) {
         >
           <Badge
             variant="outline"
-            className="cursor-pointer rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif transition-all hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="cursor-pointer rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-900 dark:text-white px-3 py-1 font-serif transition-all hover:bg-gray-100 dark:hover:bg-neutral-800"
           >
             {tag}
           </Badge>

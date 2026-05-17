@@ -222,13 +222,13 @@ export default function ProjectEditor() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
+        <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
           <h2 className="mb-4 text-xl font-bold dark:text-white">
             {isEditMode ? "Editing Project" : "Load Existing Project"}
           </h2>
           <div className="flex gap-3">
             <Select value={selectedProjectId} onValueChange={loadProject}>
-              <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
+              <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]">
                 <SelectValue placeholder="Select a project to edit..." />
               </SelectTrigger>
               <SelectContent>
@@ -266,7 +266,7 @@ export default function ProjectEditor() {
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]"
                         placeholder="Project name..."
                       />
                     </FormControl>
@@ -286,7 +286,7 @@ export default function ProjectEditor() {
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]"
                         placeholder="project-url-slug"
                       />
                     </FormControl>
@@ -326,7 +326,7 @@ export default function ProjectEditor() {
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
+                        <SelectTrigger className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]">
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                       </FormControl>
@@ -352,7 +352,7 @@ export default function ProjectEditor() {
                     render={({ field }) => (
                       <Input
                         {...field}
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]"
                         placeholder="Add technology..."
                         onKeyPress={(e) => {
                           if (e.key === "Enter") {
@@ -366,7 +366,7 @@ export default function ProjectEditor() {
                   <Button
                     type="button"
                     onClick={handleTechStackAdd}
-                    className="rounded-none border-4 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
+                    className="rounded-none border-4 border-black dark:border-gray-700 bg-[#60B5FF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
                   >
                     Add
                   </Button>
@@ -393,7 +393,7 @@ export default function ProjectEditor() {
           </div>
 
           <div className="space-y-6">
-            <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
+            <Card className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
               <h2 className="mb-4 text-2xl font-bold dark:text-white">
                 Links & Media
               </h2>
@@ -410,7 +410,7 @@ export default function ProjectEditor() {
                       <Input
                         {...field}
                         type="url"
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]"
                         placeholder="https://github.com/username/repo"
                       />
                     </FormControl>
@@ -431,7 +431,7 @@ export default function ProjectEditor() {
                       <Input
                         {...field}
                         type="url"
-                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
+                        className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]"
                         placeholder="https://demo.example.com"
                       />
                     </FormControl>
@@ -454,7 +454,7 @@ export default function ProjectEditor() {
                           <img
                             src={field.value}
                             alt="Project"
-                            className="h-48 w-full rounded-none border-4 border-black dark:border-gray-700 object-cover shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
+                            className="h-48 w-full rounded-none border-4 border-black dark:border-gray-700 object-cover shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]"
                           />
                           <div className="rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-[#2D5F4D] p-2 text-center font-bold dark:text-white">
                             ✓ Image uploaded
@@ -475,7 +475,7 @@ export default function ProjectEditor() {
                             document.getElementById("project-upload")?.click()
                           }
                           disabled={uploading}
-                          className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
+                          className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-[#4A90CC] dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
                         >
                           {uploading ? (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -493,7 +493,7 @@ export default function ProjectEditor() {
                             type="button"
                             variant="outline"
                             onClick={() => field.onChange("")}
-                            className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]"
+                            className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]"
                           >
                             Remove
                           </Button>
@@ -506,7 +506,7 @@ export default function ProjectEditor() {
               />
             </Card>
 
-            <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
+            <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
               <FormField
                 control={form.control}
                 name="featured"
@@ -534,7 +534,7 @@ export default function ProjectEditor() {
           </div>
         </div>
 
-        <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
+        <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
           <div className="flex justify-end gap-3">
             <Button
               type="button"
@@ -543,14 +543,14 @@ export default function ProjectEditor() {
                 form.reset();
                 setTechTags([]);
               }}
-              className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-gray-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
             >
               Reset
             </Button>
             <Button
               type="submit"
               disabled={saving}
-              className="rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] dark:shadow-[4px_4px_0px_0px_rgba(214,116,56,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(214,116,56,1)]"
+              className="rounded-none border-4 border-black dark:border-gray-700 bg-black dark:bg-white font-bold text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(107,114,128,0.6)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.6)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.6)]"
             >
               {saving ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -42,7 +42,7 @@ function CodeBlock({ children, className }: CodeBlockProps) {
 
   if (isPlainDiagram) {
     return (
-      <pre className="my-6 overflow-x-auto rounded-md border border-zinc-200 dark:border-gray-700 bg-zinc-50 dark:bg-gray-900 p-4 text-sm leading-relaxed text-zinc-800 dark:text-zinc-300">
+      <pre className="my-6 overflow-x-auto rounded-md border border-zinc-200 dark:border-gray-700 bg-zinc-50 dark:bg-neutral-900 p-4 text-sm leading-relaxed text-zinc-800 dark:text-zinc-300">
         <code>{code}</code>
       </pre>
     );
@@ -59,7 +59,7 @@ function CodeBlock({ children, className }: CodeBlockProps) {
               <div className="h-3 w-3 rounded-full bg-[#27c93f] border border-black/10 dark:border-white/10"></div>
             </div>
 
-            <div className="flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-zinc-700 bg-neutral-800 dark:bg-zinc-800 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-zinc-200 dark:text-zinc-300">
+            <div className="flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-gray-500 bg-neutral-800 dark:bg-zinc-800 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-zinc-200 dark:text-zinc-300">
               <Terminal className="h-3 w-3" />
               {language}
             </div>
@@ -70,7 +70,7 @@ function CodeBlock({ children, className }: CodeBlockProps) {
             onClick={handleCopy}
             variant="ghost"
             size="sm"
-            className="h-7 px-2 text-xs font-medium text-zinc-200 dark:text-gray-300 hover:bg-zinc-700 dark:hover:bg-gray-700 hover:text-white dark:hover:text-white"
+            className="h-7 px-2 text-xs font-medium text-zinc-200 dark:text-gray-300 hover:bg-zinc-700 dark:hover:bg-neutral-700 hover:text-white dark:hover:text-white"
           >
             {copied ? (
               <span className="flex items-center text-green-600">

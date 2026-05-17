@@ -17,7 +17,7 @@ import { BreadcrumbNav } from "@/components/breadcrumb-nav";
 import { ReadProgress } from "@/components/read-progress";
 import { ClickableTags } from "@/components/clickable-tags";
 import { SocialShare } from "@/components/social-share";
-import { getCategoryColor } from "@/lib/categories";
+import { getCategoryColorVar } from "@/lib/categories";
 import { PostTracker } from "@/components/post-tracker";
 import { TableOfContents } from "@/components/table-of-contents";
 import { extractHeadings } from "@/lib/toc-generator";
@@ -218,7 +218,7 @@ export default async function PostPage({
         />
 
         {post.bannerImage && (
-          <div className="mb-8 overflow-hidden rounded-none border-2 border-black dark:border-gray-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
+          <div className="mb-8 overflow-hidden rounded-none border-2 border-black dark:border-gray-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]">
             <Image
               src={post.bannerImage}
               alt={post.title}
@@ -236,21 +236,21 @@ export default async function PostPage({
             <Badge
               className="rounded-none border-2 border-black px-3 py-1 font-serif text-sm"
               style={{
-                backgroundColor: getCategoryColor(post.category),
+                backgroundColor: getCategoryColorVar(post.category),
               }}
             >
               {post.category}
             </Badge>
             <Badge
               variant="outline"
-              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif text-sm"
+              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white px-3 py-1 font-serif text-sm"
             >
               <Calendar className="h-4 w-4" />
               {formatDate(post.publishedDate)}
             </Badge>
             <Badge
               variant="outline"
-              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif text-sm"
+              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white px-3 py-1 font-serif text-sm"
             >
               <Clock className="h-4 w-4" />
               {calculateReadingTime(post.content)}
@@ -270,7 +270,7 @@ export default async function PostPage({
           <ClickableTags tags={post.tags} postTitle={post.title} />
 
           {post.linkedProject && (
-            <Card className="mt-8 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)]">
+            <Card className="mt-8 rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]">
               <CardContent className="flex items-center justify-between p-6">
                 <div>
                   <p className="mb-1 font-serif text-sm font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400">
@@ -283,7 +283,7 @@ export default async function PostPage({
                 {post.linkedProject.githubUrl && (
                   <Button
                     asChild
-                    className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-primary hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(74,144,204,0.3)]"
+                    className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-primary hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1px_1px_0px_0px_rgba(107,114,128,0.3)]"
                   >
                     <TrackableLink
                       href={post.linkedProject.githubUrl}
@@ -317,7 +317,7 @@ export default async function PostPage({
               category={post.category}
               readingTime={calculateReadingTime(post.content)}
             >
-              <div className="mb-8 rounded-none bg-white dark:bg-gray-900">
+              <div className="mb-8 rounded-none bg-background dark:bg-black">
                 <MarkdownRenderer
                   content={post.content}
                   className="prose-lg max-w-none font-serif"
@@ -347,7 +347,7 @@ export default async function PostPage({
               <h2 className="mb-6 font-sans text-3xl font-bold dark:text-white">
                 Comments
               </h2>
-              <div className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900">
+              <div className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900">
                 <div className="p-6">
                   <GiscusComments />
                 </div>

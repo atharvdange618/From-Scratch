@@ -32,9 +32,9 @@ export function ReadProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-gray-200 dark:bg-gray-800">
+    <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-gray-200 dark:bg-neutral-800">
       <div
-        className="h-full bg-gradient-to-r from-[#60B5FF] via-[#FF9149] to-[#60B5FF] transition-all duration-150 ease-out"
+        className="h-full bg-gradient-to-r from-[#60B5FF] via-[#FF9149] to-[#60B5FF] transition-all duration-150 ease-out dark:from-primary dark:via-secondary dark:to-primary"
         style={{ width: `${progress}%` }}
       />
     </div>

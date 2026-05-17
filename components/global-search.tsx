@@ -162,13 +162,13 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
-        className="max-w-xl border-2 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:rounded-none dark:border-gray-700 dark:bg-gray-900 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)] [&>button]:top-8 [&>button]:right-4"
+        className="max-w-xl border-2 border-black bg-background p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:rounded-none dark:border-gray-500 dark:bg-neutral-900 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)] [&>button]:top-8 [&>button]:right-4"
         onOpenAutoFocus={(e) => {
           e.preventDefault();
           inputRef.current?.focus();
         }}
       >
-        <DialogHeader className="border-b-2 border-black p-4 dark:border-gray-700">
+        <DialogHeader className="border-b-2 border-black p-4 dark:border-gray-500">
           <DialogTitle className="sr-only">Search</DialogTitle>
           <DialogDescription className="sr-only">
             Search through blog posts and projects. Use arrow keys to navigate
@@ -225,7 +225,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                         className={`w-full border-2 p-4 text-left transition-all ${
                           index === validSelectedIndex
                             ? "border-black bg-[#60B5FF] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-gray-600 dark:bg-primary dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.08)]"
-                            : "border-transparent bg-gray-50 hover:border-gray-200 hover:bg-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.04)] dark:bg-gray-800 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)]"
+                            : "border-transparent bg-gray-50 hover:border-gray-200 hover:bg-background hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.04)] dark:bg-neutral-800 dark:hover:border-gray-600 dark:hover:bg-neutral-800 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)]"
                         }`}
                       >
                         <div className="flex items-start justify-between gap-3">
@@ -256,7 +256,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center px-8 py-16 text-center">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-gray-200 bg-gray-50 dark:border-gray-500 dark:bg-neutral-800">
                   <Search className="h-5 w-5 text-gray-400" />
                 </div>
                 <p className="font-semibold text-black dark:text-white">
@@ -287,7 +287,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                       <button
                         key={search}
                         onClick={() => handleRecentSearchClick(search)}
-                        className="flex w-full items-center gap-3 rounded-none border-2 border-transparent bg-gray-50 p-3 text-left text-sm font-medium text-gray-700 transition-all hover:border-gray-200 hover:bg-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.04)] dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)]"
+                        className="flex w-full items-center gap-3 rounded-none border-2 border-transparent bg-gray-50 p-3 text-left text-sm font-medium text-gray-700 transition-all hover:border-gray-200 hover:bg-background hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.04)] dark:bg-neutral-800 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:bg-neutral-800 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)]"
                       >
                         <Clock className="h-4 w-4 shrink-0 text-gray-400" />
                         <span className="truncate">{search}</span>
@@ -297,7 +297,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center px-8 py-16 text-center">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-gray-200 bg-gray-50 dark:border-gray-500 dark:bg-neutral-800">
                     <Search className="h-5 w-5 text-gray-400" />
                   </div>
                   <p className="font-semibold text-black dark:text-white">
@@ -307,7 +307,7 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                     Search across posts and projects
                   </p>
                   <div className="mt-4 flex items-center gap-2 text-xs text-gray-400">
-                    <kbd className="rounded border border-gray-300 bg-white px-1.5 py-0.5 font-mono text-gray-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                    <kbd className="rounded border border-gray-300 bg-background px-1.5 py-0.5 font-mono text-gray-600 dark:border-gray-600 dark:bg-neutral-800 dark:text-gray-400">
                       Ctrl+K
                     </kbd>
                     <span>to open anytime</span>
@@ -318,20 +318,20 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
           )}
         </div>
 
-        <div className="border-t-2 border-black bg-gray-50 px-4 py-2.5 dark:border-gray-700 dark:bg-gray-800">
+        <div className="border-t-2 border-black bg-gray-50 px-4 py-2.5 dark:border-gray-500 dark:bg-neutral-800">
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
             <span className="flex items-center gap-1">
               <ArrowUpDown className="h-3 w-3" />
               Navigate
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-gray-300 bg-white px-1 font-mono dark:border-gray-600 dark:bg-gray-900">
+              <kbd className="rounded border border-gray-300 bg-background px-1 font-mono dark:border-gray-600 dark:bg-neutral-900">
                 ↵
               </kbd>
               Select
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-gray-300 bg-white px-1 font-mono dark:border-gray-600 dark:bg-gray-900">
+              <kbd className="rounded border border-gray-300 bg-background px-1 font-mono dark:border-gray-600 dark:bg-neutral-900">
                 Esc
               </kbd>
               Close

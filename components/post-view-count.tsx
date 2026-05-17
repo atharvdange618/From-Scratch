@@ -27,7 +27,7 @@ export function PostViewCount({ slug }: { slug: string }) {
     return (
       <Badge
         variant="outline"
-        className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif text-sm"
+        className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-900 dark:text-white px-3 py-1 font-serif text-sm"
       >
         <Eye className="h-4 w-4" />
         <span className="animate-pulse">...</span>
@@ -38,7 +38,7 @@ export function PostViewCount({ slug }: { slug: string }) {
   return (
     <Badge
       variant="outline"
-      className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif text-sm"
+      className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-900 dark:text-white px-3 py-1 font-serif text-sm"
     >
       <Eye className="h-4 w-4" />
       {views.toLocaleString()} views

@@ -10,7 +10,7 @@ import {
   Share2,
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { getCategoryColor } from "@/lib/categories";
+import { getCategoryColorVar } from "@/lib/categories";
 import { formatDate } from "@/lib/dateandnumbers";
 import { handlePostHover } from "@/lib/prefetch";
 import { trackEvent } from "@/lib/analytics";
@@ -90,7 +90,7 @@ export function BlogCard({
           <ToastAction
             altText="Retry copying"
             onClick={() => handleCopyLink({ title })}
-            className="rounded-none border-2 border-black bg-white px-3 py-1 font-bold hover:bg-[#FF9149]"
+            className="rounded-none border-2 border-black bg-background px-3 py-1 font-bold hover:bg-[#FF9149]"
           >
             Retry
           </ToastAction>
@@ -99,14 +99,14 @@ export function BlogCard({
     }
   };
 
-  const categoryColor = getCategoryColor(post.category);
+  const categoryColor = getCategoryColorVar(post.category);
 
   return (
     <Card
-      className="group flex h-full flex-col overflow-hidden rounded-none border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-gray-800 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.08)]"
+      className="group flex h-full flex-col overflow-hidden rounded-none border-2 border-black bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-neutral-800 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.08)]"
       onMouseEnter={handleHover}
     >
-      <CardHeader className="border-b-2 border-black bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+      <CardHeader className="border-b-2 border-black bg-background p-4 dark:border-gray-700 dark:bg-neutral-800">
         <div className="mb-2 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <div
@@ -133,7 +133,7 @@ export function BlogCard({
           <Popover>
             <PopoverTrigger asChild>
               <button
-                className="rounded-none border-2 border-black bg-gray-200 p-1.5 text-black transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:text-white hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]"
+                className="rounded-none border-2 border-black bg-gray-200 p-1.5 text-black transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FF9149] hover:text-white hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-neutral-700 dark:text-white dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]"
                 aria-label="Share this post"
               >
                 <Share2 className="h-4 w-4" />
@@ -142,7 +142,7 @@ export function BlogCard({
             <PopoverContent
               align="end"
               sideOffset={8}
-              className="w-auto rounded-none border-2 border-black bg-white p-2 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-gray-800 dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.08)]"
+              className="w-auto rounded-none border-2 border-black bg-background p-2 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-neutral-800 dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.08)]"
             >
               <div className="flex flex-col gap-1.5">
                 <button
@@ -153,7 +153,7 @@ export function BlogCard({
                       description: post.summary,
                     })
                   }
-                  className="flex items-center gap-2 rounded-none border-2 border-black bg-black px-3 py-2 text-xs font-bold text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-gray-700 dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]"
+                  className="flex items-center gap-2 rounded-none border-2 border-black bg-black px-3 py-2 text-xs font-bold text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-neutral-700 dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]"
                   aria-label="Share on X"
                 >
                   <svg
@@ -177,7 +177,7 @@ export function BlogCard({
                 </button>
                 <button
                   onClick={() => handleCopyLink({ title: post.title })}
-                  className="flex items-center gap-2 rounded-none border-2 border-black bg-gray-200 px-3 py-2 text-xs font-bold text-black transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]"
+                  className="flex items-center gap-2 rounded-none border-2 border-black bg-gray-200 px-3 py-2 text-xs font-bold text-black transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-neutral-700 dark:text-white dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]"
                   aria-label="Copy link"
                 >
                   <LinkIcon className="h-3.5 w-3.5" />
@@ -226,7 +226,7 @@ export function BlogCard({
                   onTagClick?.(tag);
                   trackEvent("blog_tag_click", { tag });
                 }}
-                className="inline-flex items-center gap-1 rounded-none border-2 border-gray-300 bg-[#AFDDFF] px-2 py-0.5 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#60B5FF] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.08)]"
+                className="inline-flex items-center gap-1 rounded-none border-2 border-gray-300 bg-[#AFDDFF] px-2 py-0.5 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#60B5FF] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-gray-500 dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-600 dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.08)]"
                 aria-label={`Filter by ${tag}`}
               >
                 <Tag className="h-3 w-3" />
@@ -235,7 +235,7 @@ export function BlogCard({
             ) : (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 rounded-none border-2 border-gray-300 bg-[#AFDDFF] px-2 py-0.5 text-xs font-bold dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className="inline-flex items-center gap-1 rounded-none border-2 border-gray-300 bg-[#AFDDFF] px-2 py-0.5 text-xs font-bold dark:border-gray-500 dark:bg-neutral-700 dark:text-white"
               >
                 <Tag className="h-3 w-3" />
                 {tag}
@@ -244,7 +244,7 @@ export function BlogCard({
           )}
           {post.tags && post.tags.length > 3 && (
             <span
-              className="inline-flex items-center rounded-none border-2 border-gray-300 bg-gray-200 px-2 py-0.5 text-xs font-bold dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="inline-flex items-center rounded-none border-2 border-gray-300 bg-gray-200 px-2 py-0.5 text-xs font-bold dark:border-gray-500 dark:bg-neutral-700 dark:text-white"
               title={post.tags.slice(3).join(", ")}
             >
               +{post.tags.length - 3}
@@ -261,10 +261,10 @@ export function BlogCard({
           </span>
         </div>
       </CardContent>
-      <CardFooter className="border-t-2 border-black bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+      <CardFooter className="border-t-2 border-black bg-background p-4 dark:border-gray-700 dark:bg-neutral-800">
         <button
           onClick={() => router.push(`/posts/${post.slug}`)}
-          className="w-full rounded-none border-2 border-black bg-black px-4 py-2 font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.15)]"
+          className="w-full rounded-none border-2 border-black bg-black px-4 py-2 font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:border-neutral-600 dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.15)]"
         >
           Read Post
           <span className="ml-1 inline-block">&rarr;</span>

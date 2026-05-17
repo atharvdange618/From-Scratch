@@ -11,7 +11,7 @@ import {
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { formatDate, formatTimeIST } from "@/lib/dateandnumbers";
 import { calculateReadingTime } from "@/lib/reading-time";
-import { getCategoryColor } from "@/lib/categories";
+import { getCategoryColorVar } from "@/lib/categories";
 import Image from "next/image";
 import { env } from "@/lib/env";
 
@@ -80,7 +80,7 @@ export default async function PreviewPage({
   if (error || !data) {
     return (
       <div className="container mx-auto px-4 py-16">
-        <Card className="mx-auto max-w-2xl rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
+        <Card className="mx-auto max-w-2xl rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
           <CardContent className="p-12 text-center">
             <AlertTriangle className="mx-auto mb-4 h-16 w-16 text-[#FF9149] dark:text-secondary" />
             <h1 className="mb-3 font-sans text-3xl font-bold dark:text-white">
@@ -108,7 +108,7 @@ export default async function PreviewPage({
 
   return (
     <>
-      <div className="sticky top-0 z-50 border-b-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary/80 shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_4px_0px_0px_rgba(74,144,204,0.3)]">
+      <div className="sticky top-0 z-50 border-b-4 border-black dark:border-gray-700 bg-[#FF9149] dark:bg-secondary/80 shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_4px_0px_0px_rgba(107,114,128,0.3)]">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
             <AlertTriangle className="h-5 w-5" />
@@ -121,7 +121,7 @@ export default async function PreviewPage({
           </div>
           <Badge
             variant="outline"
-            className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif text-sm font-bold"
+            className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white px-3 py-1 font-serif text-sm font-bold"
           >
             Not Published
           </Badge>
@@ -134,21 +134,21 @@ export default async function PreviewPage({
             <Badge
               className="rounded-none border-2 border-black dark:border-gray-700 px-3 py-1 font-serif text-sm dark:text-white"
               style={{
-                backgroundColor: getCategoryColor(post.category),
+                backgroundColor: getCategoryColorVar(post.category),
               }}
             >
               {post.category}
             </Badge>
             <Badge
               variant="outline"
-              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif text-sm"
+              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white px-3 py-1 font-serif text-sm"
             >
               <Calendar className="h-4 w-4" />
               {formatDate(post.createdAt)}
             </Badge>
             <Badge
               variant="outline"
-              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif text-sm"
+              className="inline-flex items-center gap-1.5 rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white px-3 py-1 font-serif text-sm"
             >
               <Clock className="h-4 w-4" />
               {calculateReadingTime(post.content)}
@@ -168,7 +168,7 @@ export default async function PreviewPage({
               <Badge
                 key={tag}
                 variant="outline"
-                className="rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-3 py-1 font-serif"
+                className="rounded-none border-2 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white px-3 py-1 font-serif"
               >
                 {tag}
               </Badge>
@@ -176,7 +176,7 @@ export default async function PreviewPage({
           </div>
 
           {post.linkedProject && (
-            <Card className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-gray-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(74,144,204,0.3)]">
+            <Card className="mt-8 rounded-none border-4 border-black dark:border-gray-700 bg-[#FFECDB] dark:bg-neutral-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(107,114,128,0.3)]">
               <CardContent className="flex items-center justify-between p-6">
                 <div>
                   <p className="mb-1 font-serif text-sm font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400">
@@ -191,7 +191,7 @@ export default async function PreviewPage({
                     href={post.linkedProject.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-none border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(74,144,204,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-primary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(74,144,204,0.3)]"
+                    className="rounded-none border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-900 dark:text-white px-4 py-2 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-primary hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
                   >
                     <ExternalLink className="mr-2 inline h-4 w-4" />
                     View Project
@@ -203,7 +203,7 @@ export default async function PreviewPage({
         </header>
 
         {post.bannerImage && (
-          <div className="mb-12 overflow-hidden rounded-none border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
+          <div className="mb-12 overflow-hidden rounded-none border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
             <Image
               src={post.bannerImage}
               alt={post.title}
@@ -218,14 +218,14 @@ export default async function PreviewPage({
 
         <Separator className="my-12 border-2 border-black dark:border-gray-700" />
 
-        <div className="mb-8 rounded-none bg-white dark:bg-gray-900 p-6 sm:p-8">
+        <div className="mb-8 rounded-none bg-background dark:bg-neutral-900 p-6 sm:p-8">
           <MarkdownRenderer
             content={post.content}
             className="prose-lg max-w-none font-serif"
           />
         </div>
 
-        <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(74,144,204,0.3)]">
+        <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#AFDDFF] dark:bg-neutral-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
           <CardContent className="p-8 text-center">
             <AlertTriangle className="mx-auto mb-3 h-12 w-12" />
             <h3 className="mb-2 font-sans text-xl font-bold dark:text-white">

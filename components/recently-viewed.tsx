@@ -6,7 +6,7 @@ import { Clock, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/dateandnumbers";
-import { getCategoryColor } from "@/lib/categories";
+import { getCategoryColorVar } from "@/lib/categories";
 
 interface RecentPost {
   _id: string;
@@ -66,12 +66,12 @@ export function RecentlyViewed() {
       <div className="space-y-4">
         {recentPosts.map((post) => (
           <Link key={post._id} href={`/posts/${post.slug}`}>
-            <Card className="group m-4 cursor-pointer overflow-hidden rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]">
+            <Card className="group m-4 cursor-pointer overflow-hidden rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.1)]">
               <CardContent className="p-4">
                 <div className="flex items-start gap-4">
                   <div
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-black dark:border-gray-700 dark:text-black"
-                    style={{ backgroundColor: getCategoryColor(post.category) }}
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-black dark:border-gray-500 dark:text-black"
+                    style={{ backgroundColor: getCategoryColorVar(post.category) }}
                   >
                     <Calendar className="h-5 w-5" />
                   </div>
@@ -84,9 +84,9 @@ export function RecentlyViewed() {
                     </p>
                     <div className="flex items-center gap-2">
                       <Badge
-                        className="rounded-lg border-2 border-black dark:border-gray-700 text-xs font-bold"
+                        className="rounded-lg border-2 border-black dark:border-gray-500 text-xs font-bold"
                         style={{
-                          backgroundColor: getCategoryColor(post.category),
+                          backgroundColor: getCategoryColorVar(post.category),
                         }}
                       >
                         {post.category}

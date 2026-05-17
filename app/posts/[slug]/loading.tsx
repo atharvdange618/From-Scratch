@@ -10,7 +10,7 @@ export default function Loading() {
       <Button
         variant="outline"
         disabled
-        className="mb-8 rounded-none border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        className="mb-8 rounded-none border-4 border-black bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:bg-neutral-900 dark:text-white dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)]"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Home
@@ -26,9 +26,9 @@ export default function Loading() {
       <header className="mb-12">
         {/* Badges skeleton */}
         <div className="mb-4 flex flex-wrap items-center gap-3">
-          <Skeleton className="h-7 w-32 rounded-none border-2 border-black" />
-          <Skeleton className="h-7 w-36 rounded-none border-2 border-black" />
-          <Skeleton className="h-7 w-28 rounded-none border-2 border-black" />
+          <Skeleton className="h-7 w-32 rounded-none border-2 border-black dark:border-gray-700" />
+          <Skeleton className="h-7 w-36 rounded-none border-2 border-black dark:border-gray-700" />
+          <Skeleton className="h-7 w-28 rounded-none border-2 border-black dark:border-gray-700" />
         </div>
 
         {/* Title skeleton */}
@@ -43,20 +43,20 @@ export default function Loading() {
 
         {/* Tags skeleton */}
         <div className="flex flex-wrap gap-2">
-          <Skeleton className="h-8 w-24 rounded-lg border-2 border-black" />
-          <Skeleton className="h-8 w-32 rounded-lg border-2 border-black" />
-          <Skeleton className="h-8 w-28 rounded-lg border-2 border-black" />
-          <Skeleton className="h-8 w-36 rounded-lg border-2 border-black" />
+          <Skeleton className="h-8 w-24 rounded-lg border-2 border-black dark:border-gray-700" />
+          <Skeleton className="h-8 w-32 rounded-lg border-2 border-black dark:border-gray-700" />
+          <Skeleton className="h-8 w-28 rounded-lg border-2 border-black dark:border-gray-700" />
+          <Skeleton className="h-8 w-36 rounded-lg border-2 border-black dark:border-gray-700" />
         </div>
       </header>
 
       {/* Banner image skeleton */}
-      <Skeleton className="mb-12 h-96 w-full rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" />
+      <Skeleton className="mb-12 h-96 w-full rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]" />
 
-      <Separator className="my-4 border-2 border-black" />
+      <Separator className="my-4 border-2 border-black dark:border-gray-700" />
 
       {/* Content skeleton */}
-      <div className="mb-8 rounded-none bg-white p-6 sm:p-8">
+      <div className="mb-8 rounded-none bg-background p-6 sm:p-8 dark:bg-neutral-900">
         <div className="prose-lg max-w-none space-y-4">
           <Skeleton className="h-8 w-1/2" />
           <Skeleton className="h-4 w-full" />
@@ -69,7 +69,7 @@ export default function Loading() {
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-4/5" />
           <div className="py-4">
-            <Skeleton className="h-64 w-full rounded-none border-4 border-black" />
+            <Skeleton className="h-64 w-full rounded-none border-4 border-black dark:border-gray-700" />
           </div>
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-full" />
@@ -79,10 +79,10 @@ export default function Loading() {
 
       {/* Social share skeleton */}
       <div className="mb-12 flex gap-3">
-        <Skeleton className="h-12 w-12 rounded-none border-4 border-black" />
-        <Skeleton className="h-12 w-12 rounded-none border-4 border-black" />
-        <Skeleton className="h-12 w-12 rounded-none border-4 border-black" />
-        <Skeleton className="h-12 w-12 rounded-none border-4 border-black" />
+        <Skeleton className="h-12 w-12 rounded-none border-4 border-black dark:border-gray-700" />
+        <Skeleton className="h-12 w-12 rounded-none border-4 border-black dark:border-gray-700" />
+        <Skeleton className="h-12 w-12 rounded-none border-4 border-black dark:border-gray-700" />
+        <Skeleton className="h-12 w-12 rounded-none border-4 border-black dark:border-gray-700" />
       </div>
 
       {/* Related posts skeleton */}
@@ -92,7 +92,7 @@ export default function Loading() {
           {[1, 2, 3].map((i) => (
             <Card
               key={`related-skeleton-${i}`}
-              className="rounded-none border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-none border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:shadow-[6px_6px_0px_0px_rgba(107,114,128,0.3)]"
             >
               <CardContent className="p-6">
                 <Skeleton className="mb-3 h-6 w-32" />
@@ -108,12 +108,12 @@ export default function Loading() {
         </div>
       </div>
 
-      <Separator className="my-12 border-2 border-black" />
+      <Separator className="my-12 border-2 border-black dark:border-gray-700" />
 
       {/* Comments section skeleton */}
       <div className="mx-auto max-w-4xl">
         <Skeleton className="mb-6 h-10 w-40" />
-        <Card className="rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <Card className="rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:border-gray-700 dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
           <CardContent className="p-6">
             <Skeleton className="h-64 w-full" />
           </CardContent>

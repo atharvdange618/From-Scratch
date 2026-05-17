@@ -64,7 +64,7 @@ export function ProjectsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-16 dark:bg-neutral-900 md:py-24">
+    <div className="min-h-screen bg-background py-16 dark:bg-neutral-900 md:py-24">
       <div className="mx-auto max-w-3xl px-4">
         <header className="mb-16">
           <h1 className="mb-3 font-sans text-4xl font-bold tracking-tight md:text-5xl">

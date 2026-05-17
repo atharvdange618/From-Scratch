@@ -24,7 +24,7 @@ export function ResourcesList({
   }
 
   return (
-    <div className="mt-8 rounded-none border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-900">
+    <div className="mt-8 rounded-none border-2 border-black dark:border-gray-500 bg-background dark:bg-neutral-900">
       <div className="p-6">
         <h3 className="mb-4 flex items-center gap-2 font-sans text-xl font-bold dark:text-white">
           <BookOpen className="h-5 w-5" />

@@ -178,11 +178,11 @@ export default async function ProjectPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-white py-16 dark:bg-neutral-900 md:py-20">
+      <div className="min-h-screen bg-background py-16 dark:bg-neutral-900 md:py-20">
         <div className="mx-auto max-w-3xl px-4">
           <Link
             href="/projects"
-            className="group inline-flex items-center gap-1.5 border-2 border-gray-200 px-3 py-1.5 font-sans text-sm font-medium text-gray-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.06)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:border-gray-300 hover:text-gray-700 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.06)] dark:border-neutral-700 dark:text-neutral-400 dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)] dark:hover:border-neutral-600 dark:hover:text-neutral-200 dark:hover:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.04)]"
+            className="group inline-flex items-center gap-1.5 border-2 border-gray-200 px-3 py-1.5 font-sans text-sm font-medium text-gray-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.06)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:border-gray-300 hover:text-gray-700 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.06)] dark:border-gray-500 dark:text-neutral-400 dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.04)] dark:hover:border-neutral-600 dark:hover:text-neutral-200 dark:hover:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.04)]"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
             Back to projects
@@ -195,9 +195,9 @@ export default async function ProjectPage({
             ]}
           />
 
-          <header className="mt-10 mb-12 pl-5 border-l-2 border-gray-200 dark:border-neutral-700">
+          <header className="mt-10 mb-12 pl-5 border-l-2 border-gray-200 dark:border-gray-500">
             <div className="mb-3 flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 border-2 border-gray-200 px-2 py-0.5 text-xs font-semibold dark:border-neutral-700">
+              <span className="inline-flex items-center gap-1.5 border-2 border-gray-200 px-2 py-0.5 text-xs font-semibold dark:border-gray-500">
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${
                     project.status === "Active"
@@ -295,7 +295,7 @@ export default async function ProjectPage({
           </header>
 
           {project.bannerImage && (
-            <div className="mb-12 overflow-hidden border-2 border-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.06)] dark:border-neutral-700 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.04)]">
+            <div className="mb-12 overflow-hidden border-2 border-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.06)] dark:border-gray-500 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.04)]">
               <Image
                 src={project.bannerImage}
                 alt={project.name}
@@ -328,7 +328,7 @@ export default async function ProjectPage({
                   >
                     <Link
                       href={`/posts/${post.slug}`}
-                      className="group flex items-center justify-between pl-4 border-l-2 border-gray-200 transition-colors hover:border-primary dark:border-neutral-700 dark:hover:border-primary"
+                      className="group flex items-center justify-between pl-4 border-l-2 border-gray-200 transition-colors hover:border-primary dark:border-gray-500 dark:hover:border-primary"
                     >
                       <div>
                         <h3 className="font-sans font-semibold text-black transition-colors group-hover:text-primary dark:text-white dark:group-hover:text-primary">
