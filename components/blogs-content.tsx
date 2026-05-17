@@ -47,8 +47,8 @@ export function BlogsContent() {
           </p>
         </div>
 
-        <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 9 }).map((_, i) => (
+        <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2">
+          {Array.from({ length: 4 }).map((_, i) => (
             <BlogCardSkeleton key={`blog-skeleton-${i}`} />
           ))}
         </div>
@@ -116,7 +116,7 @@ export function BlogsContent() {
             </div>
           )}
 
-          <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mb-12 grid gap-6 sm:grid-cols-1 md:grid-cols-3">
             {currentPosts.map((post) => (
               <BlogCard
                 key={post._id}
