@@ -41,6 +41,7 @@ export interface Post {
   readingTime?: string;
   linkedProject?: LinkedProject;
   bannerImage?: string;
+  isFeatured?: boolean;
   publishedDate: string;
   isPublished: boolean;
   author: string;
@@ -65,6 +66,7 @@ export interface PostListItem {
   bannerImage?: string;
   publishedDate: string;
   isPublished: boolean;
+  isFeatured?: boolean;
 }
 
 /**

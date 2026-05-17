@@ -88,6 +88,7 @@ const postSchema = z.object({
   tags: z.string(),
   linkedProject: z.string().optional(),
   bannerImage: z.string().optional(),
+  isFeatured: z.boolean().optional(),
   isPublished: z.boolean(),
   seoTitle: z.string().optional(),
   seoDescription: z.string().optional(),
@@ -133,6 +134,7 @@ export default function PostEditor() {
       tags: "",
       linkedProject: "",
       bannerImage: "",
+      isFeatured: false,
       isPublished: false,
       seoTitle: "",
       seoDescription: "",
@@ -258,6 +260,7 @@ export default function PostEditor() {
         tags: post.tags.join(", "),
         linkedProject: post.linkedProject?._id || "",
         bannerImage: post.bannerImage || "",
+        isFeatured: post.isFeatured || false,
         isPublished: post.isPublished,
         seoTitle: post.seoTitle || "",
         seoDescription: post.seoDescription || "",
@@ -289,6 +292,7 @@ export default function PostEditor() {
       tags: "",
       linkedProject: "",
       bannerImage: "",
+      isFeatured: false,
       isPublished: false,
       seoTitle: "",
       seoDescription: "",
@@ -917,7 +921,7 @@ export default function PostEditor() {
                 type="button"
                 onClick={generatePreviewLink}
                 disabled={generatingPreview}
-                className="rounded-none border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] hover:translate-x-1 hover:translate-y-1 hover:bg-[#60B5FF] dark:hover:bg-[#4A90CC] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
+                className="rounded-none border-4 border-black dark:border-gray-700 bg-background dark:bg-neutral-800 dark:text-white font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(107,114,128,0.3)] hover:translate-x-1 hover:translate-y-1 hover:bg-primary dark:hover:bg-primary/80 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)]"
               >
                 {generatingPreview ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -977,24 +981,44 @@ export default function PostEditor() {
 
         <Card className="rounded-none border-4 border-black dark:border-gray-700 bg-[#E0FFF1] dark:bg-neutral-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(107,114,128,0.3)]">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <FormField
-              control={form.control}
-              name="isPublished"
-              render={({ field }) => (
-                <FormItem className="flex items-center space-x-3 space-y-0">
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      className="data-[state=checked]:bg-black dark:data-[state=checked]:bg-white"
-                    />
-                  </FormControl>
-                  <FormLabel className="font-bold dark:text-white">
-                    Publish immediately
-                  </FormLabel>
-                </FormItem>
-              )}
-            />
+            <div className="flex flex-wrap items-center gap-6">
+              <FormField
+                control={form.control}
+                name="isPublished"
+                render={({ field }) => (
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="data-[state=checked]:bg-black dark:data-[state=checked]:bg-white"
+                      />
+                    </FormControl>
+                    <FormLabel className="font-bold dark:text-white">
+                      Publish immediately
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isFeatured"
+                render={({ field }) => (
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <Switch
+                        checked={field.value || false}
+                        onCheckedChange={field.onChange}
+                        className="data-[state=checked]:bg-secondary dark:data-[state=checked]:bg-secondary"
+                      />
+                    </FormControl>
+                    <FormLabel className="font-bold dark:text-white">
+                      Feature this post
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="flex items-center gap-4">
               {lastSavedAt && (

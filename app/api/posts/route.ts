@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     if (listView) {
       const rawPosts = await Post.find(query)
         .select(
-          "_id title slug summary category tags publishedDate isPublished createdAt updatedAt linkedProject readingTime",
+          "_id title slug summary category tags publishedDate isPublished isFeatured createdAt updatedAt linkedProject readingTime",
         )
         .populate({
           path: "linkedProject",

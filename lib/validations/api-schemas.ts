@@ -21,6 +21,7 @@ export const createPostSchema = z.object({
   tags: z.array(z.string()).max(10).default([]),
   linkedProject: z.string().optional(),
   bannerImage: z.string().url().optional().or(z.literal("")),
+  isFeatured: z.boolean().optional(),
   isPublished: z.boolean().default(false),
   publishedDate: z.coerce.date().optional(),
   seoTitle: z.string().max(70).optional(),

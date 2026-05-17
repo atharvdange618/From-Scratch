@@ -22,6 +22,7 @@ export interface IPost extends Document {
   tags: string[];
   linkedProject?: mongoose.Types.ObjectId;
   bannerImage?: string;
+  isFeatured: boolean;
   publishedDate?: Date;
   isPublished: boolean;
   previewTokens: IPreviewToken[];
@@ -88,6 +89,10 @@ const PostSchema: Schema<IPost> = new Schema(
     bannerImage: {
       type: String,
       trim: true,
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false,
     },
     publishedDate: {
       type: Date,
