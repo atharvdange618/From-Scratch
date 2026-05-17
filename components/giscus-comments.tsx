@@ -15,17 +15,11 @@ export function GiscusComments() {
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
     script.setAttribute("data-repo", env.NEXT_PUBLIC_GISCUS_REPO || "");
-    script.setAttribute(
-      "data-repo-id",
-      env.NEXT_PUBLIC_GISCUS_REPO_ID || ""
-    );
-    script.setAttribute(
-      "data-category",
-      env.NEXT_PUBLIC_GISCUS_CATEGORY || ""
-    );
+    script.setAttribute("data-repo-id", env.NEXT_PUBLIC_GISCUS_REPO_ID || "");
+    script.setAttribute("data-category", env.NEXT_PUBLIC_GISCUS_CATEGORY || "");
     script.setAttribute(
       "data-category-id",
-      env.NEXT_PUBLIC_GISCUS_CATEGORY_ID || ""
+      env.NEXT_PUBLIC_GISCUS_CATEGORY_ID || "",
     );
     script.setAttribute("data-mapping", "pathname");
     script.setAttribute("data-strict", "0");
@@ -43,15 +37,34 @@ export function GiscusComments() {
 
   useEffect(() => {
     const theme = resolvedTheme === "dark" ? "dark" : "light";
-    const iframe = ref.current?.querySelector<HTMLIFrameElement>(
-      "iframe.giscus-frame"
-    );
-    if (iframe?.contentWindow) {
-      iframe.contentWindow.postMessage(
-        { giscus: { setConfig: { theme } } },
-        "https://giscus.app"
+    let isThemeSet = false;
+
+    const updateTheme = () => {
+      const iframe = ref.current?.querySelector<HTMLIFrameElement>(
+        "iframe.giscus-frame",
       );
-    }
+      if (iframe?.contentWindow) {
+        iframe.contentWindow.postMessage(
+          { giscus: { setConfig: { theme } } },
+          "https://giscus.app",
+        );
+        isThemeSet = true;
+      }
+    };
+
+    updateTheme();
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== "https://giscus.app") return;
+      if (!(typeof event.data === "object" && event.data.giscus)) return;
+
+      if (!isThemeSet) {
+        updateTheme();
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, [resolvedTheme]);
 
   return <div ref={ref} />;
