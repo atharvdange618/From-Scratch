@@ -321,7 +321,7 @@ export default function PostEditor() {
           ?.split(",")
           .map((kw) => kw.trim())
           .filter(Boolean),
-        publishedDate: new Date().toISOString(),
+        ...(!isEditMode && { publishedDate: new Date().toISOString() }),
       };
 
       const url = isEditMode ? `/api/posts/${selectedPostSlug}` : "/api/posts";
